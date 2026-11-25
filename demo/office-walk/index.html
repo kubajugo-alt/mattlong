@@ -509,9 +509,12 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       if (t > AU.next[n]) { shot(n, v, pos, 0.95 + Math.random() * 0.1, lpMax || 0); AU.next[n] = t + lo + Math.random() * (hi - lo); }
     }
     for (const b of AU.beds) if (b.pos) steer(b.c, spatial(b.pos), 0.3);      // beds never fade below 30 %
-    // footsteps: two per walk cycle, louder near the camera, panned with Matt
+    // footsteps on the frames where a heel actually meets the floor in the walk strip (three per 36-frame loop,
+    // read from the sprite: sprites/matt.json "steps"), louder near the camera, panned with Matt
+    const spS = sprites[M.dir] || {}, stepsAt = spS.steps || [0, 18], nF = spS.frames || 36;
+    const fa = AU.lastPhase * nF, fb = M.phase * nF;
     if (M.moving && R.floor) {
-      const ph = M.phase, crossed = (AU.lastPhase < 0.5 && ph >= 0.5) || ph < AU.lastPhase;
+      const crossed = stepsAt.some(k => fb >= fa ? (fa < k && k <= fb) : (k > fa || k <= fb));
       if (crossed) { const near = Math.min(1, heightAt(M.y) / (S.sc.size[1] * 0.55));
         shot('steps-' + R.floor + '-' + (1 + Math.floor(Math.random() * 10)), 0.35 + 0.65 * near, null, 0.93 + Math.random() * 0.14)
           .then(c => { if (c && c.p.pan) c.p.pan.value = (M.x / W - 0.5) * 1.2; });
