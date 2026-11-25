@@ -52,22 +52,25 @@
   const hideCaption = () => cap.classList.remove('on');
 
   function renderInv() {
-    const inv = $('inv'); inv.querySelectorAll('.slot').forEach(s => s.remove());
-    const CX = [8.8, 23.0, 37.4, 51.2, 65.6, 80.2], CY = [26.5, 58.5];
+    const inv = $('inv'); let grid = inv.querySelector('.slots');
+    if (!grid) { inv.classList.add('deco'); inv.querySelectorAll('.slot').forEach(s => s.remove()); inv.append(mk('p', 'kicker', 'Matt\u2019s pockets')); grid = mk('div', 'slots'); inv.append(grid); }
+    grid.innerHTML = '';
     G.inv.forEach((id, k) => {
-      const b = mk('button', 'slot'); b.style.left = CX[k % 6] + '%'; b.style.top = CY[Math.floor(k / 6)] + '%';
+      const b = mk('button', 'slot');
       b.setAttribute('aria-label', ITEMS[id]); b.dataset.tip = ITEMS[id]; b.setAttribute('aria-pressed', G.selected === id ? 'true' : 'false');
       const im = mk('img'); im.alt = ''; im.src = 'ui/item-' + id + '.webp'; b.append(im);
       b.addEventListener('click', () => { select(G.selected === id ? null : id); });
       b.addEventListener('contextmenu', (e) => { e.preventDefault(); run('item__' + id.replace(/-/g, '_') + '.look'); });
-      inv.append(b);
+      grid.append(b);
     });
+    for (let k = G.inv.length; k < 8; k++) grid.append(mk('span', 'slot blank'));
   }
   function select(id) { G.selected = id; renderInv(); using.hidden = !id;
     if (id) { using.innerHTML = ''; const im = mk('img'); im.src = 'ui/item-' + id + '.webp'; im.alt = ''; using.append(im, document.createTextNode('Use ' + ITEMS[id] + ' on…')); $('inv').classList.remove('open'); $('bInv').setAttribute('aria-pressed', 'false'); } }
 
   function renderNotebook() {
-    note.innerHTML = ''; const page = mk('div', 'page'); const h = mk('h2'); h.textContent = 'Notebook'; page.append(h);
+    note.innerHTML = ''; const page = mk('div', 'page deco'); page.append(mk('p', 'kicker', 'Matt Long'), mk('h2', 'ptitle', 'Notebook'), mk('div', 'rule'));
+    if (!G.journal.length) page.append(mk('p', 'empty', 'Nothing written down yet.'));
     let last = null;
     for (const id of G.journal) { const [sec, txt] = JOURNAL[id] || ['', id]; if (sec !== last) { const s = mk('h3'); s.textContent = sec; page.append(s); last = sec; }
       const p = mk('p'); p.textContent = txt; page.append(p); }
@@ -94,7 +97,7 @@
   function openBoard() {
     const CARDS = [['photo', 'Capt. Michael Harlan', 'ui/item-michael-photo.webp'], ['key', 'His key, West 84th St.', 'ui/item-key.webp'],
       ['leave', 'Army: “on leave”', null], ['nine', 'Gone nine days, since Armistice Day. Never took a day’s leave.', null]];
-    board.innerHTML = '<div class="bpage"><h2>Evidence board</h2><p class="hint">Pick two notes that don’t add up together.</p><div class="pins"></div><button class="close">Close</button></div>';
+    board.innerHTML = '<div class="bpage deco"><p class="kicker">The Harlan case</p><h2 class="ptitle">Evidence board</h2><div class="rule"></div><p class="hint">Pick the two notes that don’t add up together.</p><div class="pins"></div><button class="close">Close</button></div>';
     const pins = board.querySelector('.pins'); const sel = [];
     for (const [id, label, img] of CARDS) {
       const b = mk('button', 'pin'); if (img) { const i = mk('img'); i.src = img; i.alt = ''; b.append(i); } const t = mk('span'); t.textContent = label; b.append(t);
@@ -217,7 +220,7 @@
   bNote.addEventListener('click', () => { renderNotebook(); note.hidden = !note.hidden; });
   bMap.addEventListener('click', () => run('doyers__far_street_lamp.look'));
   bMenu.addEventListener('click', () => {
-    menu.innerHTML = '<div class="mpage"><h2>Paused</h2><button data-a="resume">Resume</button><label><input type="checkbox" id="gSound"> Sound</label><button data-a="restart">Start the Prologue again</button><p>The game saves itself as you play.</p></div>';
+    menu.innerHTML = '<div class="mpage deco"><p class="kicker">Matt Long · The Bloody Angle</p><h2 class="ptitle">Paused</h2><button data-a="resume">Resume</button><label><input type="checkbox" id="gSound"> Sound</label><button data-a="restart">Start the Prologue again</button><p>The game saves itself as you play.</p></div>';
     const snd = menu.querySelector('#gSound'); snd.checked = $('sound').checked; snd.onchange = () => { $('sound').checked = snd.checked; $('sound').dispatchEvent(new Event('change')); };
     menu.querySelector('[data-a=resume]').onclick = () => { menu.hidden = true; };
     menu.querySelector('[data-a=restart]').onclick = () => { clearSave(); location.reload(); };

@@ -49,5 +49,6 @@ html = html.replace('<div class="wrap">', '</head>\n<body>\n<div class="rotate">
 html += '\n<script src="ink.js"></script>\n<script src="game.js"></script>\n</body>\n</html>\n'
 open(os.path.join(SITE, 'index.html'), 'w', encoding='utf-8').write(html)
 open(os.path.join(SITE, '_headers'), 'w').write('/*\n  Cache-Control: public, max-age=3600\n/index.html\n  Cache-Control: no-cache\n')
+open(os.path.join(SITE, 'netlify.toml'), 'w').write('[build]\n  publish = "."\n  command = ""\n')
 size = sum(os.path.getsize(os.path.join(d, f)) for d, _, fs in os.walk(SITE) for f in fs)
 print('site/ built:', len(paths), 'script entry points,', round(size / 1e6, 1), 'MB')

@@ -32,34 +32,55 @@ body.busy canvas { cursor: default; }
   background: rgba(12,12,14,.86); color: #f1eee8; font: 500 max(12px, 1.2cqw)/1 "Jost", sans-serif; border-radius: 2px; pointer-events: none; }
 .using img { width: max(26px, 2.6cqw); height: max(26px, 2.6cqw); object-fit: contain; }
 
-/* notebook: Matt's handwriting on lined paper */
-.notebook, .board, .gmenu { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.55); pointer-events: auto; z-index: 4; }
-.notebook .page { width: min(56cqw, 92%); max-height: 86%; overflow: auto; background: #efece4 repeating-linear-gradient(#efece4 0 2.3cqw, #cfcbc1 2.3cqw calc(2.3cqw + 1px));
-  color: #1f1e1c; padding: 2.4cqw 3cqw; box-shadow: 0 1cqw 3cqw rgba(0,0,0,.6); font: 400 max(15px, 1.75cqw)/2.3cqw "Caveat", "Segoe Print", cursive; }
-.notebook h2 { font: 600 max(18px, 2.4cqw)/1.2 "Caveat", cursive; margin: 0 0 1cqw; }
-.notebook h3 { font: 600 max(15px, 1.8cqw)/2.3cqw "Caveat", cursive; margin: 1cqw 0 0; text-decoration: underline; }
-.notebook p { margin: 0 0 .6cqw; color: #1f1e1c; max-width: none; }
-.notebook .close, .board .close { font: 500 max(12px, 1.1cqw)/1 "Jost", sans-serif; letter-spacing: .12em; text-transform: uppercase; margin-top: 1.4cqw; padding: .7cqw 1.4cqw;
-  background: transparent; border: 1px solid currentColor; color: inherit; cursor: pointer; }
+/* ---- panels in the chapter-card style: the Art Deco frame from the title card (border-image, corners kept),
+   charcoal ground, Jost in tracked capitals for headings, light grey text ---- */
+.deco { border-style: solid; border-width: 5.2cqw; border-image: url(ui/frame-deco.webp) 130 fill / 5.2cqw stretch; color: #e9e5dc; }
+.deco .kicker { font: 400 max(11px, 1.05cqw)/1 "Jost", sans-serif; letter-spacing: .5em; text-transform: uppercase; color: #a9a49b; text-align: center; margin: 0 0 .9cqw; }
+.deco .ptitle { font: 500 max(20px, 2.6cqw)/1 "Jost", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #f1ede4; text-align: center; margin: 0 0 1.6cqw; }
+.deco .rule { height: 1px; background: linear-gradient(90deg, transparent, #8f8a80, transparent); margin: 0 0 1.4cqw; }
+.deco .close { display: block; margin: 1.6cqw auto 0; font: 500 max(12px, 1.1cqw)/1 "Jost", sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #f1ede4;
+  background: transparent; border: 1px solid #8f8a80; padding: .8cqw 2cqw; cursor: pointer; }
+.deco .close:hover, .deco .close:focus-visible { background: #f1ede4; color: #111; outline: none; }
+.notebook, .board, .gmenu { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.6); pointer-events: auto; z-index: 4; }
 
-/* evidence board: pinned notes on cork */
-.board .bpage { width: min(70cqw, 94%); background: #6d6458; background-image: radial-gradient(rgba(0,0,0,.12) 1px, transparent 1px); background-size: .6cqw .6cqw;
-  padding: 2cqw 2.4cqw; box-shadow: 0 1cqw 3cqw rgba(0,0,0,.6); color: #f4f1ea; }
-.board h2 { font: 500 max(16px, 2cqw)/1 "Jost", sans-serif; letter-spacing: .14em; text-transform: uppercase; margin: 0; }
-.board .hint { color: #e7e2d8; margin: .6cqw 0 1.4cqw; max-width: none; font: 400 max(13px, 1.3cqw)/1.4 "Jost", sans-serif; }
-.board .pins { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4cqw; }
-.board .pin { background: #f3efe6; color: #1f1e1c; border: 0; padding: 1cqw; cursor: pointer; display: grid; gap: .6cqw; justify-items: center; align-content: start;
-  font: 400 max(14px, 1.5cqw)/1.15 "Caveat", cursive; box-shadow: 0 .4cqw .8cqw rgba(0,0,0,.45); transform: rotate(-1.2deg); transition: transform .12s; }
-.board .pin:nth-child(even) { transform: rotate(1.4deg); }
-.board .pin img { width: 70%; aspect-ratio: 1; object-fit: contain; }
-.board .pin.on { outline: .35cqw solid #f4f1ea; transform: scale(1.05); }
+/* notebook: case notes under tracked headings */
+.notebook .page { width: min(60cqw, 94%); max-height: 88%; overflow: auto; padding: .6cqw 1.2cqw; scrollbar-width: thin; }
+.notebook h3 { font: 500 max(11px, 1.05cqw)/1.2 "Jost", sans-serif; letter-spacing: .28em; text-transform: uppercase; color: #a9a49b; margin: 1.4cqw 0 .7cqw; }
+.notebook h3:first-of-type { margin-top: 0; }
+.notebook p { margin: 0 0 .8cqw; color: #e2ded5; max-width: none; font: 400 max(14px, 1.45cqw)/1.5 "Jost", sans-serif; padding-left: 1.2cqw; border-left: 1px solid #55525a; }
+.notebook .empty { color: #8f8a80; font-style: italic; border: 0; padding: 0; text-align: center; }
+
+/* evidence board: notes as small framed cards */
+.board .bpage { width: min(72cqw, 96%); padding: .4cqw 1cqw; }
+.board .hint { color: #c9c4ba; margin: -.6cqw 0 1.6cqw; max-width: none; font: 400 max(13px, 1.3cqw)/1.4 "Jost", sans-serif; text-align: center; }
+.board .pins { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2cqw; }
+.board .pin { background: #1b1a1d; color: #e9e5dc; border: 1px solid #6f6b73; outline: 1px solid #3a383e; outline-offset: -.5cqw; padding: 1.2cqw 1cqw; cursor: pointer;
+  display: grid; gap: .8cqw; justify-items: center; align-content: start; font: 400 max(13px, 1.25cqw)/1.35 "Jost", sans-serif; text-align: center; transition: border-color .12s, background .12s; }
+.board .pin img { width: 62%; aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 .3cqw .5cqw #000); }
+.board .pin:hover { border-color: #b9b4ab; }
+.board .pin.on { border-color: #f1ede4; background: #2a282d; outline-color: #8f8a80; }
 
 /* pause menu */
-.gmenu .mpage { background: #141417; color: #ece9e2; padding: 2.4cqw 3cqw; display: grid; gap: 1cqw; min-width: min(30cqw, 90%); font: 400 max(13px, 1.3cqw)/1.4 "Jost", sans-serif; }
-.gmenu h2 { margin: 0 0 .6cqw; font: 500 max(16px, 1.8cqw)/1 "Jost"; letter-spacing: .2em; text-transform: uppercase; }
-.gmenu button { font: inherit; padding: .8cqw 1.2cqw; background: transparent; color: inherit; border: 1px solid #55525a; cursor: pointer; text-align: left; }
-.gmenu button:hover, .gmenu button:focus-visible { background: #ece9e2; color: #111; outline: none; }
-.gmenu p { color: #9a96a0; margin: 0; max-width: none; }
+.gmenu .mpage { min-width: min(34cqw, 90%); display: grid; gap: 1cqw; padding: .4cqw 1cqw; font: 400 max(13px, 1.3cqw)/1.4 "Jost", sans-serif; }
+.gmenu .mpage > button { font: 500 max(12px, 1.15cqw)/1 "Jost", sans-serif; letter-spacing: .16em; text-transform: uppercase; padding: 1cqw 1.4cqw; background: transparent;
+  color: #f1ede4; border: 1px solid #6f6b73; cursor: pointer; }
+.gmenu .mpage > button:hover, .gmenu .mpage > button:focus-visible { background: #f1ede4; color: #111; outline: none; }
+.gmenu label { color: #e2ded5; display: flex; gap: .8cqw; align-items: center; justify-content: center; }
+.gmenu p { color: #8f8a80; margin: 0; max-width: none; text-align: center; font-size: max(12px, 1.05cqw); }
+
+/* inventory: a framed panel rises from the bottom edge; items in thin-lined frames */
+.inv.deco { width: min(50cqw, 96%); aspect-ratio: auto; height: auto; padding: 0 .4cqw; border-width: 3cqw; border-image-width: 3cqw; transform: translate(-50%, 110%); }
+.inv.deco.open { transform: translate(-50%, -1.2cqw); }
+.inv.deco > img { display: none; }
+.inv.deco .kicker { margin: -.6cqw 0 .7cqw; font-size: max(10px, .9cqw); }
+.inv.deco .slots { display: grid; grid-template-columns: repeat(8, 1fr); gap: .7cqw; }
+.inv.deco .slot { position: relative; left: auto !important; top: auto !important; width: auto; height: auto; aspect-ratio: 1; margin: 0; padding: .5cqw;
+  background: #161518; border: 1px solid #6f6b73; outline: 1px solid #2f2d33; outline-offset: -.4cqw; border-radius: 0; }
+.inv.deco .slot:hover { border-color: #b9b4ab; }
+.inv.deco .slot[aria-pressed="true"] { border-color: #f1ede4; background: #2a282d; }
+.inv.deco .slot.blank { pointer-events: none; opacity: .5; }
+.inv.deco ~ .cap, .inv.deco.open ~ .cap { bottom: 3cqw; }
+.inv.deco.open ~ .cap { bottom: max(13cqw, 130px); }
 
 /* phones: the game is landscape */
 .rotate { display: none; }
