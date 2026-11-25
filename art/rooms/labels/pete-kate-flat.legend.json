@@ -88,6 +88,16 @@
     "cols": 6,
     "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
    }
+  },
+  {
+   "name": "table-set-empty",
+   "file": "art/cast/final/seated/table-set-empty.png",
+   "x": 664,
+   "y": 637,
+   "scale": 0.38,
+   "depth_m": 1.0,
+   "hidden": true,
+   "note": "The same table set with Kate's chair empty and Pete's cigarettes gone (Gemini edit of kate-at-table, patched in only where Kate sat; same canvas, so the same placement). Shown when Kate leaves for work in P2."
   }
  ],
  "props_note": "The painting has the table set and Pete's desk chair painted out (the original is art/rooms/archive-pete-kate-flat-with-chairs.png); Kate at the table and Pete on his chair are cast-style sprites."

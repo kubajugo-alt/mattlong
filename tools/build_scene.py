@@ -183,6 +183,8 @@ for name, color in all_objs:
     bx0, by0, bx1, by1 = xs.min(), ys.min(), xs.max() + 1, ys.max() + 1
     entry = {'name': name, 'bbox': [int(x0), int(y0), int(x1), int(y1)], 'baseline': int(by1 - 1),
              'baseline_cols': base[::8], 'baseline_step': 8, **({'prop': True} if name in prop_m else {})}
+    if pr_by.get(name, {}).get('hidden'):      # an alternative version shown later by the story (e.g. Kate's empty chair)
+        entry['hidden'] = True
     if anim is not None:
         a_ = pr_by[name]['anim']
         entry['anim'] = {'frames': a_['n'], 'cols': a_['cols'], 'fps': a_.get('fps', 7)}

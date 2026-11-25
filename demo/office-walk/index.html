@@ -97,7 +97,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     <label><input type="checkbox" id="showBase"> Object baselines</label>
     <label><input type="checkbox" id="showLights"> Light sources</label>
     <span class="seg" role="group" aria-label="Play a line"><button type="button" data-say="matt">Matt speaks</button><button type="button" data-say="kate">Kate</button><button type="button" data-say="pete">Pete</button><button type="button" data-say="inez">Inéz</button><button type="button" data-say="lee">Lee</button><button type="button" data-say="sol">Sol</button><button type="button" data-say="junkie">Junkie</button></span>
-    <span class="seg" role="group" aria-label="Interface previews"><button type="button" id="pDlg">Dialogue choices</button><button type="button" id="pCard">Title card</button></span>
+    <span class="seg" role="group" aria-label="Interface previews"><button type="button" id="pDlg">Dialogue choices</button><button type="button" id="pCard">Title card</button><button type="button" id="pKate" aria-pressed="false">Kate leaves for work</button></span>
     <span id="status">Loading…</span>
   </div>
 </div>
@@ -191,9 +191,13 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     return out;
   }
 
+  // ---- story state the scene shows: Kate leaves for work in P2 (her table set swaps for the empty-chair version)
+  const STORY = { kateGone: false };
+  const gone = (o) => o.name === 'kate-at-table' ? STORY.kateGone : o.name === 'table-set-empty' ? !STORY.kateGone : !!o.hidden;
+  const hotGone = (h) => STORY.kateGone && (h.id === 'kate' || h.id === 'petes-cigarettes');
   // ---- hotspots: smallest object under the pointer wins
   const hitCtx = document.createElement('canvas').getContext('2d');
-  function hotAt(x, y) { let best = null; for (const h of S.hot) { if (x < h.bbox[0] || x > h.bbox[2] || y < h.bbox[1] || y > h.bbox[3]) continue;
+  function hotAt(x, y) { let best = null; for (const h of S.hot) { if (hotGone(h)) continue; if (x < h.bbox[0] || x > h.bbox[2] || y < h.bbox[1] || y > h.bbox[3]) continue;
       if (h.paths.some(p => hitCtx.isPointInPath(p, x, y)) && (!best || h.z > best.z)) best = h; } return best; }
   let hover = null;
   cv.addEventListener('pointermove', (ev) => { if (!S) return; const [x, y] = toScene(ev); hover = hotAt(x, y); cv.style.cursor = hover ? 'pointer' : 'crosshair'; });
@@ -716,7 +720,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     }
     ctx.restore(); ctx.restore();
     // seated characters and their furniture cast shadows from the same lights as Matt
-    for (const o of S.occ) if (o.prop) {
+    for (const o of S.occ) if (o.prop && !gone(o)) {
       const w = o.bbox[2] - o.bbox[0], ph = o.bbox[3] - o.bbox[1], ax = (o.bbox[0] + o.bbox[2]) / 2, ay = o.baseline;
       if (!o.sil) { const c = document.createElement('canvas'); c.width = w; c.height = ph; const x = c.getContext('2d');
         x.drawImage(o.img, 0, 0, w, ph, 0, 0, w, ph); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height); o.sil = c; }
@@ -736,7 +740,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       let i = Math.round((Math.min(o.bbox[2] - 1, Math.max(o.bbox[0], x)) - o.bbox[0]) / o.baseline_step);
       i = Math.max(0, Math.min(c.length - 1, i)); for (let k = 0; k < c.length; k++) { for (const j of [i - k, i + k]) if (j >= 0 && j < c.length && c[j] != null) return c[j]; } return o.baseline; };
     const front = [], behindProps = [];
-    for (const o of S.occ) {
+    for (const o of S.occ) { if (gone(o)) continue;
       const inX = M.x > o.bbox[0] - dw / 2 && M.x < o.bbox[2] + dw / 2;
       if (inX && baseAt(o, M.x) > M.y) front.push(o); else if (o.prop) behindProps.push(o);
     }
@@ -761,7 +765,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const showHot = document.getElementById('showHot').checked;
     if (showHot || hover) {
       ctx.save(); ctx.lineJoin = 'round';
-      if (showHot) { ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,255,255,.45)'; for (const h of S.hot) h.paths.forEach(p => ctx.stroke(p)); }
+      if (showHot) { ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,255,255,.45)'; for (const h of S.hot) if (!hotGone(h)) h.paths.forEach(p => ctx.stroke(p)); }
       if (hover) { ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.fillStyle = 'rgba(255,255,255,.10)'; hover.paths.forEach(p => { ctx.fill(p); ctx.stroke(p); });
         ctx.font = '500 34px Jost, system-ui, sans-serif'; const tw = ctx.measureText(hover.name).width;
         const lx = Math.min(W - tw - 30, Math.max(10, (hover.bbox[0] + hover.bbox[2]) / 2 - tw / 2)), ly = Math.max(50, hover.bbox[1] - 18);
@@ -901,6 +905,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       if (mask) { const m = document.createElement('img'); m.className = 'mask'; m.src = 'ui/icon-mask.webp'; m.alt = 'Mask choice'; m.title = 'A Mask choice: guarded or honest'; b.append(m); }
       b.addEventListener('click', () => { $('dlg').classList.remove('open'); caption('Matt', t); }); li.append(b); ol.append(li); }
     $('dlg').classList.add('open'); });
+  $('pKate').addEventListener('click', (e) => { STORY.kateGone = !STORY.kateGone; e.currentTarget.setAttribute('aria-pressed', STORY.kateGone);
+    e.currentTarget.textContent = STORY.kateGone ? 'Kate comes back' : 'Kate leaves for work';
+    if (room !== 'pete-kate-flat') { roomSel.value = 'pete-kate-flat'; roomSel.dispatchEvent(new Event('change')); }
+    if (STORY.kateGone) shot('door', 0.6, [880, 1290]); });
   $('pCard').addEventListener('click', () => $('card').classList.add('open'));
   $('card').addEventListener('click', () => $('card').classList.remove('open'));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { setInv(false); $('dlg').classList.remove('open'); $('card').classList.remove('open'); }
