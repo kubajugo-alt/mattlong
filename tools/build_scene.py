@@ -86,6 +86,7 @@ all_objs = list(L['objects'].items()) + [(pr['name'], None) for pr in L.get('pro
 # prop (its front line lower, column by column), cut the furniture's pixels out of the prop so the painting
 # shows in front (the table legs and edge in front of Kate)
 pr_by = {pr['name']: pr for pr in L.get('props', [])}
+prop_post = {}
 for pname in prop_m:
     plow, _ = front_line(prop_m[pname])
     pfront = plow.max()                      # where the prop stands on the floor nearest the camera
@@ -111,9 +112,44 @@ for pname in prop_m:
         dist = ndimage.distance_transform_edt(~cut)
         shade = 1 - 0.38 * np.exp(-dist / max(4.0, 0.035 * ph))
         a[..., :3] = (a[..., :3] * shade[..., None]).clip(0, 255).astype(np.uint8)
-    a[..., 3] = (a[..., 3] * (1 - ndimage.gaussian_filter(cut.astype(float), 1.6))).astype(np.uint8)
+    cutmul = 1 - ndimage.gaussian_filter(cut.astype(float), 1.6)
+    a[..., 3] = (a[..., 3] * cutmul).astype(np.uint8)
+    prop_post[pname] = (shade if cut.any() else None, cutmul)
     prop_rgba[pname] = a
     prop_m[pname] = a[..., 3] > 128
+
+
+def animate_prop(pr, post):
+    """An idle loop for a prop: Ludo sheet frames aligned onto the static placement (frame 0 is the static pose),
+    with the same furniture cut, contact shading and tone. Returns a cols x rows sheet and its room box."""
+    an = pr['anim']
+    sheet = Image.open(an['sheet']).convert('RGBA')
+    c, r = an['sheet_cols'], an['sheet_rows']
+    fw, fh = sheet.width // c, sheet.height // r
+    frames = [sheet.crop((i % c * fw, i // c * fh, (i % c + 1) * fw, (i // c + 1) * fh)) for i in range(an.get('n', c * r))]
+    an['n'] = len(frames)
+    src = Image.open(pr['file']).convert('RGBA'); sb = src.getbbox(); f0b = frames[0].getbbox()
+    k = (sb[3] - sb[1]) * pr['scale'] / (f0b[3] - f0b[1])
+    ox = pr['x'] + sb[0] * pr['scale'] - f0b[0] * k
+    oy = pr['y'] + sb[1] * pr['scale'] - f0b[1] * k
+    boxes = [f.getbbox() for f in frames]
+    X0 = max(0, int(min(b[0] for b in boxes) * k + ox) - 4); Y0 = max(0, int(min(b[1] for b in boxes) * k + oy) - 4)
+    X1 = min(W, int(max(b[2] for b in boxes) * k + ox) + 4); Y1 = min(H, int(max(b[3] for b in boxes) * k + oy) + 4)
+    w, h = X1 - X0, Y1 - Y0
+    shade, cutmul = post
+    cols = an.setdefault('cols', 6); rows = (len(frames) + cols - 1) // cols
+    out_sheet = Image.new('RGBA', (w * cols, h * rows))
+    for i, f in enumerate(frames):
+        fs = f.resize((max(1, round(fw * k)), max(1, round(fh * k))), Image.LANCZOS)
+        canvas = Image.new('RGBA', (W, H)); canvas.paste(fs, (round(ox), round(oy)), fs)
+        a = np.asarray(canvas.crop((X0, Y0, X1, Y1))).copy().astype(float)
+        if 'tone' in pr:
+            a[..., :3] *= pr['tone']
+        if shade is not None:
+            a[..., :3] *= shade[Y0:Y1, X0:X1, None]
+        a[..., 3] *= cutmul[Y0:Y1, X0:X1]
+        out_sheet.paste(Image.fromarray(a.clip(0, 255).astype(np.uint8), 'RGBA'), (i % cols * w, i // cols * h))
+    return out_sheet, (X0, Y0, X1, Y1)
 
 
 def get_mask(name, color):
@@ -134,13 +170,23 @@ for name, color in all_objs:
     rgba = np.dstack([P[y0:y1, x0:x1], (alpha * 255).astype(np.uint8)])
     if name in prop_rgba:
         rgba = prop_rgba[name][y0:y1, x0:x1].copy()
-    Image.fromarray(rgba, 'RGBA').save(os.path.join(out, 'occ', name + '.png'), optimize=True)
+    anim = None
+    if name in pr_by and 'anim' in pr_by[name]:
+        anim, (x0, y0, x1, y1) = animate_prop(pr_by[name], prop_post[name])
+        anim.save(os.path.join(out, 'occ', name + '.png'), optimize=True)
+    else:
+        Image.fromarray(rgba, 'RGBA').save(os.path.join(out, 'occ', name + '.png'), optimize=True)
     # front line per column (lowest y of the filled outline), so sloped counters and legged furniture work:
     # the engine hides Matt behind the object only in the columns where that line is below his feet
     low, _ = front_line(m)
     base = [int(low[x]) if low[x] >= 0 else None for x in range(x0, x1)]
-    objects.append({'name': name, 'bbox': [int(x0), int(y0), int(x1), int(y1)], 'baseline': int(y1 - 1),
-                    'baseline_cols': base[::8], 'baseline_step': 8, **({'prop': True} if name in prop_m else {})})
+    bx0, by0, bx1, by1 = xs.min(), ys.min(), xs.max() + 1, ys.max() + 1
+    entry = {'name': name, 'bbox': [int(x0), int(y0), int(x1), int(y1)], 'baseline': int(by1 - 1),
+             'baseline_cols': base[::8], 'baseline_step': 8, **({'prop': True} if name in prop_m else {})}
+    if anim is not None:
+        a_ = pr_by[name]['anim']
+        entry['anim'] = {'frames': a_['n'], 'cols': a_['cols'], 'fps': a_.get('fps', 7)}
+    objects.append(entry)
 exits = {}
 for name, e in L.get('exits', {}).items():
     if 'box' in e:      # an exit at the edge of the screen (end of a street): a box in fractions of the image

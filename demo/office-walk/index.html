@@ -62,7 +62,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const base = v + '/';
     const sc = await (await fetch(base + 'scene.json')).json();
     const [bg, walk, floor] = await Promise.all([load(base + 'bg.webp'), maskOf(base + sc.walk.file), maskOf(base + sc.floor.file)]);
-    const occ = await Promise.all(sc.objects.map(async o => ({ ...o, img: await load(base + 'occ/' + o.name + '.webp') })));
+    const occ = await Promise.all(sc.objects.map(async o => ({ ...o, phase: Math.random() * 36, img: await load(base + 'occ/' + o.name + '.webp') })));
     let hj = { hotspots: [] }; try { const r = await fetch(base + 'hotspots.json'); if (r.ok) hj = await r.json(); } catch (e) {}
     const hot = hj.hotspots.map(h => ({ ...h, paths: h.polygons.map(pl => { const p = new Path2D(); pl.forEach(([x, y], i) => i ? p.lineTo(x, y) : p.moveTo(x, y)); p.closePath(); return p; }) }));
     // brightness of the painted floor, to light Matt like his surroundings
@@ -337,8 +337,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     // seated characters and their furniture cast shadows from the same lights as Matt
     for (const o of S.occ) if (o.prop) {
       const w = o.bbox[2] - o.bbox[0], ph = o.bbox[3] - o.bbox[1], ax = (o.bbox[0] + o.bbox[2]) / 2, ay = o.baseline;
-      if (!o.sil) { const c = document.createElement('canvas'); c.width = o.img.width; c.height = o.img.height; const x = c.getContext('2d');
-        x.drawImage(o.img, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height); o.sil = c; }
+      if (!o.sil) { const c = document.createElement('canvas'); c.width = w; c.height = ph; const x = c.getContext('2d');
+        x.drawImage(o.img, 0, 0, w, ph, 0, 0, w, ph); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height); o.sil = c; }
       for (const p of shadowParams(ax, ay, ph)) for (const pass of [{ a: 0.55, b: 0.25 }, { a: 0.6, b: 1.6 }]) {
         ctx.save(); ctx.globalAlpha = Math.min(0.85, p.a * pass.a * 1.6); ctx.filter = 'blur(' + Math.max(0.5, p.blur * pass.b * k).toFixed(1) + 'px)';
         ctx.transform(1, 0, -p.vx / ph, -p.vy / ph, ax, ay);
@@ -359,13 +359,13 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       if (inX && baseAt(o, M.x) > M.y) front.push(o); else if (o.prop) behindProps.push(o);
     }
     // seated characters are sprites, not part of the painting: draw the ones behind Matt first
-    for (const o of behindProps) ctx.drawImage(o.img, o.bbox[0], o.bbox[1], o.bbox[2] - o.bbox[0], o.bbox[3] - o.bbox[1]);
+    for (const o of behindProps) drawOcc(o, now);
     // Matt
     ctx.save(); ctx.translate(M.x, M.y); ctx.scale(fx, 1);
     ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
     ctx.drawImage(img, fi * sp.fw, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
     ctx.restore(); ctx.filter = 'none';
-    for (const o of front) ctx.drawImage(o.img, o.bbox[0], o.bbox[1], o.bbox[2] - o.bbox[0], o.bbox[3] - o.bbox[1]);
+    for (const o of front) drawOcc(o, now);
 
     if (amb) ambientOver(dt, W, H);
     // hotspot overlay: all outlines, and the one under the pointer with its name
@@ -396,6 +396,13 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       }
     }
     requestAnimationFrame(tick);
+  }
+  // furniture and props; animated props (idle loops) pick the frame for the current time from their sheet
+  function drawOcc(o, now) {
+    const w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1];
+    if (o.anim) { const f = Math.floor(now / 1000 * o.anim.fps + (o.phase || 0)) % o.anim.frames, c = o.anim.cols;
+      ctx.drawImage(o.img, (f % c) * w, Math.floor(f / c) * h, w, h, o.bbox[0], o.bbox[1], w, h); }
+    else ctx.drawImage(o.img, o.bbox[0], o.bbox[1], w, h);
   }
   // redraw everything that is not floor over the shadow layer, so shadows never fall on walls or furniture
   const fcache = {};
