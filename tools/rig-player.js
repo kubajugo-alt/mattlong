@@ -1,0 +1,471 @@
+  // ---------- cut-out rig player ----------
+  // Mesh (default): whole drawings deformed by bones on triangle grids (WebGL), driven by a
+  // motion system: gait curves from walking studies, planted feet with root motion, a two-bone
+  // reach, a stabilised head with lag, cloth springs driven by acceleration, and pose blending.
+  // Pieces: the rigid cut-out pieces (canvas 2D), kept for comparison.
+  function mountRig(stage, rigUrl, meshUrl) {
+    const box = document.createElement('div'); box.style.cssText = 'position:relative;width:100%;aspect-ratio:4/3;max-width:100%';
+    const bg = document.createElement('canvas'), gl_c = document.createElement('canvas'), fx = document.createElement('canvas');
+    [bg, gl_c, fx].forEach(c => { c.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto'; box.appendChild(c); });
+    fx.setAttribute('aria-label', 'Animated cut-out puppet');
+    const controls = document.createElement('div'); controls.className = 'controls';
+    const mkSeg = (label, items, cur, on) => {
+      const seg = document.createElement('div'); seg.className = 'seg'; seg.setAttribute('role', 'group'); seg.setAttribute('aria-label', label);
+      items.forEach(n => { const b = document.createElement('button'); b.type = 'button'; b.textContent = n; b.setAttribute('aria-pressed', String(n === cur));
+        b.addEventListener('click', () => { on(n); seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); }); seg.appendChild(b); });
+      return seg;
+    };
+    let anim = 'Walk', mode = meshUrl ? 'Mesh' : 'Pieces', speed = 1, showJoints = false, showMesh = false, paused = false;
+    const ANIMS = meshUrl ? ['Rest', 'Idle', 'Walk', 'Gesture', 'Reach'] : ['Rest', 'Idle', 'Walk', 'Gesture'];
+    const animSeg = mkSeg('Animation', ANIMS, anim, n => { setAnim(n); });
+    const modeSeg = meshUrl ? mkSeg('Renderer', ['Mesh', 'Pieces'], mode, n => { mode = n; }) : null;
+    const sp = document.createElement('label'); sp.textContent = 'Speed ';
+    const range = document.createElement('input'); range.type = 'range'; range.min = '0.1'; range.max = '1.5'; range.step = '0.05'; range.value = '1'; range.id = 'rig-speed';
+    range.addEventListener('input', () => { speed = +range.value; }); sp.appendChild(range);
+    const mkCheck = (id, text, on) => { const l = document.createElement('label'); const c = document.createElement('input'); c.type = 'checkbox'; c.id = id; c.addEventListener('change', () => on(c.checked)); l.append(c, ' ' + text); return l; };
+    const pb = document.createElement('button'); pb.type = 'button'; pb.textContent = 'Pause';
+    pb.style.cssText = 'background:transparent;color:#d8d5da;border:1px solid #3a383e;border-radius:3px;padding:7px 10px;font:inherit;cursor:pointer';
+    pb.addEventListener('click', () => { paused = !paused; pb.textContent = paused ? 'Play' : 'Pause'; });
+    controls.append(animSeg); if (modeSeg) controls.append(modeSeg);
+    controls.append(sp, mkCheck('rig-joints', 'Show joints', v => { showJoints = v; }));
+    if (meshUrl) controls.append(mkCheck('rig-mesh', 'Show mesh', v => { showMesh = v; }));
+    controls.append(pb);
+    stage.append(box, controls);
+
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const base = rigUrl.replace(/[^/]+$/, '');
+    const loadImg = (f) => new Promise((res) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = base + f; });
+    let rig = null, mesh = null, imgs = {}, raf = 0, alive = true, t = 0, last = performance.now();
+    let gl = null, prog = null, glMeshes = [];
+
+    // ---- animation state: blending, gait phase, root motion, springs
+    let animStart = 0, prevPose = null, blendFrom = null, blendStart = -1;
+    const BLEND = 0.45;
+    let baseX = 0;
+    function setAnim(n) { blendFrom = prevPose; blendStart = t; anim = n; animStart = t; if (prevPose && typeof prevPose.hx === 'number') baseX = prevPose.hx; }
+    if (reduce) { anim = 'Rest'; animSeg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x.textContent === 'Rest'))); }
+    let camX = 0;
+    const head = { a: 0, v: 0 };
+
+    Promise.all([fetch(rigUrl).then(r => r.json()), meshUrl ? fetch(meshUrl).then(r => r.json()) : null]).then(async ([r, m]) => {
+      rig = r;
+      const files = [...new Set(r.parts.map(p => p.file).concat(m ? m.meshes.map(x => x.file) : []))];
+      const byFile = {}; (await Promise.all(files.map(loadImg))).forEach((im, i) => { byFile[files[i]] = im; });
+      r.parts.forEach(p => { imgs[p.id] = byFile[p.file]; });
+      r.byId = Object.fromEntries(r.parts.map(p => [p.id, p]));
+      if (m) { mesh = m; prepMesh(m); setupGL(byFile); window.__rigDebug = { pose, boneMatrices, mesh: m, apply, G }; }   // used by tools/check-walk.js
+      if (!gl) { mode = 'Pieces'; if (modeSeg) modeSeg.remove(); }
+      raf = requestAnimationFrame(tick);
+    });
+
+    // ---- skeleton helpers (angles in radians, clockwise positive; he faces right)
+    const D = Math.PI / 180;
+    const segAngle = (a, b) => Math.atan2(-(b[0] - a[0]), b[1] - a[1]);    // angle of a->b from straight down
+    let REST = {}, LEN = {};
+    function prepMesh(m) {
+      m.boneIndex = Object.fromEntries(m.bones.map((b, i) => [b.id, i]));
+      const J = m.joints;
+      REST = { thigh: segAngle(J.hip, J.knee), shin: segAngle(J.knee, J.ankle), upper: segAngle(J.shoulder, J.elbow), fore: segAngle(J.elbow, J.hand) };
+      LEN = { upper: Math.hypot(J.elbow[0] - J.shoulder[0], J.elbow[1] - J.shoulder[1]), fore: Math.hypot(J.hand[0] - J.elbow[0], J.hand[1] - J.elbow[1]),
+        thigh: Math.hypot(J.knee[0] - J.hip[0], J.knee[1] - J.hip[1]), shin: Math.hypot(J.ankle[0] - J.knee[0], J.ankle[1] - J.knee[1]) };
+      // the foot with its sole levelled: heel and ball contact points relative to the ankle
+      const lev = (q) => { const c = Math.cos(m.footNeutral), s2 = Math.sin(m.footNeutral), x = q[0] - J.ankle[0], y = q[1] - J.ankle[1]; return [c * x - s2 * y, s2 * x + c * y]; };
+      FOOT = { heel: lev(m.contacts.heel), ball: lev(m.contacts.ball) };
+      FOOT.sole = (FOOT.heel[1] + FOOT.ball[1]) / 2;        // ankle height above the floor when flat
+    }
+    let FOOT = null;
+
+    // ---- gait: sagittal joint angles over one stride (degrees), after Winter's normative walking data.
+    // hip: + flexion (thigh forward); knee: + flexion; ankle: + dorsiflexion (toes up); mtp: + toe extension.
+    const GAIT = {
+      hip:   [30, 27, 21, 14, 7, 1, -5, -9, -10, -7, 0, 9, 18, 25, 29, 32, 33, 32, 31, 30],
+      knee:  [3, 12, 17, 15, 11, 7, 5, 4, 6, 13, 28, 46, 58, 62, 56, 42, 25, 10, 3, 2],
+      ankle: [0, -5, -2, 3, 6, 8, 9, 10, 8, 0, -12, -16, -8, -2, 1, 1, 0, 0, 0, 0],
+      mtp:   [0, 0, 0, 0, 0, 0, 0, 3, 12, 24, 30, 10, 0, 0, 0, 0, 0, 0, 0, 0],
+    };
+    function curve(arr, p) {   // periodic Catmull-Rom through 20 samples per stride
+      const n = arr.length, x = ((p % 1) + 1) % 1 * n, i = Math.floor(x), f = x - i;
+      const a = arr[(i - 1 + n) % n], b = arr[i % n], c = arr[(i + 1) % n], d = arr[(i + 2) % n];
+      return 0.5 * ((2 * b) + (-a + c) * f + (2 * a - 5 * b + 4 * c - d) * f * f + (-a + 3 * b - 3 * c + d) * f * f * f);
+    }
+    const ease = (x) => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
+    const easeOutBack = (x) => { x = Math.min(1, Math.max(0, x)); const c = 1.4; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+
+    const rot2 = (v, a) => [v[0] * Math.cos(a) - v[1] * Math.sin(a), v[0] * Math.sin(a) + v[1] * Math.cos(a)];
+    // Where the ankle is when the foot, pitched by phi (radians, + = toes down), pivots on a floor point.
+    function ankleFrom(pivotLocal, pivotWorld, phi) { const r = rot2(pivotLocal, phi); return [pivotWorld[0] - r[0], pivotWorld[1] - r[1]]; }
+    // Two-bone leg: hip and ankle in world pixels -> thigh/shin rotations; the knee bends forward.
+    function legIK(sfx, hipW, ank, phi, toe, pelvis, out) {
+      let dx = ank[0] - hipW[0], dy = ank[1] - hipW[1], d = Math.hypot(dx, dy);
+      const max = (LEN.thigh + LEN.shin) * 0.999; if (d > max) { dx *= max / d; dy *= max / d; d = max; }
+      const base = segAngle([0, 0], [dx, dy]);
+      const A = Math.acos(Math.max(-1, Math.min(1, (LEN.thigh * LEN.thigh + d * d - LEN.shin * LEN.shin) / (2 * LEN.thigh * d))));
+      const thighSeg = base - A;
+      const knee = [hipW[0] - Math.sin(thighSeg) * LEN.thigh, hipW[1] + Math.cos(thighSeg) * LEN.thigh];
+      const shinSeg = segAngle(knee, [hipW[0] + dx, hipW[1] + dy]);
+      const thighRot = thighSeg - REST.thigh, shinRot = shinSeg - REST.shin;
+      out['thigh' + sfx] = thighRot - pelvis;
+      out['shin' + sfx] = shinRot - thighRot;
+      out['foot' + sfx] = mesh.footNeutral + phi - shinRot;
+      out['toe' + sfx] = toe;
+    }
+    // Arm angles for shoulder flexion / elbow flexion in degrees.
+    function armRel(sfx, flex, elbow, chestW, out) {
+      // flexion is measured from straight down; the drawn arm already hangs slightly forward and bent
+      out['upperArm' + sfx] = -flex * D - REST.upper - chestW;
+      out['foreArm' + sfx] = -elbow * D - REST.fore + REST.upper;
+    }
+    const lerp = (a, b, k) => a + (b - a) * k;
+    // One foot through a stride. p = 0 heel strike; stance until 0.62, then swing to the next footprint.
+    // Returns the ankle position, foot pitch and toe bend, with footprints at heel x = h0 + n * STRIDE.
+    // Walk tuning, matched against Muybridge's Animal Locomotion plate 1 (1887): step ~0.41 x height,
+    // front heel ~0.23 x height ahead of the hip at contact, push-off ~58 deg, swing foot trailing high.
+    const G = { stride: 1840, heelAhead: 500, toeOff: 58, strike: -17, heelRise: 0.40, lift: 150, bob: 9, lean: 6.5, gaze: 3,
+                armFlex: 14, armBias: 2, elbow: 15, elbowFwd: 25 };
+    const STRIDE = G.stride, STRIKE = 0.62;
+    // Foot pitch over one stride (degrees, + = toes down), one smooth periodic curve:
+    // heel strike toes-up, flat through mid-stance, heel rise and push-off, toes down early in swing, level again.
+    const PITCH = [[0, -17], [0.06, -9], [0.12, 0], [0.40, 0], [0.48, 10], [0.56, 32], [0.62, 50], [0.68, 52],
+                   [0.76, 32], [0.85, 6], [0.93, -12], [1, -17]];
+    function pitchAt(p) {
+      const n = PITCH.length - 1; let i = 0; while (i < n - 1 && p > PITCH[i + 1][0]) i++;
+      const P0 = PITCH[Math.max(0, i - 1)], P1 = PITCH[i], P2 = PITCH[i + 1], P3 = PITCH[Math.min(n, i + 2)];
+      const f = (p - P1[0]) / (P2[0] - P1[0]);
+      // Catmull-Rom on values with uniform parameter: smooth, passes through every key
+      const m1 = (P2[1] - P0[1]) / 2, m2 = (P3[1] - P1[1]) / 2;
+      const f2 = f * f, f3 = f2 * f;
+      return (2 * f3 - 3 * f2 + 1) * P1[1] + (f3 - 2 * f2 + f) * m1 + (-2 * f3 + 3 * f2) * P2[1] + (f3 - f2) * m2;
+    }
+    // One foot through a stride: p = 0 heel strike, stance until STRIKE (toe-off), then swing to the next footprint.
+    function footAt(p, heelX, floor) {
+      const H = FOOT.heel, B = FOOT.ball, dHB = B[0] - H[0];
+      const phi = pitchAt(p) * D;
+      const planted = (hx, q, ph) => ph <= 0 ? ankleFrom(H, [hx, floor], ph) : ankleFrom(B, [hx + dHB, floor], ph);
+      if (p < STRIKE) {
+        // stance: rock over the heel, stand flat, then roll over the ball of the foot
+        return { ank: planted(heelX, p, phi), phi, toe: p > 0.4 ? -Math.max(0, phi) : 0 };
+      }
+      const s = (p - STRIKE) / (1 - STRIKE);
+      const a0 = planted(heelX, STRIKE, pitchAt(STRIKE) * D), a1 = planted(heelX + STRIDE, 1, pitchAt(1) * D);
+      const k = s * s * s * (s * (s * 6 - 15) + 10);                     // smootherstep across the floor
+      // the foot rises soonest after push-off and settles gently: a skewed bump with a finite start speed
+      const lift = G.lift * 6.75 * s * (1 - s) * (1 - s);
+      return { ank: [lerp(a0[0], a1[0], k), lerp(a0[1], a1[1], k) - lift], phi, toe: -Math.max(0, pitchAt(STRIKE)) * D * (1 - ease(s / 0.25)) };
+    }
+    // Hip height over one stride, computed once: a gentle designed rise and fall, lowered wherever a leg
+    // would otherwise over-reach, then smoothed so the body never jolts.
+    let HIPTAB = null;
+    function hipTable(standH, floor) {
+      const N = 480, reach = (LEN.thigh + LEN.shin) * 0.997, T = WALK_T, v = STRIDE / T;
+      const req = new Float64Array(N), cur = new Float64Array(N);
+      for (let i = 0; i < N; i++) {
+        const p = i / N; let need = -1e9;
+        [0, 0.5].forEach(off => {
+          const q = p + off, k = Math.floor(q), ph = q - k;
+          const L = footAt(ph, v * (k - off) * T + G.heelAhead, floor), dx = L.ank[0] - v * p * T;
+          need = Math.max(need, Math.abs(dx) < reach ? L.ank[1] - Math.sqrt(reach * reach - dx * dx) : 1e9);
+        });
+        req[i] = need;
+        cur[i] = Math.max(need, standH + 2 + G.bob * Math.cos(4 * Math.PI * p));
+      }
+      const blur = (a, sig) => { const o = new Float64Array(N), r = Math.ceil(sig * 3); let wsum = 0; const w = [];
+        for (let j = -r; j <= r; j++) { w.push(Math.exp(-j * j / (2 * sig * sig))); wsum += w[w.length - 1]; }
+        for (let i = 0; i < N; i++) { let acc = 0; for (let j = -r; j <= r; j++) acc += a[(i + j + N) % N] * w[j + r]; o[i] = acc / wsum; } return o; };
+      let h = cur;
+      for (let it = 0; it < 6; it++) { h = blur(h, 14); for (let i = 0; i < N; i++) h[i] = Math.max(h[i], req[i]); }
+      return blur(h, 6);
+    }
+    const WALK_T = 1.15;
+
+    // Target poses. Every pose: lean (pelvis), chest, and relative angles per bone.
+    // Rotations are clockwise-positive on screen; he faces right, so a forward lean or a raised
+    // limb is negative and looking down is positive.
+    function pose(name, tt) {
+      const o = { lean: 0, chest: 0, nod: 0 };
+      if (!mesh) return o;
+      const J = mesh.joints, floor = mesh.floorY, hip0 = J.hip;
+      const standH = floor - (J.ankle[1] - hip0[1]) - FOOT.sole;       // hip height with straight legs and flat feet
+      if (name === 'Rest') { o.rest = true; o.hx = baseX; o.hy = hip0[1]; return o; }
+      if (name === 'Walk') {
+        const T = WALK_T, v = STRIDE / T, tau = tt - animStart;
+        if (!HIPTAB) HIPTAB = hipTable(standH, floor);
+        const p = ((tau / T) % 1 + 1) % 1;
+        const hx = baseX + v * tau;
+        const legs = {};
+        [['', 0], ['Back', 0.5]].forEach(([sfx, off]) => {
+          const q = tau / T + off, k = Math.floor(q), ph = q - k;
+          const strikeHipX = baseX + v * (k - off) * T;              // where the hip was at this foot's heel strike
+          legs[sfx] = footAt(ph, strikeHipX + G.heelAhead, floor);   // heel lands ahead of the hip
+        });
+        // pelvis height from the precomputed smooth curve (interpolated)
+        const fi2 = p * HIPTAB.length, i0 = Math.floor(fi2) % HIPTAB.length, i1 = (i0 + 1) % HIPTAB.length, fr = fi2 - Math.floor(fi2);
+        const hy = HIPTAB[i0] + (HIPTAB[i1] - HIPTAB[i0]) * fr;
+        const tilt = 1.2 * Math.sin(4 * Math.PI * p);
+        o.lean = (-G.lean + tilt) * D; o.chest = (-1.0 * tilt + 0.5) * D; o.hx = hx; o.hy = hy;
+        Object.entries(legs).forEach(([sfx, L]) => legIK(sfx, [hx, hy], L.ank, L.phi, L.toe, o.lean, o));
+        const chestW = o.lean + o.chest;
+        const sw = Math.cos(2 * Math.PI * (p - 0.5)), swB = Math.cos(2 * Math.PI * p);   // near arm swings with the far leg
+        armRel('', G.armBias + G.armFlex * sw, G.elbow + G.elbowFwd * Math.max(0, sw), chestW, o);
+        armRel('Back', G.armBias + G.armFlex * swB, G.elbow + G.elbowFwd * Math.max(0, swB), chestW, o);
+        o.nod = (G.gaze + 0.8 * Math.sin(4 * Math.PI * p + 0.6)) * D;
+        return o;
+      }
+      // standing: feet stay on their footprints, the weight shifts slowly, he breathes
+      const br = Math.sin(tt * 2 * Math.PI / 4.2), sway = Math.sin(tt * 2 * Math.PI / 7.5);
+      const hx = baseX + 14 * sway, hy = standH + 7 + 2 * br;
+      o.lean = (0.5 * sway) * D; o.chest = (0.5 * br - 0.3) * D; o.hx = hx; o.hy = hy;
+      const restAnk = (dx) => [baseX + (J.ankle[0] - hip0[0]) + dx, floor - FOOT.sole];
+      legIK('', [hx, hy], restAnk(30), 0, 0, o.lean, o);
+      legIK('Back', [hx, hy], restAnk(-70), 0, 0, o.lean, o);
+      const chestW = o.lean + o.chest;
+      armRel('', 1 + 1.5 * br, 8 + 1.5 * br, chestW, o);
+      armRel('Back', -1 - 1.5 * br, 8, chestW, o);
+      o.nod = 0.6 * Math.sin(tt * 2 * Math.PI / 5.3) * D;
+      if (name === 'Gesture') {
+        const c = (tt % 4.2) / 4.2;
+        const up = c < 0.12 ? -0.12 * ease(c / 0.12) : c < 0.32 ? -0.12 + 1.12 * easeOutBack((c - 0.12) / 0.2) : c < 0.7 ? 1 : 1 - ease((c - 0.7) / 0.22);
+        const beat = c > 0.38 && c < 0.66 ? Math.sin((c - 0.38) / 0.28 * Math.PI * 3) * 0.08 : 0;
+        armRel('', 1 + 42 * up, 8 + 74 * up + 30 * beat, chestW, o);
+        o.chest += -1.5 * Math.max(0, up) * D; o.nod += (-3 * Math.max(0, up) + 10 * beat) * D;
+      }
+      if (name === 'Reach') o.reach = true;
+      return o;
+    }
+    // Reach targets, relative to the hip at rest (source pixels): a doorknob, a shelf, a desk top.
+    const TARGETS = [[390, -150], [400, -760], [430, 120]];
+    function reachTarget(tt) {
+      const k = (tt - animStart) / 2.6, i = Math.floor(k) % TARGETS.length, f = ease(Math.min(1, (k % 1) / 0.5));
+      const A = TARGETS[(i + TARGETS.length - 1) % TARGETS.length], B = TARGETS[i];
+      return [A[0] + (B[0] - A[0]) * f, A[1] + (B[1] - A[1]) * f];
+    }
+
+    function blendPose(a, b, s) {
+      if (!a) return b; const o = { ...b };
+      for (const k in b) if (typeof b[k] === 'number' && typeof a[k] === 'number') o[k] = a[k] + (b[k] - a[k]) * s;
+      for (const k in a) if (typeof a[k] === 'number' && !(k in b)) o[k] = a[k] * (1 - s);
+      return o;
+    }
+
+    // ---- WebGL
+    function setupGL(byFile) {
+      gl = gl_c.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: true });
+      if (!gl) return;
+      const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+      prog = gl.createProgram();
+      gl.attachShader(prog, sh(gl.VERTEX_SHADER, 'attribute vec2 aPos;attribute vec2 aUV;uniform vec2 uRes;varying vec2 vUV;void main(){vec2 c=aPos/uRes*2.0-1.0;gl_Position=vec4(c.x,-c.y,0.0,1.0);vUV=aUV;}'));
+      gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, 'precision mediump float;uniform sampler2D uTex;uniform float uShade;varying vec2 vUV;void main(){vec4 c=texture2D(uTex,vUV);gl_FragColor=vec4(c.rgb*uShade,c.a);}'));
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { gl = null; return; }
+      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+      glMeshes = mesh.meshes.map(m => {
+        const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+        if (byFile[m.file]) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, byFile[m.file]);
+        [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach(k => gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE));
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        const uv = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, uv); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(m.uvs.flat()), gl.STATIC_DRAW);
+        const idx = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, idx); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(m.triangles), gl.STATIC_DRAW);
+        const n = m.vertices.length;
+        const hasJ = m.jiggle && m.jiggle.some(v => v > 0);
+        return { m, tex, uv, idx, pos: gl.createBuffer(), out: new Float32Array(n * 2),
+          spring: hasJ ? { o: new Float32Array(n * 2), v: new Float32Array(n * 2), p0: new Float32Array(n * 2), p1: new Float32Array(n * 2), age: 0 } : null };
+      });
+    }
+
+    // 2x3 affine matrices [a, b, c, d, e, f]
+    const mul = (m, n) => [m[0] * n[0] + m[2] * n[1], m[1] * n[0] + m[3] * n[1], m[0] * n[2] + m[2] * n[3], m[1] * n[2] + m[3] * n[3], m[0] * n[4] + m[2] * n[5] + m[4], m[1] * n[4] + m[3] * n[5] + m[5]];
+    const about = (j, a) => { const c = Math.cos(a), s = Math.sin(a); return [c, s, -s, c, j[0] - c * j[0] + s * j[1], j[1] - s * j[0] - c * j[1]]; };
+    const apply = (M, p) => [M[0] * p[0] + M[2] * p[1] + M[4], M[1] * p[0] + M[3] * p[1] + M[5]];
+    function boneMatrices(P) {
+      const W = [];
+      mesh.bones.forEach((b, i) => {
+        let a = b.parent ? (P[b.id] || 0) : (P.lean || 0);
+        if (b.id === 'chest') a = P.chest || 0;
+        if (b.id === 'head') a = P.headRel || 0;
+        const m = about(b.joint, a);
+        W[i] = b.parent ? mul(W[mesh.boneIndex[b.parent]], m) : m;
+      });
+      return W;
+    }
+    const worldRot = (W, id) => { const m = W[mesh.boneIndex[id]]; return Math.atan2(m[1], m[0]); };
+
+    // Two-bone reach: set upperArm and foreArm so the hand lands on the target (world, source px).
+    function solveReach(P, target) {
+      const W = boneMatrices(P), J = mesh.joints;
+      const S = apply(W[mesh.boneIndex.chest], J.shoulder), chestW = worldRot(W, 'chest');
+      let dx = target[0] - S[0], dy = target[1] - S[1], d = Math.hypot(dx, dy);
+      const max = (LEN.upper + LEN.fore) * 0.985; if (d > max) { dx *= max / d; dy *= max / d; d = max; }
+      const base = segAngle([0, 0], [dx, dy]);
+      const cosA = (LEN.upper * LEN.upper + d * d - LEN.fore * LEN.fore) / (2 * LEN.upper * d);
+      const A = Math.acos(Math.max(-1, Math.min(1, cosA)));
+      const upperW = base + A;                              // elbow hangs below the line to the target
+      const elbow = [S[0] - Math.sin(upperW) * LEN.upper, S[1] + Math.cos(upperW) * LEN.upper];
+      const foreW = segAngle(elbow, [S[0] + dx, S[1] + dy]);
+      P.upperArm = (upperW - REST.upper) - chestW;
+      P.foreArm = (foreW - REST.fore) - (upperW - REST.upper);
+      P.chest += -Math.max(0, d / max - 0.8) * 10 * D;      // lean in for far targets
+    }
+
+    function tick(now) {
+      if (!alive) return;
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      const step = paused ? 0 : dt * speed * (reduce ? 0.3 : 1);
+      t += step;
+      draw(step); raf = requestAnimationFrame(tick);
+    }
+
+    function draw(dt) {
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      const W = Math.round(box.clientWidth * dpr), H = Math.round(box.clientHeight * dpr);
+      [bg, gl_c, fx].forEach(c => { if (c.width !== W || c.height !== H) { c.width = W; c.height = H; } });
+      const ctx = bg.getContext('2d'), f = fx.getContext('2d');
+      ctx.setTransform(1, 0, 0, 1, 0, 0); f.setTransform(1, 0, 0, 1, 0, 0); f.clearRect(0, 0, W, H);
+      const g = ctx.createRadialGradient(W * 0.3, H * 0.1, 10, W * 0.45, H * 0.5, W * 0.8);
+      g.addColorStop(0, '#3a383c'); g.addColorStop(1, '#0e0d10');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      const floorY = H * 0.93;
+      if (!rig) return;
+      const scale = (H * 0.85) / rig.height;
+
+      if (mode === 'Mesh' && gl && mesh) drawMesh(ctx, f, W, H, dpr, floorY, scale, dt);
+      else drawPieces(ctx, f, W, H, dpr, floorY, scale);
+
+      f.globalAlpha = 0.06;
+      for (let i = 0; i < 600; i++) { f.fillStyle = Math.random() < 0.5 ? '#fff' : '#000'; f.fillRect(Math.random() * W, Math.random() * H, dpr, dpr); }
+      f.globalAlpha = 1;
+    }
+
+    function drawMesh(ctx, f, W, H, dpr, floorY, scale, dt) {
+      const J = mesh.joints;
+      // 1. pose with blending, head stabilisation and lag, reach
+      let P = pose(anim, t);
+      if (P.reach) { P.reachTarget = reachTarget(t); }
+      const s = blendStart >= 0 ? ease((t - blendStart) / BLEND) : 1;
+      const raw = blendPose(blendFrom, P, s);
+      if (P.reach) {
+        const tgt = [J.hip[0] + P.reachTarget[0], J.hip[1] + P.reachTarget[1]];
+        const R = { ...raw }; R.headRel = 0; solveReach(R, tgt);
+        raw.upperArm = raw.upperArm + (R.upperArm - raw.upperArm) * s; raw.foreArm = raw.foreArm + (R.foreArm - raw.foreArm) * s; raw.chest = R.chest;
+      }
+      prevPose = raw;
+      // the head keeps the gaze level against pelvis and chest, and catches up with a little lag
+      const headTarget = P.rest ? 0 : -((raw.lean || 0) + (raw.chest || 0)) * 0.85 + (raw.nod || 0);
+      if (dt > 0) { head.v += (55 * (headTarget - head.a) - 11 * head.v) * dt; head.a += head.v * dt; }
+      if (P.rest) { head.a = 0; head.v = 0; }
+      raw.headRel = head.a;
+
+      // 2. bones, then move the whole skeleton so the hip sits where the pose puts it
+      const W0 = boneMatrices(raw);
+      const C = mesh.contacts, fi = mesh.boneIndex, floor = mesh.floorY;
+      const ry = (raw.hy ?? J.hip[1]) - J.hip[1];
+      const Wb = W0.map(m => [m[0], m[1], m[2], m[3], m[4] + (raw.hx || 0), m[5] + ry]);
+      if (dt > 0) camX += ((raw.hx || 0) - camX) * Math.min(1, dt * 8); else camX = raw.hx || 0;
+      const root = { x: raw.hx || 0, y: ry };
+
+      // 3. view: source pixels -> screen
+      const hip = J.hip, ox = W / 2, oy = floorY - (floor - hip[1]) * scale;
+      const toScreen = (x, y) => [(x - hip[0] - camX) * scale + ox, (y - hip[1]) * scale + oy];
+      // floor boards scroll with travel
+      ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, floorY, W, H - floorY);
+      ctx.strokeStyle = 'rgba(255,255,255,.06)'; ctx.lineWidth = 1 * dpr;
+      const plank = 420 * scale, off = ((-camX * scale) % plank + plank) % plank;
+      for (let x = off - plank; x < W + plank; x += plank) { ctx.beginPath(); ctx.moveTo(x, floorY); ctx.lineTo(x - 0.35 * (H - floorY), H); ctx.stroke(); }
+      // contact shadow under the planted feet
+      const fl = [apply(Wb[fi.foot], C.ball), apply(Wb[fi.footBack], C.ball)].map(p => toScreen(p[0], p[1]));
+      fl.forEach(p => { const lift = Math.max(0, floorY - p[1]); ctx.beginPath(); ctx.ellipse(p[0] - 30 * scale, floorY, (170 + lift * 0.2) * scale, 20 * scale, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(0,0,0,' + Math.max(0.12, 0.42 - lift / (300 * scale) * 0.3).toFixed(3) + ')'; ctx.fill(); });
+
+      // 4. skin and draw; springs respond to the acceleration of each vertex, not its speed
+      gl.viewport(0, 0, W, H); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.useProgram(prog);
+      gl.uniform2f(gl.getUniformLocation(prog, 'uRes'), W, H);
+      const aPos = gl.getAttribLocation(prog, 'aPos'), aUV = gl.getAttribLocation(prog, 'aUV');
+      const K = 110, Cd = 13, INERTIA = 0.22, CLAMP = 34;
+      glMeshes.forEach(gm => {
+        const m = gm.m, out = gm.out, sp = gm.spring;
+        for (let i = 0; i < m.vertices.length; i++) {
+          const v = m.vertices[i]; let x = 0, y = 0;
+          for (const [bi, w] of m.weights[i]) { const M = Wb[bi]; x += w * (M[0] * v[0] + M[2] * v[1] + M[4]); y += w * (M[1] * v[0] + M[3] * v[1] + M[5]); }
+          if (sp && m.jiggle[i] > 0) {
+            const k = i * 2, j = m.jiggle[i];
+            if (dt > 0 && sp.age > 2) {
+              const ax = (x - 2 * sp.p1[k] + sp.p0[k]) / (dt * dt), ay = (y - 2 * sp.p1[k + 1] + sp.p0[k + 1]) / (dt * dt);
+              sp.v[k] += (-K * sp.o[k] - Cd * sp.v[k] - INERTIA * ax) * dt; sp.v[k + 1] += (-K * sp.o[k + 1] - Cd * sp.v[k + 1] - INERTIA * ay) * dt;
+              sp.o[k] = Math.max(-CLAMP, Math.min(CLAMP, sp.o[k] + sp.v[k] * dt)); sp.o[k + 1] = Math.max(-CLAMP, Math.min(CLAMP, sp.o[k + 1] + sp.v[k + 1] * dt));
+            }
+            if (dt > 0) { sp.p0[k] = sp.p1[k]; sp.p1[k] = x; sp.p0[k + 1] = sp.p1[k + 1]; sp.p1[k + 1] = y; }
+            x += sp.o[k] * j; y += sp.o[k + 1] * j;
+          }
+          const s2 = toScreen(x, y); out[i * 2] = s2[0]; out[i * 2 + 1] = s2[1];
+        }
+        if (sp && dt > 0) sp.age++;
+        gl.bindBuffer(gl.ARRAY_BUFFER, gm.pos); gl.bufferData(gl.ARRAY_BUFFER, out, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, gm.uv); gl.enableVertexAttribArray(aUV); gl.vertexAttribPointer(aUV, 2, gl.FLOAT, false, 0, 0);
+        gl.bindTexture(gl.TEXTURE_2D, gm.tex); gl.uniform1f(gl.getUniformLocation(prog, 'uShade'), m.shade || 1);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gm.idx); gl.drawElements(gl.TRIANGLES, m.triangles.length, gl.UNSIGNED_SHORT, 0);
+        if (showMesh && !m.shade) {
+          f.strokeStyle = 'rgba(224,64,74,.32)'; f.lineWidth = 0.6 * dpr; f.beginPath();
+          for (let q = 0; q < m.triangles.length; q += 3) {
+            const a = m.triangles[q] * 2, b = m.triangles[q + 1] * 2, c = m.triangles[q + 2] * 2;
+            f.moveTo(out[a], out[a + 1]); f.lineTo(out[b], out[b + 1]); f.lineTo(out[c], out[c + 1]); f.closePath();
+          }
+          f.stroke();
+        }
+      });
+      // reach target: a brass knob or marker the hand goes for
+      if (P.reach) {
+        const tp = toScreen(J.hip[0] + P.reachTarget[0] + root.x, J.hip[1] + P.reachTarget[1] + root.y);
+        f.beginPath(); f.arc(tp[0], tp[1], 9 * dpr, 0, Math.PI * 2); f.fillStyle = 'rgba(200,180,120,.9)'; f.fill();
+        f.lineWidth = 1.5 * dpr; f.strokeStyle = 'rgba(0,0,0,.6)'; f.stroke();
+      }
+      if (showJoints) {
+        mesh.bones.forEach((b, i) => {
+          if (/Back$/.test(b.id)) return;
+          const p = toScreen(...apply(Wb[i], b.joint));
+          f.beginPath(); f.arc(p[0], p[1], 5 * dpr, 0, Math.PI * 2); f.fillStyle = '#e0404a'; f.fill(); f.lineWidth = 1.5 * dpr; f.strokeStyle = '#fff'; f.stroke();
+        });
+      }
+    }
+
+    // ---- rigid pieces (comparison)
+    function posePieces(name, tt) {
+      const w = tt * 2 * Math.PI, s = Math.sin;
+      if (name === 'Walk') {
+        const leg = (ph) => ({ thigh: -22 * Math.sin(2 * Math.PI * ph) * D, shin: (3 + 34 * Math.pow(Math.max(0, Math.cos(2 * Math.PI * ph)), 2)) * D });
+        const ph = (tt * 0.6) % 1, a = leg(ph), b = leg((ph + 0.5) % 1), arm = Math.sin(2 * Math.PI * ph);
+        return { lean: 1.5 * D, thigh: a.thigh, shin: a.shin, thighBack: b.thigh, shinBack: b.shin,
+          upperArm: 16 * arm * D, foreArm: (-8 - 14 * Math.max(0, -arm)) * D, upperArmBack: -16 * arm * D, foreArmBack: (-8 - 14 * Math.max(0, arm)) * D };
+      }
+      if (name === 'Gesture') { const k = (1 - Math.cos(w * 0.35)) / 2; return { upperArm: -48 * D * k, foreArm: -78 * k * D, head: -5 * k * D }; }
+      if (name === 'Idle') { const b = s(w * 0.35); return { lean: b * 0.6 * D, upperArm: b * 2.5 * D, head: s(w * 0.35 + .6) * 1.8 * D }; }
+      return {};
+    }
+    function drawPieces(ctx, f, W, H, dpr, floorY, scale) {
+      if (gl) { gl.viewport(0, 0, W, H); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); }
+      ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, floorY, W, H - floorY);
+      const P = posePieces(anim, t), J = rig.joints;
+      const rotv = (v, a) => [v[0] * Math.cos(a) - v[1] * Math.sin(a), v[0] * Math.sin(a) + v[1] * Math.cos(a)];
+      const drop = (th, sh) => { const a1 = (P.lean || 0) + (P[th] || 0); return rotv([J.knee[0] - J.hip[0], J.knee[1] - J.hip[1]], a1)[1] + rotv([J.ankle[0] - J.knee[0], J.ankle[1] - J.knee[1]], a1 + (P[sh] || 0))[1]; };
+      const lift = (J.ankle[1] - J.hip[1]) - Math.max(drop('thigh', 'shin'), drop('thighBack', 'shinBack'));
+      const hipX = W / 2, hipY = floorY - rig.groundY * scale + lift * scale;
+      const joints = [];
+      rig.parts.slice().sort((a, b) => a.z - b.z).forEach(p => {
+        ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.translate(hipX, hipY); ctx.scale(scale, scale);
+        const chain = []; let q = p; while (q) { chain.unshift(q); q = q.parent ? rig.byId[q.parent] : null; }
+        chain.forEach((c, i) => {
+          if (i === 0) { ctx.rotate(P.lean || 0); return; }
+          const par = chain[i - 1]; ctx.translate(c.at[0] - par.pivot[0], c.at[1] - par.pivot[1]);
+          ctx.rotate(c.follow ? c.follow.k * (P[c.follow.of] || 0) : (P[c.id] || 0));
+        });
+        const im = imgs[p.id];
+        if (p.shade) ctx.filter = 'brightness(' + p.shade + ')';
+        if (im && im.naturalWidth) ctx.drawImage(im, -p.pivot[0], -p.pivot[1]);
+        ctx.filter = 'none';
+        if (showJoints && !p.shade && p.parent && !p.follow) { const m = ctx.getTransform(); joints.push([m.e, m.f]); }
+      });
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      if (showJoints) joints.forEach(([x, y]) => { f.beginPath(); f.arc(x, y, 5 * dpr, 0, Math.PI * 2); f.fillStyle = '#e0404a'; f.fill(); f.lineWidth = 1.5 * dpr; f.strokeStyle = '#fff'; f.stroke(); });
+    }
+    return () => { alive = false; cancelAnimationFrame(raf); };
+  }
+})();
+</script>
