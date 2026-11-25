@@ -80,11 +80,11 @@
   {
    "name": "lee-wing",
    "file": "art/cast/final/leewing.png",
-   "x": 2203,
-   "y": 504,
-   "scale": 0.4806,
+   "x": 2083,
+   "y": 513,
+   "scale": 0.3481,
    "depth_m": 0.4,
-   "note": "Lee Wing inside the counter by the tea-jar shelves. Feet placed from the counter: a 0.95 m counter whose top edge is at y 0.635 in his column stands at y 1.05, so he does too (below the frame).",
+   "note": "Lee Wing behind the counter by the abacus, the tea shelves behind him. Feet from the counter (0.95 m, top edge at y 0.57 in his column) at y 0.857, so he is just behind a customer standing at the counter and a little smaller than Matt there.",
    "behind": [
     "counter"
    ]

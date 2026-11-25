@@ -29,8 +29,8 @@ No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 | 23 | `note-on-counter` | note | 1933, 907, 2029, 930 |
 | 24 | `abacus` | abacus | 2005, 946, 2322, 1034 |
 | 25 | `small-table-behind-counter` | small table | 2026, 872, 2159, 916 |
-| 26 | `scroll-right` | calligraphy scroll | 2206, 365, 2272, 742 |
-| 27 | `lee-wing` | Lee Wing | 2209, 510, 2535, 996 |
+| 26 | `lee-wing` | Lee Wing | 2087, 518, 2324, 958 |
+| 27 | `scroll-right` | calligraphy scroll | 2206, 365, 2272, 742 |
 | 28 | `call-bell` | bell | 2289, 1047, 2384, 1133 |
 | 29 | `shelving-unit` | tea shelves | 2308, 0, 2752, 983 |
 | 30 | `tea-jars` | tea jars | 2358, 1, 2752, 682 |
