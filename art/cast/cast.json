@@ -266,15 +266,76 @@
       "height_cm": 180,
       "hat": false,
       "look": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers,, in a 1930s prison shower: a non-explicit, non-sexual front three-quarter view of the unclothed figure standing upright, both hands held together low in front of his groin so that it is completely covered and nothing intimate is visible, wary expression, barefoot. Natural, untrimmed body hair as men had in 1930: chest hair, hair on the forearms and legs."
+    },
+    {
+      "id": "matt-side",
+      "name": "Matt Long (side view)",
+      "group": "views",
+      "base": "matt",
+      "src": "matt",
+      "height_cm": 185,
+      "hat": true,
+      "look": "The same man as the second reference image, Matt Long, 37, wearing his usual clothes exactly as in the second reference image (rumpled grey three-piece suit, loosened tie, dented fedora). Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible."
+    },
+    {
+      "id": "matt-back",
+      "name": "Matt Long (back view)",
+      "group": "views",
+      "base": "matt",
+      "src": "matt",
+      "height_cm": 185,
+      "hat": true,
+      "look": "The same man as the second reference image, Matt Long, 37, wearing his usual clothes exactly as in the second reference image (rumpled grey three-piece suit, loosened tie, dented fedora). Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible)."
+    },
+    {
+      "id": "matt-towel-side",
+      "name": "Matt Long (bathhouse) (side view)",
+      "group": "views",
+      "base": "matt",
+      "src": "matt-towel",
+      "height_cm": 185,
+      "hat": false,
+      "look": "The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible."
+    },
+    {
+      "id": "matt-towel-back",
+      "name": "Matt Long (bathhouse) (back view)",
+      "group": "views",
+      "base": "matt",
+      "src": "matt-towel",
+      "height_cm": 185,
+      "hat": false,
+      "look": "The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible)."
+    },
+    {
+      "id": "matt-boxers-side",
+      "name": "Matt Long (underwear) (side view)",
+      "group": "views",
+      "base": "matt",
+      "src": "matt-boxers",
+      "height_cm": 185,
+      "hat": false,
+      "look": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible."
+    },
+    {
+      "id": "matt-boxers-back",
+      "name": "Matt Long (underwear) (back view)",
+      "group": "views",
+      "base": "matt",
+      "src": "matt-boxers",
+      "height_cm": 185,
+      "hat": false,
+      "look": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible)."
     }
   ],
   "heights_note": "height_cm is standing height without hat; hat=true adds about 9 cm to the outline when the lineup is scaled.",
   "proportions": "Body proportions identical to the reference figure: about 7.5 heads tall, the head the same size relative to the body as the reference's head, legs the same length relative to the body, shoulders at the same relative height. A heavier or older build is shown only by width, posture and clothing, never by a bigger head or shorter legs.",
   "blocked": {
     "ids": [
-      "matt-shower-back",
-      "pete-shower-back",
       "julian-shower-back",
+      "matt-shower-back",
+      "matt-shower-side",
+      "pete-shower-back",
       "pete-shower-front"
     ],
     "reason": "Google's image model refused these (PROHIBITED_CONTENT) on 25 Nov 2026. Pete's covered shower front was tried three times (the last with his older redesigned face and his age stated) and refused each time; not retried further. Needs another tool or a hand-painted pass."

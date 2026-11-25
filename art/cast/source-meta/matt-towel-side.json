@@ -1,0 +1,34 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Painted character illustration for a point-and-click adventure, in exactly the style of the attached reference image: the same 1940s film-noir painted look, the same brush texture and level of detail, strictly black-and-white greyscale with no colour at all, hard single key light from the upper left, deep blacks and crisp highlights, a crisp readable silhouette, slightly elongated stylised proportions. Full figure from the top of the head (or hat) to the soles of the shoes, feet flat on the ground, the whole figure filling about 88% of the image height with a small margin all round. Plain flat pure chroma-key green background (#00FF00) everywhere, no floor, no cast shadow, no props unless described, no text, no border. The first reference image sets the art style, scale and lighting; the second reference image is this same man: keep his face, hair, body, body hair and clothing exactly. New York, winter 1930. Body proportions identical to the reference figure: about 7.5 heads tall, the head the same size relative to the body as the reference's head, legs the same length relative to the body, shoulders at the same relative height. A heavier or older build is shown only by width, posture and clothing, never by a bigger head or shorter legs. Character: The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible. Show the whole figure, head to feet, at the same size as the figure in the first reference image.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/cast/matt.png",
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/cast/matt-towel.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T03:16:12.628Z",
+  "usage": {
+    "promptTokenCount": 895,
+    "candidatesTokenCount": 1330,
+    "totalTokenCount": 2468,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 379
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 516
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 243,
+    "serviceTier": "standard"
+  }
+}

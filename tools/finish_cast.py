@@ -88,3 +88,39 @@ for b in dict.fromkeys(c['base'] for c in cast['characters'] if c['group'] == 'b
 if bath:
     lineup(bath, os.path.join(dst, 'lineup-bathhouse.jpg'), 'Matt Long: The Bloody Angle — bathhouse')
 print('finished', len(cast['characters']))
+
+
+# turnarounds: front / side / back per state, for characters with a "views" group
+def turnaround(base_id, out):
+    rows = []
+    states = [x for x in cast['characters'] if x['id'] == base_id or (x.get('base') == base_id and x['group'] in ('bathhouse', 'shower'))]
+    for st in states:
+        row = [st] + [x for x in cast['characters'] if x['group'] == 'views' and x.get('src') == st['id']]
+        rows.append(row)
+    px = 3.6
+    H = int(205 * px)
+    imgs = [[(c, Image.open(os.path.join(dst, 'final', c['id'] + '.png'))) for c in r] for r in rows]
+    def sized(c, im):
+        t = (c['height_cm'] + (9 if c['hat'] else 0)) * px
+        return im.resize((max(1, int(im.width * t / im.height)), int(t)), Image.LANCZOS)
+    imgs = [[sized(c, im) for c, im in r] for r in imgs]
+    W = max(sum(i.width for i in r) + 60 * (len(r) + 1) for r in imgs)
+    sheet = Image.new('RGBA', (W, (H + 50) * len(imgs) + 60), (34, 33, 38, 255))
+    d = ImageDraw.Draw(sheet)
+    try:
+        f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 22)
+    except OSError:
+        f = None
+    for ri, r in enumerate(imgs):
+        base = 60 + (H + 50) * ri + H
+        x = 60
+        for k, im in enumerate(r):
+            sheet.alpha_composite(im, (x, base - im.height))
+            d.text((x, base + 8), ['front', 'side', 'back'][k] if k < 3 else '', fill=(200, 196, 204, 255), font=f)
+            x += im.width + 60
+        d.text((W - 260, base - H + 10), rows[ri][0]['name'].replace('Matt Long', '').strip(' ()') or 'clothed', fill=(236, 233, 238, 255), font=f)
+    sheet.convert('RGB').save(out, quality=88)
+
+
+if any(x['group'] == 'views' for x in cast['characters']):
+    turnaround('matt', os.path.join(dst, 'lineup-matt-turnaround.jpg'))

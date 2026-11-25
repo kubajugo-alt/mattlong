@@ -166,6 +166,85 @@
       ]
     },
     {
+      "id": "cast-matt-turnaround",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt: turnaround of every state",
+      "src": "samples/cast/lineup-matt-turnaround.jpg",
+      "full": "samples/cast/lineup-matt-turnaround.jpg",
+      "about": "Front, strict side profile (facing right) and back view for each of Matt's states: clothed, bath towel, boxer shorts. The covered shower state has only the front view; Google's image model refused the unclothed side and back views.",
+      "lookFor": [
+        "Same man from every angle?",
+        "Are the side views true profiles for walk sprites in Ludo.ai?"
+      ]
+    },
+    {
+      "id": "cast-matt-side",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long (side view)",
+      "src": "samples/cast/matt-side.jpg",
+      "about": "The same man as the second reference image, Matt Long, 37, wearing his usual clothes exactly as in the second reference image (rumpled grey three-piece suit, loosened tie, dented fedora). Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible.",
+      "lookFor": [
+        "Consistent with his front view?"
+      ]
+    },
+    {
+      "id": "cast-matt-back",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long (back view)",
+      "src": "samples/cast/matt-back.jpg",
+      "about": "The same man as the second reference image, Matt Long, 37, wearing his usual clothes exactly as in the second reference image (rumpled grey three-piece suit, loosened tie, dented fedora). Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible).",
+      "lookFor": [
+        "Consistent with his front view?"
+      ]
+    },
+    {
+      "id": "cast-matt-towel-side",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long (bathhouse) (side view)",
+      "src": "samples/cast/matt-towel-side.jpg",
+      "about": "The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible.",
+      "lookFor": [
+        "Consistent with his front view?"
+      ]
+    },
+    {
+      "id": "cast-matt-towel-back",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long (bathhouse) (back view)",
+      "src": "samples/cast/matt-towel-back.jpg",
+      "about": "The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible).",
+      "lookFor": [
+        "Consistent with his front view?"
+      ]
+    },
+    {
+      "id": "cast-matt-boxers-side",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long (underwear) (side view)",
+      "src": "samples/cast/matt-boxers-side.jpg",
+      "about": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible.",
+      "lookFor": [
+        "Consistent with his front view?"
+      ]
+    },
+    {
+      "id": "cast-matt-boxers-back",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long (underwear) (back view)",
+      "src": "samples/cast/matt-boxers-back.jpg",
+      "about": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible).",
+      "lookFor": [
+        "Consistent with his front view?"
+      ]
+    },
+    {
       "id": "cast-pete",
       "milestone": "cast",
       "kind": "image",

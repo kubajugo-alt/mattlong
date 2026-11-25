@@ -1,0 +1,34 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Redraw the first reference image keeping its pose and camera angle exactly: a strict 90-degree side profile of a man facing the right edge of the picture, standing upright, near arm hanging at his side, far arm hidden behind his body, only one eye visible. Make him exactly the man in the second reference image, Matt Long: the same face, two-day stubble, tired eyes, the same dented fedora, the same rumpled grey three-piece suit, white shirt and loosened dark tie, and paint it in exactly the style of the second reference image: 1940s film-noir painted look, strictly black-and-white greyscale, hard key light from the upper left, deep blacks. Full figure from the top of the hat to the soles of the shoes, at the same size as the figure in the second reference. Plain flat pure chroma-key green background (#00FF00), no floor, no shadow, no text.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/rig2/src/master.png",
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/cast/matt.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T03:22:47.304Z",
+  "usage": {
+    "promptTokenCount": 720,
+    "candidatesTokenCount": 1318,
+    "totalTokenCount": 2294,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 204
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 516
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 256,
+    "serviceTier": "standard"
+  }
+}
