@@ -41,7 +41,7 @@ the other branches are in the .ink file). **VO** = Matt's voice-over; *[act …]
 **MATT:** His account book.  
 **PETE:** Thirty years of who owes Lee Wing what. In Chinatown, that's not a book. That's a map.  
 *[act journal:lee-book]*  
-**VO:** Lee Wing owned the tea house, the building, and my overdue rent. A man who got his book back might forget a few dollars.  
+**VO:** Lee Wing owned the tea house, two tenements on Doyers Street, mine included, and my overdue rent. A man who got his book back might forget a few dollars.  
 **VO:** Might.  
 **PETE:** Tong business, mark my words. "Blood on Doyers Street." I can see the headline.  
 **KATE:** Pete, a story isn't true because it's exciting. It's true because it adds up.  
