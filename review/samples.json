@@ -60,7 +60,7 @@
       "title": "Bathhouse and shower: Matt, Pete, Julian",
       "src": "samples/cast/lineup-bathhouse.jpg",
       "full": "samples/cast/lineup-bathhouse.jpg",
-      "about": "Each man in street clothes, in a bath towel, in white 1930s boxer shorts and, for Matt and Julian, unclothed in the prison shower with both hands covering the groin. Pete's shower version and all back views were refused by the image model.",
+      "about": "Each man in street clothes, in a bath towel, in white 1930s boxer shorts and, for Matt and Julian, unclothed in the prison shower with both hands covering the groin. Pete's clothed design was redone to match his older face. His shower version was refused three times by the image model, and all back views were refused.",
       "lookFor": [
         "Same man in both versions?",
         "Builds: Matt a drinker, Pete gangly, Julian slim and elegant?"
@@ -171,7 +171,7 @@
       "kind": "image",
       "title": "Pete Duckerton",
       "src": "samples/cast/pete.jpg",
-      "about": "Pete Duckerton, about 35, crime reporter. Boyish face with an eager grin, slim build, average height. Fedora pushed back on his head with a press card tucked in the hatband, rumpled striped suit, long knitted scarf hanging untied round his neck, a rolled-up newspaper in one hand, the other hand in his trouser pocket.",
+      "about": "Pete Duckerton, 35, crime reporter. The same man as the third reference image: his face, dark brown untidy hair and build, clearly a man of 35 with faint lines round the eyes and a day's stubble, an eager grin, slim and gangly. Dressed exactly as in the second reference image: fedora pushed back on his head with a press card tucked in the hatband, rumpled striped suit, long knitted scarf hanging untied round his neck, a rolled-up newspaper in one hand, the other hand in his trouser pocket.",
       "lookFor": [
         "Right for the character? Face, age, build, clothes, 1930 period."
       ]
