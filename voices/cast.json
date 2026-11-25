@@ -1,10 +1,41 @@
 {
-  "model": "eleven_v4",
-  "note": "Lead voices chosen 25 Nov 2026 from casting round 1 (voices/casting/).",
-  "voices": {
-    "matt": {"name": "Robert - Measured Thriller Narrator", "voice_id": "R5WgLZ1iq28vajcXtks0", "direction": "dry, tired, understated; narrates the whole game"},
-    "pete": {"name": "Jordan - Warm & Gritty", "voice_id": "OwEAPhTFInN6VSRT9QXm", "direction": "warm, quick, charming"},
-    "kate": {"name": "Quin - Crisp & Clear", "voice_id": "7Z3zS2SJzkpg95KpVJoe", "direction": "crisp, patient, sharp"},
-    "inez": {"name": "Monica - Sultry Latina Storyteller", "voice_id": "0aLkhNYQFqOzWIqVTl94", "direction": "low, poised, controlled; Puerto Rican accent"}
+ "model": "eleven_v4",
+ "note": "Leads chosen 25 Nov 2026 from casting round 1, supporting parts from round 2 (voices/casting/).",
+ "voices": {
+  "matt": {
+   "name": "Robert - Measured Thriller Narrator",
+   "voice_id": "R5WgLZ1iq28vajcXtks0",
+   "direction": "dry, tired, understated; narrates the whole game"
+  },
+  "pete": {
+   "name": "Jordan - Warm & Gritty",
+   "voice_id": "OwEAPhTFInN6VSRT9QXm",
+   "direction": "warm, quick, charming"
+  },
+  "kate": {
+   "name": "Quin - Crisp & Clear",
+   "voice_id": "7Z3zS2SJzkpg95KpVJoe",
+   "direction": "crisp, patient, sharp"
+  },
+  "inez": {
+   "name": "Monica - Sultry Latina Storyteller",
+   "voice_id": "0aLkhNYQFqOzWIqVTl94",
+   "direction": "low, poised, controlled; Puerto Rican accent"
+  },
+  "lee": {
+   "name": "Oolong - Chinese Accented English",
+   "voice_id": "Qc0X0JnOfc5XzetLVusF",
+   "direction": "quiet, measured, dignified older shopkeeper"
+  },
+  "sol": {
+   "name": "Frank Sullivan - Warm & Authentic",
+   "voice_id": "bRlp5mUWs01wX4H4oW4X",
+   "direction": "weary, dry, old New Yorker"
+  },
+  "junkie": {
+   "name": "Ray - True Crime & Scary Stories",
+   "voice_id": "Uh6UEmMIUnnL0GOOUghh",
+   "direction": "hoarse, jittery, hungry"
   }
+ }
 }

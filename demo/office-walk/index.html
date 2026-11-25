@@ -44,7 +44,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     <label><input type="checkbox" id="showWalk"> Walkable floor</label>
     <label><input type="checkbox" id="showBase"> Object baselines</label>
     <label><input type="checkbox" id="showLights"> Light sources</label>
-    <span class="seg" role="group" aria-label="Play a line"><button type="button" data-say="matt">Matt speaks</button><button type="button" data-say="kate">Kate</button><button type="button" data-say="pete">Pete</button><button type="button" data-say="inez">Inéz</button></span>
+    <span class="seg" role="group" aria-label="Play a line"><button type="button" data-say="matt">Matt speaks</button><button type="button" data-say="kate">Kate</button><button type="button" data-say="pete">Pete</button><button type="button" data-say="inez">Inéz</button><button type="button" data-say="lee">Lee</button><button type="button" data-say="sol">Sol</button><button type="button" data-say="junkie">Junkie</button></span>
     <span id="status">Loading…</span>
   </div>
 </div>
@@ -792,7 +792,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     return c;
   }
   // ---- lip sync (Rhubarb mouth cues against the playing audio) and blinking
-  const SPEAKER = { matt: 'matt', 'kate-at-table': 'kate', 'pete-seated': 'pete', 'inez-seated': 'inez' };
+  const SPEAKER = { matt: 'matt', 'kate-at-table': 'kate', 'pete-seated': 'pete', 'inez-seated': 'inez', 'lee-wing': 'lee', sol: 'sol', junkie: 'junkie' };
   const TALK = { who: null, audio: null, cues: null }; 
   const cueCache = {};
   async function say(who) {
