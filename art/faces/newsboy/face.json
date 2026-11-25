@@ -1,0 +1,17 @@
+{
+ "mouth": null,
+ "eyes": [
+  105,
+  46,
+  30,
+  16
+ ],
+ "shapes": [],
+ "blink": [
+  "half",
+  "closed"
+ ],
+ "rows": [
+  0
+ ]
+}

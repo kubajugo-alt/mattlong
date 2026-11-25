@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached close-up of a painted character's face (1940s film-noir painting, strictly black-and-white greyscale). Change ONLY the mouth: open in a slightly rounded oval, as when saying the vowel in 'bird' or 'oh'. Keep the person's identity, face shape, head angle, eyes, hair, hat, lighting, brush style, the grey background and every other pixel exactly the same, in exactly the same position and size; no new objects.",
+  "refs": [
+    "art/faces/kate/base.png"
+  ],
+  "aspect": "1:1",
+  "size": "1K",
+  "created": "2026-11-25T14:05:50.066Z",
+  "usage": {
+    "promptTokenCount": 364,
+    "candidatesTokenCount": 1236,
+    "totalTokenCount": 1821,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 106
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 221,
+    "serviceTier": "standard"
+  }
+}

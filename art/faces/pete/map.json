@@ -1,0 +1,20 @@
+{
+ "target": "pete-kate-flat/pete-seated",
+ "box_src": [
+  84,
+  -24,
+  339,
+  231
+ ],
+ "k": 0.9566237942122187,
+ "off": [
+  2.8467524115756078,
+  2.367266881028968
+ ],
+ "frame": [
+  527,
+  847
+ ],
+ "tone": null,
+ "note": "target = source * k + off"
+}

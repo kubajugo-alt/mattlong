@@ -1053,6 +1053,23 @@
     "frames": 36,
     "cols": 6,
     "fps": 7
+   },
+   "face": {
+    "mouth": null,
+    "eyes": [
+     105,
+     46,
+     30,
+     16
+    ],
+    "shapes": [],
+    "blink": [
+     "half",
+     "closed"
+    ],
+    "rows": [
+     0
+    ]
    }
   },
   {

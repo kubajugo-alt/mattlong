@@ -42,6 +42,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     <label><input type="checkbox" id="showWalk"> Walkable floor</label>
     <label><input type="checkbox" id="showBase"> Object baselines</label>
     <label><input type="checkbox" id="showLights"> Light sources</label>
+    <span class="seg" role="group" aria-label="Play a line"><button type="button" data-say="matt">Matt speaks</button><button type="button" data-say="kate">Kate</button><button type="button" data-say="pete">Pete</button><button type="button" data-say="inez">Inéz</button></span>
     <span id="status">Loading…</span>
   </div>
 </div>
@@ -62,7 +63,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const base = v + '/';
     const sc = await (await fetch(base + 'scene.json')).json();
     const [bg, walk, floor] = await Promise.all([load(base + 'bg.webp'), maskOf(base + sc.walk.file), maskOf(base + sc.floor.file)]);
-    const occ = await Promise.all(sc.objects.map(async o => ({ ...o, phase: Math.random() * 36, img: await load(base + 'occ/' + o.name + '.webp') })));
+    const occ = await Promise.all(sc.objects.map(async o => ({ ...o, phase: Math.random() * 36, img: await load(base + 'occ/' + o.name + '.webp'),
+      faceImg: o.face ? await load(base + 'occ/' + o.name + '-face.webp') : null })));
     let hj = { hotspots: [] }; try { const r = await fetch(base + 'hotspots.json'); if (r.ok) hj = await r.json(); } catch (e) {}
     const hot = hj.hotspots.map(h => ({ ...h, paths: h.polygons.map(pl => { const p = new Path2D(); pl.forEach(([x, y], i) => i ? p.lineTo(x, y) : p.moveTo(x, y)); p.closePath(); return p; }) }));
     // brightness of the painted floor, to light Matt like his surroundings
@@ -88,7 +90,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
   fetch('sprites/matt.json').then(r => r.json()).then(async (sp) => {
     sprites = sp;
-    for (const k of Object.keys(sp)) spriteImgs[k] = await load(sp[k].file);
+    for (const k of Object.keys(sp)) { spriteImgs[k] = await load(sp[k].file); if (sp[k].face) sp[k].faceImg = await load('sprites/matt-' + k + '-face.webp'); }
     await enter('office-day');
     requestAnimationFrame(tick);
   }).catch(() => { status.textContent = 'Scene could not be loaded'; });
@@ -440,8 +442,13 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     // Matt
     ctx.save(); ctx.translate(M.x, M.y); ctx.scale(fx, 1);
     ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
-    if (!M.moving && document.getElementById('ambient').checked)       // standing still: breathing and head sway
-      ctx.drawImage(warpFrame('matt-' + M.dir, img, fi * sp.fw, 0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7), -sp.feet_x * sc, -feetY * sc, dw, dh);
+    if (!M.moving) {                                                     // standing still: face, breathing and head sway
+      let src = img, sx0 = fi * sp.fw;
+      if (sp.face) { src = faceCompose('matt-' + M.dir, img, sx0, 0, sp.fw, sp.fh, sp.face, sp.faceImg, mouthOf('matt'), eyesOf('matt', now)); sx0 = 0; }
+      if (document.getElementById('ambient').checked)
+        ctx.drawImage(warpFrame('matt-' + M.dir, src, sx0, 0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7), -sp.feet_x * sc, -feetY * sc, dw, dh);
+      else ctx.drawImage(src, sx0, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
+    }
     else ctx.drawImage(img, fi * sp.fw, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
     ctx.restore(); ctx.filter = 'none';
     for (const o of front) drawOcc(o, now);
@@ -488,7 +495,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     'newsboy':       { head: [0.62, 0.15, 0.07], neck: [0.62, 0.21], chest: [0.62, 0.32, 0.25, 0.08] },
     'inez-seated':   { head: [0.25, 0.12, 0.09], neck: [0.27, 0.21], chest: [0.30, 0.31, 0.12, 0.08] },
     'matt-front':    { head: [0.45, 0.09, 0.06], neck: [0.45, 0.15], chest: [0.45, 0.25, 0.22, 0.08] },
-    'matt-side':     { head: [0.42, 0.09, 0.06], neck: [0.42, 0.15], chest: [0.42, 0.25, 0.18, 0.08] },
+    'matt-side':     { head: [0.52, 0.10, 0.06], neck: [0.50, 0.155], chest: [0.48, 0.25, 0.18, 0.08] },
     'matt-back':     { head: [0.47, 0.09, 0.06], neck: [0.47, 0.15], chest: [0.47, 0.25, 0.22, 0.08] },
   };
   const warpCv = new Map();
@@ -534,6 +541,42 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       tri(a, b2, d2); tri(a, d2, c2); }
     return c;
   }
+  // ---- lip sync (Rhubarb mouth cues against the playing audio) and blinking
+  const SPEAKER = { matt: 'matt', 'kate-at-table': 'kate', 'pete-seated': 'pete', 'inez-seated': 'inez' };
+  const TALK = { who: null, audio: null, cues: null }; 
+  const cueCache = {};
+  async function say(who) {
+    if (TALK.audio) TALK.audio.pause();
+    cueCache[who] = cueCache[who] || (await (await fetch('audio/' + who + '.json')).json()).mouthCues;
+    const a = new Audio('audio/' + who + '.mp3'); TALK.who = who; TALK.audio = a; TALK.cues = cueCache[who];
+    a.onended = () => { if (TALK.audio === a) TALK.who = null; };
+    a.play().catch(() => { TALK.who = null; status.textContent = 'Could not play the line'; });
+  }
+  document.querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', () => say(b.dataset.say)));
+  function mouthOf(id) {
+    if (TALK.who !== id || !TALK.audio) return 'X';
+    const t = TALK.audio.currentTime; for (const c of TALK.cues) if (t >= c.start && t < c.end) return c.value; return 'X';
+  }
+  const blinks = {};
+  function eyesOf(key, now) {          // a blink every 2.5-6.5 s: half, closed, half (about 0.2 s in all)
+    let b = blinks[key]; if (!b) b = blinks[key] = { at: now + 1000 + Math.random() * 4000 };
+    const t = now - b.at; if (t < 0) return null;
+    if (t > 200) { b.at = now + 2500 + Math.random() * 4000; if (Math.random() < 0.15) b.at = now + 260; return null; }   // sometimes a double blink
+    return t < 50 || t > 150 ? 'half' : 'closed';
+  }
+  const faceCv = new Map();
+  function faceCompose(key, img, sx, sy, sw, sh, face, sheet, mouth, eyes) {
+    const k = key + '|' + mouth + '|' + eyes + '|' + sx; let c = faceCv.get(k);
+    if (c && c.src === img) return c;
+    c = document.createElement('canvas'); c.width = sw; c.height = sh; c.src = img; const x = c.getContext('2d');
+    x.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+    x.globalCompositeOperation = 'source-atop';          // patches only on the figure, never past its outline
+    const mi = face.shapes ? face.shapes.indexOf(mouth) : -1;
+    if (mi >= 0 && face.mouth) { const [mx, my, mw, mh] = face.mouth; x.drawImage(sheet, mi * mw, face.rows[0], mw, mh, mx, my, mw, mh); }
+    const ei = eyes ? face.blink.indexOf(eyes) : -1;
+    if (ei >= 0 && face.eyes) { const [ex, ey, ew, eh] = face.eyes; x.drawImage(sheet, ei * ew, face.rows[face.mouth ? 1 : 0], ew, eh, ex, ey, ew, eh); }
+    faceCv.set(k, c); return c;
+  }
   // furniture and props; animated props (idle loops) pick the frame for the current time from their sheet
   function drawOcc(o, now) {
     const w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1];
@@ -543,9 +586,15 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       let f = 0; const t = (now - o.playAt) / 1000 * o.anim.fps;
       if (t >= 0) { f = Math.floor(t); if (f >= o.anim.frames) { f = 0; o.playAt = now + 6000 + Math.random() * 10000; } }
       const c = o.anim.cols;
-      if (f === 0 && RIGS[o.name] && document.getElementById('ambient').checked) {
+      const talking = TALK.who && SPEAKER[o.name] === TALK.who;
+      if (talking) { f = 0; o.playAt = Math.max(o.playAt, now + 3000); }          // hold still while speaking
+      if (f === 0) {
+        let src = o.img;
+        if (o.face) src = faceCompose(o.name, o.img, 0, 0, w, h, o.face, o.faceImg, mouthOf(SPEAKER[o.name]), eyesOf(o.name, now));
         if (o.seed === undefined) o.seed = Math.random() * 6.28;
-        ctx.drawImage(warpFrame(o.name, o.img, 0, 0, w, h, RIGS[o.name], now / 1000, o.seed), o.bbox[0], o.bbox[1], w, h);
+        if (RIGS[o.name] && document.getElementById('ambient').checked)
+          ctx.drawImage(warpFrame(o.name, src, 0, 0, w, h, RIGS[o.name], now / 1000, o.seed), o.bbox[0], o.bbox[1], w, h);
+        else ctx.drawImage(src, 0, 0, w, h, o.bbox[0], o.bbox[1], w, h);
       } else ctx.drawImage(o.img, (f % c) * w, Math.floor(f / c) * h, w, h, o.bbox[0], o.bbox[1], w, h); }
     else ctx.drawImage(o.img, o.bbox[0], o.bbox[1], w, h);
   }

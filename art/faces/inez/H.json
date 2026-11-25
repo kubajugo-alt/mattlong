@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached close-up of a painted character's face (1940s film-noir painting, strictly black-and-white greyscale). Change ONLY the mouth: open a little with the tip of the tongue raised and touching just behind the upper front teeth, as when saying L. Keep her deep red lipstick exactly as it is. Keep the person's identity, face shape, head angle, eyes, hair, hat, lighting, brush style, the grey background and every other pixel exactly the same, in exactly the same position and size; no new objects.",
+  "refs": [
+    "art/faces/inez/base.png"
+  ],
+  "aspect": "1:1",
+  "size": "1K",
+  "created": "2026-11-25T14:06:20.070Z",
+  "usage": {
+    "promptTokenCount": 378,
+    "candidatesTokenCount": 1260,
+    "totalTokenCount": 1877,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 120
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 239,
+    "serviceTier": "standard"
+  }
+}

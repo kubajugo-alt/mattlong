@@ -1,0 +1,20 @@
+{
+ "target": "doyers-street/newsboy",
+ "box_src": [
+  199,
+  13,
+  463,
+  278
+ ],
+ "k": 0.3434125,
+ "off": [
+  4.199149999999975,
+  4.01377500000001
+ ],
+ "frame": [
+  190,
+  360
+ ],
+ "tone": null,
+ "note": "target = source * k + off"
+}

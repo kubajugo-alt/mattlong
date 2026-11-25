@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached close-up of a painted character's face (1940s film-noir painting, strictly black-and-white greyscale). Change ONLY the mouth: lips pressed firmly together and closed, as when saying M, B or P. Do NOT turn, tilt or move the head at all: the head angle, the hair, the eyes, the nose and the outline of the face must stay pixel-for-pixel where they are; only the lips, teeth and jaw line directly around the mouth may change (or only the eyelids, for a blink). Keep the person's identity, face shape, head angle, eyes, hair, hat, lighting, brush style, the grey background and every other pixel exactly the same, in exactly the same position and size; no new objects.",
+  "refs": [
+    "art/faces/pete/base.png"
+  ],
+  "aspect": "1:1",
+  "size": "1K",
+  "created": "2026-11-25T14:09:05.350Z",
+  "usage": {
+    "promptTokenCount": 425,
+    "candidatesTokenCount": 1265,
+    "totalTokenCount": 1911,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 167
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 221,
+    "serviceTier": "standard"
+  }
+}

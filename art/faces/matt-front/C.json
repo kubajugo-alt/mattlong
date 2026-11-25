@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached close-up of a painted character's face (1940s film-noir painting, strictly black-and-white greyscale). Change ONLY the mouth: open a little more, jaw slightly lowered, upper teeth visible, as when saying the vowel in 'bed'. Keep the person's identity, face shape, head angle, eyes, hair, hat, lighting, brush style, the grey background and every other pixel exactly the same, in exactly the same position and size; no new objects.",
+  "refs": [
+    "art/faces/matt-front/base.png"
+  ],
+  "aspect": "1:1",
+  "size": "1K",
+  "created": "2026-11-25T14:05:13.631Z",
+  "usage": {
+    "promptTokenCount": 366,
+    "candidatesTokenCount": 1253,
+    "totalTokenCount": 1792,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 108
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 173,
+    "serviceTier": "standard"
+  }
+}

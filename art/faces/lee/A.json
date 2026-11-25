@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached close-up of a painted character's face (1940s film-noir painting, strictly black-and-white greyscale). Change ONLY the mouth: lips pressed firmly together and closed, as when saying M, B or P. Keep the person's identity, face shape, head angle, eyes, hair, hat, lighting, brush style, the grey background and every other pixel exactly the same, in exactly the same position and size; no new objects.",
+  "refs": [
+    "art/faces/lee/base.png"
+  ],
+  "aspect": "1:1",
+  "size": "1K",
+  "created": "2026-11-25T14:06:29.040Z",
+  "usage": {
+    "promptTokenCount": 360,
+    "candidatesTokenCount": 1262,
+    "totalTokenCount": 1856,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 102
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 234,
+    "serviceTier": "standard"
+  }
+}

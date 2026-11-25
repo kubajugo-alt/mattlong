@@ -1,0 +1,20 @@
+{
+ "target": "pete-kate-flat/kate-at-table",
+ "box_src": [
+  125,
+  -35,
+  272,
+  112
+ ],
+ "k": 1.1017361111111112,
+ "off": [
+  1.8365277777777465,
+  2.938263888888855
+ ],
+ "frame": [
+  817,
+  642
+ ],
+ "tone": null,
+ "note": "target = source * k + off"
+}

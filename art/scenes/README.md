@@ -72,3 +72,13 @@ being part of her sprite; Pete astride his desk chair). Their furniture is paint
 shadows cleared; the engine draws props always, hides Matt behind them by their front line, blocks him with their
 footprint and casts their shadows from the room's lights like his. Furniture standing nearer the camera than a prop's
 floor contact is cut out of the prop so the painting shows in front.
+
+## Faces: lip sync and blinking
+
+`tools/face_crops.py` crops each talking character's head from the highest-resolution art behind its engine frame;
+Gemini edits change only the mouth (Rhubarb shapes A-H) or the eyelids (half, closed); `tools/face_patches.py`
+registers each edit to the base, cuts a feathered mouth ellipse / eye region and scales it to engine pixels;
+`tools/install_faces.py` writes `<name>-face` sheets and a `face` entry onto the scene objects (run it after
+`build_scene.py`, which rewrites scene.json). Rhubarb (`rhubarb -f json -d <script.txt> --extendedShapes GHX`)
+turns each voice line into `voices/lipsync/<id>.json`; the engine shows the cue under `audio.currentTime`, blinks
+every few seconds, and applies both before the breathing mesh. Faces in `art/faces/<id>/` (check.png = review sheet).
