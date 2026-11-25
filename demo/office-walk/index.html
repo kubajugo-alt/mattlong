@@ -390,20 +390,41 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // doors on exits, engines with the passing cars. Starts on the first click (browsers need a gesture).
   // positions are floor points in scene pixels (where the source stands): the sound is heard from Matt, so its
   // loudness, muffling, stereo place and reverb follow his distance from it in metres
+  // every sound has a cause on screen or a plausible one just off it (reviewed object by object):
+  //  - no typewriter (Pete sits with his back to his, nobody else types), no thunder (a winter of snow and rain)
+  //  - the El on the Bowery rumbles past now and then: open in the street and alley, muffled through windows indoors
+  //  - character sounds come from the characters' own idle moves (CUES below), not from timers
+  //  shots: [name, min s, max s, volume, floor position or null, low-pass cap Hz (muffled behind glass/walls)]
   const SND = {
     'office-day':    { room: [0.45, 0.20], beds: [['bed-office-day', 0.9, [2284, 1343]]], floor: 'wood',
-                       shots: [['radiator', 30, 70, 0.6, [2284, 1343]], ['floor-creak', 40, 90, 0.4, 'near']] },
+                       shots: [['radiator', 30, 70, 0.6, [2284, 1343]], ['el-train', 70, 150, 0.35, [2394, 1229], 700]] },
     'office-night':  { room: [0.45, 0.20], beds: [['bed-rain', 0.9, [2394, 1229]], ['bed-neon', 0.4, [2394, 1229]]], floor: 'wood',
-                       shots: [['thunder', 40, 100, 0.5, null], ['floor-creak', 50, 100, 0.35, 'near']] },
-    corridor:        { room: [0.95, 0.32], beds: [['bed-corridor', 0.9, [578, 1290]]], floor: 'wood',
-                       shots: [['floor-creak', 25, 60, 0.5, 'near'], ['typewriter', 30, 70, 0.45, [578, 1290]]] },
+                       shots: [['el-train', 70, 150, 0.35, [2394, 1229], 700]] },
+    // the radio is a neighbour's upstairs: the bed sits at the stairwell
+    corridor:        { room: [0.95, 0.32], beds: [['bed-corridor', 0.9, [1568, 1098]]], floor: 'wood', shots: [] },
     'pete-kate-flat':{ room: [0.40, 0.18], beds: [['bed-flat', 0.9, [275, 1500]]], floor: 'wood',
-                       shots: [['teacup', 18, 45, 0.6, [1070, 1273]], ['typewriter', 40, 90, 0.5, [1900, 1530]]] },
-    'doyers-street': { room: [1.3, 0.14], beds: [['bed-street', 1.0, null]], floor: 'cobble', shots: [['car-horn', 30, 80, 0.45, [1050, 880]]] },
-    'tea-house':     { room: [0.70, 0.22], beds: [['bed-tea', 0.9, [2100, 1250]]], floor: 'tile', shots: [['teacup', 15, 40, 0.6, [2300, 1300]]] },
+                       shots: [['el-train', 80, 160, 0.3, [352, 700], 700]] },
+    'doyers-street': { room: [1.3, 0.14], beds: [['bed-street', 1.0, null]], floor: 'cobble',
+                       shots: [['car-horn', 30, 80, 0.45, [1050, 880]], ['el-train', 60, 130, 0.6, [1110, 900]]] },
+    // nobody else is drawn in the tea house: no voices, no cups; washing-up in the back room behind the bead curtain
+    'tea-house':     { room: [0.70, 0.22], beds: [['bed-tea', 0.9, [2100, 1250]]], floor: 'tile',
+                       shots: [['dishes', 35, 80, 0.5, [1137, 1036], 2500]] },
     pawnshop:        { room: [0.55, 0.16], beds: [['bed-pawn', 0.9, [900, 1046]]], floor: 'wood', shots: [['clock-chime', 25, 60, 0.6, [900, 1046]]] },
-    alley:           { room: [1.1, 0.30], beds: [['bed-alley', 1.0, null]], floor: 'cobble', shots: [['bin-lid', 25, 60, 0.55, [1650, 1264]]] },
+    alley:           { room: [1.1, 0.30], beds: [['bed-alley', 1.0, null]], floor: 'cobble',
+                       shots: [['bin-lid', 25, 60, 0.55, [1650, 1264]], ['el-train', 60, 130, 0.5, [1045, 1059]]] },
   };
+  // sounds made by the characters, fired on a frame of their idle animation; gap = seconds between idles
+  const CUES = {
+    'kate-at-table': { frame: 30, snd: ['teacup'], vol: 0.6, at: [1070, 1273] },               // she sets her cup down
+    newsboy:         { frame: 2, snd: ['newsboy-1', 'newsboy-2', 'newsboy-3'], vol: 0.85, gap: [18, 40] },   // waves a paper and calls
+    junkie:          { frame: 4, snd: ['cough'], vol: 0.55, chance: 0.4 },
+  };
+  function cueTick(o, f, now) {
+    const q = CUES[o.name]; if (!q) return;
+    if (o.lastF !== undefined && o.lastF < q.frame && f >= q.frame && (q.chance === undefined || Math.random() < q.chance))
+      shot(q.snd[Math.floor(Math.random() * q.snd.length)], q.vol, q.at || [(o.bbox[0] + o.bbox[2]) / 2, o.baseline], 0.97 + Math.random() * 0.06);
+    o.lastF = f;
+  }
   const AU = { ac: null, master: null, buf: {}, beds: [], next: {}, roomOn: null, lastPhase: 0 };
   const soundOn = () => document.getElementById('sound').checked;
   function audioStart() {
@@ -446,10 +467,11 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     c.g.gain.setTargetAtTime(c.base * Math.max(floorMin, sp.g), t, 0.15); c.f.frequency.setTargetAtTime(sp.lp, t, 0.15);
     if (c.p.pan) c.p.pan.setTargetAtTime(sp.pan, t, 0.15); c.wet.gain.setTargetAtTime(sp.wet, t, 0.3); c.dry.gain.setTargetAtTime(1 - sp.wet * 0.5, t, 0.3);
   }
-  async function shot(name, vol = 1, pos = null, rate = 1) {
+  async function shot(name, vol = 1, pos = null, rate = 1, lpMax = 0) {
     if (!AU.ac) return null; const b = await sbuf(name); if (!b) return null;
     const src = AU.ac.createBufferSource(); src.buffer = b; src.playbackRate.value = rate;
-    const c = chain(vol, spatial(pos)); src.connect(c.g); src.start(); c.src = src; return c;
+    const sp = spatial(pos); if (lpMax) sp.lp = Math.min(sp.lp, lpMax);
+    const c = chain(vol, sp); src.connect(c.g); src.start(); c.src = src; return c;
   }
   // a bed loops by overlapping copies with 2.5 s crossfades (no gap from mp3 padding); positioned beds follow Matt
   function bedLoop(name, vol, pos, token) {
@@ -482,10 +504,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (!AU.ac) return;
     if (!AU.roomOn || !AU.roomOn.startsWith(room + ':')) roomSound(room);
     const R = SND[room] || {}, t = now / 1000, W = S.sc.size[0];
-    for (const [n, lo, hi, v, pos] of R.shots || []) {
+    for (const [n, lo, hi, v, pos, lpMax] of R.shots || []) {
       if (AU.next[n] === undefined) AU.next[n] = t + lo * (0.3 + Math.random() * 0.7);
-      if (t > AU.next[n]) { const at = pos === 'near' ? [M.x + (Math.random() - 0.5) * 500, M.y + (Math.random() - 0.5) * 120] : pos;
-        shot(n, v, at, 0.95 + Math.random() * 0.1); AU.next[n] = t + lo + Math.random() * (hi - lo); }
+      if (t > AU.next[n]) { shot(n, v, pos, 0.95 + Math.random() * 0.1, lpMax || 0); AU.next[n] = t + lo + Math.random() * (hi - lo); }
     }
     for (const b of AU.beds) if (b.pos) steer(b.c, spatial(b.pos), 0.3);      // beds never fade below 30 %
     // footsteps: two per walk cycle, louder near the camera, panned with Matt
@@ -493,7 +514,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       const ph = M.phase, crossed = (AU.lastPhase < 0.5 && ph >= 0.5) || ph < AU.lastPhase;
       if (crossed) { const near = Math.min(1, heightAt(M.y) / (S.sc.size[1] * 0.55));
         shot('steps-' + R.floor + '-' + (1 + Math.floor(Math.random() * 10)), 0.35 + 0.65 * near, null, 0.93 + Math.random() * 0.14)
-          .then(c => { if (c && c.p.pan) c.p.pan.value = (M.x / W - 0.5) * 1.2; }); }
+          .then(c => { if (c && c.p.pan) c.p.pan.value = (M.x / W - 0.5) * 1.2; });
+        // old boards give now and then, under his weight (only ever on a step)
+        if (R.floor === 'wood' && Math.random() < 0.12) shot('floor-creak', 0.3, [M.x, M.y], 0.9 + Math.random() * 0.2); }
     }
     AU.lastPhase = M.phase;
   }
@@ -585,7 +608,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
           if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room;
             const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || '';
             if (/pawnshop-door|front-door/.test(exn) && (room === 'doyers-street' || room === 'pawnshop')) shot('shop-bell', 0.6, [M.x, M.y]);
-            else if (/door|stairwell|apartment/.test(exn)) shot('door', 0.6, [M.x, M.y]);
+            else if (/door|stairwell|apartment/.test(exn) || (room === 'tea-house' && exn === 'street')) shot('door', 0.6, [M.x, M.y]);
             M.exiting = null; enter(to, from); }
           else { status.textContent = (NAMES[M.exiting.to] || M.exiting.to) + ' is not drawn yet'; M.exiting = null; } } }
     }
@@ -806,10 +829,11 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       // mostly still on the first frame; now and then play the idle loop once through
       if (o.playAt === undefined) o.playAt = now + 2000 + Math.random() * 9000;
       let f = 0; const t = (now - o.playAt) / 1000 * o.anim.fps;
-      if (t >= 0) { f = Math.floor(t); if (f >= o.anim.frames) { f = 0; o.playAt = now + 6000 + Math.random() * 10000; } }
+      if (t >= 0) { f = Math.floor(t); if (f >= o.anim.frames) { f = 0; const g = (CUES[o.name] || {}).gap || [6, 16]; o.playAt = now + (g[0] + Math.random() * (g[1] - g[0])) * 1000; } }
       const c = o.anim.cols;
       const talking = TALK.who && SPEAKER[o.name] === TALK.who;
       if (talking) { f = 0; o.playAt = Math.max(o.playAt, now + 3000); }          // hold still while speaking
+      cueTick(o, f, now);
       if (f === 0) {
         let src = o.img;
         if (o.face) src = faceCompose(o.name, o.img, 0, 0, w, h, o.face, o.faceImg, mouthOf(SPEAKER[o.name]), eyesOf(o.name, now));

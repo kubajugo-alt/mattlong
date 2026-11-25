@@ -9,9 +9,9 @@
 | bed-rain | Steady night rain on a window pane and a dripping gutter outside, heard from inside a quiet room |
 | bed-neon | Low electric buzz of an old neon sign outside a window, steady hum with faint crackle |
 | bed-corridor | Tenement stairwell room tone, muffled old radio playing jazz behind a wall, faint water pipes |
-| bed-flat | Small kitchen in the morning, coffee percolator gently bubbling on a gas stove, wall clock ticking |
+| bed-flat | Small kitchen room tone in the morning, a coffee percolator gently bubbling on a gas stove, faint muffled street outside the window (no clock: none is painted in the flat) |
 | bed-street | Narrow city street in winter, distant crowd murmur, faraway old car engines, light wind, steam hissing from a street grate |
-| bed-tea | Quiet tea room, kettle softly simmering, low indistinct murmur of a few voices, occasional porcelain cup clink |
+| bed-tea | Empty quiet tea shop room tone, a kettle softly simmering, faint muffled street outside, no voices (no customers are drawn) |
 | bed-pawn | Many mechanical clocks ticking out of step in a quiet cluttered shop, muffled street outside the glass |
 | bed-alley | Back alley in winter, water dripping from fire escapes into puddles, cold wind gusting between brick walls, distant city |
 | steps-wood / -cobble / -tile | A man walking slowly in leather shoes on old wooden floorboards / wet cobblestones / stone tiles, close-mic |
@@ -25,5 +25,10 @@
 | clock-chime | Small mantel clock striking a single soft chime in a quiet shop |
 | bin-lid | Metal dustbin lid rattling in the wind and settling with a clank, outdoors |
 | floor-creak | Old wooden floorboard creaking once under weight, indoors |
-| typewriter | Short burst of manual typewriter keys clacking behind a thin wall, then the carriage bell ding |
-| thunder | Distant rumble of thunder rolling over a city at night, soft and far away |
+| el-train | Distant 1930s elevated steel railway train passing a block away, low rumble and rattle of wheels on steel trestle, rising and fading |
+| cough | Thin young man coughing twice, a rough wet cough in the cold, outdoors, then a sniff |
+| dishes | Dishes and porcelain cups being washed and stacked in a small back room kitchen, muffled behind a curtain |
+| newsboy-1..3 | Speech, eleven_v4, voice VALF (loY1uopAz31XyhAEhNSa): "Extra! Extra! Read all about it!" / "Papers! Get your morning papers here, two cents!" / "Morning edition! Get your paper, mister!" |
+
+Removed after the plausibility review: typewriter (Pete sits with his back to it, and nobody else types), thunder
+(snow and winter rain, not a storm; replaced by the El train on the Bowery).
