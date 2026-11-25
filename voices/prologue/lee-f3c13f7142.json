@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/lee-f3c13f7142.wav",
+    "duration": 2.64
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.12, "value": "X" },
+    { "start": 0.12, "end": 0.25, "value": "G" },
+    { "start": 0.25, "end": 0.32, "value": "B" },
+    { "start": 0.32, "end": 0.39, "value": "G" },
+    { "start": 0.39, "end": 0.53, "value": "B" },
+    { "start": 0.53, "end": 0.95, "value": "E" },
+    { "start": 0.95, "end": 1.44, "value": "B" },
+    { "start": 1.44, "end": 1.54, "value": "A" },
+    { "start": 1.54, "end": 1.66, "value": "F" },
+    { "start": 1.66, "end": 1.73, "value": "G" },
+    { "start": 1.73, "end": 1.80, "value": "B" },
+    { "start": 1.80, "end": 1.88, "value": "A" },
+    { "start": 1.88, "end": 1.97, "value": "B" },
+    { "start": 1.97, "end": 2.11, "value": "E" },
+    { "start": 2.11, "end": 2.25, "value": "B" },
+    { "start": 2.25, "end": 2.39, "value": "E" },
+    { "start": 2.39, "end": 2.46, "value": "F" },
+    { "start": 2.46, "end": 2.64, "value": "X" }
+  ]
+}

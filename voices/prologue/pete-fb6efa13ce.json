@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/pete-fb6efa13ce.wav",
+    "duration": 2.00
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.03, "value": "X" },
+    { "start": 0.03, "end": 0.46, "value": "B" },
+    { "start": 0.46, "end": 0.65, "value": "D" },
+    { "start": 0.65, "end": 0.70, "value": "C" },
+    { "start": 0.70, "end": 1.16, "value": "B" },
+    { "start": 1.16, "end": 1.30, "value": "F" },
+    { "start": 1.30, "end": 1.37, "value": "C" },
+    { "start": 1.37, "end": 1.51, "value": "B" },
+    { "start": 1.51, "end": 1.65, "value": "C" },
+    { "start": 1.65, "end": 1.79, "value": "B" },
+    { "start": 1.79, "end": 2.00, "value": "X" }
+  ]
+}

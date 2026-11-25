@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/pete-8c3b8dba2f.wav",
+    "duration": 5.92
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.04, "value": "X" },
+    { "start": 0.04, "end": 0.20, "value": "B" },
+    { "start": 0.20, "end": 0.27, "value": "C" },
+    { "start": 0.27, "end": 0.35, "value": "A" },
+    { "start": 0.35, "end": 0.56, "value": "B" },
+    { "start": 0.56, "end": 0.63, "value": "F" },
+    { "start": 0.63, "end": 0.91, "value": "C" },
+    { "start": 0.91, "end": 1.26, "value": "B" },
+    { "start": 1.26, "end": 1.33, "value": "C" },
+    { "start": 1.33, "end": 1.96, "value": "B" },
+    { "start": 1.96, "end": 2.03, "value": "E" },
+    { "start": 2.03, "end": 2.31, "value": "F" },
+    { "start": 2.31, "end": 2.52, "value": "B" },
+    { "start": 2.52, "end": 2.60, "value": "A" },
+    { "start": 2.60, "end": 2.76, "value": "C" },
+    { "start": 2.76, "end": 2.97, "value": "B" },
+    { "start": 2.97, "end": 3.18, "value": "G" },
+    { "start": 3.18, "end": 3.31, "value": "X" },
+    { "start": 3.31, "end": 3.62, "value": "B" },
+    { "start": 3.62, "end": 3.71, "value": "A" },
+    { "start": 3.71, "end": 3.78, "value": "B" },
+    { "start": 3.78, "end": 3.84, "value": "C" },
+    { "start": 3.84, "end": 3.98, "value": "B" },
+    { "start": 3.98, "end": 4.19, "value": "H" },
+    { "start": 4.19, "end": 4.40, "value": "C" },
+    { "start": 4.40, "end": 4.47, "value": "B" },
+    { "start": 4.47, "end": 4.99, "value": "A" },
+    { "start": 4.99, "end": 5.06, "value": "C" },
+    { "start": 5.06, "end": 5.19, "value": "B" },
+    { "start": 5.19, "end": 5.61, "value": "E" },
+    { "start": 5.61, "end": 5.82, "value": "B" },
+    { "start": 5.82, "end": 5.92, "value": "X" }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/kate-ab5a8a32af.wav",
+    "duration": 3.92
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.10, "value": "X" },
+    { "start": 0.10, "end": 0.25, "value": "B" },
+    { "start": 0.25, "end": 0.39, "value": "C" },
+    { "start": 0.39, "end": 0.46, "value": "E" },
+    { "start": 0.46, "end": 0.53, "value": "C" },
+    { "start": 0.53, "end": 0.95, "value": "B" },
+    { "start": 0.95, "end": 1.30, "value": "C" },
+    { "start": 1.30, "end": 1.69, "value": "B" },
+    { "start": 1.69, "end": 1.81, "value": "A" },
+    { "start": 1.81, "end": 1.88, "value": "C" },
+    { "start": 1.88, "end": 2.30, "value": "B" },
+    { "start": 2.30, "end": 2.44, "value": "C" },
+    { "start": 2.44, "end": 2.87, "value": "B" },
+    { "start": 2.87, "end": 2.93, "value": "A" },
+    { "start": 2.93, "end": 3.00, "value": "C" },
+    { "start": 3.00, "end": 3.20, "value": "B" },
+    { "start": 3.20, "end": 3.34, "value": "C" },
+    { "start": 3.34, "end": 3.41, "value": "E" },
+    { "start": 3.41, "end": 3.48, "value": "C" },
+    { "start": 3.48, "end": 3.62, "value": "B" },
+    { "start": 3.62, "end": 3.92, "value": "X" }
+  ]
+}

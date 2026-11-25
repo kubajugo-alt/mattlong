@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/inez-15af7f7e95.wav",
+    "duration": 5.12
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.09, "value": "X" },
+    { "start": 0.09, "end": 0.16, "value": "B" },
+    { "start": 0.16, "end": 0.36, "value": "C" },
+    { "start": 0.36, "end": 0.50, "value": "G" },
+    { "start": 0.50, "end": 0.57, "value": "C" },
+    { "start": 0.57, "end": 0.92, "value": "B" },
+    { "start": 0.92, "end": 1.07, "value": "A" },
+    { "start": 1.07, "end": 1.24, "value": "B" },
+    { "start": 1.24, "end": 1.38, "value": "C" },
+    { "start": 1.38, "end": 1.52, "value": "H" },
+    { "start": 1.52, "end": 1.66, "value": "B" },
+    { "start": 1.66, "end": 1.74, "value": "A" },
+    { "start": 1.74, "end": 1.81, "value": "B" },
+    { "start": 1.81, "end": 1.94, "value": "C" },
+    { "start": 1.94, "end": 2.01, "value": "H" },
+    { "start": 2.01, "end": 2.10, "value": "A" },
+    { "start": 2.10, "end": 2.33, "value": "B" },
+    { "start": 2.33, "end": 2.40, "value": "E" },
+    { "start": 2.40, "end": 2.47, "value": "F" },
+    { "start": 2.47, "end": 3.15, "value": "X" },
+    { "start": 3.15, "end": 3.22, "value": "C" },
+    { "start": 3.22, "end": 3.29, "value": "B" },
+    { "start": 3.29, "end": 3.36, "value": "H" },
+    { "start": 3.36, "end": 3.43, "value": "C" },
+    { "start": 3.43, "end": 3.64, "value": "F" },
+    { "start": 3.64, "end": 3.92, "value": "B" },
+    { "start": 3.92, "end": 4.13, "value": "C" },
+    { "start": 4.13, "end": 4.48, "value": "B" },
+    { "start": 4.48, "end": 4.55, "value": "G" },
+    { "start": 4.55, "end": 4.69, "value": "E" },
+    { "start": 4.69, "end": 5.04, "value": "B" },
+    { "start": 5.04, "end": 5.12, "value": "X" }
+  ]
+}

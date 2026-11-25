@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/lee-5d03cde698.wav",
+    "duration": 3.04
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.14, "value": "X" },
+    { "start": 0.14, "end": 0.22, "value": "A" },
+    { "start": 0.22, "end": 0.35, "value": "B" },
+    { "start": 0.35, "end": 1.12, "value": "E" },
+    { "start": 1.12, "end": 1.26, "value": "B" },
+    { "start": 1.26, "end": 1.65, "value": "X" },
+    { "start": 1.65, "end": 1.89, "value": "F" },
+    { "start": 1.89, "end": 2.10, "value": "B" },
+    { "start": 2.10, "end": 2.20, "value": "A" },
+    { "start": 2.20, "end": 2.25, "value": "C" },
+    { "start": 2.25, "end": 2.30, "value": "B" },
+    { "start": 2.30, "end": 2.37, "value": "H" },
+    { "start": 2.37, "end": 2.44, "value": "C" },
+    { "start": 2.44, "end": 2.65, "value": "E" },
+    { "start": 2.65, "end": 2.79, "value": "B" },
+    { "start": 2.79, "end": 3.04, "value": "X" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/kate-af3d080a56.wav",
+    "duration": 1.04
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.11, "value": "B" },
+    { "start": 0.11, "end": 0.38, "value": "E" },
+    { "start": 0.38, "end": 0.52, "value": "F" },
+    { "start": 0.52, "end": 0.87, "value": "B" },
+    { "start": 0.87, "end": 1.04, "value": "X" }
+  ]
+}

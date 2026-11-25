@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/matt-2ee75e2deb.wav",
+    "duration": 4.24
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.01, "value": "X" },
+    { "start": 0.01, "end": 0.09, "value": "F" },
+    { "start": 0.09, "end": 0.17, "value": "A" },
+    { "start": 0.17, "end": 0.45, "value": "E" },
+    { "start": 0.45, "end": 0.52, "value": "B" },
+    { "start": 0.52, "end": 0.60, "value": "A" },
+    { "start": 0.60, "end": 0.84, "value": "F" },
+    { "start": 0.84, "end": 1.19, "value": "B" },
+    { "start": 1.19, "end": 1.54, "value": "H" },
+    { "start": 1.54, "end": 1.68, "value": "B" },
+    { "start": 1.68, "end": 2.00, "value": "C" },
+    { "start": 2.00, "end": 2.14, "value": "B" },
+    { "start": 2.14, "end": 2.35, "value": "E" },
+    { "start": 2.35, "end": 2.42, "value": "B" },
+    { "start": 2.42, "end": 2.63, "value": "C" },
+    { "start": 2.63, "end": 2.70, "value": "G" },
+    { "start": 2.70, "end": 3.05, "value": "E" },
+    { "start": 3.05, "end": 3.33, "value": "B" },
+    { "start": 3.33, "end": 3.40, "value": "C" },
+    { "start": 3.40, "end": 3.68, "value": "B" },
+    { "start": 3.68, "end": 3.82, "value": "D" },
+    { "start": 3.82, "end": 3.89, "value": "C" },
+    { "start": 3.89, "end": 3.96, "value": "B" },
+    { "start": 3.96, "end": 4.24, "value": "X" }
+  ]
+}

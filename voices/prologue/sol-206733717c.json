@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/sol-206733717c.wav",
+    "duration": 5.12
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.06, "value": "X" },
+    { "start": 0.06, "end": 0.16, "value": "C" },
+    { "start": 0.16, "end": 0.23, "value": "B" },
+    { "start": 0.23, "end": 0.30, "value": "F" },
+    { "start": 0.30, "end": 0.51, "value": "H" },
+    { "start": 0.51, "end": 0.65, "value": "C" },
+    { "start": 0.65, "end": 0.72, "value": "E" },
+    { "start": 0.72, "end": 0.80, "value": "A" },
+    { "start": 0.80, "end": 1.01, "value": "C" },
+    { "start": 1.01, "end": 1.22, "value": "E" },
+    { "start": 1.22, "end": 1.71, "value": "B" },
+    { "start": 1.71, "end": 2.04, "value": "X" },
+    { "start": 2.04, "end": 2.16, "value": "B" },
+    { "start": 2.16, "end": 2.30, "value": "H" },
+    { "start": 2.30, "end": 2.44, "value": "C" },
+    { "start": 2.44, "end": 2.56, "value": "A" },
+    { "start": 2.56, "end": 2.73, "value": "C" },
+    { "start": 2.73, "end": 2.80, "value": "F" },
+    { "start": 2.80, "end": 2.87, "value": "B" },
+    { "start": 2.87, "end": 2.94, "value": "C" },
+    { "start": 2.94, "end": 3.22, "value": "E" },
+    { "start": 3.22, "end": 3.43, "value": "F" },
+    { "start": 3.43, "end": 3.57, "value": "B" },
+    { "start": 3.57, "end": 3.85, "value": "X" },
+    { "start": 3.85, "end": 4.05, "value": "B" },
+    { "start": 4.05, "end": 4.13, "value": "A" },
+    { "start": 4.13, "end": 4.27, "value": "F" },
+    { "start": 4.27, "end": 4.48, "value": "B" },
+    { "start": 4.48, "end": 4.69, "value": "E" },
+    { "start": 4.69, "end": 4.76, "value": "C" },
+    { "start": 4.76, "end": 5.04, "value": "B" },
+    { "start": 5.04, "end": 5.12, "value": "X" }
+  ]
+}

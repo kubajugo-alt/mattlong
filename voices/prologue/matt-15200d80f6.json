@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/matt-15200d80f6.wav",
+    "duration": 1.44
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.12, "value": "X" },
+    { "start": 0.12, "end": 0.39, "value": "B" },
+    { "start": 0.39, "end": 0.88, "value": "F" },
+    { "start": 0.88, "end": 1.09, "value": "B" },
+    { "start": 1.09, "end": 1.44, "value": "X" }
+  ]
+}

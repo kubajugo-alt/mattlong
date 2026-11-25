@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/pete-0d005754b9.wav",
+    "duration": 1.44
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.09, "value": "X" },
+    { "start": 0.09, "end": 0.39, "value": "C" },
+    { "start": 0.39, "end": 0.74, "value": "B" },
+    { "start": 0.74, "end": 0.81, "value": "C" },
+    { "start": 0.81, "end": 1.36, "value": "B" },
+    { "start": 1.36, "end": 1.44, "value": "X" }
+  ]
+}

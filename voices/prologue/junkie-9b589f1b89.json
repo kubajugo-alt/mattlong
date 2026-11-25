@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/junkie-9b589f1b89.wav",
+    "duration": 4.96
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.17, "value": "X" },
+    { "start": 0.17, "end": 0.32, "value": "F" },
+    { "start": 0.32, "end": 0.39, "value": "B" },
+    { "start": 0.39, "end": 0.46, "value": "C" },
+    { "start": 0.46, "end": 0.60, "value": "G" },
+    { "start": 0.60, "end": 0.67, "value": "E" },
+    { "start": 0.67, "end": 1.02, "value": "B" },
+    { "start": 1.02, "end": 1.09, "value": "C" },
+    { "start": 1.09, "end": 1.93, "value": "B" },
+    { "start": 1.93, "end": 2.21, "value": "F" },
+    { "start": 2.21, "end": 2.70, "value": "B" },
+    { "start": 2.70, "end": 2.84, "value": "C" },
+    { "start": 2.84, "end": 2.98, "value": "B" },
+    { "start": 2.98, "end": 3.05, "value": "G" },
+    { "start": 3.05, "end": 3.89, "value": "B" },
+    { "start": 3.89, "end": 3.96, "value": "F" },
+    { "start": 3.96, "end": 4.10, "value": "B" },
+    { "start": 4.10, "end": 4.17, "value": "C" },
+    { "start": 4.17, "end": 4.25, "value": "A" },
+    { "start": 4.25, "end": 4.48, "value": "B" },
+    { "start": 4.48, "end": 4.55, "value": "C" },
+    { "start": 4.55, "end": 4.69, "value": "H" },
+    { "start": 4.69, "end": 4.90, "value": "B" },
+    { "start": 4.90, "end": 4.96, "value": "X" }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/junkie-2a1607c7aa.wav",
+    "duration": 6.88
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.93, "value": "B" },
+    { "start": 0.93, "end": 1.35, "value": "C" },
+    { "start": 1.35, "end": 1.49, "value": "D" },
+    { "start": 1.49, "end": 1.56, "value": "C" },
+    { "start": 1.56, "end": 1.70, "value": "D" },
+    { "start": 1.70, "end": 1.77, "value": "B" },
+    { "start": 1.77, "end": 1.84, "value": "C" },
+    { "start": 1.84, "end": 2.61, "value": "B" },
+    { "start": 2.61, "end": 2.75, "value": "F" },
+    { "start": 2.75, "end": 2.89, "value": "B" },
+    { "start": 2.89, "end": 3.31, "value": "F" },
+    { "start": 3.31, "end": 3.45, "value": "B" },
+    { "start": 3.45, "end": 3.87, "value": "X" },
+    { "start": 3.87, "end": 3.99, "value": "A" },
+    { "start": 3.99, "end": 4.10, "value": "C" },
+    { "start": 4.10, "end": 4.74, "value": "B" },
+    { "start": 4.74, "end": 4.82, "value": "A" },
+    { "start": 4.82, "end": 4.94, "value": "B" },
+    { "start": 4.94, "end": 5.15, "value": "F" },
+    { "start": 5.15, "end": 5.23, "value": "A" },
+    { "start": 5.23, "end": 5.40, "value": "C" },
+    { "start": 5.40, "end": 5.47, "value": "B" },
+    { "start": 5.47, "end": 5.55, "value": "A" },
+    { "start": 5.55, "end": 5.78, "value": "C" },
+    { "start": 5.78, "end": 6.02, "value": "H" },
+    { "start": 6.02, "end": 6.08, "value": "C" },
+    { "start": 6.08, "end": 6.27, "value": "B" },
+    { "start": 6.27, "end": 6.34, "value": "C" },
+    { "start": 6.34, "end": 6.55, "value": "E" },
+    { "start": 6.55, "end": 6.76, "value": "B" },
+    { "start": 6.76, "end": 6.88, "value": "X" }
+  ]
+}

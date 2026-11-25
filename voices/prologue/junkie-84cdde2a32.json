@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/junkie-84cdde2a32.wav",
+    "duration": 3.68
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.29, "value": "B" },
+    { "start": 0.29, "end": 0.43, "value": "C" },
+    { "start": 0.43, "end": 0.78, "value": "B" },
+    { "start": 0.78, "end": 0.92, "value": "C" },
+    { "start": 0.92, "end": 1.69, "value": "B" },
+    { "start": 1.69, "end": 1.90, "value": "D" },
+    { "start": 1.90, "end": 1.97, "value": "B" },
+    { "start": 1.97, "end": 2.11, "value": "F" },
+    { "start": 2.11, "end": 2.18, "value": "D" },
+    { "start": 2.18, "end": 2.32, "value": "B" },
+    { "start": 2.32, "end": 2.40, "value": "A" },
+    { "start": 2.40, "end": 2.51, "value": "B" },
+    { "start": 2.51, "end": 2.79, "value": "C" },
+    { "start": 2.79, "end": 3.00, "value": "B" },
+    { "start": 3.00, "end": 3.14, "value": "C" },
+    { "start": 3.14, "end": 3.42, "value": "H" },
+    { "start": 3.42, "end": 3.68, "value": "X" }
+  ]
+}

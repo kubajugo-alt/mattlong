@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/junkie-806111cd99.wav",
+    "duration": 2.72
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.14, "value": "X" },
+    { "start": 0.14, "end": 0.54, "value": "B" },
+    { "start": 0.54, "end": 0.82, "value": "C" },
+    { "start": 0.82, "end": 1.52, "value": "B" },
+    { "start": 1.52, "end": 1.73, "value": "C" },
+    { "start": 1.73, "end": 1.87, "value": "B" },
+    { "start": 1.87, "end": 2.01, "value": "E" },
+    { "start": 2.01, "end": 2.36, "value": "C" },
+    { "start": 2.36, "end": 2.43, "value": "B" },
+    { "start": 2.43, "end": 2.72, "value": "X" }
+  ]
+}

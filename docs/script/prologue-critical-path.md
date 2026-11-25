@@ -203,7 +203,7 @@ the other branches are in the .ink file). **VO** = Matt's voice-over; *[act …]
 **INEZ:** Fifty dollars, Mr. Long. In advance.  
 *[act give:money]*  
 **VO:** Fifty dollars. Two months' rent, to the penny. Lee Wing would be delighted, and suspicious.  
-**INEZ:** And this. His door key. West Eighty-Fourth Street.  
+**INEZ:** And this. The key to his apartment. West Eighty-Fourth Street.  
 *[act give:key]*  
 ▸ **I'll find him.**  
 **MATT:** I'll find him.  
