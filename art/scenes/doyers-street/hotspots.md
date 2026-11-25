@@ -1,4 +1,4 @@
-# Hotspots (27)
+# Hotspots (28)
 
 No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 
@@ -26,8 +26,9 @@ No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 | 20 | `pawnshop-window-goods` | pledges in the window | 1689, 761, 1792, 879 |
 | 21 | `tea-house-roof` | tiled roof | 1704, 37, 2752, 519 |
 | 22 | `window` | window | 1720, 153, 1793, 413 |
-| 23 | `porch-pillars` | pillars | 1866, 260, 2613, 1288 |
-| 24 | `carved-panel` | carved panel | 1960, 971, 2092, 1081 |
-| 25 | `tea-house-sign` | tea house sign | 2180, 330, 2461, 508 |
-| 26 | `tea-house-doors` | tea house doors | 2193, 475, 2521, 1212 |
-| 27 | `tea-house-door-handle` | door handle | 2348, 924, 2367, 948 |
+| 23 | `junkie` | junkie | 1752, 665, 1912, 1175 |
+| 24 | `porch-pillars` | pillars | 1866, 260, 2613, 1288 |
+| 25 | `carved-panel` | carved panel | 1960, 971, 2092, 1081 |
+| 26 | `tea-house-sign` | tea house sign | 2180, 330, 2461, 508 |
+| 27 | `tea-house-doors` | tea house doors | 2193, 475, 2521, 1212 |
+| 28 | `tea-house-door-handle` | door handle | 2348, 924, 2367, 948 |
