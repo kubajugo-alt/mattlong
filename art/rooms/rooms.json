@@ -48,16 +48,17 @@
     "rule": "Character height in pixels = (feet_y - horizon_y) x height_m / 1.6, where horizon_y is the camera's eye line (1.6 m above the floor), found from a known object such as a 2.1 m door. Characters shrink towards the horizon as they walk back.",
     "rooms": {
       "office-day": {
-        "horizon": 0.32,
-        "door_top": 0.205,
-        "door_bottom": 0.696,
+        "horizon": 0.4,
+        "door_leaf_top": 0.307,
+        "door_bottom": 0.698,
         "door_x": [
           0.33,
           0.43
-        ]
+        ],
+        "note": "Measured on the door leaf only (2.1 m), not the frame with the transom window above it; cross-checked against a 3 m ceiling line."
       },
       "office-night": {
-        "horizon": 0.32
+        "horizon": 0.4
       }
     },
     "formula": "height_px = (feet_y - horizon_y) * height_m / 1.6 ; at the door (feet_y = door_bottom) a 1.85 m man is 1.85/2.1 = 88% of the door's height"
