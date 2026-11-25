@@ -133,7 +133,16 @@
    "behind": [
     "box-left"
    ],
-   "note": "Background newspaper boy calling the headline from the recessed shop doorway past the open apartment door (where the junkie stood), the bin in front of him; 1.50 m at the same depth. Enlarged 12% on review."
+   "note": "Background newspaper boy calling the headline from the recessed shop doorway past the open apartment door (where the junkie stood), the bin in front of him; 1.50 m at the same depth. Enlarged 12% on review.",
+   "anim": {
+    "sheet": "art/animations/idle/newsboy.webp",
+    "sheet_cols": 6,
+    "sheet_rows": 6,
+    "n": 36,
+    "fps": 7,
+    "cols": 6,
+    "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
+   }
   }
  ]
 }

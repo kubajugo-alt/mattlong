@@ -87,7 +87,16 @@
    "note": "Lee Wing inside the counter by the tea-jar shelves. Size from the head comparison with Matt at the counter (head 68 px vs Matt's 79 px, as he stands about 0.7 m further back); height set so his clasped hands rest just above the counter top.",
    "behind": [
     "counter"
-   ]
+   ],
+   "anim": {
+    "sheet": "art/animations/idle/lee-wing.webp",
+    "sheet_cols": 6,
+    "sheet_rows": 6,
+    "n": 36,
+    "fps": 7,
+    "cols": 6,
+    "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
+   }
   }
  ]
 }

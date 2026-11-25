@@ -67,7 +67,16 @@
    "note": "Sol behind the open ledger. Feet placed from the counter: a 1 m counter whose back edge is at y 0.533 in his column stands at y 0.887.",
    "behind": [
     "counter"
-   ]
+   ],
+   "anim": {
+    "sheet": "art/animations/idle/sol.webp",
+    "sheet_cols": 6,
+    "sheet_rows": 6,
+    "n": 36,
+    "fps": 7,
+    "cols": 6,
+    "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
+   }
   }
  ]
 }

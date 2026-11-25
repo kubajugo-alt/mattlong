@@ -87,7 +87,16 @@
     "couch"
    ],
    "note": "Inez sitting on the sofa: hips (670 px above her planted foot in the sprite = 45 cm seat) settled on the cushion line at y 0.73, back just in front of the sofa back, foot on the floor in front of it at y 0.86; scaled by the room rule at that depth. Darkened for the lamp-lit night office.",
-   "tone": 0.62
+   "tone": 0.62,
+   "anim": {
+    "sheet": "art/animations/idle/inez-seated.webp",
+    "sheet_cols": 6,
+    "sheet_rows": 6,
+    "n": 36,
+    "fps": 7,
+    "cols": 6,
+    "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
+   }
   }
  ]
 }

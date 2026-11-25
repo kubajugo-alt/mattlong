@@ -22,19 +22,16 @@
  "lights": [
   {
    "name": "window",
-   "type": "window",
+   "type": "point",
    "floor": [
-    0.15,
-    0.75
+    0.13,
+    0.66
    ],
-   "dir": [
-    0.35,
-    1.0
-   ],
-   "length": 0.16,
-   "strength": 0.4,
-   "blur": 7,
-   "note": "Soft, diffuse morning light: the sunlit patch on the floor was painted out, so shadows stay short and close under people and furniture, falling slightly right and toward the camera."
+   "height_m": 2.2,
+   "reach": 0.9,
+   "strength": 0.42,
+   "blur": 6,
+   "note": "Soft morning light from the kitchen window on the left wall, treated as a source at the window: every shadow falls away from it, to the right, and more toward the camera the further right something stands."
   }
  ],
  "depth_m": {
@@ -63,7 +60,16 @@
    "y": 637,
    "scale": 0.38,
    "depth_m": 1.0,
-   "note": "Kate at the kitchen table: the whole table set is one cast-style sprite, fitted (least squares on legs, table-top edges and the back chair) onto the painted table, whose floor shadows are kept in the painting."
+   "note": "Kate at the kitchen table: the whole table set is one cast-style sprite, fitted (least squares on legs, table-top edges and the back chair) onto the painted table, whose floor shadows are kept in the painting.",
+   "anim": {
+    "sheet": "art/animations/idle/kate-at-table.webp",
+    "sheet_cols": 6,
+    "sheet_rows": 6,
+    "n": 36,
+    "fps": 7,
+    "cols": 6,
+    "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
+   }
   },
   {
    "name": "pete-seated",
@@ -72,7 +78,16 @@
    "y": 701,
    "scale": 0.47,
    "depth_m": 0.55,
-   "note": "Pete astride his desk chair backwards, facing the middle of the room; placed on the desk chair's spot."
+   "note": "Pete astride his desk chair backwards, facing the middle of the room; placed on the desk chair's spot.",
+   "anim": {
+    "sheet": "art/animations/idle/pete-seated.webp",
+    "sheet_cols": 6,
+    "sheet_rows": 6,
+    "n": 36,
+    "fps": 7,
+    "cols": 6,
+    "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
+   }
   }
  ],
  "props_note": "The painting has the table set and Pete's desk chair painted out (the original is art/rooms/archive-pete-kate-flat-with-chairs.png); Kate at the table and Pete on his chair are cast-style sprites."

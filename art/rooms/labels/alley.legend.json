@@ -99,7 +99,16 @@
    "behind": [
     "rags"
    ],
-   "note": "The junkie huddled against the wall behind the rag heap, which hides his legs, looking out into the alley (mirrored cast sprite); scaled by the alley's rule for 1.75 m with his feet at y 0.74. Where Matt trades Pete's cigarettes for the pawn ticket (P3)."
+   "note": "The junkie huddled against the wall behind the rag heap, which hides his legs, looking out into the alley (mirrored cast sprite); scaled by the alley's rule for 1.75 m with his feet at y 0.74. Where Matt trades Pete's cigarettes for the pawn ticket (P3).",
+   "anim": {
+    "sheet": "art/animations/idle/junkie.webp",
+    "sheet_cols": 6,
+    "sheet_rows": 6,
+    "n": 36,
+    "fps": 7,
+    "cols": 6,
+    "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
+   }
   }
  ]
 }
