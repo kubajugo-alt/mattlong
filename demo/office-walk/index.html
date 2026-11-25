@@ -497,13 +497,13 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (c.src === img && c.sx === sx && Math.abs(t - c.t) < 0.07) return c;      // re-warp at ~15 Hz
     c.src = img; c.sx = sx; c.t = t;
     const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, sw, sh);
-    const b = Math.sin(t * 2 * Math.PI / 3.8 + seed), sc = 0.013 * b;                                 // one breath ~3.8 s
+    const b = Math.sin(t * 2 * Math.PI / 3.8 + seed), sc = 0.024 * b;                                 // one breath ~3.8 s
     const ang = 0.016 * Math.sin(t * 2 * Math.PI / 7.3 + seed * 1.7) + 0.006 * Math.sin(t * 2 * Math.PI / 2.9 + seed);
     const [hu, hv, hr] = rig.head, [nu, nv] = rig.neck, [cu, cv, crx, cry] = rig.chest;
     const disp = (u, v) => {
       let X = u * sw, Y = v * sh;
       const wc = Math.exp(-(((u - cu) / crx) ** 2) - (((v - cv) / cry) ** 2));
-      X += (u - cu) * sw * sc * wc; Y += (v - cv) * sh * sc * 0.6 * wc - sh * 0.003 * b * wc;
+      X += (u - cu) * sw * sc * wc; Y += (v - cv) * sh * sc * 0.6 * wc - sh * 0.0055 * b * wc;
       const d = Math.hypot((u - hu) * sw, (v - hv) * sh) / (hr * sh);
       let wh = Math.max(0, Math.min(1, 1.7 - d)); if (v > nv) wh *= Math.max(0, 1 - (v - nv) / 0.04);
       if (wh > 0) { const a = ang * wh, px = nu * sw, py = nv * sh, dx = X - px, dy = Y - py;
