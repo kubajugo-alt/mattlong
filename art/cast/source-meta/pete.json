@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Painted character illustration for a point-and-click adventure, in exactly the style of the attached reference image: the same 1940s film-noir painted look, the same brush texture and level of detail, strictly black-and-white greyscale with no colour at all, hard single key light from the upper left, deep blacks and crisp highlights, a crisp readable silhouette, slightly elongated stylised proportions. Full figure from the top of the head (or hat) to the soles of the shoes, standing in a relaxed three-quarter view facing the left of the frame like the reference, both arms and hands visible, feet flat on the ground, the whole figure filling about 88% of the image height with a small margin all round. Plain flat pure chroma-key green background (#00FF00) everywhere, no floor, no cast shadow, no props unless described, no text, no border. This is a different person from the reference: take only the art style from it, not the face, body or clothes. New York, winter 1930. Character: Pete Duckerton, about 35, crime reporter. Boyish face with an eager grin, slim build, average height. Fedora pushed back on his head with a press card tucked in the hatband, rumpled striped suit, long knitted scarf hanging untied round his neck, a rolled-up newspaper in one hand, the other hand in his trouser pocket.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/cast/matt.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T02:28:20.909Z",
+  "usage": {
+    "promptTokenCount": 559,
+    "candidatesTokenCount": 1314,
+    "totalTokenCount": 2119,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 301
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 246,
+    "serviceTier": "standard"
+  }
+}

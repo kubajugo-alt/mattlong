@@ -1,6 +1,13 @@
 {
   "milestones": [
     {
+      "id": "cast",
+      "label": "Cast",
+      "title": "Character designs",
+      "date": "25 Nov 2026",
+      "summary": "Static designs of the whole cast (24 figures), all generated against the same Matt image as the style anchor and one shared proportion rule, cut out and forced to greyscale (only Inéz's lipstick is red). For sprite animation in Ludo.ai later."
+    },
+    {
       "id": "m0",
       "label": "M0",
       "title": "Pipeline tests",
@@ -9,6 +16,307 @@
     }
   ],
   "samples": [
+    {
+      "id": "cast-lineup-main",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Lineup: main cast",
+      "src": "samples/cast/lineup-main.jpg",
+      "full": "samples/cast/lineup-main.jpg",
+      "about": "The 12 main characters plus Michael wounded (Act 3), at their real relative heights.",
+      "lookFor": [
+        "Does the style hold across all of them?",
+        "Heights and builds: Corrigan's bulk, Brancato small, Whitcombe tall and thin, Grayson forgettable?"
+      ]
+    },
+    {
+      "id": "cast-lineup-minor",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Lineup: minor cast",
+      "src": "samples/cast/lineup-minor.jpg",
+      "full": "samples/cast/lineup-minor.jpg",
+      "about": "The 11 minor characters, including the alley junkie from the Prologue, at their real relative heights.",
+      "lookFor": [
+        "Any character that breaks the style or doesn't match the bible?"
+      ]
+    },
+    {
+      "id": "cast-proportions",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Proportion check: same eye height",
+      "src": "samples/cast/lineup-eyelevel.jpg",
+      "full": "samples/cast/lineup-eyelevel.jpg",
+      "about": "Every character scaled so the distance from eyes to floor is identical (yellow line), so head size, torso and leg length can be compared directly. After this check, Natalia, Corrigan, Sol, Hartley, Stefan, Inéz, Kate and Zofia were regenerated with one shared rule: about 7.5 heads tall, the same head-to-body ratio and leg length as Matt, with heavier or older builds shown only by width, posture and clothes.",
+      "lookFor": [
+        "Does anyone still look out of proportion next to the others?"
+      ]
+    },
+    {
+      "id": "cast-matt",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long",
+      "src": "samples/cast/matt.jpg",
+      "about": "Matt Long, 37, private investigator and ex-NYPD detective. Tall, lean, a little stooped with tiredness. Rumpled grey single-breasted three-piece suit, white shirt, loosened dark tie, a fedora with a dented crown, two-day stubble, tired sharp eyes, square jaw. Hands relaxed at his sides.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-pete",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Pete Duckerton",
+      "src": "samples/cast/pete.jpg",
+      "about": "Pete Duckerton, about 35, crime reporter. Boyish face with an eager grin, slim build, average height. Fedora pushed back on his head with a press card tucked in the hatband, rumpled striped suit, long knitted scarf hanging untied round his neck, a rolled-up newspaper in one hand, the other hand in his trouser pocket.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-kate",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Kate Duckerton",
+      "src": "samples/cast/kate.jpg",
+      "about": "Kate Duckerton, about 33, accountant. Neat dark bob, round wire-rimmed spectacles, composed and precise, slightly shorter than average. A tailored belted wool coat over a plain calf-length dress, sensible low-heeled shoes, holding a cloth-bound ledger against her chest with both hands.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-natalia",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Natalia Long (née Kowalska)",
+      "src": "samples/cast/natalia.jpg",
+      "about": "Natalia Long, about 34, Polish immigrant who works in a Greenpoint bakery. Strong features, sturdy build, hair pinned up under a modest small felt Sunday hat. Plain long-sleeved working dress with a white apron, flour dusted on her sleeves and forearms, arms folded, a blunt steady look.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-inez",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Inéz Venta",
+      "src": "samples/cast/inez.jpg",
+      "about": "Inéz Venta, about 28, glamorous society girl whose family has secretly lost everything. Slim and poised. Platinum-blonde finger-waved hair, dark eyes, the only colour on her is deep red lipstick (#B3141F). A long fitted coat with a big fur collar, the coat visibly mended once too often at a cuff, a small clutch bag in one gloved hand, elegant heeled shoes.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-michael",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Capt. Dr. Michael Harlan",
+      "src": "samples/cast/michael.jpg",
+      "about": "Captain Dr. Michael Harlan, 36, US Army Medical Corps surgeon decorated in France. Square-jawed, upright military bearing, short neat hair, clean-shaven. 1930 US Army officer's service uniform: olive-drab wool tunic with four pockets and Sam Browne belt, matching trousers, polished shoes, a medical corps collar badge, campaign ribbons; service cap held under one arm.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-michael-wounded",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Michael Harlan (wounded, Act 3)",
+      "src": "samples/cast/michael-wounded.jpg",
+      "about": "The same Captain Dr. Michael Harlan, 36, square-jawed, now gaunt and feverish after being stabbed: unshaven, hollow cheeks, damp hair, wearing a borrowed loose white undershirt and trousers with braces, a bandage around his ribs showing under the shirt, one hand pressed to his side, barefoot, standing unsteadily.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-julian",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Julian Moss",
+      "src": "samples/cast/julian.jpg",
+      "about": "Julian Moss, about 30, Black jazz pianist at a Village speakeasy. Slim and elegant, long fingers, a guarded half smile, neatly pomaded short hair, pencil moustache. A sharp double-breasted three-piece suit, silk pocket square, two-tone shoes, one hand resting in his trouser pocket.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-corrigan",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Lt. Frank Corrigan",
+      "src": "samples/cast/corrigan.jpg",
+      "about": "Lieutenant Frank Corrigan, about 50, NYPD vice-squad detective. Heavyset and broad, red-faced (rendered in grey), thick neck, fatherly smile that doesn't reach the eyes. An immaculate long dark double-breasted overcoat, homburg hat, gloves, a rosary with a small crucifix looped over the fingers of one hand.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-brancato",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Salvatore \"Sal\" Brancato",
+      "src": "samples/cast/brancato.jpg",
+      "about": "Salvatore 'Sal' Brancato, about 50, bootlegger and owner of a haulage company and social clubs. Small and elegant, noticeably shorter than average, calm and still, slicked-back greying hair, thin moustache. An expensive tailored dark three-piece suit, a pale silk tie, a white carnation in the lapel, grey spats over polished shoes, a slim cigar between two fingers.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-whitcombe",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Arthur Whitcombe",
+      "src": "samples/cast/whitcombe.jpg",
+      "about": "Arthur Whitcombe, about 60, vice-president of a pharmaceutical company and philanthropist. Tall, thin, distinguished, silver hair neatly parted, pince-nez glasses on a cord. A conservative dark three-piece suit with a watch chain, a small charity pin on his lapel, a walking stick with a silver handle.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-grayson",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Harold Grayson",
+      "src": "samples/cast/grayson.jpg",
+      "about": "Harold Grayson, about 55, Washington government official. Deliberately forgettable: average height, average build, thinning grey hair, a bland unremarkable face, round steel spectacles. A plain grey three-piece suit, plain tie, a grey overcoat over one arm and a leather briefcase in the other hand.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-leewing",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Lee Wing",
+      "src": "samples/cast/leewing.jpg",
+      "about": "Lee Wing, about 60, Chinese-American owner of a tea house in Chinatown. Slight, older man, calm watchful eyes, short grey hair, wire glasses pushed up on his forehead. A buttoned knitted cardigan over a collarless shirt, loose dark trousers, cloth slippers, hands clasped in front of him.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-sol",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Sol Abramowitz",
+      "src": "samples/cast/sol.jpg",
+      "about": "Sol Abramowitz, about 65, Jewish pawnbroker on the Bowery. Stooped, bald on top with a fringe of white hair, bushy eyebrows, a jeweller's loupe on a cord, a knitted waistcoat over a shirt with sleeve garters, dark trousers, a pencil behind his ear, wary expression.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-junkie",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Alley junkie (Prologue)",
+      "src": "samples/cast/junkie.jpg",
+      "about": "A thin, jittery young man in his twenties who sleeps in a Bowery alley. Hollow cheeks, unshaven, hair uncombed, a too-big threadbare overcoat with the collar turned up, fingerless gloves, a flat cap, worn-out shoes, shoulders hunched, hands tucked under his arms against the cold.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-ruiz",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Pvt. Eddie Ruiz",
+      "src": "samples/cast/ruiz.jpg",
+      "about": "Private Eddie Ruiz, about 22, Puerto Rican army orderly at the Governors Island hospital. Friendly open face, short dark hair, slim. A white hospital orderly's jacket buttoned to the collar over army olive-drab trousers, garrison cap, carrying a folded towel over one arm.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-gibbs",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Walter Gibbs",
+      "src": "samples/cast/gibbs.jpg",
+      "about": "Walter Gibbs, about 35, a wounded First World War veteran in withdrawal. Gaunt, sweating, haunted eyes, close-cropped hair, a scar on one cheek. Hospital-issue striped pyjamas with a grey wool army blanket clutched around his shoulders, bare feet, trembling hands.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-lulu",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "\"Lulu\"",
+      "src": "samples/cast/lulu.jpg",
+      "about": "'Lulu', about 40, the bartender at The Velvet Door speakeasy, a queer man with a theatrical flair. Tall, theatrical, pencil-thin moustache, hair slicked into a wave. A white shirt with sleeve garters, a satin waistcoat, a bow tie, a bar towel over one shoulder, polishing a cocktail glass. Show the whole figure, head to shoes, at the same size as the reference figure.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-hartley",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Mr. Hartley",
+      "src": "samples/cast/hartley.jpg",
+      "about": "Mr. Hartley, about 55, newspaper editor. Paunchy, balding, harried, an unlit cigar clamped in his mouth. A rumpled white shirt with rolled-up sleeves and a translucent celluloid newspaperman's eyeshade visor on a band around his forehead, pale grey, his eyes clearly visible beneath it, braces, a loosened tie, trousers, a sheaf of proof pages in one fist.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-zofia",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Zofia Venta",
+      "src": "samples/cast/zofia.jpg",
+      "about": "Zofia Venta, about 55, Inéz's Polish mother, from a once-wealthy family. Faded elegance, grey hair in a bun, a pearl necklace, a dark old-fashioned dress with lace at the collar, a knitted shawl around her shoulders, a rosary in one hand.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-stefan",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Stefan",
+      "src": "samples/cast/stefan.jpg",
+      "about": "Stefan, about 38, a Polish butcher in Greenpoint and Natalia's fiancé. Big, solid, decent, wary. Short fair hair, broad face, thick forearms. A white butcher's coat with a long apron over it, his Sunday cap in his hands.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-nicky",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Nicky \"Two Dimes\"",
+      "src": "samples/cast/nicky.jpg",
+      "about": "Nicky 'Two Dimes', about 30, a bookie who works for the mob. Wiry and flashy, sly grin, toothpick in his mouth. A loud checked suit, a two-tone fedora tilted to one side, a flashy tie, spats, a silver dime balanced on the thumb of one raised hand, ready to flip it.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-hale",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Mrs. Hale",
+      "src": "samples/cast/hale.jpg",
+      "about": "Mrs. Hale, about 60, a Black landlady who runs a Harlem rooming house. Dignified, sturdy, kind but firm. Grey hair in a neat bun, a plain dark dress with a white collar, a cardigan, an apron, reading glasses on a chain, a ring of keys in one hand.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "cast-dooley",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Sgt. Dooley",
+      "src": "samples/cast/dooley.jpg",
+      "about": "Sergeant Dooley, about 40, Corrigan's heavy. Very large and broad-shouldered, flat-nosed, small eyes, heavy jaw. A 1930 NYPD sergeant's uniform: long dark wool tunic with brass buttons and sergeant's chevrons, a peaked police cap, a nightstick hanging from the belt, big hands.",
+      "lookFor": [
+        "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
     {
       "id": "m0-rig-v2",
       "milestone": "m0",
