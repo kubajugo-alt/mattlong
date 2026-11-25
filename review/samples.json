@@ -13,14 +13,25 @@
       "id": "m0-rig-v2",
       "milestone": "m0",
       "kind": "rig",
-      "title": "Matt as a cut-out puppet (v2)",
+      "title": "Matt as a cut-out puppet (v3)",
       "rig": "samples/m0/rig2/rig.json",
-      "about": "Rebuilt after your notes. One side-profile picture of Matt, plus two Gemini edits of that same picture (arm removed, far leg removed), cut into head, torso, upper arm, forearm with hand, thigh and shin with shoe. Every piece keeps its place from the source picture, so 'Rest' shows the original drawing exactly; joints sit at the shoulder, elbow, neck, hip and knee. The far arm and far leg are darker copies of the near ones, as in classic cut-out animation.",
+      "about": "Rebuilt after your second round of notes. The arms are now cleanly drawn on their own and fitted back into place, so their outlines are crisp. The far arm is its own drawing, seen from the inside: palm and thumb toward us. The head is cut along the top edge of the collar and contains only hat, face and neck skin; a short skin-only neck tucks under the collar. Body, legs and the rest pose still come from the one side-profile picture.",
       "lookFor": [
-        "Rest: does it look like one drawing, with no seams?",
-        "Walk: do the knees bend in the right places, and does the planted foot stay on the floor?",
-        "Gesture: does the elbow bend cleanly, or does the sleeve break at the joint?",
-        "Known: the hidden top of the thigh is a rough fill under the jacket, and the walk is on the spot with no travel yet."
+        "Exploded and Show joints: are the edges of each piece clean?",
+        "Walk: the far arm swings behind him with the palm showing. Does it read right?",
+        "Gesture: does the elbow bend cleanly?",
+        "Known: the hidden top of the thigh is a rough fill under the jacket, and he walks on the spot."
+      ]
+    },
+    {
+      "id": "m0-rig-pieces",
+      "milestone": "m0",
+      "kind": "image",
+      "title": "Matt's puppet pieces",
+      "src": "samples/m0/matt-rig-pieces.jpg",
+      "about": "Every piece of the puppet on its own: head, torso with shoulder socket, near upper arm and forearm, far upper arm and forearm (palm side), thigh, shin with shoe. The far leg reuses the near leg, darkened.",
+      "lookFor": [
+        "Any leftover background, clothing on the head, or ragged edges?"
       ]
     },
     {

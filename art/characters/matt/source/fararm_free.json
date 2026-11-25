@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached image for a 2D cut-out animation rig. Replace everything with flat pure chroma-key green #00FF00 except one arm: draw the man's FAR arm (his left arm) alone, as this same camera would see it if his body were transparent. It hangs in exactly the same place, size and angle as the visible near arm: same grey jacket sleeve with cuff buttons, white shirt cuff, slightly bent elbow. Because we see this arm from its inner side, the hand shows its open PALM and the inside of the fingers towards the viewer, with the thumb on the front side (towards the right of the picture) and the shirt cuff opening visible. Same painted black-and-white film-noir style and light. No body, no head, no legs, nothing else, just the far arm floating on green with a clean outline.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/rig2/master2.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T01:37:46.987Z",
+  "usage": {
+    "promptTokenCount": 440,
+    "candidatesTokenCount": 1296,
+    "totalTokenCount": 1996,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 182
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 260,
+    "serviceTier": "standard"
+  }
+}

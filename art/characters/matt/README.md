@@ -1,14 +1,23 @@
 # Matt — cut-out rig source
 
-- `source/master.png`: strict side profile on chroma green (Gemini, `gemini-3-pro-image`).
-- `source/noarm.png`: Gemini edit of the master with the near arm removed.
-- `source/oneleg.png`: Gemini edit of the master with the far leg removed.
-- `source/*.json`: the prompt, model and references for each image.
-- `joints.json`: joint positions in image pixels and cut settings.
+All images are Gemini (`gemini-3-pro-image`) on chroma green; each has a `.json`
+with its prompt, model and references.
 
-Rebuild the pieces:
+- `source/master.png`: strict side profile. Sets the frame every piece is placed in.
+- `source/noarm.png`: edit of the master with the near arm removed (torso with shoulder socket).
+- `source/oneleg.png`: edit of the master with the far leg removed.
+- `source/arm_free.png`: the near arm drawn alone (crisp outline); fitted back into place.
+- `source/fararm_free.png`: the far arm drawn alone from its inner side (palm and thumb toward us), same frame as `arm_free.png`.
+- `source/leg_free.png`: the near leg drawn alone from hip to sole, including the part hidden by the jacket.
+- `joints.json`: joint positions in master pixels, the collar cut line for the head, and cut settings.
 
+Rebuild:
+
+    python3 tools/register_part.py art/characters/matt/source art/characters/matt/joints.json arm
+    python3 tools/register_part.py art/characters/matt/source art/characters/matt/joints.json leg
     python3 tools/build_rig.py art/characters/matt/source art/characters/matt/joints.json <out dir>
 
-The far arm and far leg are darker copies of the near ones. Pieces keep their
-position from the master, so the rest pose reproduces it exactly.
+The register step writes `arm.png`, `fararm.png` and `leg.png` (the free drawings
+fitted into the master frame). The head is cut along the top edge of the collar
+and holds only hat, face and neck skin, with a short skin-only neck that tucks
+under the collar. The far leg is a darker copy of the near leg.

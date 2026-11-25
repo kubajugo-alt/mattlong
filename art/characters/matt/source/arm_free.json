@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached image for a 2D cut-out animation rig. Keep ONLY the man's visible near arm: the jacket sleeve from the top of the shoulder seam down, the white shirt cuff and the hand, exactly as drawn, at exactly the same position, size and angle, with the same painting and lighting. Replace everything else (hat, head, neck, jacket body, shirt, tie, trousers, shoes) with flat pure chroma-key green #00FF00, so the arm floats alone on green. Give the arm a clean, complete outline all round, including where it used to overlap the jacket.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/rig2/master2.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T01:37:46.830Z",
+  "usage": {
+    "promptTokenCount": 388,
+    "candidatesTokenCount": 1296,
+    "totalTokenCount": 1918,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 130
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 234,
+    "serviceTier": "standard"
+  }
+}

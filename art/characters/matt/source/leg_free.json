@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached image for a 2D cut-out animation rig. Keep ONLY the man's leg: the grey trouser leg and its shoe, exactly as drawn, at the same position, size and angle, same painting and lighting. Also draw the top of the leg that is hidden under the jacket, continuing the same trouser leg straight up to the waist at the hip, with a cleanly rounded top. Remove everything else (hat, head, jacket, shirt, arm, hand) and replace it with flat pure chroma-key green #00FF00, so the complete leg from hip to shoe sole floats alone on green with a clean outline.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/rig2/oneleg.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T01:43:06.452Z",
+  "usage": {
+    "promptTokenCount": 393,
+    "candidatesTokenCount": 1257,
+    "totalTokenCount": 1815,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 135
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 165,
+    "serviceTier": "standard"
+  }
+}

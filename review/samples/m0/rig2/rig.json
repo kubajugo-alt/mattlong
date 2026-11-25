@@ -10,11 +10,11 @@
    "parent": "torso",
    "at": [
     211,
-    787
+    810
    ],
    "pivot": [
-    180,
-    40
+    160,
+    190
    ],
    "z": 0,
    "shade": 0.72
@@ -24,8 +24,8 @@
    "file": "shin.png",
    "parent": "thighBack",
    "at": [
-    155,
-    595
+    135,
+    745
    ],
    "pivot": [
     115,
@@ -36,33 +36,33 @@
   },
   {
    "id": "upperArmBack",
-   "file": "upperArm.png",
+   "file": "upperArmFar.png",
    "parent": "torso",
    "at": [
     101,
-    252
+    275
    ],
    "pivot": [
-    107,
+    97,
     112
    ],
    "z": 2,
-   "shade": 0.68
+   "shade": 0.8
   },
   {
    "id": "foreArmBack",
-   "file": "foreArm.png",
+   "file": "foreArmFar.png",
    "parent": "upperArmBack",
    "at": [
-    133,
+    123,
     464
    ],
    "pivot": [
-    98,
+    99,
     62
    ],
    "z": 3,
-   "shade": 0.68
+   "shade": 0.8
   },
   {
    "id": "thigh",
@@ -70,11 +70,11 @@
    "parent": "torso",
    "at": [
     211,
-    787
+    810
    ],
    "pivot": [
-    180,
-    40
+    160,
+    190
    ],
    "z": 4
   },
@@ -83,8 +83,8 @@
    "file": "shin.png",
    "parent": "thigh",
    "at": [
-    155,
-    595
+    135,
+    745
    ],
    "pivot": [
     115,
@@ -97,11 +97,11 @@
    "file": "head.png",
    "parent": "torso",
    "at": [
-    241,
-    57
+    246,
+    80
    ],
    "pivot": [
-    171,
+    176,
     389
    ],
    "z": 6
@@ -116,7 +116,7 @@
    ],
    "pivot": [
     211,
-    787
+    810
    ],
    "z": 7
   },
@@ -126,10 +126,10 @@
    "parent": "torso",
    "at": [
     101,
-    252
+    275
    ],
    "pivot": [
-    107,
+    97,
     112
    ],
    "z": 8
@@ -139,11 +139,11 @@
    "file": "foreArm.png",
    "parent": "upperArm",
    "at": [
-    133,
+    123,
     464
    ],
    "pivot": [
-    98,
+    99,
     62
    ],
    "z": 9
@@ -163,7 +163,7 @@
    1330
   ],
   "neck": [
-   830,
+   835,
    505
   ],
   "hip": [

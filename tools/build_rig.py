@@ -77,41 +77,77 @@ arm = fM & cap & (diff | ~fN) & (yy <= A['max_y'])
 arm = ndimage.binary_fill_holes(ndimage.binary_closing(arm, iterations=5))
 arm = largest(ndimage.binary_opening(arm, iterations=3))
 
+arm_old = arm            # the arm as painted in the master: used to clean the hand off the leg
+arm_img = M
+if os.path.exists(os.path.join(src, 'arm.png')):
+    # a cleanly drawn arm fitted into the master frame (tools/register_arm.py): crisp outline
+    arm_img = load('arm.png')
+    arm = largest(figure_mask(arm_img))
+far_img, far = None, None
+if os.path.exists(os.path.join(src, 'fararm.png')):
+    far_img = load('fararm.png')
+    far = largest(figure_mask(far_img))
+
 el = A['elbow']; rj = A['r_joint']
-upper = arm & ((side_of(el, A['shoulder'], el) <= 0) | disk(el, rj))
-# round the top of the upper arm off around the shoulder joint so it never pokes out when raised
-upper &= (yy >= A['shoulder'][1]) | disk(A['shoulder'], A['r_cap'])
-fore = arm & ((side_of(el, el, A['wrist']) >= 0) | disk(el, rj))
+
+
+def split_arm(m):
+    up = m & ((side_of(el, A['shoulder'], el) <= 0) | disk(el, rj))
+    # round the top off around the shoulder joint so it never pokes out when raised
+    up &= (yy >= A['shoulder'][1]) | disk(A['shoulder'], A['r_cap'])
+    fo = m & ((side_of(el, el, A['wrist']) >= 0) | disk(el, rj))
+    return up, fo
+
+
+upper, fore = split_arm(arm)
+if far is not None:
+    upper_far, fore_far = split_arm(far)
 
 # ---- leg: the one-leg edit, with the hand area taken from the no-arm edit
 G = J['leg']
 leg_img = L.copy()
-leg_img[arm] = N[arm]
-leg_mask = (fL & ~arm) | (fN & arm & fL)
+leg_img[arm_old] = N[arm_old]
+leg_mask = (fL & ~arm_old) | (fN & arm_old & fL)
 leg = leg_mask & (yy >= G['hem_y'] - 10)
 leg = largest(leg)
-# extend the thigh up under the jacket to the hip so it never shows a gap
-top = np.nonzero(leg.any(1))[0].min()
-row = leg[top + 4]
-xs = np.nonzero(row)[0]
-for y in range(G['hip'][1] - 40, top + 4):
-    leg[y, xs.min():xs.max() + 1] = True
-    leg_img[y, xs.min():xs.max() + 1] = leg_img[top + 4, xs.min():xs.max() + 1]
+if os.path.exists(os.path.join(src, 'leg.png')):
+    # a cleanly drawn whole leg (hip to sole) fitted into the master frame (tools/register_part.py)
+    leg_img = load('leg.png')
+    leg = largest(figure_mask(leg_img))
+else:
+    # fallback: extend the visible thigh up under the jacket to the hip
+    top = np.nonzero(leg.any(1))[0].min()
+    xs = np.nonzero(leg[top + 4])[0]
+    for y in range(G['hip'][1] - 40, top + 4):
+        leg[y, xs.min():xs.max() + 1] = True
+        leg_img[y, xs.min():xs.max() + 1] = leg_img[top + 4, xs.min():xs.max() + 1]
 kn = G['knee']; rk = G['r_joint']
 thigh = leg & ((yy <= kn[1]) | disk(kn, rk))
 shin = leg & ((yy >= kn[1]) | disk(kn, rk))
 
 # ---- torso and head from the no-arm edit
 T = J['torso']
-# cut along the collar: a line from the back of the collar to the throat
-(cx0, cy0), (cx1, cy1) = T['collar_line']
-slope = (cy1 - cy0) / (cx1 - cx0)
-collar_y = cy0 + np.clip(xx - cx0, 0, None) * slope
-torso = fN & (yy >= collar_y) & (yy < G['hem_y'] + T['hem_extra'])
-torso = largest(torso)
-head = fN & (yy < collar_y + T['neck_tuck'])
-head = largest(head)
-
+# Cut along the traced top edge of the collar (a polyline in image pixels).
+# The head keeps only what is above it (hat, face, neck skin); the torso keeps the collar and below.
+px, py = zip(*T['neck_cut'])
+cut_y = np.interp(np.arange(W), px, py)[None, :]
+torso = largest(fN & (yy >= cut_y) & (yy < G['hem_y'] + T['hem_extra']))
+head = largest(fN & (yy < cut_y))
+# Hidden neck stub: repeat the skin just above the cut downwards so the neck tucks under the
+# collar when the head turns. Only columns across the neck, and only skin, never fabric.
+head_img = N.copy()
+n0, n1 = T['neck_span']
+skin_row = np.array([N[int(cut_y[0, x]) - T['skin_above'], x] for x in range(W)], float)
+skin_row = ndimage.gaussian_filter1d(skin_row, 6, axis=0)   # soften outline streaks
+for x in range(n0, n1 + 1):
+    y = int(cut_y[0, x])
+    if not head[y - 3, x]:
+        continue
+    skin = skin_row[x]
+    if not (T['skin_range'][0] <= skin.mean() <= T['skin_range'][1]):
+        continue
+    head[y - 2:y + T['neck_tuck'], x] = True
+    head_img[y - T['skin_above']:y + T['neck_tuck'], x] = skin
 
 def save(name, mask, img, feather=1.2):
     ys, xs = np.nonzero(mask)
@@ -127,12 +163,17 @@ def save(name, mask, img, feather=1.2):
 
 off = {
     'torso': save('torso', torso, N),
-    'head': save('head', head, N),
-    'upperArm': save('upperArm', upper, M),
-    'foreArm': save('foreArm', fore, M),
+    'head': save('head', head, head_img),
+    'upperArm': save('upperArm', upper, arm_img),
+    'foreArm': save('foreArm', fore, arm_img),
     'thigh': save('thigh', thigh, leg_img),
     'shin': save('shin', shin, leg_img),
 }
+if far is not None:
+    off['upperArmFar'] = save('upperArmFar', upper_far, far_img)
+    off['foreArmFar'] = save('foreArmFar', fore_far, far_img)
+far_u = 'upperArmFar' if far is not None else 'upperArm'
+far_f = 'foreArmFar' if far is not None else 'foreArm'
 
 
 def local(p, part):
@@ -149,8 +190,8 @@ rig = {
     'parts': [
         {'id': 'thighBack', 'file': 'thigh.png', 'parent': 'torso', 'at': local(hip, 'torso'), 'pivot': local(hip, 'thigh'), 'z': 0, 'shade': 0.72},
         {'id': 'shinBack', 'file': 'shin.png', 'parent': 'thighBack', 'at': local(knee, 'thigh'), 'pivot': local(knee, 'shin'), 'z': 1, 'shade': 0.72},
-        {'id': 'upperArmBack', 'file': 'upperArm.png', 'parent': 'torso', 'at': local(S, 'torso'), 'pivot': local(S, 'upperArm'), 'z': 2, 'shade': 0.68},
-        {'id': 'foreArmBack', 'file': 'foreArm.png', 'parent': 'upperArmBack', 'at': local(E, 'upperArm'), 'pivot': local(E, 'foreArm'), 'z': 3, 'shade': 0.68},
+        {'id': 'upperArmBack', 'file': far_u + '.png', 'parent': 'torso', 'at': local(S, 'torso'), 'pivot': local(S, far_u), 'z': 2, 'shade': 0.8},
+        {'id': 'foreArmBack', 'file': far_f + '.png', 'parent': 'upperArmBack', 'at': local(E, far_u), 'pivot': local(E, far_f), 'z': 3, 'shade': 0.8},
         {'id': 'thigh', 'file': 'thigh.png', 'parent': 'torso', 'at': local(hip, 'torso'), 'pivot': local(hip, 'thigh'), 'z': 4},
         {'id': 'shin', 'file': 'shin.png', 'parent': 'thigh', 'at': local(knee, 'thigh'), 'pivot': local(knee, 'shin'), 'z': 5},
         {'id': 'head', 'file': 'head.png', 'parent': 'torso', 'at': local(neck, 'torso'), 'pivot': local(neck, 'head'), 'z': 6},
