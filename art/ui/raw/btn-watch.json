@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. An open silver pocket watch with a short chain, white dial with black numerals. Only this one object, centred, filling about 70% of the frame, seen from slightly above, with a soft contact shadow, on a completely flat pure chroma green (#00FF00) background with nothing else. It is a game interface button icon: bold clear silhouette, readable at 64 pixels.",
+  "refs": [
+    "art/rooms/final/office-day.png"
+  ],
+  "aspect": "1:1",
+  "size": "2K",
+  "created": "2026-11-25T17:03:14.981Z",
+  "usage": {
+    "promptTokenCount": 399,
+    "candidatesTokenCount": 1992,
+    "totalTokenCount": 2391,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 141
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1680
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

@@ -1,5 +1,7 @@
+<meta charset="utf-8">
 <title>Office Walk Test</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Special+Elite&display=swap">
 <style>
 /* One dark stage: the scene canvas, a row of toggles beneath. Single-theme by design (shows a noir painting). */
 :root { --bg: #111013; --panel: #1b1a1e; --ink: #e9e6ea; --muted: #9a96a0; --line: #2e2c33; --red: #e0404a; color-scheme: dark; }
@@ -18,12 +20,62 @@ label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; co
 input { accent-color: var(--red); }
 select { background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 3px; padding: 5px 8px; font: inherit; }
 button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+/* ---- game interface (art painted by Gemini: art/ui/) ---- */
+.stage { container-type: inline-size; }
+.hud { position: absolute; inset: 0; pointer-events: none; font-family: "Jost", system-ui, sans-serif; }
+.hud button { pointer-events: auto; }
+.hb { position: absolute; top: 1.4cqw; width: max(44px, 6.2cqw); height: max(44px, 6.2cqw); padding: .4cqw; border: 0; background: radial-gradient(closest-side, rgba(0,0,0,.55), rgba(0,0,0,0)); cursor: pointer; border-radius: 50%; transition: transform .15s; }
+.hb img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .3cqw .4cqw rgba(0,0,0,.7)); }
+.hb:hover, .hb[aria-pressed="true"] { transform: scale(1.08); }
+.hb[aria-pressed="true"] img { filter: drop-shadow(0 0 .8cqw rgba(255,255,255,.75)); }
+#bInv { left: 1.4cqw } #bNote { left: 8.6cqw } #bTorch { left: 15.8cqw } #bMap { right: 8.6cqw } #bMenu { right: 1.4cqw }
+.tip { position: absolute; transform: translate(-50%, 0); background: rgba(12,12,14,.86); color: #f1eee8; font: 500 max(12px, 1.15cqw)/1 "Jost", sans-serif; letter-spacing: .04em; padding: .5cqw .9cqw; border-radius: 2px; white-space: nowrap; pointer-events: none; }
+/* inventory: a strip of 1930 film slides up from the bottom edge, one item per frame */
+.inv { position: absolute; left: 50%; bottom: 0; width: max(32cqw, 430px); aspect-ratio: 1600 / 473; transform: translate(-50%, 110%); transition: transform .35s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
+.inv.open { transform: translate(-50%, 15%); pointer-events: auto; }
+.inv > img { width: 100%; height: 100%; filter: drop-shadow(0 -.4cqw 1.2cqw rgba(0,0,0,.7)); }
+.slot { position: absolute; top: 16%; height: 66%; width: 10.5%; border: 0; padding: 4% .6%; background: none; cursor: pointer; }
+.slot img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .2cqw .3cqw rgba(0,0,0,.9)); transition: transform .12s; }
+.slot:hover img { transform: scale(1.1); }
+.slot[aria-pressed="true"] { background: rgba(255,255,255,.14); border-radius: .3cqw; }
+.inv.open ~ .cap { bottom: max(10cqw, 120px); }
+/* caption band: Matt's look line / subtitles */
+.cap { position: absolute; left: 50%; bottom: 3cqw; transform: translateX(-50%); max-width: 70cqw; text-align: center; color: #f4f1ea; font: 500 max(14px, 1.7cqw)/1.35 "Jost", sans-serif; text-shadow: 0 0 .5cqw #000, 0 0 1cqw #000; opacity: 0; transition: opacity .3s; pointer-events: none; }
+.cap.on { opacity: 1 }
+.cap b { display: block; font: 600 max(11px, 1cqw)/1 "Jost"; letter-spacing: .18em; text-transform: uppercase; color: #bdb8b0; margin-bottom: .5cqw; }
+/* dialogue choices: plain lines low on the screen over a soft shadow, like subtitles; the scene stays visible */
+.dlg { position: absolute; left: 0; right: 0; bottom: 0; padding: 6cqw 0 2.2cqw; background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.45) 55%, rgba(0,0,0,0)); display: none; pointer-events: auto; }
+.dlg.open { display: block }
+.dlg ol { margin: 0 auto; padding: 0; width: min(70cqw, 100%); list-style: none; display: grid; gap: .3cqw; }
+.dlg li button { all: unset; cursor: pointer; display: flex; align-items: center; gap: .8cqw; font: 500 max(14px, 1.6cqw)/1.3 "Jost", system-ui, sans-serif; color: #b9b4ab; text-shadow: 0 0 .5cqw #000; padding: .2cqw 0; transition: color .12s; }
+.dlg li button:hover, .dlg li button:focus-visible { color: #fff; }
+.dlg li button::before { content: "–"; color: #77736c; }
+.dlg .mask { width: 1.7cqw; height: 1.7cqw; object-fit: contain; flex: none; opacity: .85; filter: invert(1) drop-shadow(0 0 .3cqw #000); }
+/* title card */
+.card { position: absolute; inset: 0; background: url(ui/card-frame.webp) center / cover; display: none; place-items: center; text-align: center; color: #e9e5dc; pointer-events: auto; cursor: pointer; }
+.card.open { display: grid }
+.card h2 { font: 400 max(13px, 1.4cqw)/1 "Jost"; letter-spacing: .5em; text-transform: uppercase; margin: 0 0 1.4cqw; color: #a9a49b; }
+.card p { font: 500 max(26px, 4.4cqw)/1 "Jost"; letter-spacing: .12em; text-transform: uppercase; color: #f1ede4; margin: 0; max-width: none; }
+.card small { display: block; margin-top: 1.6cqw; font: italic 400 max(12px, 1.3cqw)/1 "Jost"; color: #a9a49b; letter-spacing: .1em; }
 #status { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
 </style>
 <div class="wrap">
   <h1>Prologue rooms: walk, depth, occlusion and shadow test</h1>
   <p>Click or tap the floor and Matt walks there, around the furniture. His size follows each room's depth; furniture in front of him hides him; his shadow falls away from the light, only on bare floor. Click a door or the end of a street to walk through to the next room.</p>
-  <div class="stage"><canvas id="c" aria-label="Matt's office scene; click the floor to walk"></canvas></div>
+  <div class="stage"><canvas id="c" aria-label="Matt's office scene; click the floor to walk"></canvas>
+    <div class="hud">
+      <button class="hb" id="bInv" aria-pressed="false" aria-label="Inventory" data-tip="Inventory (I)"><img alt="" src="ui/btn-fedora.webp"></button>
+      <button class="hb" id="bNote" aria-label="Notebook" data-tip="Notebook"><img alt="" src="ui/item-notebook.webp"></button>
+      <button class="hb" id="bTorch" aria-pressed="false" aria-label="Show hotspots" data-tip="Show what I can use"><img alt="" src="ui/btn-torch.webp"></button>
+      <button class="hb" id="bMap" aria-label="City map" data-tip="City map"><img alt="" src="ui/btn-map.webp"></button>
+      <button class="hb" id="bMenu" aria-label="Menu" data-tip="Menu"><img alt="" src="ui/btn-watch.webp"></button>
+      <div class="inv" id="inv"><img alt="" src="ui/panel-filmstrip.webp"></div>
+      <div class="cap" id="cap" role="status"></div>
+      <div class="dlg" id="dlg"><ol id="choices"></ol></div>
+      <div class="card" id="card"><div><h2>Prologue</h2><p>Rent Day</p><small>Doyers Street · Thursday, 20 November 1930</small></div></div>
+    </div>
+  </div>
   <div class="bar">
     <label for="room">Room
       <select id="room">
@@ -45,6 +97,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     <label><input type="checkbox" id="showBase"> Object baselines</label>
     <label><input type="checkbox" id="showLights"> Light sources</label>
     <span class="seg" role="group" aria-label="Play a line"><button type="button" data-say="matt">Matt speaks</button><button type="button" data-say="kate">Kate</button><button type="button" data-say="pete">Pete</button><button type="button" data-say="inez">Inéz</button><button type="button" data-say="lee">Lee</button><button type="button" data-say="sol">Sol</button><button type="button" data-say="junkie">Junkie</button></span>
+    <span class="seg" role="group" aria-label="Interface previews"><button type="button" id="pDlg">Dialogue choices</button><button type="button" id="pCard">Title card</button></span>
     <span id="status">Loading…</span>
   </div>
 </div>
@@ -708,9 +761,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const showHot = document.getElementById('showHot').checked;
     if (showHot || hover) {
       ctx.save(); ctx.lineJoin = 'round';
-      if (showHot) { ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,210,74,.55)'; for (const h of S.hot) h.paths.forEach(p => ctx.stroke(p)); }
-      if (hover) { ctx.lineWidth = 5; ctx.strokeStyle = '#ffd24a'; ctx.fillStyle = 'rgba(255,210,74,.12)'; hover.paths.forEach(p => { ctx.fill(p); ctx.stroke(p); });
-        ctx.font = '600 34px system-ui, sans-serif'; const tw = ctx.measureText(hover.name).width;
+      if (showHot) { ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,255,255,.45)'; for (const h of S.hot) h.paths.forEach(p => ctx.stroke(p)); }
+      if (hover) { ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.fillStyle = 'rgba(255,255,255,.10)'; hover.paths.forEach(p => { ctx.fill(p); ctx.stroke(p); });
+        ctx.font = '500 34px Jost, system-ui, sans-serif'; const tw = ctx.measureText(hover.name).width;
         const lx = Math.min(W - tw - 30, Math.max(10, (hover.bbox[0] + hover.bbox[2]) / 2 - tw / 2)), ly = Math.max(50, hover.bbox[1] - 18);
         ctx.fillStyle = 'rgba(10,10,12,.8)'; ctx.fillRect(lx - 12, ly - 38, tw + 24, 50); ctx.fillStyle = '#f2efe9'; ctx.fillText(hover.name, lx, ly); }
       ctx.restore();
@@ -802,6 +855,56 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     a.onended = () => { if (TALK.audio === a) TALK.who = null; };
     a.play().catch(() => { TALK.who = null; status.textContent = 'Could not play the line'; });
   }
+
+  // ---- game interface preview: film-strip inventory, notebook, torch, map, menu, captions, dialogue choices, title card
+  const ITEMS = [
+    ['eviction-notice', 'Eviction notice', "Love letter from the landlord. He always writes when the money's late."],
+    ['flask', 'Hip flask', 'Half full. Or half empty, depending on the hour.'],
+    ['cigarettes', "Pete's cigarettes", "Bowerys. Pete smokes them for the name. Says it's research."],
+    ['pawn-ticket', 'Pawn ticket 4417', 'A two-bit card that says somebody else owns a piece of your life.'],
+    ['account-book', "Lee Wing's account book", "Thirty years of names. I don't read Chinese, and I'm not going to learn tonight."],
+    ['money', 'Fifty dollars', "Fifty bucks. The rent, the grocer, and a week of not answering the door."],
+    ['michael-photo', 'Photo of Michael', 'Captain, Medical Corps. The kind of jaw they put on recruiting posters.'],
+    ['key', "Michael's door key", 'A key to a door nobody has answered in nine days.'],
+  ];
+  const $ = (id) => document.getElementById(id);
+  const slots = $('inv'), cap = $('cap'); let capT = 0, picked = null;
+  const FRAME_X = [1.35, 13.79, 26.16, 38.51, 50.79, 63.07, 75.38, 87.75];   // % across the film strip, measured from the painted frames
+  function caption(who, text, ms = 4200) { cap.innerHTML = ''; const b = document.createElement('b'); b.textContent = who; cap.append(b, text); cap.classList.add('on'); clearTimeout(capT); capT = setTimeout(() => cap.classList.remove('on'), ms); }
+  for (const [k, [id, name, look]] of ITEMS.entries()) {
+    const b = document.createElement('button'); b.className = 'slot'; b.style.left = FRAME_X[k] + '%'; b.setAttribute('aria-label', name); b.dataset.tip = name; b.setAttribute('aria-pressed', 'false');
+    const im = document.createElement('img'); im.alt = ''; im.src = 'ui/item-' + id + '.webp'; b.append(im);
+    b.addEventListener('click', () => { picked = picked === id ? null : id; slots.querySelectorAll('.slot').forEach(x => x.setAttribute('aria-pressed', x === b && picked ? 'true' : 'false'));
+      if (picked) caption('Matt', look); });
+    b.addEventListener('contextmenu', (e) => { e.preventDefault(); caption('Matt', look); });
+    slots.append(b);
+  }
+  const inv = $('inv'), bInv = $('bInv'), bTorch = $('bTorch'), hot = $('showHot');
+  const setInv = (on) => { inv.classList.toggle('open', on); bInv.setAttribute('aria-pressed', on); };
+  bInv.addEventListener('click', () => setInv(!inv.classList.contains('open')));
+  bTorch.addEventListener('click', () => { hot.checked = !hot.checked; bTorch.setAttribute('aria-pressed', hot.checked); });
+  hot.addEventListener('change', () => bTorch.setAttribute('aria-pressed', hot.checked));
+  $('bMap').addEventListener('click', () => caption('Matt', 'Doyers Street and the Bowery. The rest of the city can wait till I can afford it.'));
+  $('bNote').addEventListener('click', () => caption('Matt', 'Where I write down what people tell me, and then what they meant. Opens at the end of the Prologue.'));
+  $('bMenu').addEventListener('click', () => caption('Menu', 'Save, load and settings go here.'));
+  cv.addEventListener('pointerdown', () => setInv(false));
+  // tooltips for buttons and items
+  const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; document.querySelector('.hud').append(tip);
+  document.querySelector('.hud').addEventListener('pointerover', (e) => { const t = e.target.closest('[data-tip]'); if (!t) { tip.hidden = true; return; }
+    const r = t.getBoundingClientRect(), h = document.querySelector('.hud').getBoundingClientRect(); tip.textContent = t.dataset.tip; tip.hidden = false;
+    tip.style.left = Math.max(tip.offsetWidth / 2 + 6, Math.min(h.width - tip.offsetWidth / 2 - 6, r.left + r.width / 2 - h.left)) + 'px'; tip.style.top = (r.bottom - h.top + 4) + 'px'; });
+  document.querySelector('.hud').addEventListener('pointerout', (e) => { if (!e.relatedTarget || !e.relatedTarget.closest || !e.relatedTarget.closest('[data-tip]')) tip.hidden = true; });
+  // dialogue choices (layout sample; the real lines come from the script)
+  const SAMPLE = [['Got a smoke, Pete?'], ["How's the promotion, Kate?"], ['Long night. Leave it there.', true], ["That's all. I've got rent to find."]];
+  $('pDlg').addEventListener('click', () => { const ol = $('choices'); ol.innerHTML = '';
+    for (const [t, mask] of SAMPLE) { const li = document.createElement('li'), b = document.createElement('button'); b.textContent = t;
+      if (mask) { const m = document.createElement('img'); m.className = 'mask'; m.src = 'ui/icon-mask.webp'; m.alt = 'Mask choice'; m.title = 'A Mask choice: guarded or honest'; b.append(m); }
+      b.addEventListener('click', () => { $('dlg').classList.remove('open'); caption('Matt', t); }); li.append(b); ol.append(li); }
+    $('dlg').classList.add('open'); });
+  $('pCard').addEventListener('click', () => $('card').classList.add('open'));
+  $('card').addEventListener('click', () => $('card').classList.remove('open'));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { setInv(false); $('dlg').classList.remove('open'); $('card').classList.remove('open'); }
+    if (e.key === 'i' || e.key === 'I') setInv(!inv.classList.contains('open')); if (e.key === 'Tab') { e.preventDefault(); bTorch.click(); } });
   document.querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', () => say(b.dataset.say)));
   function mouthOf(id) {
     if (TALK.who !== id || !TALK.audio) return 'X';

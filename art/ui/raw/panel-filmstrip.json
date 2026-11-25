@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. A long, perfectly straight horizontal strip of old 1930 35mm motion-picture film running edge to edge across the whole frame width, seen flat from the front: dark near-black celluloid base, a row of small rounded rectangular sprocket holes along the top edge and along the bottom edge, and between them exactly eight equal, evenly spaced, EMPTY dark grey picture frames with thin slightly lighter borders, faint scratches and dust. The strip is about one third of the image height, vertically centred, on a completely flat pure chroma green (#00FF00) background above and below.",
+  "refs": [
+    "art/rooms/final/office-day.png"
+  ],
+  "aspect": "21:9",
+  "size": "2K",
+  "created": "2026-11-25T17:11:25.402Z",
+  "usage": {
+    "promptTokenCount": 440,
+    "candidatesTokenCount": 2043,
+    "totalTokenCount": 2483,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 182
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1680
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

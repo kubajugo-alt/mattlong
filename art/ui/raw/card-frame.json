@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. An empty Art Deco title card frame like a 1930 film intertitle: thin double border lines with stepped geometric corner ornaments on a deep charcoal background with subtle film grain, the centre blank and dark for text.",
+  "refs": [
+    "art/rooms/final/office-day.png"
+  ],
+  "aspect": "16:9",
+  "size": "2K",
+  "created": "2026-11-25T17:02:53.815Z",
+  "usage": {
+    "promptTokenCount": 362,
+    "candidatesTokenCount": 1966,
+    "totalTokenCount": 2328,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 104
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1680
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

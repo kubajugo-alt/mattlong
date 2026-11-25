@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. A small 1930 pawn ticket: a stiff card stub with a perforated torn edge, a large printed number 4417, the words S. ABRAMOWITZ LOANS BOWERY printed in small capitals, and a faint pencil scribble. Only this one object, centred, filling about 70% of the frame, seen from slightly above, with a soft contact shadow, on a completely flat pure chroma green (#00FF00) background with nothing else. It is a game inventory icon: clear silhouette, readable when small.",
+  "refs": [
+    "art/rooms/final/office-day.png"
+  ],
+  "aspect": "1:1",
+  "size": "2K",
+  "created": "2026-11-25T17:02:03.657Z",
+  "usage": {
+    "promptTokenCount": 431,
+    "candidatesTokenCount": 2023,
+    "totalTokenCount": 2454,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 173
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1680
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

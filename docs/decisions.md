@@ -21,6 +21,14 @@ the bible disagree, this file wins.
   Natalia, Julian). (Resolves the bible's explicitness question.)
 - **First milestone:** the Prologue (P1–P5).
 
+- **Interface (25 Nov 2026, replaces the bible's fedora pop-up):** inventory is a slim
+  strip of 1930 film that slides up from the bottom edge, one item per frame; the
+  notebook is its own button (journal), not an inventory item. Dialogue choices are
+  plain subtitle-style lines low on the screen over a soft shadow, the scene stays
+  visible; Mask choices carry a small half-mask icon. UI type is Jost (Futura-like).
+  Hotspot highlight is white, not coloured (red stays reserved for the two accents).
+  All interface art is painted by Gemini: `art/ui/` (prompts in `art/ui/raw/*.json`).
+
 ## Story fixes
 
 1. **Why the bag waits until 4.2.** After Pete's story runs (3.5), Brancato's men
