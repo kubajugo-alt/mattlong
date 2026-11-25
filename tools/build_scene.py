@@ -79,6 +79,36 @@ for name, color in L['objects'].items():
         continue
     ys, xs = np.nonzero(m)
     walk[ys.min():ys.max() + 1, xs.min():xs.max() + 1] = False
+# ---- FLOOR PLAN: solid furniture footprints in metres, and Matt's body radius
+# Camera: eye 1.6 m above the floor, horizon at L['horizon'], focal length f px (from an assumed
+# horizontal field of view). A floor pixel (x, y) is at depth Z = f*1.6/(y - hor) and X = (x - W/2)*Z/f.
+fov = L.get('fov_deg', 60.0)
+f_px = (W / 2) / np.tan(np.radians(fov / 2))
+hor = L['horizon'] * H
+def to_floor(x, y):
+    Z = f_px * 1.6 / np.maximum(y - hor, 1e-3)
+    return (x - W / 2) * Z / f_px, Z
+footprints = []
+depths = L.get('depth_m', {})
+for name, color in L['objects'].items():
+    if name not in depths:
+        continue
+    m = mask_of(color)
+    if m.sum() < 400:
+        continue
+    ys, xs = np.nonzero(m)
+    base = ys.max()
+    X0, Zf = to_floor(xs.min(), base); X1, _ = to_floor(xs.max(), base)
+    footprints.append({'name': name, 'x0': float(X0), 'x1': float(X1), 'z0': float(Zf), 'z1': float(Zf + depths[name])})
+radius = L.get('body_radius_m', 0.25)
+yy_, xx_ = np.mgrid[0:H, 0:W]
+FX, FZ = to_floor(xx_.astype(float), yy_.astype(float))
+blocked = np.zeros((H, W), bool)
+for fp in footprints:
+    dx = np.maximum(np.maximum(fp['x0'] - FX, FX - fp['x1']), 0)
+    dz = np.maximum(np.maximum(fp['z0'] - FZ, FZ - fp['z1']), 0)
+    blocked |= np.hypot(dx, dz) < radius
+walk &= ~blocked
 # hand-marked areas that are not floor (things the label map missed), as fractions of the image
 for x0, y0, x1, y1 in L.get('exclude', []):
     walk[int(y0 * H):int(y1 * H), int(x0 * W):int(x1 * W)] = False
@@ -93,6 +123,6 @@ small.save(os.path.join(out, 'walk.png'))
 Image.fromarray((floor * 255).astype(np.uint8)).resize((W // 4, H // 4), Image.NEAREST).save(os.path.join(out, 'floor.png'))
 scene = {'size': [W, H], 'horizon': L['horizon'], 'eye_m': 1.6,
          'scale_rule': 'height_px = (feet_y - horizon*H) * height_m / eye_m',
-         'walk': {'file': 'walk.png', 'scale': 4}, 'floor': {'file': 'floor.png', 'scale': 4}, 'lights': L.get('lights', []), 'objects': sorted(objects, key=lambda o: o['baseline']), 'exits': exits}
+         'walk': {'file': 'walk.png', 'scale': 4}, 'camera': {'f_px': float(f_px), 'eye_m': 1.6}, 'footprints': footprints, 'body_radius_m': radius, 'floor': {'file': 'floor.png', 'scale': 4}, 'lights': L.get('lights', []), 'spots': L.get('spots', {}), 'objects': sorted(objects, key=lambda o: o['baseline']), 'exits': exits}
 json.dump(scene, open(os.path.join(out, 'scene.json'), 'w'), indent=1)
 print(json.dumps({o['name']: o['baseline'] for o in objects}), 'walkable px', int(walk.sum()), 'exits', list(exits))

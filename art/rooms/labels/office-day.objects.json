@@ -1,0 +1,676 @@
+{
+ "image": "office-day.png",
+ "size": [
+  2752,
+  1536
+ ],
+ "model": "gemini-3.5-flash",
+ "objects": [
+  {
+   "id": "fedora-hat",
+   "label": "fedora hat",
+   "also_seen_as": [
+    "hat on hook"
+   ],
+   "bbox": [
+    0,
+    366,
+    173,
+    577
+   ],
+   "area_px": 25611
+  },
+  {
+   "id": "side-table",
+   "label": "side table",
+   "also_seen_as": [
+    "small table"
+   ],
+   "bbox": [
+    142,
+    1086,
+    335,
+    1418
+   ],
+   "area_px": 37933
+  },
+  {
+   "id": "radio",
+   "label": "radio",
+   "also_seen_as": [],
+   "bbox": [
+    123,
+    970,
+    250,
+    1106
+   ],
+   "area_px": 9506
+  },
+  {
+   "id": "newspaper-stack-1",
+   "label": "newspaper stack 1",
+   "also_seen_as": [],
+   "bbox": [
+    36,
+    1293,
+    274,
+    1398
+   ],
+   "area_px": 8690
+  },
+  {
+   "id": "evidence-board",
+   "label": "evidence board",
+   "also_seen_as": [
+    "corkboard"
+   ],
+   "bbox": [
+    183,
+    261,
+    548,
+    788
+   ],
+   "area_px": 152427
+  },
+  {
+   "id": "sofa",
+   "label": "sofa",
+   "also_seen_as": [],
+   "bbox": [
+    223,
+    972,
+    562,
+    1359
+   ],
+   "area_px": 81615
+  },
+  {
+   "id": "newspaper-stack-2",
+   "label": "newspaper stack 2",
+   "also_seen_as": [],
+   "bbox": [
+    348,
+    1341,
+    540,
+    1470
+   ],
+   "area_px": 15431
+  },
+  {
+   "id": "filing-cabinet",
+   "label": "filing cabinet",
+   "also_seen_as": [],
+   "bbox": [
+    612,
+    669,
+    788,
+    950
+   ],
+   "area_px": 43525
+  },
+  {
+   "id": "paper-stacks",
+   "label": "paper stacks",
+   "also_seen_as": [
+    "papers on filing cabinet"
+   ],
+   "bbox": [
+    635,
+    604,
+    812,
+    672
+   ],
+   "area_px": 12036
+  },
+  {
+   "id": "notes-on-cabinet",
+   "label": "notes on cabinet",
+   "also_seen_as": [
+    "notes on filing cabinet"
+   ],
+   "bbox": [
+    700,
+    729,
+    762,
+    794
+   ],
+   "area_px": 1565
+  },
+  {
+   "id": "mug",
+   "label": "mug",
+   "also_seen_as": [
+    "mug on filing cabinet"
+   ],
+   "bbox": [
+    729,
+    631,
+    776,
+    672
+   ],
+   "area_px": 1927
+  },
+  {
+   "id": "filing-cabinet-drawer-1",
+   "label": "filing cabinet drawer 1",
+   "also_seen_as": [],
+   "bbox": [
+    785,
+    674,
+    840,
+    784
+   ],
+   "area_px": 5738
+  },
+  {
+   "id": "filing-cabinet-drawer-2",
+   "label": "filing cabinet drawer 2",
+   "also_seen_as": [],
+   "bbox": [
+    825,
+    786,
+    869,
+    885
+   ],
+   "area_px": 3875
+  },
+  {
+   "id": "envelope-on-floor",
+   "label": "envelope on floor",
+   "also_seen_as": [
+    "envelope"
+   ],
+   "bbox": [
+    897,
+    1105,
+    1017,
+    1140
+   ],
+   "area_px": 2082
+  },
+  {
+   "id": "door",
+   "label": "door",
+   "also_seen_as": [],
+   "bbox": [
+    902,
+    369,
+    1171,
+    1074
+   ],
+   "area_px": 64710
+  },
+  {
+   "id": "transom-window",
+   "label": "transom window",
+   "also_seen_as": [],
+   "bbox": [
+    952,
+    369,
+    1171,
+    441
+   ],
+   "area_px": 15767
+  },
+  {
+   "id": "doorknob",
+   "label": "doorknob",
+   "also_seen_as": [
+    "door handle"
+   ],
+   "bbox": [
+    1155,
+    774,
+    1180,
+    837
+   ],
+   "area_px": 1575
+  },
+  {
+   "id": "light-switch",
+   "label": "light switch",
+   "also_seen_as": [],
+   "bbox": [
+    1235,
+    698,
+    1260,
+    740
+   ],
+   "area_px": 997
+  },
+  {
+   "id": "coat-rack",
+   "label": "coat rack",
+   "also_seen_as": [],
+   "bbox": [
+    1260,
+    511,
+    1398,
+    1103
+   ],
+   "area_px": 81696
+  },
+  {
+   "id": "coat-stand",
+   "label": "coat stand",
+   "also_seen_as": [],
+   "bbox": [
+    1282,
+    516,
+    1380,
+    626
+   ],
+   "area_px": 10780
+  },
+  {
+   "id": "ceiling-lamp",
+   "label": "ceiling lamp",
+   "also_seen_as": [
+    "pendant light"
+   ],
+   "bbox": [
+    1287,
+    53,
+    1468,
+    349
+   ],
+   "area_px": 14491
+  },
+  {
+   "id": "trench-coat",
+   "label": "trench coat",
+   "also_seen_as": [],
+   "bbox": [
+    1302,
+    599,
+    1404,
+    980
+   ],
+   "area_px": 38862
+  },
+  {
+   "id": "desk",
+   "label": "desk",
+   "also_seen_as": [],
+   "bbox": [
+    1433,
+    889,
+    2127,
+    1243
+   ],
+   "area_px": 198404
+  },
+  {
+   "id": "framed-certificate-1",
+   "label": "framed certificate 1",
+   "also_seen_as": [],
+   "bbox": [
+    1442,
+    476,
+    1593,
+    588
+   ],
+   "area_px": 16746
+  },
+  {
+   "id": "rotary-phone",
+   "label": "rotary phone",
+   "also_seen_as": [
+    "rotary telephone",
+    "telephone"
+   ],
+   "bbox": [
+    1448,
+    843,
+    1563,
+    914
+   ],
+   "area_px": 8165
+  },
+  {
+   "id": "framed-certificate-2",
+   "label": "framed certificate 2",
+   "also_seen_as": [
+    "framed certificate"
+   ],
+   "bbox": [
+    1467,
+    623,
+    1569,
+    702
+   ],
+   "area_px": 8056
+  },
+  {
+   "id": "ashtray",
+   "label": "ashtray",
+   "also_seen_as": [],
+   "bbox": [
+    1582,
+    885,
+    1655,
+    915
+   ],
+   "area_px": 2190
+  },
+  {
+   "id": "bookshelf",
+   "label": "bookshelf",
+   "also_seen_as": [],
+   "bbox": [
+    1643,
+    446,
+    2044,
+    890
+   ],
+   "area_px": 178044
+  },
+  {
+   "id": "desk-chair",
+   "label": "desk chair",
+   "also_seen_as": [
+    "office chair"
+   ],
+   "bbox": [
+    1657,
+    774,
+    1835,
+    889
+   ],
+   "area_px": 20470
+  },
+  {
+   "id": "books-stack-on-bookcase",
+   "label": "books stack on bookcase",
+   "also_seen_as": [
+    "stacked books top shelf"
+   ],
+   "bbox": [
+    1677,
+    404,
+    1804,
+    450
+   ],
+   "area_px": 5842
+  },
+  {
+   "id": "binders-shelf-1",
+   "label": "binders shelf 1",
+   "also_seen_as": [
+    "binders top shelf"
+   ],
+   "bbox": [
+    1683,
+    489,
+    1708,
+    587
+   ],
+   "area_px": 2371
+  },
+  {
+   "id": "binders-shelf-2",
+   "label": "binders shelf 2",
+   "also_seen_as": [
+    "binders middle shelf"
+   ],
+   "bbox": [
+    1686,
+    627,
+    1730,
+    670
+   ],
+   "area_px": 1480
+  },
+  {
+   "id": "binders-shelf-3",
+   "label": "binders shelf 3",
+   "also_seen_as": [
+    "binders bottom shelf",
+    "binders on middle shelf",
+    "bottom shelf binders"
+   ],
+   "bbox": [
+    1683,
+    733,
+    1849,
+    835
+   ],
+   "area_px": 16932
+  },
+  {
+   "id": "open-notepad",
+   "label": "open notepad",
+   "also_seen_as": [
+    "open case file",
+    "open document",
+    "open notebook"
+   ],
+   "bbox": [
+    1694,
+    880,
+    1813,
+    902
+   ],
+   "area_px": 1391
+  },
+  {
+   "id": "paper-stack-shelf-1",
+   "label": "paper stack shelf 1",
+   "also_seen_as": [
+    "papers top shelf"
+   ],
+   "bbox": [
+    1804,
+    542,
+    1908,
+    588
+   ],
+   "area_px": 4784
+  },
+  {
+   "id": "small-box",
+   "label": "small box",
+   "also_seen_as": [
+    "archive box 1"
+   ],
+   "bbox": [
+    1809,
+    404,
+    1898,
+    449
+   ],
+   "area_px": 4005
+  },
+  {
+   "id": "paper-stack-shelf-2",
+   "label": "paper stack shelf 2",
+   "also_seen_as": [
+    "papers middle shelf"
+   ],
+   "bbox": [
+    1819,
+    666,
+    1923,
+    710
+   ],
+   "area_px": 4576
+  },
+  {
+   "id": "drinking-glass",
+   "label": "drinking glass",
+   "also_seen_as": [
+    "glass"
+   ],
+   "bbox": [
+    1841,
+    870,
+    1875,
+    910
+   ],
+   "area_px": 1360
+  },
+  {
+   "id": "whiskey-bottle",
+   "label": "whiskey bottle",
+   "also_seen_as": [],
+   "bbox": [
+    1882,
+    792,
+    1929,
+    914
+   ],
+   "area_px": 5734
+  },
+  {
+   "id": "archive-box-2",
+   "label": "archive box 2",
+   "also_seen_as": [],
+   "bbox": [
+    1919,
+    380,
+    2006,
+    447
+   ],
+   "area_px": 5777
+  },
+  {
+   "id": "binders-top-shelf-right",
+   "label": "binders top shelf right",
+   "also_seen_as": [],
+   "bbox": [
+    1927,
+    507,
+    2014,
+    549
+   ],
+   "area_px": 1798
+  },
+  {
+   "id": "binders-middle-shelf-right",
+   "label": "binders middle shelf right",
+   "also_seen_as": [],
+   "bbox": [
+    1919,
+    609,
+    2020,
+    712
+   ],
+   "area_px": 10403
+  },
+  {
+   "id": "paper-stack-on-desk",
+   "label": "paper stack on desk",
+   "also_seen_as": [
+    "stack of papers",
+    "stack of papers on desk"
+   ],
+   "bbox": [
+    1925,
+    854,
+    2069,
+    904
+   ],
+   "area_px": 7200
+  },
+  {
+   "id": "desk-lamp",
+   "label": "desk lamp",
+   "also_seen_as": [],
+   "bbox": [
+    1940,
+    746,
+    2062,
+    914
+   ],
+   "area_px": 20496
+  },
+  {
+   "id": "radiator",
+   "label": "radiator",
+   "also_seen_as": [],
+   "bbox": [
+    2173,
+    939,
+    2449,
+    1341
+   ],
+   "area_px": 110952
+  },
+  {
+   "id": "window",
+   "label": "window",
+   "also_seen_as": [],
+   "bbox": [
+    2227,
+    171,
+    2467,
+    923
+   ],
+   "area_px": 136644
+  },
+  {
+   "id": "window-blinds",
+   "label": "window blinds",
+   "also_seen_as": [],
+   "bbox": [
+    2272,
+    175,
+    2467,
+    669
+   ],
+   "area_px": 76685
+  },
+  {
+   "id": "paper-on-window-sill",
+   "label": "paper on window sill",
+   "also_seen_as": [],
+   "bbox": [
+    2267,
+    878,
+    2335,
+    894
+   ],
+   "area_px": 1088
+  },
+  {
+   "id": "envelope",
+   "label": "envelope",
+   "also_seen_as": [],
+   "bbox": [
+    2352,
+    1356,
+    2483,
+    1413
+   ],
+   "area_px": 4787
+  },
+  {
+   "id": "newspaper-stack",
+   "label": "newspaper stack",
+   "also_seen_as": [
+    "newspaper stack 3"
+   ],
+   "bbox": [
+    2481,
+    1275,
+    2752,
+    1368
+   ],
+   "area_px": 14809
+  },
+  {
+   "id": "framed-diploma",
+   "label": "framed diploma",
+   "also_seen_as": [
+    "framed document"
+   ],
+   "bbox": [
+    2553,
+    386,
+    2693,
+    655
+   ],
+   "area_px": 33793
+  }
+ ]
+}

@@ -1,0 +1,122 @@
+{
+ "walk3-matt-side": {
+  "motion_prompt": "walking in place in strict side profile facing right the whole time, upright posture with a straight back and straight neck, head held up, chin level, shoulders back, a confident purposeful stride",
+  "model": "griffin-hd",
+  "locked_end_frame": true,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 544,
+  "frame_height": 1042,
+  "loop_score": 0.8438
+ },
+ "walk3-matt-front": {
+  "motion_prompt": "walking in place towards the camera, facing the camera squarely the whole time, upright posture with a straight back and straight neck, head held up, chin level, shoulders back, a confident purposeful stride",
+  "model": "griffin-hd",
+  "locked_end_frame": true,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 488,
+  "frame_height": 1043,
+  "loop_score": 0.6763
+ },
+ "walk3-matt-back": {
+  "motion_prompt": "walking in place away from the camera, back to the camera the whole time, upright posture with a straight back and straight neck, head held up, chin level, shoulders back, a confident purposeful stride",
+  "model": "griffin-hd",
+  "locked_end_frame": true,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 385,
+  "frame_height": 1049,
+  "loop_score": 0.9123
+ },
+ "walk3-matt-towel-side": {
+  "motion_prompt": "walking in place in strict side profile facing right the whole time, upright posture with a straight back and straight neck, head held up, chin level, shoulders back, a confident purposeful stride",
+  "model": "griffin-hd",
+  "locked_end_frame": true,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 489,
+  "frame_height": 1029,
+  "loop_score": 0.8486
+ },
+ "walk3-matt-towel-front": {
+  "motion_prompt": "walking in place towards the camera, facing the camera squarely the whole time, upright posture with a straight back and straight neck, head held up, chin level, shoulders back, a confident purposeful stride",
+  "model": "griffin-hd",
+  "locked_end_frame": true,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 463,
+  "frame_height": 1042,
+  "loop_score": 0.9056
+ },
+ "walk3-matt-towel-back": {
+  "motion_prompt": "walking in place away from the camera, back to the camera the whole time, upright posture with a straight back and straight neck, head held up, chin level, shoulders back, a confident purposeful stride",
+  "model": "griffin-hd",
+  "locked_end_frame": true,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 388,
+  "frame_height": 1051,
+  "loop_score": 0.6607
+ },
+ "walk3-matt-boxers-side": {
+  "motion_prompt": "walking in place in strict side profile facing right the whole time, upright posture with a straight back and straight neck, head held up, chin level, shoulders back, a confident purposeful stride",
+  "model": "griffin-hd",
+  "locked_end_frame": true,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 512,
+  "frame_height": 1034,
+  "loop_score": 0.9296
+ },
+ "walk3-matt-boxers-front": {
+  "motion_prompt": "walking in place towards the camera, facing the camera squarely the whole time, upright posture with a straight back and straight neck, head held up, chin level, shoulders back, a confident purposeful stride",
+  "model": "griffin-hd",
+  "locked_end_frame": true,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 476,
+  "frame_height": 1043,
+  "loop_score": 0.9461
+ },
+ "walk3-matt-boxers-back": {
+  "motion_prompt": "walking in place away from the camera, back to the camera the whole time, upright posture with a straight back and straight neck, head held up, chin level, shoulders back, a confident purposeful stride",
+  "model": "griffin-hd",
+  "locked_end_frame": true,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 384,
+  "frame_height": 1050,
+  "loop_score": 0.6763
+ },
+ "interact-matt-side": {
+  "motion_prompt": "reaches forward with his near hand to take hold of something at chest height in front of him, then lowers his arm back to his side",
+  "model": "griffin-hd",
+  "locked_end_frame": false,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 579,
+  "frame_height": 1029,
+  "loop_score": 0.98
+ },
+ "interact-matt-towel-side": {
+  "motion_prompt": "reaches forward with his near hand to take hold of something at chest height in front of him, then lowers his arm back to his side",
+  "model": "griffin-hd",
+  "locked_end_frame": false,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 522,
+  "frame_height": 1030,
+  "loop_score": 0.9739
+ },
+ "interact-matt-boxers-side": {
+  "motion_prompt": "reaches forward with his near hand to take hold of something at chest height in front of him, then lowers his arm back to his side",
+  "model": "griffin-hd",
+  "locked_end_frame": false,
+  "frames": 36,
+  "cols": 6,
+  "frame_width": 591,
+  "frame_height": 1030,
+  "loop_score": 0.9797
+ }
+}

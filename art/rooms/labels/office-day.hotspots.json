@@ -1,0 +1,17 @@
+{
+ "from_label_map": { "sofa": "couch", "side-table": "side-table", "filing-cabinet": "filing-cabinet", "desk": "desk",
+                     "coat-stand": "coat-stand", "bookcase": "bookcase", "radiator": "radiator",
+                     "newspaper-pile-left": "papers-left", "newspaper-pile-right": "papers-right" },
+ "drop": ["coat-rack", "bookshelf", "newspaper-stack-2", "newspaper-stack"],
+ "rename": { "envelope": "floor-stain", "envelope-on-floor": "eviction-notice", "fedora-hat": "hat-on-hook",
+             "newspaper-stack-1": "newspapers-under-table", "rotary-phone": "telephone", "framed-diploma": "framed-diploma",
+             "transom-window": "transom-window", "notes-on-cabinet": "notes-on-cabinet", "paper-stacks": "papers-on-cabinet" },
+ "names": { "eviction-notice": "envelope on the floor (eviction notice)", "floor-stain": "stain on the floorboards",
+            "hat-on-hook": "hat on the wall hook", "evidence-board": "evidence board", "telephone": "telephone",
+            "framed-certificate-1": "police commendation", "framed-certificate-2": "small framed certificate",
+            "framed-diploma": "framed diploma", "trench-coat": "trench coat on the stand", "desk-chair": "desk chair",
+            "window-blinds": "venetian blinds", "transom-window": "window above the door", "doorknob": "door handle",
+            "ceiling-lamp": "ceiling lamp", "papers-on-cabinet": "papers on the filing cabinet",
+            "newspapers-under-table": "newspapers under the side table", "newspaper-pile-left": "pile of newspapers",
+            "newspaper-pile-right": "pile of newspapers by the radiator", "paper-on-window-sill": "note on the window sill" }
+}

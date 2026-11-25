@@ -19,16 +19,9 @@
    "to": "doyers-street"
   }
  },
- "exclude": [
-  [
-   0.115,
-   0.86,
-   0.205,
-   0.965
-  ]
- ],
+ "exclude": [],
  "max_feet_y": 0.955,
- "note": "exclude: the newspaper pile in the front left, which the label map left unlabelled",
+ "note": "desk repainted with a solid wooden front; the paper pile is labelled now",
  "lights": [
   {
    "name": "desk-lamp",
@@ -60,5 +53,26 @@
    "note": "Neon sign outside the window, faint."
   }
  ],
- "ambient_night": true
+ "ambient_night": true,
+ "depth_m": {
+  "couch": 0.9,
+  "side-table": 0.5,
+  "filing-cabinet": 0.6,
+  "desk": 0.8,
+  "coat-stand": 0.45,
+  "bookcase": 0.4,
+  "radiator": 0.25,
+  "papers-left": 0.4,
+  "papers-right": 0.4
+ },
+ "body_radius_m": 0.25,
+ "fov_deg": 60,
+ "solid_note": "Every listed object is solid: its footprint is its painted width at its front line, extended back by depth_m. The centre of a character's feet must stay body_radius_m away from every footprint.",
+ "spots": {
+  "desk-chair": {
+   "x": 0.62,
+   "y": 0.7,
+   "note": "where Matt sits behind the desk; the solid desk front hides him below the chest"
+  }
+ }
 }

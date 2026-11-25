@@ -28,6 +28,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
       <button type="button" data-v="day" aria-pressed="true">Day</button>
       <button type="button" data-v="night" aria-pressed="false">Night</button>
     </div>
+    <label><input type="checkbox" id="ambient" checked> Ambient</label>
+    <label><input type="checkbox" id="showHot"> Hotspots</label>
     <label><input type="checkbox" id="showWalk"> Walkable floor</label>
     <label><input type="checkbox" id="showBase"> Object baselines</label>
     <label><input type="checkbox" id="showLights"> Light sources</label>
@@ -48,10 +50,11 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
     const sc = await (await fetch(base + 'scene.json')).json();
     const [bg, walk, floor] = await Promise.all([load(base + 'bg.webp'), maskOf(base + sc.walk.file), maskOf(base + sc.floor.file)]);
     const occ = await Promise.all(sc.objects.map(async o => ({ ...o, img: await load(base + 'occ/' + o.name + '.webp') })));
+    const hot = (await (await fetch(base + 'hotspots.json')).json()).hotspots.map(h => ({ ...h, paths: h.polygons.map(pl => { const p = new Path2D(); pl.forEach(([x, y], i) => i ? p.lineTo(x, y) : p.moveTo(x, y)); p.closePath(); return p; }) }));
     // brightness of the painted floor, to light Matt like his surroundings
     const lc = document.createElement('canvas'); lc.width = 344; lc.height = 192; const lx = lc.getContext('2d'); lx.drawImage(bg, 0, 0, 344, 192);
     const lum = lx.getImageData(0, 0, 344, 192).data;
-    return { sc, bg, walk, floor, occ, lum };
+    return { sc, bg, walk, floor, occ, lum, hot };
   }
 
   const M = { x: 0, y: 0, path: [], dir: 'front', flip: false, phase: 0, moving: false, light: 1, exiting: false };
@@ -110,6 +113,13 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
     return out;
   }
 
+  // ---- hotspots: smallest object under the pointer wins
+  const hitCtx = document.createElement('canvas').getContext('2d');
+  function hotAt(x, y) { let best = null; for (const h of S.hot) { if (x < h.bbox[0] || x > h.bbox[2] || y < h.bbox[1] || y > h.bbox[3]) continue;
+      if (h.paths.some(p => hitCtx.isPointInPath(p, x, y)) && (!best || h.z > best.z)) best = h; } return best; }
+  let hover = null;
+  cv.addEventListener('pointermove', (ev) => { if (!S) return; const [x, y] = toScene(ev); hover = hotAt(x, y); cv.style.cursor = hover ? 'pointer' : 'crosshair'; });
+  cv.addEventListener('pointerleave', () => { hover = null; });
   // ---- input
   function toScene(ev) { const r = cv.getBoundingClientRect(); return [(ev.clientX - r.left) / r.width * S.sc.size[0], (ev.clientY - r.top) / r.height * S.sc.size[1]]; }
   cv.addEventListener('click', (ev) => {
@@ -152,6 +162,103 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
     return n ? s / n / 255 : 0.5;
   }
 
+
+  // ---- ambient life: dust in the light, clouds, smoke, heat shimmer, neon flicker, rain shadows
+  const AMB = {
+    // positions as fractions of the scene; ashtray on the desk, radiator top, window glow
+    ashtray: [0.579, 0.583], radiator: [0.79, 0.86, 0.615, 0.66], window: [0.80, 0.07, 0.91, 0.60]
+  };
+  const motes = Array.from({ length: 70 }, () => ({ x: Math.random(), y: 0.15 + Math.random() * 0.8, z: 0.4 + Math.random() * 0.6, ph: Math.random() * 6.28 }));
+  const smoke = [];
+  const lightMaskCache = {};
+  // canvas of the painting's bright areas (where light falls), soft-edged, at 1/8 scale
+  function lightMask() {
+    if (lightMaskCache[mode]) return lightMaskCache[mode];
+    const w = 344, h = 192, c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d');
+    const d = x.createImageData(w, h), thr = mode === 'night' ? 0.30 : 0.55;
+    for (let p = 0; p < w * h; p++) { const l = S.lum[p * 4] / 255; const a = Math.max(0, Math.min(1, (l - thr) / 0.2)); d.data[p * 4 + 3] = a * 255; }
+    x.putImageData(d, 0, 0); lightMaskCache[mode] = c; return c;
+  }
+  const noise1 = (t) => Math.sin(t) * 0.5 + Math.sin(t * 2.31 + 1.7) * 0.3 + Math.sin(t * 5.13 + 0.4) * 0.2;
+  let ambT = 0, neon = 1, neonHold = 0, sunFactor = 1, lightFactor = 1;
+  function ambientUnder(dt, W, H) {        // drawn on the room, under Matt
+    ambT += dt;
+    if (mode === 'day') {
+      // clouds: bright areas dim by up to ~7% on a slow, irregular cycle
+      sunFactor = 1 - 0.07 * Math.max(0, noise1(ambT / 9));
+      if (sunFactor < 0.999) dimBright(1 - sunFactor, W, H);
+      lightFactor = sunFactor;
+      // heat shimmer above the radiator: rows of the painting nudged sideways by a pixel or two
+      const [rx0, rx1, ry0, ry1] = AMB.radiator, X0 = rx0 * W, X1 = rx1 * W, Y0 = ry0 * H, Y1 = ry1 * H;
+      for (let y = Y0; y < Y1; y += 8) { const off = Math.sin(ambT * 3 + y * 0.09) * 1.6 * (1 - (y - Y0) / (Y1 - Y0));
+        ctx.drawImage(S.bg, X0, y, X1 - X0, 8, X0 + off, y, X1 - X0, 8); }
+    } else {
+      // neon: steady, with an occasional stutter
+      if (neonHold > 0) neonHold -= dt; else if (Math.random() < dt * 0.25) neonHold = 0.15 + Math.random() * 0.5;
+      const target = neonHold > 0 ? (Math.random() < 0.5 ? 0.55 : 1) : 1;
+      neon += (target - neon) * Math.min(1, dt * 30);
+      const lamp = 1 - 0.015 * (0.5 + 0.5 * Math.sin(ambT * 13.1) * Math.sin(ambT * 3.7));
+      if (neon < 0.99) {          // darken the window glow when the sign stutters
+        const [wx0, wy0, wx1, wy1] = AMB.window; ctx.save(); ctx.beginPath(); ctx.rect(wx0 * W, wy0 * H, (wx1 - wx0) * W, (wy1 - wy0) * H); ctx.clip();
+        dimBright((1 - neon) * 0.8, W, H); ctx.restore();
+      }
+      lightFactor = lamp * (0.85 + 0.15 * neon);
+      // rain shadows running down through the window light
+      ctx.save(); ctx.globalCompositeOperation = 'multiply';
+      const lm = lightMask();
+      const rc = rainCanvas(); ctx.globalAlpha = 0.18;
+      const off = (ambT * 220) % 256;
+      ctx.drawImage(rc, 0, -256 + off, W, H + 256); ctx.restore();
+      maskToLight(W, H);
+    }
+    // smoke from the ashtray: a few soft puffs rising and curling
+    if (Math.random() < dt * 3) smoke.push({ x: AMB.ashtray[0] * W, y: AMB.ashtray[1] * H, t: 0, s: 0.6 + Math.random() * 0.6 });
+    ctx.save();
+    for (let i = smoke.length - 1; i >= 0; i--) { const p = smoke[i]; p.t += dt; if (p.t > 6) { smoke.splice(i, 1); continue; }
+      const rise = p.t * 34, sway = Math.sin(p.t * 1.3 + p.s * 5) * (6 + p.t * 9);
+      const a = Math.min(1, p.t * 2) * (1 - p.t / 6) * (mode === 'night' ? 0.09 : 0.06);
+      const r = 10 + p.t * 9; ctx.globalAlpha = a; ctx.drawImage(puff(), p.x + sway - r, p.y - rise - r, r * 2, r * 2); }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+  function ambientOver(dt, W, H) {          // dust in the light, in front of everything
+    const lm = lightMask(), mc = moteCanvas();
+    const mx = mc.getContext('2d'); mx.clearRect(0, 0, mc.width, mc.height);
+    for (const m of motes) {
+      m.x += (Math.sin(ambT * 0.2 + m.ph) * 0.0006 + 0.0002) * dt * 60 * m.z; m.y += (Math.cos(ambT * 0.17 + m.ph) * 0.0004 + 0.00008) * dt * 60;
+      if (m.x > 1) m.x = 0; if (m.y > 0.98) m.y = 0.15;
+      const tw = 0.5 + 0.5 * Math.sin(ambT * 1.7 + m.ph * 3);
+      mx.globalAlpha = (mode === 'night' ? 0.35 : 0.55) * tw * m.z; mx.fillStyle = '#fff';
+      mx.beginPath(); mx.arc(m.x * mc.width, m.y * mc.height, 1.1 * m.z, 0, 6.283); mx.fill();
+    }
+    mx.globalAlpha = 1; mx.globalCompositeOperation = 'destination-in'; mx.drawImage(lm, 0, 0, mc.width, mc.height); mx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(mc, 0, 0, W, H);
+  }
+  let _mc = null, _rc = null, _dk = {}, _puff = null;
+  function puff() { if (_puff) return _puff; _puff = document.createElement('canvas'); _puff.width = _puff.height = 64; const x = _puff.getContext('2d');
+    const g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, 'rgba(235,235,235,1)'); g.addColorStop(1, 'rgba(235,235,235,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64); return _puff; }
+  const moteCanvas = () => _mc || (_mc = Object.assign(document.createElement('canvas'), { width: 516, height: 288 }));
+  function rainCanvas() {
+    if (_rc) return _rc; _rc = document.createElement('canvas'); _rc.width = 256; _rc.height = 512; const x = _rc.getContext('2d');
+    x.fillStyle = '#fff'; x.fillRect(0, 0, 256, 512); x.strokeStyle = '#000';
+    for (let i = 0; i < 90; i++) { const sx = Math.random() * 256, sy = Math.random() * 512, l = 20 + Math.random() * 60; x.globalAlpha = 0.3 + Math.random() * 0.5; x.lineWidth = 0.6 + Math.random(); x.beginPath(); x.moveTo(sx, sy); x.lineTo(sx - 4, sy + l); x.stroke(); x.beginPath(); x.moveTo(sx, sy + 512); x.stroke(); }
+    return _rc;
+  }
+  // keep rain shadows only where the window light falls: repaint the unlit room over them
+  function maskToLight(W, H) {
+    const key = 'unlit-' + mode;
+    if (!_dk[key]) { const c = document.createElement('canvas'); c.width = W / 2; c.height = H / 2; const x = c.getContext('2d');
+      x.drawImage(S.bg, 0, 0, c.width, c.height); x.globalCompositeOperation = 'destination-out'; x.drawImage(lightMask(), 0, 0, c.width, c.height); _dk[key] = c; }
+    ctx.drawImage(_dk[key], 0, 0, W, H);
+  }
+  // darken the bright (lit) parts of the painting by a fraction
+  function dimBright(f, W, H) {
+    const key = 'lit-' + mode;
+    if (!_dk[key]) { const c = document.createElement('canvas'); c.width = 344; c.height = 192; const x = c.getContext('2d');
+      x.drawImage(lightMask(), 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, 344, 192); _dk[key] = c; }
+    ctx.save(); ctx.globalAlpha = f; ctx.drawImage(_dk[key], 0, 0, W, H); ctx.restore();
+  }
+
   // ---- frame
   let last = performance.now();
   const sil = document.createElement('canvas'), sx = sil.getContext('2d');
@@ -177,6 +284,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
     const k = cw / W;
     ctx.setTransform(k, 0, 0, k, 0, 0);
     ctx.drawImage(S.bg, 0, 0, W, H);
+    const amb = document.getElementById('ambient').checked;
+    if (amb) ambientUnder(dt, W, H); else lightFactor = 1;
 
     // sprite frame
     const sp = sprites[M.dir], img = spriteImgs[M.dir];
@@ -213,11 +322,23 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
     }
     // Matt
     ctx.save(); ctx.translate(M.x, M.y); ctx.scale(fx, 1);
-    ctx.filter = 'brightness(' + M.light.toFixed(3) + ')';
+    ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
     ctx.drawImage(img, fi * sp.fw, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
     ctx.restore(); ctx.filter = 'none';
     for (const o of front) ctx.drawImage(o.img, o.bbox[0], o.bbox[1], o.bbox[2] - o.bbox[0], o.bbox[3] - o.bbox[1]);
 
+    if (amb) ambientOver(dt, W, H);
+    // hotspot overlay: all outlines, and the one under the pointer with its name
+    const showHot = document.getElementById('showHot').checked;
+    if (showHot || hover) {
+      ctx.save(); ctx.lineJoin = 'round';
+      if (showHot) { ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,210,74,.55)'; for (const h of S.hot) h.paths.forEach(p => ctx.stroke(p)); }
+      if (hover) { ctx.lineWidth = 5; ctx.strokeStyle = '#ffd24a'; ctx.fillStyle = 'rgba(255,210,74,.12)'; hover.paths.forEach(p => { ctx.fill(p); ctx.stroke(p); });
+        ctx.font = '600 34px system-ui, sans-serif'; const tw = ctx.measureText(hover.name).width;
+        const lx = Math.min(W - tw - 30, Math.max(10, (hover.bbox[0] + hover.bbox[2]) / 2 - tw / 2)), ly = Math.max(50, hover.bbox[1] - 18);
+        ctx.fillStyle = 'rgba(10,10,12,.8)'; ctx.fillRect(lx - 12, ly - 38, tw + 24, 50); ctx.fillStyle = '#f2efe9'; ctx.fillText(hover.name, lx, ly); }
+      ctx.restore();
+    }
     // debug overlays
     if (document.getElementById('showWalk').checked) { ctx.globalAlpha = 0.35; ctx.drawImage(tint(S.walk), 0, 0, W, H); ctx.globalAlpha = 1; }
     if (document.getElementById('showBase').checked) {
