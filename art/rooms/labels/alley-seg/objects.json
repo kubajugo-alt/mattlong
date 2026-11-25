@@ -1,0 +1,733 @@
+{
+ "image": "alley.png",
+ "size": [
+  2752,
+  1536
+ ],
+ "model": "gemini-3.5-flash",
+ "objects": [
+  {
+   "id": "drainpipe",
+   "label": "drainpipe",
+   "also_seen_as": [
+    "drain pipe"
+   ],
+   "bbox": [
+    187,
+    0,
+    270,
+    917
+   ],
+   "area_px": 76111
+  },
+  {
+   "id": "pile-of-newspapers",
+   "label": "pile of newspapers",
+   "also_seen_as": [],
+   "bbox": [
+    348,
+    913,
+    819,
+    1376
+   ],
+   "area_px": 54200
+  },
+  {
+   "id": "loose-newspaper",
+   "label": "loose newspaper",
+   "also_seen_as": [],
+   "bbox": [
+    352,
+    1268,
+    614,
+    1376
+   ],
+   "area_px": 13641
+  },
+  {
+   "id": "puddle-2",
+   "label": "puddle 2",
+   "also_seen_as": [],
+   "bbox": [
+    473,
+    1318,
+    991,
+    1473
+   ],
+   "area_px": 80290
+  },
+  {
+   "id": "fire-escape-1",
+   "label": "fire escape 1",
+   "also_seen_as": [],
+   "bbox": [
+    570,
+    0,
+    841,
+    671
+   ],
+   "area_px": 127873
+  },
+  {
+   "id": "fire-escape-balcony-1",
+   "label": "fire escape balcony 1",
+   "also_seen_as": [],
+   "bbox": [
+    572,
+    149,
+    841,
+    388
+   ],
+   "area_px": 64291
+  },
+  {
+   "id": "doorway",
+   "label": "doorway",
+   "also_seen_as": [],
+   "bbox": [
+    635,
+    502,
+    671,
+    918
+   ],
+   "area_px": 13392
+  },
+  {
+   "id": "wooden-crate-1",
+   "label": "wooden crate 1",
+   "also_seen_as": [
+    "wooden crate 3"
+   ],
+   "bbox": [
+    712,
+    926,
+    815,
+    1016
+   ],
+   "area_px": 9270
+  },
+  {
+   "id": "fire-escape-ladder-1",
+   "label": "fire escape ladder 1",
+   "also_seen_as": [],
+   "bbox": [
+    737,
+    407,
+    809,
+    661
+   ],
+   "area_px": 17266
+  },
+  {
+   "id": "wooden-crate-2",
+   "label": "wooden crate 2",
+   "also_seen_as": [
+    "wooden crate 4"
+   ],
+   "bbox": [
+    754,
+    866,
+    847,
+    982
+   ],
+   "area_px": 10788
+  },
+  {
+   "id": "shirt-1",
+   "label": "shirt 1",
+   "also_seen_as": [],
+   "bbox": [
+    844,
+    71,
+    924,
+    197
+   ],
+   "area_px": 6018
+  },
+  {
+   "id": "hanging-clothes-1",
+   "label": "hanging clothes 1",
+   "also_seen_as": [],
+   "bbox": [
+    845,
+    72,
+    1144,
+    247
+   ],
+   "area_px": 21676
+  },
+  {
+   "id": "puddle-1",
+   "label": "puddle 1",
+   "also_seen_as": [],
+   "bbox": [
+    854,
+    1329,
+    1081,
+    1456
+   ],
+   "area_px": 15320
+  },
+  {
+   "id": "hanging-cloth-1",
+   "label": "hanging cloth 1",
+   "also_seen_as": [
+    "shirt 4"
+   ],
+   "bbox": [
+    854,
+    347,
+    916,
+    441
+   ],
+   "area_px": 4711
+  },
+  {
+   "id": "hanging-clothes-2",
+   "label": "hanging clothes 2",
+   "also_seen_as": [],
+   "bbox": [
+    854,
+    347,
+    1031,
+    445
+   ],
+   "area_px": 6520
+  },
+  {
+   "id": "puddle-3",
+   "label": "puddle 3",
+   "also_seen_as": [
+    "puddle 4"
+   ],
+   "bbox": [
+    928,
+    1056,
+    981,
+    1089
+   ],
+   "area_px": 1234
+  },
+  {
+   "id": "clothesline-1",
+   "label": "clothesline 1",
+   "also_seen_as": [],
+   "bbox": [
+    906,
+    630,
+    1000,
+    667
+   ],
+   "area_px": 3478
+  },
+  {
+   "id": "hanging-clothes-2-2",
+   "label": "hanging clothes 2",
+   "also_seen_as": [],
+   "bbox": [
+    910,
+    714,
+    990,
+    741
+   ],
+   "area_px": 2160
+  },
+  {
+   "id": "clothesline-2",
+   "label": "clothesline 2",
+   "also_seen_as": [],
+   "bbox": [
+    937,
+    723,
+    950,
+    743
+   ],
+   "area_px": 223
+  },
+  {
+   "id": "hanging-cloth-2",
+   "label": "hanging cloth 2",
+   "also_seen_as": [
+    "shirt 5"
+   ],
+   "bbox": [
+    924,
+    356,
+    976,
+    465
+   ],
+   "area_px": 4774
+  },
+  {
+   "id": "pants-1",
+   "label": "pants 1",
+   "also_seen_as": [],
+   "bbox": [
+    927,
+    101,
+    990,
+    247
+   ],
+   "area_px": 6036
+  },
+  {
+   "id": "puddle-2-2",
+   "label": "puddle 2",
+   "also_seen_as": [],
+   "bbox": [
+    957,
+    1189,
+    1071,
+    1238
+   ],
+   "area_px": 3104
+  },
+  {
+   "id": "hanging-cloth-3",
+   "label": "hanging cloth 3",
+   "also_seen_as": [],
+   "bbox": [
+    989,
+    354,
+    1030,
+    425
+   ],
+   "area_px": 1914
+  },
+  {
+   "id": "pants-2",
+   "label": "pants 2",
+   "also_seen_as": [],
+   "bbox": [
+    989,
+    356,
+    1030,
+    425
+   ],
+   "area_px": 1911
+  },
+  {
+   "id": "shirt-2",
+   "label": "shirt 2",
+   "also_seen_as": [],
+   "bbox": [
+    1010,
+    116,
+    1087,
+    229
+   ],
+   "area_px": 6896
+  },
+  {
+   "id": "pants-3",
+   "label": "pants 3",
+   "also_seen_as": [],
+   "bbox": [
+    1045,
+    351,
+    1082,
+    439
+   ],
+   "area_px": 1978
+  },
+  {
+   "id": "puddle-1-2",
+   "label": "puddle 1",
+   "also_seen_as": [],
+   "bbox": [
+    1050,
+    1159,
+    1468,
+    1282
+   ],
+   "area_px": 51414
+  },
+  {
+   "id": "shirt-3",
+   "label": "shirt 3",
+   "also_seen_as": [
+    "top 1"
+   ],
+   "bbox": [
+    1089,
+    114,
+    1146,
+    187
+   ],
+   "area_px": 4161
+  },
+  {
+   "id": "fire-escape-2",
+   "label": "fire escape 2",
+   "also_seen_as": [
+    "fire escape 3"
+   ],
+   "bbox": [
+    1097,
+    0,
+    1262,
+    538
+   ],
+   "area_px": 24188
+  },
+  {
+   "id": "wooden-box-1",
+   "label": "wooden box 1",
+   "also_seen_as": [],
+   "bbox": [
+    1115,
+    854,
+    1155,
+    942
+   ],
+   "area_px": 3520
+  },
+  {
+   "id": "fire-escape-ladder-2",
+   "label": "fire escape ladder 2",
+   "also_seen_as": [],
+   "bbox": [
+    1118,
+    263,
+    1185,
+    519
+   ],
+   "area_px": 17152
+  },
+  {
+   "id": "puddle-5",
+   "label": "puddle 5",
+   "also_seen_as": [],
+   "bbox": [
+    1137,
+    1055,
+    1304,
+    1099
+   ],
+   "area_px": 7348
+  },
+  {
+   "id": "wooden-box-2",
+   "label": "wooden box 2",
+   "also_seen_as": [],
+   "bbox": [
+    1138,
+    913,
+    1188,
+    960
+   ],
+   "area_px": 2350
+  },
+  {
+   "id": "shirt-4",
+   "label": "shirt 4",
+   "also_seen_as": [
+    "shirt 3"
+   ],
+   "bbox": [
+    1154,
+    108,
+    1208,
+    204
+   ],
+   "area_px": 5184
+  },
+  {
+   "id": "trash-bin",
+   "label": "trash bin",
+   "also_seen_as": [
+    "trash can 4"
+   ],
+   "bbox": [
+    1231,
+    891,
+    1315,
+    1017
+   ],
+   "area_px": 10584
+  },
+  {
+   "id": "fire-escape-1-2",
+   "label": "fire escape 1",
+   "also_seen_as": [
+    "fire escape 2"
+   ],
+   "bbox": [
+    1300,
+    0,
+    1669,
+    626
+   ],
+   "area_px": 230994
+  },
+  {
+   "id": "door-step",
+   "label": "door step",
+   "also_seen_as": [],
+   "bbox": [
+    1330,
+    983,
+    1437,
+    1059
+   ],
+   "area_px": 8132
+  },
+  {
+   "id": "lower-wooden-crate",
+   "label": "lower wooden crate",
+   "also_seen_as": [
+    "wooden crates 1"
+   ],
+   "bbox": [
+    1432,
+    987,
+    1638,
+    1150
+   ],
+   "area_px": 33578
+  },
+  {
+   "id": "upper-wooden-crate",
+   "label": "upper wooden crate",
+   "also_seen_as": [],
+   "bbox": [
+    1459,
+    880,
+    1669,
+    1017
+   ],
+   "area_px": 28770
+  },
+  {
+   "id": "window-1",
+   "label": "window 1",
+   "also_seen_as": [],
+   "bbox": [
+    1565,
+    0,
+    1645,
+    322
+   ],
+   "area_px": 25760
+  },
+  {
+   "id": "building-window-2",
+   "label": "building window 2",
+   "also_seen_as": [],
+   "bbox": [
+    1573,
+    4,
+    1631,
+    173
+   ],
+   "area_px": 9802
+  },
+  {
+   "id": "trash-can-lid",
+   "label": "trash can lid",
+   "also_seen_as": [],
+   "bbox": [
+    1578,
+    1062,
+    1651,
+    1192
+   ],
+   "area_px": 9490
+  },
+  {
+   "id": "metal-trash-can-1",
+   "label": "metal trash can 1",
+   "also_seen_as": [
+    "trash can 1"
+   ],
+   "bbox": [
+    1627,
+    936,
+    1797,
+    1213
+   ],
+   "area_px": 47090
+  },
+  {
+   "id": "building-window-3",
+   "label": "building window 3",
+   "also_seen_as": [
+    "window 1",
+    "window 3"
+   ],
+   "bbox": [
+    1646,
+    505,
+    1726,
+    843
+   ],
+   "area_px": 27040
+  },
+  {
+   "id": "torn-awning",
+   "label": "torn awning",
+   "also_seen_as": [
+    "awning"
+   ],
+   "bbox": [
+    1684,
+    0,
+    2581,
+    550
+   ],
+   "area_px": 284937
+  },
+  {
+   "id": "puddle-3-2",
+   "label": "puddle 3",
+   "also_seen_as": [],
+   "bbox": [
+    1688,
+    1433,
+    1988,
+    1533
+   ],
+   "area_px": 30000
+  },
+  {
+   "id": "building-window-1",
+   "label": "building window 1",
+   "also_seen_as": [
+    "window 2"
+   ],
+   "bbox": [
+    1692,
+    0,
+    1778,
+    227
+   ],
+   "area_px": 19522
+  },
+  {
+   "id": "metal-trash-can-2",
+   "label": "metal trash can 2",
+   "also_seen_as": [
+    "trash can 2"
+   ],
+   "bbox": [
+    1697,
+    993,
+    1885,
+    1267
+   ],
+   "area_px": 51512
+  },
+  {
+   "id": "awning-support-bar",
+   "label": "awning support bar",
+   "also_seen_as": [],
+   "bbox": [
+    1743,
+    503,
+    1897,
+    588
+   ],
+   "area_px": 13090
+  },
+  {
+   "id": "trash-can-3",
+   "label": "trash can 3",
+   "also_seen_as": [],
+   "bbox": [
+    1841,
+    907,
+    2043,
+    1214
+   ],
+   "area_px": 62014
+  },
+  {
+   "id": "window-4",
+   "label": "window 4",
+   "also_seen_as": [
+    "window 2"
+   ],
+   "bbox": [
+    1905,
+    423,
+    2071,
+    845
+   ],
+   "area_px": 62511
+  },
+  {
+   "id": "wooden-steps",
+   "label": "wooden steps",
+   "also_seen_as": [],
+   "bbox": [
+    1894,
+    1136,
+    2473,
+    1477
+   ],
+   "area_px": 197439
+  },
+  {
+   "id": "door",
+   "label": "door",
+   "also_seen_as": [],
+   "bbox": [
+    2177,
+    366,
+    2449,
+    1187
+   ],
+   "area_px": 223312
+  },
+  {
+   "id": "doorknob",
+   "label": "doorknob",
+   "also_seen_as": [],
+   "bbox": [
+    2191,
+    778,
+    2228,
+    857
+   ],
+   "area_px": 2923
+  },
+  {
+   "id": "wooden-crate-4",
+   "label": "wooden crate 4",
+   "also_seen_as": [],
+   "bbox": [
+    2428,
+    1262,
+    2752,
+    1536
+   ],
+   "area_px": 70939
+  },
+  {
+   "id": "wooden-crate-3",
+   "label": "wooden crate 3",
+   "also_seen_as": [
+    "wooden crates 2"
+   ],
+   "bbox": [
+    2475,
+    1026,
+    2752,
+    1325
+   ],
+   "area_px": 82823
+  },
+  {
+   "id": "window-5",
+   "label": "window 5",
+   "also_seen_as": [],
+   "bbox": [
+    2561,
+    224,
+    2752,
+    863
+   ],
+   "area_px": 69307
+  }
+ ]
+}

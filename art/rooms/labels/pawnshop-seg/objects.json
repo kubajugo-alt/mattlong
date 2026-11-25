@@ -1,0 +1,977 @@
+{
+ "image": "pawnshop.png",
+ "size": [
+  2752,
+  1536
+ ],
+ "model": "gemini-3.5-flash",
+ "objects": [
+  {
+   "id": "hanging-weights",
+   "label": "hanging weights",
+   "also_seen_as": [],
+   "bbox": [
+    68,
+    82,
+    280,
+    641
+   ],
+   "area_px": 49682
+  },
+  {
+   "id": "hanging-ball-1",
+   "label": "hanging ball 1",
+   "also_seen_as": [],
+   "bbox": [
+    48,
+    460,
+    151,
+    591
+   ],
+   "area_px": 13493
+  },
+  {
+   "id": "hanging-ball-2",
+   "label": "hanging ball 2",
+   "also_seen_as": [],
+   "bbox": [
+    149,
+    555,
+    239,
+    683
+   ],
+   "area_px": 11520
+  },
+  {
+   "id": "hanging-ball-3",
+   "label": "hanging ball 3",
+   "also_seen_as": [],
+   "bbox": [
+    240,
+    503,
+    322,
+    611
+   ],
+   "area_px": 8856
+  },
+  {
+   "id": "floor-debris-1",
+   "label": "floor debris 1",
+   "also_seen_as": [],
+   "bbox": [
+    385,
+    1262,
+    555,
+    1349
+   ],
+   "area_px": 14790
+  },
+  {
+   "id": "front-door",
+   "label": "front door",
+   "also_seen_as": [],
+   "bbox": [
+    442,
+    100,
+    583,
+    798
+   ],
+   "area_px": 30777
+  },
+  {
+   "id": "transom-window",
+   "label": "transom window",
+   "also_seen_as": [],
+   "bbox": [
+    440,
+    19,
+    559,
+    254
+   ],
+   "area_px": 16373
+  },
+  {
+   "id": "doorknob",
+   "label": "doorknob",
+   "also_seen_as": [],
+   "bbox": [
+    446,
+    770,
+    483,
+    813
+   ],
+   "area_px": 1591
+  },
+  {
+   "id": "wire-mesh-cabinet-door",
+   "label": "wire mesh cabinet door",
+   "also_seen_as": [
+    "wire mesh cabinet left"
+   ],
+   "bbox": [
+    613,
+    284,
+    815,
+    724
+   ],
+   "area_px": 88880
+  },
+  {
+   "id": "box",
+   "label": "box",
+   "also_seen_as": [
+    "storage box"
+   ],
+   "bbox": [
+    639,
+    163,
+    795,
+    263
+   ],
+   "area_px": 12090
+  },
+  {
+   "id": "violin-2",
+   "label": "violin 2",
+   "also_seen_as": [
+    "violin 4"
+   ],
+   "bbox": [
+    660,
+    848,
+    764,
+    1033
+   ],
+   "area_px": 9764
+  },
+  {
+   "id": "tool-set",
+   "label": "tool set",
+   "also_seen_as": [
+    "instrument stand"
+   ],
+   "bbox": [
+    687,
+    807,
+    852,
+    857
+   ],
+   "area_px": 8250
+  },
+  {
+   "id": "radio",
+   "label": "radio",
+   "also_seen_as": [
+    "radio bottom shelf"
+   ],
+   "bbox": [
+    809,
+    916,
+    918,
+    1027
+   ],
+   "area_px": 9623
+  },
+  {
+   "id": "alarm-clock-1",
+   "label": "alarm clock 1",
+   "also_seen_as": [],
+   "bbox": [
+    821,
+    372,
+    838,
+    406
+   ],
+   "area_px": 460
+  },
+  {
+   "id": "alarm-clock-5",
+   "label": "alarm clock 5",
+   "also_seen_as": [],
+   "bbox": [
+    821,
+    453,
+    841,
+    501
+   ],
+   "area_px": 567
+  },
+  {
+   "id": "alarm-clock-9",
+   "label": "alarm clock 9",
+   "also_seen_as": [],
+   "bbox": [
+    821,
+    572,
+    842,
+    598
+   ],
+   "area_px": 427
+  },
+  {
+   "id": "alarm-clock-13",
+   "label": "alarm clock 13",
+   "also_seen_as": [
+    "clock 1"
+   ],
+   "bbox": [
+    819,
+    659,
+    841,
+    714
+   ],
+   "area_px": 1210
+  },
+  {
+   "id": "trumpet",
+   "label": "trumpet",
+   "also_seen_as": [
+    "horn"
+   ],
+   "bbox": [
+    821,
+    192,
+    1072,
+    267
+   ],
+   "area_px": 18825
+  },
+  {
+   "id": "clocks-on-top-shelf",
+   "label": "clocks on top shelf",
+   "also_seen_as": [
+    "clocks shelf 1"
+   ],
+   "bbox": [
+    821,
+    347,
+    1003,
+    407
+   ],
+   "area_px": 4187
+  },
+  {
+   "id": "clocks-on-second-shelf",
+   "label": "clocks on second shelf",
+   "also_seen_as": [
+    "clocks shelf 2"
+   ],
+   "bbox": [
+    821,
+    458,
+    1002,
+    504
+   ],
+   "area_px": 3898
+  },
+  {
+   "id": "clocks-on-third-shelf",
+   "label": "clocks on third shelf",
+   "also_seen_as": [
+    "clocks shelf 3"
+   ],
+   "bbox": [
+    821,
+    547,
+    1003,
+    610
+   ],
+   "area_px": 4169
+  },
+  {
+   "id": "clocks-on-bottom-shelf",
+   "label": "clocks on bottom shelf",
+   "also_seen_as": [
+    "clocks shelf 4"
+   ],
+   "bbox": [
+    821,
+    647,
+    1008,
+    715
+   ],
+   "area_px": 12716
+  },
+  {
+   "id": "alarm-clock-14",
+   "label": "alarm clock 14",
+   "also_seen_as": [
+    "clock 2"
+   ],
+   "bbox": [
+    853,
+    669,
+    895,
+    709
+   ],
+   "area_px": 1304
+  },
+  {
+   "id": "alarm-clock-6",
+   "label": "alarm clock 6",
+   "also_seen_as": [],
+   "bbox": [
+    859,
+    460,
+    894,
+    507
+   ],
+   "area_px": 1084
+  },
+  {
+   "id": "alarm-clock-2",
+   "label": "alarm clock 2",
+   "also_seen_as": [],
+   "bbox": [
+    856,
+    347,
+    899,
+    409
+   ],
+   "area_px": 1640
+  },
+  {
+   "id": "alarm-clock-10",
+   "label": "alarm clock 10",
+   "also_seen_as": [],
+   "bbox": [
+    861,
+    573,
+    887,
+    600
+   ],
+   "area_px": 566
+  },
+  {
+   "id": "small-case",
+   "label": "small case",
+   "also_seen_as": [
+    "box 1",
+    "open box 1"
+   ],
+   "bbox": [
+    881,
+    807,
+    972,
+    842
+   ],
+   "area_px": 1926
+  },
+  {
+   "id": "box-2",
+   "label": "box 2",
+   "also_seen_as": [
+    "speaker"
+   ],
+   "bbox": [
+    903,
+    895,
+    1002,
+    1005
+   ],
+   "area_px": 10890
+  },
+  {
+   "id": "alarm-clock-15",
+   "label": "alarm clock 15",
+   "also_seen_as": [
+    "clock 3"
+   ],
+   "bbox": [
+    909,
+    654,
+    948,
+    716
+   ],
+   "area_px": 1570
+  },
+  {
+   "id": "alarm-clock-11",
+   "label": "alarm clock 11",
+   "also_seen_as": [],
+   "bbox": [
+    909,
+    552,
+    949,
+    603
+   ],
+   "area_px": 1426
+  },
+  {
+   "id": "alarm-clock-3",
+   "label": "alarm clock 3",
+   "also_seen_as": [],
+   "bbox": [
+    913,
+    353,
+    950,
+    405
+   ],
+   "area_px": 1293
+  },
+  {
+   "id": "alarm-clock-7",
+   "label": "alarm clock 7",
+   "also_seen_as": [],
+   "bbox": [
+    914,
+    469,
+    949,
+    503
+   ],
+   "area_px": 932
+  },
+  {
+   "id": "alarm-clock-12",
+   "label": "alarm clock 12",
+   "also_seen_as": [],
+   "bbox": [
+    956,
+    547,
+    1003,
+    610
+   ],
+   "area_px": 1906
+  },
+  {
+   "id": "alarm-clock-8",
+   "label": "alarm clock 8",
+   "also_seen_as": [],
+   "bbox": [
+    961,
+    466,
+    998,
+    503
+   ],
+   "area_px": 1044
+  },
+  {
+   "id": "alarm-clock-4",
+   "label": "alarm clock 4",
+   "also_seen_as": [],
+   "bbox": [
+    964,
+    368,
+    1003,
+    406
+   ],
+   "area_px": 1130
+  },
+  {
+   "id": "alarm-clock-16",
+   "label": "alarm clock 16",
+   "also_seen_as": [
+    "clock 4"
+   ],
+   "bbox": [
+    968,
+    676,
+    997,
+    705
+   ],
+   "area_px": 663
+  },
+  {
+   "id": "violin-3",
+   "label": "violin 3",
+   "also_seen_as": [],
+   "bbox": [
+    1032,
+    611,
+    1267,
+    717
+   ],
+   "area_px": 24910
+  },
+  {
+   "id": "violin-2-2",
+   "label": "violin 2",
+   "also_seen_as": [],
+   "bbox": [
+    1037,
+    474,
+    1270,
+    581
+   ],
+   "area_px": 24931
+  },
+  {
+   "id": "violin-1",
+   "label": "violin 1",
+   "also_seen_as": [],
+   "bbox": [
+    1038,
+    340,
+    1266,
+    430
+   ],
+   "area_px": 20520
+  },
+  {
+   "id": "open-suitcase",
+   "label": "open suitcase",
+   "also_seen_as": [
+    "open briefcase"
+   ],
+   "bbox": [
+    1044,
+    886,
+    1273,
+    1022
+   ],
+   "area_px": 31144
+  },
+  {
+   "id": "small-bottles",
+   "label": "small bottles",
+   "also_seen_as": [
+    "small containers"
+   ],
+   "bbox": [
+    1050,
+    787,
+    1105,
+    849
+   ],
+   "area_px": 3410
+  },
+  {
+   "id": "suitcase",
+   "label": "suitcase",
+   "also_seen_as": [
+    "suitcase on cabinet"
+   ],
+   "bbox": [
+    1115,
+    195,
+    1253,
+    264
+   ],
+   "area_px": 8520
+  },
+  {
+   "id": "debris",
+   "label": "debris",
+   "also_seen_as": [],
+   "bbox": [
+    1099,
+    1028,
+    1277,
+    1089
+   ],
+   "area_px": 10858
+  },
+  {
+   "id": "floor-debris-2",
+   "label": "floor debris 2",
+   "also_seen_as": [],
+   "bbox": [
+    1104,
+    1038,
+    1216,
+    1084
+   ],
+   "area_px": 5152
+  },
+  {
+   "id": "small-box",
+   "label": "small box",
+   "also_seen_as": [
+    "open case 1"
+   ],
+   "bbox": [
+    1123,
+    784,
+    1180,
+    851
+   ],
+   "area_px": 3819
+  },
+  {
+   "id": "pawnstamp-device",
+   "label": "pawnstamp device",
+   "also_seen_as": [
+    "metal stamp press"
+   ],
+   "bbox": [
+    1195,
+    771,
+    1253,
+    848
+   ],
+   "area_px": 4466
+  },
+  {
+   "id": "wire-mesh-cabinet-right",
+   "label": "wire mesh cabinet right",
+   "also_seen_as": [],
+   "bbox": [
+    1277,
+    281,
+    1464,
+    722
+   ],
+   "area_px": 82467
+  },
+  {
+   "id": "counter-desk",
+   "label": "counter desk",
+   "also_seen_as": [],
+   "bbox": [
+    1428,
+    714,
+    2375,
+    1524
+   ],
+   "area_px": 304346
+  },
+  {
+   "id": "framed-picture",
+   "label": "framed picture",
+   "also_seen_as": [],
+   "bbox": [
+    1324,
+    371,
+    1421,
+    434
+   ],
+   "area_px": 6111
+  },
+  {
+   "id": "upper-wire-cage-storage",
+   "label": "upper wire cage storage",
+   "also_seen_as": [],
+   "bbox": [
+    1437,
+    0,
+    1909,
+    266
+   ],
+   "area_px": 38292
+  },
+  {
+   "id": "cage-partition",
+   "label": "cage partition",
+   "also_seen_as": [
+    "counter grille"
+   ],
+   "bbox": [
+    1340,
+    412,
+    1620,
+    840
+   ],
+   "area_px": 119840
+  },
+  {
+   "id": "door",
+   "label": "door",
+   "also_seen_as": [
+    "back door"
+   ],
+   "bbox": [
+    1480,
+    336,
+    1770,
+    788
+   ],
+   "area_px": 107178
+  },
+  {
+   "id": "stamp-press",
+   "label": "stamp press",
+   "also_seen_as": [
+    "desk stamper",
+    "desk stapler",
+    "stamp machine",
+    "stamp tool"
+   ],
+   "bbox": [
+    1618,
+    735,
+    1724,
+    825
+   ],
+   "area_px": 2812
+  },
+  {
+   "id": "open-ledger",
+   "label": "open ledger",
+   "also_seen_as": [],
+   "bbox": [
+    1660,
+    833,
+    2081,
+    925
+   ],
+   "area_px": 20987
+  },
+  {
+   "id": "door-handle",
+   "label": "door handle",
+   "also_seen_as": [
+    "door knob"
+   ],
+   "bbox": [
+    1715,
+    644,
+    1739,
+    709
+   ],
+   "area_px": 1282
+  },
+  {
+   "id": "hanging-light-fixture",
+   "label": "hanging light fixture",
+   "also_seen_as": [
+    "ceiling lamp",
+    "ceiling light"
+   ],
+   "bbox": [
+    1729,
+    159,
+    1908,
+    223
+   ],
+   "area_px": 6752
+  },
+  {
+   "id": "coat-1",
+   "label": "coat 1",
+   "also_seen_as": [],
+   "bbox": [
+    1818,
+    380,
+    1928,
+    785
+   ],
+   "area_px": 44550
+  },
+  {
+   "id": "hanging-coats",
+   "label": "hanging coats",
+   "also_seen_as": [
+    "coats on rack"
+   ],
+   "bbox": [
+    1824,
+    344,
+    2085,
+    823
+   ],
+   "area_px": 125019
+  },
+  {
+   "id": "box-on-closet-shelf",
+   "label": "box on closet shelf",
+   "also_seen_as": [
+    "box 1"
+   ],
+   "bbox": [
+    1869,
+    179,
+    1967,
+    304
+   ],
+   "area_px": 9201
+  },
+  {
+   "id": "coat-2",
+   "label": "coat 2",
+   "also_seen_as": [],
+   "bbox": [
+    1870,
+    373,
+    1979,
+    811
+   ],
+   "area_px": 47742
+  },
+  {
+   "id": "suitcase-2",
+   "label": "suitcase 2",
+   "also_seen_as": [
+    "luggage top shelf 2"
+   ],
+   "bbox": [
+    1993,
+    130,
+    2244,
+    273
+   ],
+   "area_px": 21676
+  },
+  {
+   "id": "suitcase-1",
+   "label": "suitcase 1",
+   "also_seen_as": [
+    "luggage top shelf 1"
+   ],
+   "bbox": [
+    2009,
+    33,
+    2329,
+    175
+   ],
+   "area_px": 45440
+  },
+  {
+   "id": "mannequin",
+   "label": "mannequin",
+   "also_seen_as": [
+    "dress mannequin"
+   ],
+   "bbox": [
+    2055,
+    350,
+    2215,
+    787
+   ],
+   "area_px": 69920
+  },
+  {
+   "id": "suitcase-3",
+   "label": "suitcase 3",
+   "also_seen_as": [
+    "luggage top shelf 3"
+   ],
+   "bbox": [
+    2251,
+    62,
+    2547,
+    210
+   ],
+   "area_px": 27043
+  },
+  {
+   "id": "books",
+   "label": "books",
+   "also_seen_as": [],
+   "bbox": [
+    2251,
+    311,
+    2329,
+    426
+   ],
+   "area_px": 8970
+  },
+  {
+   "id": "radio-2",
+   "label": "radio 2",
+   "also_seen_as": [
+    "radio shelf 2"
+   ],
+   "bbox": [
+    2310,
+    517,
+    2467,
+    631
+   ],
+   "area_px": 17012
+  },
+  {
+   "id": "typewriter-1",
+   "label": "typewriter 1",
+   "also_seen_as": [],
+   "bbox": [
+    2301,
+    687,
+    2563,
+    851
+   ],
+   "area_px": 42968
+  },
+  {
+   "id": "radio-1",
+   "label": "radio 1",
+   "also_seen_as": [
+    "radio shelf 1"
+   ],
+   "bbox": [
+    2339,
+    257,
+    2530,
+    413
+   ],
+   "area_px": 25911
+  },
+  {
+   "id": "suitcase-2",
+   "label": "suitcase",
+   "also_seen_as": [
+    "suitcase stack bottom"
+   ],
+   "bbox": [
+    2340,
+    1136,
+    2684,
+    1471
+   ],
+   "area_px": 64597
+  },
+  {
+   "id": "briefcase-2",
+   "label": "briefcase 2",
+   "also_seen_as": [
+    "suitcase stack middle"
+   ],
+   "bbox": [
+    2345,
+    995,
+    2746,
+    1165
+   ],
+   "area_px": 68170
+  },
+  {
+   "id": "briefcase-1",
+   "label": "briefcase 1",
+   "also_seen_as": [
+    "suitcase stack top"
+   ],
+   "bbox": [
+    2365,
+    896,
+    2727,
+    1055
+   ],
+   "area_px": 57558
+  },
+  {
+   "id": "typewriter-2",
+   "label": "typewriter 2",
+   "also_seen_as": [],
+   "bbox": [
+    2499,
+    738,
+    2750,
+    887
+   ],
+   "area_px": 37399
+  },
+  {
+   "id": "suitcase-4",
+   "label": "suitcase 4",
+   "also_seen_as": [],
+   "bbox": [
+    2549,
+    1,
+    2752,
+    141
+   ],
+   "area_px": 22803
+  },
+  {
+   "id": "saxophone",
+   "label": "saxophone",
+   "also_seen_as": [],
+   "bbox": [
+    2564,
+    207,
+    2751,
+    656
+   ],
+   "area_px": 83963
+  }
+ ]
+}

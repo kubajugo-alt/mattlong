@@ -1,0 +1,72 @@
+{
+ "horizon": 0.3,
+ "horizon_note": "Door leaf (2.1 m) gives 0.31, the table, stove and chairs about 0.25-0.27; split at 0.30 so Matt fits the door.",
+ "floor": "#00FF00",
+ "clearance_px": 10,
+ "objects": {
+  "stove": "#FF8000",
+  "sink": "#FFFF00",
+  "table": "#0000FF",
+  "front-chair": "#FF0000",
+  "desk": "#FF00FF",
+  "bookcase": "#00FFFF",
+  "bucket": "#8000FF",
+  "newspapers": "#804000"
+ },
+ "exits": {
+  "door": {
+   "color": "#FFFFFF",
+   "to": "doyers-street"
+  }
+ },
+ "exclude": [],
+ "max_feet_y": 0.955,
+ "lights": [
+  {
+   "name": "window",
+   "type": "window",
+   "floor": [
+    0.15,
+    0.75
+   ],
+   "dir": [
+    1.0,
+    0.3
+   ],
+   "length": 0.6,
+   "strength": 0.55,
+   "blur": 3,
+   "note": "Morning sun through the kitchen window on the left; table and chair shadows fall right and a little forward."
+  }
+ ],
+ "depth_m": {
+  "stove": 0.65,
+  "sink": 0.6,
+  "table": 0.9,
+  "bookcase": 0.3,
+  "bucket": 0.3
+ },
+ "body_radius_m": 0.2,
+ "fov_deg": 60,
+ "spots": {
+  "kitchen-table": {
+   "x": 0.46,
+   "y": 0.8,
+   "note": "where Pete sits nursing his coffee"
+  }
+ },
+ "islands": [
+  "table",
+  "front-chair"
+ ],
+ "body_radius_note": "A cramped tenement kitchen: 0.2 m clearance so Matt can squeeze between the table and the chair by the desk.",
+ "solid_note": "The chair in front of the desk occludes but does not block: the flat is too tight to walk round it to the door. The desk runs back along the right wall, so its painted outline blocks it (no front-line footprint).",
+ "include": [
+  [
+   0.62,
+   0.62,
+   0.72,
+   0.88
+  ]
+ ]
+}

@@ -1,0 +1,1071 @@
+{
+ "image": "doyers-street.png",
+ "size": [
+  2752,
+  1536
+ ],
+ "model": "gemini-3.5-flash",
+ "objects": [
+  {
+   "id": "snow-pile-1",
+   "label": "snow pile 1",
+   "also_seen_as": [],
+   "bbox": [
+    0,
+    1342,
+    197,
+    1502
+   ],
+   "area_px": 15655
+  },
+  {
+   "id": "pipe",
+   "label": "pipe",
+   "also_seen_as": [],
+   "bbox": [
+    10,
+    1192,
+    74,
+    1414
+   ],
+   "area_px": 14208
+  },
+  {
+   "id": "fire-escape-1",
+   "label": "fire escape 1",
+   "also_seen_as": [],
+   "bbox": [
+    240,
+    0,
+    574,
+    388
+   ],
+   "area_px": 67334
+  },
+  {
+   "id": "snow-pile-2",
+   "label": "snow pile 2",
+   "also_seen_as": [
+    "snow patch 1"
+   ],
+   "bbox": [
+    260,
+    1133,
+    439,
+    1233
+   ],
+   "area_px": 10105
+  },
+  {
+   "id": "wooden-box",
+   "label": "wooden box",
+   "also_seen_as": [
+    "trash box"
+   ],
+   "bbox": [
+    396,
+    924,
+    545,
+    1131
+   ],
+   "area_px": 30843
+  },
+  {
+   "id": "storefront-sign-1",
+   "label": "storefront sign 1",
+   "also_seen_as": [
+    "signboard 5"
+   ],
+   "bbox": [
+    524,
+    485,
+    637,
+    695
+   ],
+   "area_px": 12758
+  },
+  {
+   "id": "lantern-4",
+   "label": "lantern 4",
+   "also_seen_as": [
+    "lantern 9",
+    "paper lantern 1"
+   ],
+   "bbox": [
+    595,
+    708,
+    636,
+    749
+   ],
+   "area_px": 1219
+  },
+  {
+   "id": "fire-escape-2",
+   "label": "fire escape 2",
+   "also_seen_as": [],
+   "bbox": [
+    609,
+    17,
+    748,
+    650
+   ],
+   "area_px": 87987
+  },
+  {
+   "id": "stacked-box-2",
+   "label": "stacked box 2",
+   "also_seen_as": [
+    "wooden crate"
+   ],
+   "bbox": [
+    609,
+    953,
+    690,
+    1017
+   ],
+   "area_px": 5184
+  },
+  {
+   "id": "stacked-box-1",
+   "label": "stacked box 1",
+   "also_seen_as": [],
+   "bbox": [
+    613,
+    898,
+    683,
+    958
+   ],
+   "area_px": 4200
+  },
+  {
+   "id": "lantern-5",
+   "label": "lantern 5",
+   "also_seen_as": [
+    "paper lantern 2"
+   ],
+   "bbox": [
+    689,
+    748,
+    739,
+    788
+   ],
+   "area_px": 1431
+  },
+  {
+   "id": "lantern-8",
+   "label": "lantern 8",
+   "also_seen_as": [],
+   "bbox": [
+    689,
+    748,
+    723,
+    783
+   ],
+   "area_px": 771
+  },
+  {
+   "id": "snow-patch-6",
+   "label": "snow patch 6",
+   "also_seen_as": [],
+   "bbox": [
+    688,
+    1178,
+    900,
+    1270
+   ],
+   "area_px": 19504
+  },
+  {
+   "id": "lantern-1",
+   "label": "lantern 1",
+   "also_seen_as": [],
+   "bbox": [
+    723,
+    84,
+    789,
+    201
+   ],
+   "area_px": 7722
+  },
+  {
+   "id": "vertical-store-sign-1",
+   "label": "vertical store sign 1",
+   "also_seen_as": [
+    "signboard 4"
+   ],
+   "bbox": [
+    737,
+    517,
+    787,
+    649
+   ],
+   "area_px": 6600
+  },
+  {
+   "id": "white-shirt-1",
+   "label": "white shirt 1",
+   "also_seen_as": [
+    "hanging garment 1"
+   ],
+   "bbox": [
+    796,
+    350,
+    852,
+    422
+   ],
+   "area_px": 4032
+  },
+  {
+   "id": "fire-escape-3",
+   "label": "fire escape 3",
+   "also_seen_as": [],
+   "bbox": [
+    799,
+    375,
+    894,
+    740
+   ],
+   "area_px": 34675
+  },
+  {
+   "id": "balcony-2",
+   "label": "balcony 2",
+   "also_seen_as": [],
+   "bbox": [
+    803,
+    675,
+    904,
+    741
+   ],
+   "area_px": 6666
+  },
+  {
+   "id": "lantern-6",
+   "label": "lantern 6",
+   "also_seen_as": [
+    "paper lantern 3"
+   ],
+   "bbox": [
+    810,
+    791,
+    835,
+    821
+   ],
+   "area_px": 537
+  },
+  {
+   "id": "lantern-7",
+   "label": "lantern 7",
+   "also_seen_as": [
+    "small lantern 1"
+   ],
+   "bbox": [
+    828,
+    561,
+    848,
+    598
+   ],
+   "area_px": 666
+  },
+  {
+   "id": "sign",
+   "label": "sign",
+   "also_seen_as": [],
+   "bbox": [
+    885,
+    779,
+    927,
+    827
+   ],
+   "area_px": 2016
+  },
+  {
+   "id": "hanging-clothes",
+   "label": "hanging clothes",
+   "also_seen_as": [],
+   "bbox": [
+    889,
+    315,
+    1260,
+    435
+   ],
+   "area_px": 44520
+  },
+  {
+   "id": "shirt-2",
+   "label": "shirt 2",
+   "also_seen_as": [
+    "hanging garment 2"
+   ],
+   "bbox": [
+    894,
+    357,
+    953,
+    420
+   ],
+   "area_px": 3717
+  },
+  {
+   "id": "lantern-8-2",
+   "label": "lantern 8",
+   "also_seen_as": [
+    "small lantern 2"
+   ],
+   "bbox": [
+    903,
+    559,
+    927,
+    587
+   ],
+   "area_px": 487
+  },
+  {
+   "id": "lantern-13",
+   "label": "lantern 13",
+   "also_seen_as": [
+    "small lantern 6"
+   ],
+   "bbox": [
+    912,
+    618,
+    931,
+    636
+   ],
+   "area_px": 283
+  },
+  {
+   "id": "lantern-2",
+   "label": "lantern 2",
+   "also_seen_as": [
+    "glowing chinese lantern 1"
+   ],
+   "bbox": [
+    913,
+    160,
+    995,
+    287
+   ],
+   "area_px": 5034
+  },
+  {
+   "id": "lantern-14",
+   "label": "lantern 14",
+   "also_seen_as": [
+    "small lantern 7"
+   ],
+   "bbox": [
+    953,
+    619,
+    969,
+    638
+   ],
+   "area_px": 230
+  },
+  {
+   "id": "towel-1",
+   "label": "towel 1",
+   "also_seen_as": [],
+   "bbox": [
+    958,
+    357,
+    973,
+    388
+   ],
+   "area_px": 465
+  },
+  {
+   "id": "puddle-reflection",
+   "label": "puddle reflection",
+   "also_seen_as": [],
+   "bbox": [
+    987,
+    1206,
+    1219,
+    1376
+   ],
+   "area_px": 22345
+  },
+  {
+   "id": "shirt-3",
+   "label": "shirt 3",
+   "also_seen_as": [
+    "hanging garment 3"
+   ],
+   "bbox": [
+    975,
+    357,
+    1019,
+    437
+   ],
+   "area_px": 2031
+  },
+  {
+   "id": "fire-escape-4",
+   "label": "fire escape 4",
+   "also_seen_as": [],
+   "bbox": [
+    980,
+    510,
+    1063,
+    783
+   ],
+   "area_px": 22659
+  },
+  {
+   "id": "lantern-9",
+   "label": "lantern 9",
+   "also_seen_as": [
+    "small lantern 3"
+   ],
+   "bbox": [
+    982,
+    560,
+    1004,
+    590
+   ],
+   "area_px": 534
+  },
+  {
+   "id": "balcony-3",
+   "label": "balcony 3",
+   "also_seen_as": [],
+   "bbox": [
+    986,
+    741,
+    1063,
+    786
+   ],
+   "area_px": 3465
+  },
+  {
+   "id": "lantern-10",
+   "label": "lantern 10",
+   "also_seen_as": [
+    "small lantern 4"
+   ],
+   "bbox": [
+    1042,
+    560,
+    1066,
+    589
+   ],
+   "area_px": 561
+  },
+  {
+   "id": "shorts-1",
+   "label": "shorts 1",
+   "also_seen_as": [
+    "hanging garment 4"
+   ],
+   "bbox": [
+    1060,
+    349,
+    1110,
+    437
+   ],
+   "area_px": 3651
+  },
+  {
+   "id": "lantern-15",
+   "label": "lantern 15",
+   "also_seen_as": [
+    "small lantern 8"
+   ],
+   "bbox": [
+    1061,
+    611,
+    1082,
+    631
+   ],
+   "area_px": 420
+  },
+  {
+   "id": "snow-patch-5",
+   "label": "snow patch 5",
+   "also_seen_as": [],
+   "bbox": [
+    1098,
+    992,
+    1260,
+    1077
+   ],
+   "area_px": 13770
+  },
+  {
+   "id": "lantern-3",
+   "label": "lantern 3",
+   "also_seen_as": [
+    "glowing chinese lantern 2"
+   ],
+   "bbox": [
+    1100,
+    173,
+    1156,
+    317
+   ],
+   "area_px": 4949
+  },
+  {
+   "id": "lantern-11",
+   "label": "lantern 11",
+   "also_seen_as": [
+    "small lantern 5"
+   ],
+   "bbox": [
+    1127,
+    552,
+    1155,
+    582
+   ],
+   "area_px": 840
+  },
+  {
+   "id": "lantern-12",
+   "label": "lantern 12",
+   "also_seen_as": [
+    "small lantern 9"
+   ],
+   "bbox": [
+    1129,
+    594,
+    1147,
+    622
+   ],
+   "area_px": 436
+  },
+  {
+   "id": "towel-2",
+   "label": "towel 2",
+   "also_seen_as": [
+    "hanging garment 5"
+   ],
+   "bbox": [
+    1130,
+    335,
+    1180,
+    405
+   ],
+   "area_px": 2522
+  },
+  {
+   "id": "street-lamp-1",
+   "label": "street lamp 1",
+   "also_seen_as": [
+    "alley lamp post",
+    "background streetlight",
+    "street lamp",
+    "street lamp 2"
+   ],
+   "bbox": [
+    1155,
+    685,
+    1187,
+    914
+   ],
+   "area_px": 7328
+  },
+  {
+   "id": "vertical-store-sign-2",
+   "label": "vertical store sign 2",
+   "also_seen_as": [
+    "signboard 3",
+    "store sign 1"
+   ],
+   "bbox": [
+    1178,
+    439,
+    1228,
+    659
+   ],
+   "area_px": 10059
+  },
+  {
+   "id": "awning-2",
+   "label": "awning 2",
+   "also_seen_as": [],
+   "bbox": [
+    1180,
+    694,
+    1271,
+    805
+   ],
+   "area_px": 10101
+  },
+  {
+   "id": "sock-1",
+   "label": "sock 1",
+   "also_seen_as": [
+    "hanging garment 6"
+   ],
+   "bbox": [
+    1188,
+    323,
+    1206,
+    361
+   ],
+   "area_px": 444
+  },
+  {
+   "id": "hanging-garment-7",
+   "label": "hanging garment 7",
+   "also_seen_as": [],
+   "bbox": [
+    1212,
+    312,
+    1264,
+    406
+   ],
+   "area_px": 4127
+  },
+  {
+   "id": "fire-escape-2-2",
+   "label": "fire escape 2",
+   "also_seen_as": [],
+   "bbox": [
+    1220,
+    104,
+    1354,
+    683
+   ],
+   "area_px": 77586
+  },
+  {
+   "id": "glowing-chinese-lantern-3",
+   "label": "glowing chinese lantern 3",
+   "also_seen_as": [
+    "lantern 4"
+   ],
+   "bbox": [
+    1261,
+    150,
+    1342,
+    218
+   ],
+   "area_px": 4242
+  },
+  {
+   "id": "hanging-garment-8",
+   "label": "hanging garment 8",
+   "also_seen_as": [],
+   "bbox": [
+    1266,
+    291,
+    1307,
+    384
+   ],
+   "area_px": 3813
+  },
+  {
+   "id": "store-sign-awning",
+   "label": "store sign awning",
+   "also_seen_as": [
+    "awning 1"
+   ],
+   "bbox": [
+    1266,
+    637,
+    1416,
+    776
+   ],
+   "area_px": 20850
+  },
+  {
+   "id": "steam",
+   "label": "steam",
+   "also_seen_as": [],
+   "bbox": [
+    1273,
+    987,
+    1619,
+    1262
+   ],
+   "area_px": 51479
+  },
+  {
+   "id": "glowing-chinese-lantern-6",
+   "label": "glowing chinese lantern 6",
+   "also_seen_as": [
+    "lantern 7",
+    "paper lantern 3"
+   ],
+   "bbox": [
+    1283,
+    769,
+    1314,
+    811
+   ],
+   "area_px": 746
+  },
+  {
+   "id": "hanging-garment-9",
+   "label": "hanging garment 9",
+   "also_seen_as": [],
+   "bbox": [
+    1318,
+    272,
+    1366,
+    339
+   ],
+   "area_px": 2184
+  },
+  {
+   "id": "snow-patch-3",
+   "label": "snow patch 3",
+   "also_seen_as": [],
+   "bbox": [
+    1324,
+    1087,
+    1580,
+    1170
+   ],
+   "area_px": 21248
+  },
+  {
+   "id": "glowing-chinese-lantern-5",
+   "label": "glowing chinese lantern 5",
+   "also_seen_as": [
+    "lantern 6",
+    "paper lantern 2"
+   ],
+   "bbox": [
+    1344,
+    760,
+    1386,
+    792
+   ],
+   "area_px": 1108
+  },
+  {
+   "id": "window-3",
+   "label": "window 3",
+   "also_seen_as": [],
+   "bbox": [
+    1362,
+    187,
+    1391,
+    360
+   ],
+   "area_px": 2870
+  },
+  {
+   "id": "window-4",
+   "label": "window 4",
+   "also_seen_as": [],
+   "bbox": [
+    1361,
+    424,
+    1395,
+    627
+   ],
+   "area_px": 6902
+  },
+  {
+   "id": "street-drain-grate",
+   "label": "street drain grate",
+   "also_seen_as": [
+    "drain grid"
+   ],
+   "bbox": [
+    1361,
+    1207,
+    1632,
+    1284
+   ],
+   "area_px": 20867
+  },
+  {
+   "id": "fire-escape-1-2",
+   "label": "fire escape 1",
+   "also_seen_as": [
+    "fire escape 3"
+   ],
+   "bbox": [
+    1402,
+    0,
+    1676,
+    383
+   ],
+   "area_px": 73107
+  },
+  {
+   "id": "store-sign-2",
+   "label": "store sign 2",
+   "also_seen_as": [
+    "signboard 1"
+   ],
+   "bbox": [
+    1437,
+    460,
+    1817,
+    704
+   ],
+   "area_px": 92720
+  },
+  {
+   "id": "street-lamp",
+   "label": "street lamp",
+   "also_seen_as": [
+    "street lamp 1"
+   ],
+   "bbox": [
+    1496,
+    332,
+    1589,
+    917
+   ],
+   "area_px": 54405
+  },
+  {
+   "id": "window-2",
+   "label": "window 2",
+   "also_seen_as": [],
+   "bbox": [
+    1605,
+    245,
+    1666,
+    483
+   ],
+   "area_px": 14518
+  },
+  {
+   "id": "window-5",
+   "label": "window 5",
+   "also_seen_as": [],
+   "bbox": [
+    1608,
+    0,
+    1668,
+    97
+   ],
+   "area_px": 5820
+  },
+  {
+   "id": "snow-patch-1",
+   "label": "snow patch 1",
+   "also_seen_as": [],
+   "bbox": [
+    1712,
+    1080,
+    1784,
+    1105
+   ],
+   "area_px": 961
+  },
+  {
+   "id": "left-storefront-window",
+   "label": "left storefront window",
+   "also_seen_as": [
+    "shop window 2"
+   ],
+   "bbox": [
+    1661,
+    959,
+    1795,
+    1086
+   ],
+   "area_px": 14432
+  },
+  {
+   "id": "snow-bank",
+   "label": "snow bank",
+   "also_seen_as": [],
+   "bbox": [
+    1670,
+    1315,
+    2257,
+    1533
+   ],
+   "area_px": 33398
+  },
+  {
+   "id": "tiled-chinese-roof",
+   "label": "tiled chinese roof",
+   "also_seen_as": [],
+   "bbox": [
+    1701,
+    0,
+    2751,
+    519
+   ],
+   "area_px": 544950
+  },
+  {
+   "id": "window-1",
+   "label": "window 1",
+   "also_seen_as": [],
+   "bbox": [
+    1719,
+    154,
+    1792,
+    409
+   ],
+   "area_px": 15563
+  },
+  {
+   "id": "glowing-chinese-lantern-4",
+   "label": "glowing chinese lantern 4",
+   "also_seen_as": [
+    "hanging lantern",
+    "lantern 5",
+    "paper lantern 1"
+   ],
+   "bbox": [
+    1730,
+    627,
+    1784,
+    701
+   ],
+   "area_px": 2744
+  },
+  {
+   "id": "snow-patch-2",
+   "label": "snow patch 2",
+   "also_seen_as": [],
+   "bbox": [
+    1778,
+    1087,
+    1944,
+    1144
+   ],
+   "area_px": 9462
+  },
+  {
+   "id": "snow-patch-2-2",
+   "label": "snow patch 2",
+   "also_seen_as": [],
+   "bbox": [
+    1789,
+    1375,
+    2213,
+    1536
+   ],
+   "area_px": 68264
+  },
+  {
+   "id": "lattice-window-panel",
+   "label": "lattice window panel",
+   "also_seen_as": [
+    "shop window 1"
+   ],
+   "bbox": [
+    1925,
+    568,
+    2118,
+    916
+   ],
+   "area_px": 67164
+  },
+  {
+   "id": "window-2-2",
+   "label": "window 2",
+   "also_seen_as": [],
+   "bbox": [
+    1969,
+    0,
+    2170,
+    249
+   ],
+   "area_px": 22032
+  },
+  {
+   "id": "fire-escape-2-3",
+   "label": "fire escape 2",
+   "also_seen_as": [],
+   "bbox": [
+    1989,
+    0,
+    2344,
+    232
+   ],
+   "area_px": 27209
+  },
+  {
+   "id": "snow-patch-3-2",
+   "label": "snow patch 3",
+   "also_seen_as": [],
+   "bbox": [
+    2032,
+    1144,
+    2101,
+    1182
+   ],
+   "area_px": 1527
+  },
+  {
+   "id": "main-sign-board",
+   "label": "main sign board",
+   "also_seen_as": [
+    "signboard 2"
+   ],
+   "bbox": [
+    2178,
+    335,
+    2452,
+    506
+   ],
+   "area_px": 24644
+  },
+  {
+   "id": "stairs",
+   "label": "stairs",
+   "also_seen_as": [],
+   "bbox": [
+    2306,
+    517,
+    2516,
+    1118
+   ],
+   "area_px": 57559
+  },
+  {
+   "id": "staircase",
+   "label": "staircase",
+   "also_seen_as": [],
+   "bbox": [
+    2322,
+    966,
+    2514,
+    1108
+   ],
+   "area_px": 16439
+  },
+  {
+   "id": "stair-handrail",
+   "label": "stair handrail",
+   "also_seen_as": [
+    "handrail"
+   ],
+   "bbox": [
+    2319,
+    714,
+    2509,
+    916
+   ],
+   "area_px": 38380
+  },
+  {
+   "id": "snow-patch-4",
+   "label": "snow patch 4",
+   "also_seen_as": [],
+   "bbox": [
+    2456,
+    1252,
+    2626,
+    1331
+   ],
+   "area_px": 5081
+  },
+  {
+   "id": "lattice-door-panel",
+   "label": "lattice door panel",
+   "also_seen_as": [],
+   "bbox": [
+    2638,
+    448,
+    2745,
+    916
+   ],
+   "area_px": 50076
+  }
+ ]
+}

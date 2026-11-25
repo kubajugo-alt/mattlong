@@ -1,5 +1,10 @@
 # Scenes
 
+All seven Prologue rooms are built: `office-day`, `office-night`, `pete-kate-flat`, `doyers-street`,
+`tea-house`, `pawnshop`, `alley`. Each room's horizon (and how it was measured) is in its legend
+(`art/rooms/labels/<room>.legend.json`) and in `art/rooms/rooms.json`; `tools/scale_check.py` drops Matt
+into a room at several depths to check it.
+
 Engine data for each room, built by `tools/build_scene.py` from the painting
 (`art/rooms/final/`) and an aligned flat-colour object map (`art/rooms/labels/`),
 with a legend giving the horizon, object colours, exits, exclusions and lights.
@@ -45,3 +50,17 @@ The desk was repainted with a solid wooden front so Matt can sit behind it.
 The walk test adds subtle life: dust in the light, slow cloud dimming and heat shimmer
 by day; neon flicker, rain shadows and a faint lamp waver by night; smoke from the
 ashtray in both. All procedural, toggled by "Ambient".
+
+## Legend options added for the other rooms
+
+- `islands`: furniture standing out in the room (the flat's table and chairs, the tea-house stools, the street
+  lamp). Matt walks round it; only its floor-plan footprint blocks him, and floor its picture hides counts as floor.
+- `column_cut`: furniture set at an angle (the pawnshop and tea-house counters): per column, only floor above its
+  lowest painted pixel is behind it.
+- `include` / `exclude`: hand-marked boxes of floor to add or remove (fractions of the image).
+- `min_feet_y`: no walking beyond this depth (the far end of Doyers Street).
+- Exits can be a coloured region (a door) or a `box` at the edge of the screen (the end of a street), with an
+  optional `stand` point. `to: "map"` means the city map, which is not drawn yet.
+
+Object detection output for the new rooms is in `art/rooms/labels/<room>-seg/` (masks + objects.json); curation
+in `art/rooms/labels/<room>.hotspots.json`.

@@ -16,18 +16,26 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crossh
 .seg button[aria-pressed="true"] { background: var(--ink); color: #111; }
 label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; color: var(--muted); }
 input { accent-color: var(--red); }
-button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+select { background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 3px; padding: 5px 8px; font: inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
 #status { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
 </style>
 <div class="wrap">
-  <h1>Matt's office: walk, depth, occlusion and shadow test</h1>
-  <p>Click or tap the floor and Matt walks there, around the furniture. His size follows the room's depth; furniture in front of him hides him; his shadow falls away from the light, only on bare floor. Click the door to walk out.</p>
+  <h1>Prologue rooms: walk, depth, occlusion and shadow test</h1>
+  <p>Click or tap the floor and Matt walks there, around the furniture. His size follows each room's depth; furniture in front of him hides him; his shadow falls away from the light, only on bare floor. Click a door or the end of a street to walk through to the next room.</p>
   <div class="stage"><canvas id="c" aria-label="Matt's office scene; click the floor to walk"></canvas></div>
   <div class="bar">
-    <div class="seg" role="group" aria-label="Time of day">
-      <button type="button" data-v="day" aria-pressed="true">Day</button>
-      <button type="button" data-v="night" aria-pressed="false">Night</button>
-    </div>
+    <label for="room">Room
+      <select id="room">
+        <option value="office-day">Matt's office, morning</option>
+        <option value="office-night">Matt's office, night</option>
+        <option value="pete-kate-flat">Pete &amp; Kate's flat</option>
+        <option value="doyers-street">Doyers Street</option>
+        <option value="tea-house">Lee Wing's tea house</option>
+        <option value="pawnshop">Bowery pawnshop</option>
+        <option value="alley">Alley behind the pawnshop</option>
+      </select>
+    </label>
     <label><input type="checkbox" id="ambient" checked> Ambient</label>
     <label><input type="checkbox" id="showHot"> Hotspots</label>
     <label><input type="checkbox" id="showWalk"> Walkable floor</label>
@@ -44,13 +52,18 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
   const load = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
   const maskOf = async (src) => { const i = await load(src); const c = document.createElement('canvas'); c.width = i.width; c.height = i.height; const x = c.getContext('2d'); x.drawImage(i, 0, 0); const d = x.getImageData(0, 0, i.width, i.height).data; const m = new Uint8Array(i.width * i.height); for (let k = 0; k < m.length; k++) m[k] = d[k * 4] > 128 ? 1 : 0; return { w: i.width, h: i.height, m, img: c }; };
 
-  const scenes = {}; let S = null, mode = 'day', sprites = null, spriteImgs = {};
+  const scenes = {}; let S = null, mode = 'day', room = 'office-day', sprites = null, spriteImgs = {};
+  const NAMES = { 'office-day': "Matt's office", 'office-night': "Matt's office", 'pete-kate-flat': "Pete & Kate's flat", 'doyers-street': 'Doyers Street',
+                  'tea-house': "Lee Wing's tea house", pawnshop: 'the pawnshop', alley: 'the alley', map: 'the city map', 'tea-house-back': 'the back room', laundry: 'the laundry' };
+  // the city map is not built yet: in this test its exits lead straight to the next Prologue location
+  const MAP_NEXT = { 'doyers-street': 'pawnshop', pawnshop: 'doyers-street', alley: 'doyers-street' };
   async function loadScene(v) {
-    const base = 'office-' + v + '/';
+    const base = v + '/';
     const sc = await (await fetch(base + 'scene.json')).json();
     const [bg, walk, floor] = await Promise.all([load(base + 'bg.webp'), maskOf(base + sc.walk.file), maskOf(base + sc.floor.file)]);
     const occ = await Promise.all(sc.objects.map(async o => ({ ...o, img: await load(base + 'occ/' + o.name + '.webp') })));
-    const hot = (await (await fetch(base + 'hotspots.json')).json()).hotspots.map(h => ({ ...h, paths: h.polygons.map(pl => { const p = new Path2D(); pl.forEach(([x, y], i) => i ? p.lineTo(x, y) : p.moveTo(x, y)); p.closePath(); return p; }) }));
+    let hj = { hotspots: [] }; try { const r = await fetch(base + 'hotspots.json'); if (r.ok) hj = await r.json(); } catch (e) {}
+    const hot = hj.hotspots.map(h => ({ ...h, paths: h.polygons.map(pl => { const p = new Path2D(); pl.forEach(([x, y], i) => i ? p.lineTo(x, y) : p.moveTo(x, y)); p.closePath(); return p; }) }));
     // brightness of the painted floor, to light Matt like his surroundings
     const lc = document.createElement('canvas'); lc.width = 344; lc.height = 192; const lx = lc.getContext('2d'); lx.drawImage(bg, 0, 0, 344, 192);
     const lum = lx.getImageData(0, 0, 344, 192).data;
@@ -58,20 +71,27 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
   }
 
   const M = { x: 0, y: 0, path: [], dir: 'front', flip: false, phase: 0, moving: false, light: 1, exiting: false };
-  Promise.all([loadScene('day'), loadScene('night'), fetch('sprites/matt.json').then(r => r.json())]).then(async ([d, n, sp]) => {
-    scenes.day = d; scenes.night = n; sprites = sp;
-    for (const k of Object.keys(sp)) spriteImgs[k] = await load(sp[k].file);
-    S = scenes.day;
+  const roomSel = document.getElementById('room');
+  let switching = false;
+  async function enter(id, from) {
+    if (switching) return; switching = true; status.textContent = 'Loading ' + (NAMES[id] || id) + '…';
+    try { if (!scenes[id]) scenes[id] = await loadScene(id); }
+    catch (e) { status.textContent = 'Could not load ' + (NAMES[id] || id); switching = false; return; }
+    room = id; S = scenes[id]; mode = id === 'office-night' ? 'night' : 'day'; roomSel.value = id;
     const W = S.sc.size[0], H = S.sc.size[1];
-    M.x = W * 0.52; M.y = H * 0.9;
-    status.textContent = 'Click the floor';
+    // arrive at the exit that leads back where Matt came from, else front and centre
+    const back = from && Object.values(S.sc.exits).find(e => e.to === from || (from.startsWith('office') && (e.to || '').startsWith('office')) || (e.to === 'map' && MAP_NEXT[id] === from));
+    const p = back ? nearestWalkable(back.stand[0], back.stand[1]) : nearestWalkable(W * 0.5, H * 0.9);
+    [M.x, M.y] = p || [W * 0.5, H * 0.9]; M.path = []; M.moving = false; M.exiting = null; M.dir = 'front'; hover = null;
+    status.textContent = 'Click the floor'; switching = false;
+  }
+  fetch('sprites/matt.json').then(r => r.json()).then(async (sp) => {
+    sprites = sp;
+    for (const k of Object.keys(sp)) spriteImgs[k] = await load(sp[k].file);
+    await enter('office-day');
     requestAnimationFrame(tick);
   }).catch(() => { status.textContent = 'Scene could not be loaded'; });
-
-  document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
-    mode = b.dataset.v; S = scenes[mode];
-    document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-  }));
+  roomSel.addEventListener('change', () => enter(roomSel.value));
 
   // ---- depth
   const heightAt = (y) => Math.max(0, (y - S.sc.horizon * S.sc.size[1]) * 1.85 / S.sc.eye_m);
@@ -125,14 +145,14 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
   cv.addEventListener('click', (ev) => {
     if (!S) return;
     const [x, y] = toScene(ev);
-    const door = S.sc.exits.door;
-    M.exiting = false;
+    M.exiting = null;
     let target;
-    if (x > door.bbox[0] && x < door.bbox[2] && y > door.bbox[1] && y < door.bbox[3]) { target = nearestWalkable(door.stand[0], door.stand[1] + 6); M.exiting = true; }
+    const ex = Object.entries(S.sc.exits).find(([, e]) => x > e.bbox[0] && x < e.bbox[2] && y > e.bbox[1] && y < e.bbox[3]);
+    if (ex) { target = nearestWalkable(ex[1].stand[0], ex[1].stand[1]); M.exiting = ex[1]; }
     else target = nearestWalkable(x, y);
     if (!target) return;
     M.path = findPath(M.x, M.y, target[0], target[1]);
-    status.textContent = M.exiting ? 'Walking to the door' : 'Walking';
+    status.textContent = M.exiting ? 'Walking to ' + (NAMES[M.exiting.to] || M.exiting.to) : 'Walking';
   });
 
   // ---- lights and shadows
@@ -145,8 +165,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
       } else {
         const lx = L.floor[0] * W, ly = L.floor[1] * H;
         const dx = M.x - lx, dy = (M.y - ly) / 0.55, dist = Math.hypot(dx, dy) || 1;
-        const lampPx = L.height_m * pxPerM(M.y);
-        const len = Math.min(3.5, 1.85 / Math.max(0.2, L.height_m - 0.05)) * dist / (dist + lampPx) * h * 1.4;
+        const lh = L.height_m || 2.5, lampPx = lh * pxPerM(M.y);
+        const len = Math.min(3.5, 1.85 / Math.max(0.2, lh - 0.05)) * dist / (dist + lampPx) * h * 1.4;
         const fall = Math.max(0, 1 - dist / (L.reach * W));
         out.push({ vx: dx / dist * len, vy: dy / dist * len * 0.55, a: L.strength * (0.35 + 0.65 * fall), blur: L.blur + len / 60 });
       }
@@ -173,11 +193,11 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
   const lightMaskCache = {};
   // canvas of the painting's bright areas (where light falls), soft-edged, at 1/8 scale
   function lightMask() {
-    if (lightMaskCache[mode]) return lightMaskCache[mode];
+    if (lightMaskCache[room]) return lightMaskCache[room];
     const w = 344, h = 192, c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d');
     const d = x.createImageData(w, h), thr = mode === 'night' ? 0.30 : 0.55;
     for (let p = 0; p < w * h; p++) { const l = S.lum[p * 4] / 255; const a = Math.max(0, Math.min(1, (l - thr) / 0.2)); d.data[p * 4 + 3] = a * 255; }
-    x.putImageData(d, 0, 0); lightMaskCache[mode] = c; return c;
+    x.putImageData(d, 0, 0); lightMaskCache[room] = c; return c;
   }
   const noise1 = (t) => Math.sin(t) * 0.5 + Math.sin(t * 2.31 + 1.7) * 0.3 + Math.sin(t * 5.13 + 0.4) * 0.2;
   let ambT = 0, neon = 1, neonHold = 0, sunFactor = 1, lightFactor = 1;
@@ -189,9 +209,9 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
       if (sunFactor < 0.999) dimBright(1 - sunFactor, W, H);
       lightFactor = sunFactor;
       // heat shimmer above the radiator: rows of the painting nudged sideways by a pixel or two
-      const [rx0, rx1, ry0, ry1] = AMB.radiator, X0 = rx0 * W, X1 = rx1 * W, Y0 = ry0 * H, Y1 = ry1 * H;
+      if (room.startsWith('office')) { const [rx0, rx1, ry0, ry1] = AMB.radiator, X0 = rx0 * W, X1 = rx1 * W, Y0 = ry0 * H, Y1 = ry1 * H;
       for (let y = Y0; y < Y1; y += 8) { const off = Math.sin(ambT * 3 + y * 0.09) * 1.6 * (1 - (y - Y0) / (Y1 - Y0));
-        ctx.drawImage(S.bg, X0, y, X1 - X0, 8, X0 + off, y, X1 - X0, 8); }
+        ctx.drawImage(S.bg, X0, y, X1 - X0, 8, X0 + off, y, X1 - X0, 8); } }
     } else {
       // neon: steady, with an occasional stutter
       if (neonHold > 0) neonHold -= dt; else if (Math.random() < dt * 0.25) neonHold = 0.15 + Math.random() * 0.5;
@@ -212,7 +232,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
       maskToLight(W, H);
     }
     // smoke from the ashtray: a few soft puffs rising and curling
-    if (Math.random() < dt * 3) smoke.push({ x: AMB.ashtray[0] * W, y: AMB.ashtray[1] * H, t: 0, s: 0.6 + Math.random() * 0.6 });
+    if (room.startsWith('office') && Math.random() < dt * 3) smoke.push({ x: AMB.ashtray[0] * W, y: AMB.ashtray[1] * H, t: 0, s: 0.6 + Math.random() * 0.6 });
     ctx.save();
     for (let i = smoke.length - 1; i >= 0; i--) { const p = smoke[i]; p.t += dt; if (p.t > 6) { smoke.splice(i, 1); continue; }
       const rise = p.t * 34, sway = Math.sin(p.t * 1.3 + p.s * 5) * (6 + p.t * 9);
@@ -246,14 +266,14 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
   }
   // keep rain shadows only where the window light falls: repaint the unlit room over them
   function maskToLight(W, H) {
-    const key = 'unlit-' + mode;
+    const key = 'unlit-' + room;
     if (!_dk[key]) { const c = document.createElement('canvas'); c.width = W / 2; c.height = H / 2; const x = c.getContext('2d');
       x.drawImage(S.bg, 0, 0, c.width, c.height); x.globalCompositeOperation = 'destination-out'; x.drawImage(lightMask(), 0, 0, c.width, c.height); _dk[key] = c; }
     ctx.drawImage(_dk[key], 0, 0, W, H);
   }
   // darken the bright (lit) parts of the painting by a fraction
   function dimBright(f, W, H) {
-    const key = 'lit-' + mode;
+    const key = 'lit-' + room;
     if (!_dk[key]) { const c = document.createElement('canvas'); c.width = 344; c.height = 192; const x = c.getContext('2d');
       x.drawImage(lightMask(), 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, 344, 192); _dk[key] = c; }
     ctx.save(); ctx.globalAlpha = f; ctx.drawImage(_dk[key], 0, 0, W, H); ctx.restore();
@@ -273,7 +293,10 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
       if (d <= step) { M.x = tx; M.y = ty; M.path.shift(); } else { M.x += dx / d * step; M.y += dy / d * step; }
       // advance the cycle by distance walked: one 36-frame cycle = 2 steps = 1.5 m
       M.phase = (M.phase + step / pxPerM(M.y) / 1.5) % 1; M.moving = true;
-      if (!M.path.length) { M.moving = false; status.textContent = M.exiting ? 'At the door: would exit to Doyers Street' : 'Click the floor'; }
+      if (!M.path.length) { M.moving = false; status.textContent = 'Click the floor';
+        if (M.exiting) { let to = M.exiting.to; if (to === 'office-day' && room === 'doyers-street') to = 'office-day'; if (to === 'map') to = MAP_NEXT[room];
+          if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room; M.exiting = null; enter(to, from); }
+          else { status.textContent = (NAMES[M.exiting.to] || M.exiting.to) + ' is not drawn yet'; M.exiting = null; } } }
     }
     // light on Matt follows the floor around his feet, smoothed
     const target = Math.min(1.15, Math.max(mode === 'night' ? 0.22 : 0.55, 0.45 + floorBrightness(M.x, M.y) * (mode === 'night' ? 1.6 : 0.9)));
@@ -360,7 +383,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--red); outli
   // redraw everything that is not floor over the shadow layer, so shadows never fall on walls or furniture
   const fcache = {};
   function maskShadow() {
-    const key = mode;
+    const key = room;
     if (!fcache[key]) {
       const W = S.sc.size[0], H = S.sc.size[1], c = document.createElement('canvas'); c.width = W / 4; c.height = H / 4;
       const x = c.getContext('2d'); x.drawImage(S.bg, 0, 0, c.width, c.height);

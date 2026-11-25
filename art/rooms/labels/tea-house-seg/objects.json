@@ -1,0 +1,796 @@
+{
+ "image": "tea-house.png",
+ "size": [
+  2752,
+  1536
+ ],
+ "model": "gemini-3.5-flash",
+ "objects": [
+  {
+   "id": "window-blind-1",
+   "label": "window blind 1",
+   "also_seen_as": [],
+   "bbox": [
+    0,
+    74,
+    205,
+    365
+   ],
+   "area_px": 43625
+  },
+  {
+   "id": "blinds",
+   "label": "blinds",
+   "also_seen_as": [],
+   "bbox": [
+    0,
+    8,
+    455,
+    387
+   ],
+   "area_px": 136306
+  },
+  {
+   "id": "left-window",
+   "label": "left window",
+   "also_seen_as": [],
+   "bbox": [
+    0,
+    56,
+    460,
+    1012
+   ],
+   "area_px": 269460
+  },
+  {
+   "id": "table-1",
+   "label": "table 1",
+   "also_seen_as": [
+    "round table 2"
+   ],
+   "bbox": [
+    0,
+    1012,
+    349,
+    1536
+   ],
+   "area_px": 121813
+  },
+  {
+   "id": "stool-1",
+   "label": "stool 1",
+   "also_seen_as": [
+    "stool 4"
+   ],
+   "bbox": [
+    109,
+    1187,
+    333,
+    1514
+   ],
+   "area_px": 73248
+  },
+  {
+   "id": "stool-2",
+   "label": "stool 2",
+   "also_seen_as": [
+    "stool 5"
+   ],
+   "bbox": [
+    221,
+    1308,
+    478,
+    1536
+   ],
+   "area_px": 52643
+  },
+  {
+   "id": "window-blind-2",
+   "label": "window blind 2",
+   "also_seen_as": [],
+   "bbox": [
+    234,
+    166,
+    455,
+    401
+   ],
+   "area_px": 30539
+  },
+  {
+   "id": "paper-lantern-1",
+   "label": "paper lantern 1",
+   "also_seen_as": [
+    "pendant lantern 1"
+   ],
+   "bbox": [
+    402,
+    11,
+    573,
+    350
+   ],
+   "area_px": 41283
+  },
+  {
+   "id": "stool-3",
+   "label": "stool 3",
+   "also_seen_as": [
+    "stool 1"
+   ],
+   "bbox": [
+    410,
+    988,
+    568,
+    1192
+   ],
+   "area_px": 32232
+  },
+  {
+   "id": "table-2",
+   "label": "table 2",
+   "also_seen_as": [
+    "round table 1"
+   ],
+   "bbox": [
+    462,
+    869,
+    799,
+    1152
+   ],
+   "area_px": 67313
+  },
+  {
+   "id": "tea-cups",
+   "label": "tea cups",
+   "also_seen_as": [],
+   "bbox": [
+    572,
+    839,
+    633,
+    871
+   ],
+   "area_px": 1952
+  },
+  {
+   "id": "cup-1",
+   "label": "cup 1",
+   "also_seen_as": [],
+   "bbox": [
+    573,
+    840,
+    598,
+    873
+   ],
+   "area_px": 825
+  },
+  {
+   "id": "cup-2",
+   "label": "cup 2",
+   "also_seen_as": [],
+   "bbox": [
+    610,
+    842,
+    620,
+    866
+   ],
+   "area_px": 185
+  },
+  {
+   "id": "stool-4",
+   "label": "stool 4",
+   "also_seen_as": [
+    "stool 2"
+   ],
+   "bbox": [
+    647,
+    943,
+    762,
+    1102
+   ],
+   "area_px": 16356
+  },
+  {
+   "id": "hanging-scroll",
+   "label": "hanging scroll",
+   "also_seen_as": [
+    "calligraphy scroll 1"
+   ],
+   "bbox": [
+    672,
+    389,
+    831,
+    746
+   ],
+   "area_px": 34577
+  },
+  {
+   "id": "paper-lantern-2",
+   "label": "paper lantern 2",
+   "also_seen_as": [
+    "pendant lantern 2"
+   ],
+   "bbox": [
+    696,
+    214,
+    811,
+    399
+   ],
+   "area_px": 18420
+  },
+  {
+   "id": "stool-5",
+   "label": "stool 5",
+   "also_seen_as": [
+    "stool 3"
+   ],
+   "bbox": [
+    748,
+    973,
+    898,
+    1169
+   ],
+   "area_px": 20696
+  },
+  {
+   "id": "beaded-curtain",
+   "label": "beaded curtain",
+   "also_seen_as": [],
+   "bbox": [
+    958,
+    393,
+    1325,
+    1010
+   ],
+   "area_px": 57899
+  },
+  {
+   "id": "framed-picture",
+   "label": "framed picture",
+   "also_seen_as": [],
+   "bbox": [
+    1019,
+    538,
+    1261,
+    672
+   ],
+   "area_px": 32428
+  },
+  {
+   "id": "wall-sconce",
+   "label": "wall sconce",
+   "also_seen_as": [],
+   "bbox": [
+    1136,
+    460,
+    1163,
+    521
+   ],
+   "area_px": 1133
+  },
+  {
+   "id": "door",
+   "label": "door",
+   "also_seen_as": [],
+   "bbox": [
+    1459,
+    395,
+    1574,
+    1049
+   ],
+   "area_px": 64518
+  },
+  {
+   "id": "door-handle",
+   "label": "door handle",
+   "also_seen_as": [],
+   "bbox": [
+    1554,
+    719,
+    1574,
+    780
+   ],
+   "area_px": 474
+  },
+  {
+   "id": "trash-can",
+   "label": "trash can",
+   "also_seen_as": [
+    "laundry basket"
+   ],
+   "bbox": [
+    1565,
+    854,
+    1635,
+    948
+   ],
+   "area_px": 6580
+  },
+  {
+   "id": "hanging-clothes",
+   "label": "hanging clothes",
+   "also_seen_as": [],
+   "bbox": [
+    1567,
+    493,
+    1776,
+    708
+   ],
+   "area_px": 44935
+  },
+  {
+   "id": "ceiling-lamp",
+   "label": "ceiling lamp",
+   "also_seen_as": [
+    "laundry ceiling light"
+   ],
+   "bbox": [
+    1674,
+    410,
+    1775,
+    426
+   ],
+   "area_px": 1291
+  },
+  {
+   "id": "washing-machine",
+   "label": "washing machine",
+   "also_seen_as": [],
+   "bbox": [
+    1679,
+    750,
+    1778,
+    917
+   ],
+   "area_px": 16533
+  },
+  {
+   "id": "counter",
+   "label": "counter",
+   "also_seen_as": [],
+   "bbox": [
+    1706,
+    863,
+    2751,
+    1531
+   ],
+   "area_px": 399271
+  },
+  {
+   "id": "cash-register",
+   "label": "cash register",
+   "also_seen_as": [],
+   "bbox": [
+    1815,
+    740,
+    1998,
+    849
+   ],
+   "area_px": 8129
+  },
+  {
+   "id": "lantern-1",
+   "label": "lantern 1",
+   "also_seen_as": [
+    "pendant lantern 3"
+   ],
+   "bbox": [
+    1878,
+    0,
+    2085,
+    339
+   ],
+   "area_px": 30665
+  },
+  {
+   "id": "small-pad",
+   "label": "small pad",
+   "also_seen_as": [],
+   "bbox": [
+    1898,
+    893,
+    1966,
+    906
+   ],
+   "area_px": 719
+  },
+  {
+   "id": "hanging-scroll-1",
+   "label": "hanging scroll 1",
+   "also_seen_as": [
+    "calligraphy scroll 2"
+   ],
+   "bbox": [
+    1916,
+    372,
+    2023,
+    687
+   ],
+   "area_px": 27739
+  },
+  {
+   "id": "paper-note",
+   "label": "paper note",
+   "also_seen_as": [],
+   "bbox": [
+    1933,
+    907,
+    2029,
+    930
+   ],
+   "area_px": 1191
+  },
+  {
+   "id": "abacus",
+   "label": "abacus",
+   "also_seen_as": [],
+   "bbox": [
+    2005,
+    946,
+    2322,
+    1034
+   ],
+   "area_px": 13238
+  },
+  {
+   "id": "round-table",
+   "label": "round table",
+   "also_seen_as": [],
+   "bbox": [
+    2026,
+    872,
+    2159,
+    916
+   ],
+   "area_px": 2952
+  },
+  {
+   "id": "lantern-2",
+   "label": "lantern 2",
+   "also_seen_as": [
+    "pendant lantern 4"
+   ],
+   "bbox": [
+    2111,
+    0,
+    2435,
+    204
+   ],
+   "area_px": 47406
+  },
+  {
+   "id": "hanging-scroll-2",
+   "label": "hanging scroll 2",
+   "also_seen_as": [
+    "calligraphy scroll 3"
+   ],
+   "bbox": [
+    2206,
+    365,
+    2272,
+    742
+   ],
+   "area_px": 18346
+  },
+  {
+   "id": "call-bell",
+   "label": "call bell",
+   "also_seen_as": [
+    "desk bell"
+   ],
+   "bbox": [
+    2289,
+    1047,
+    2384,
+    1133
+   ],
+   "area_px": 4016
+  },
+  {
+   "id": "shelving-unit",
+   "label": "shelving unit",
+   "also_seen_as": [],
+   "bbox": [
+    2308,
+    0,
+    2752,
+    983
+   ],
+   "area_px": 347629
+  },
+  {
+   "id": "tea-jar-6",
+   "label": "tea jar 6",
+   "also_seen_as": [],
+   "bbox": [
+    2358,
+    348,
+    2423,
+    472
+   ],
+   "area_px": 6823
+  },
+  {
+   "id": "tea-jar-11",
+   "label": "tea jar 11",
+   "also_seen_as": [],
+   "bbox": [
+    2358,
+    552,
+    2423,
+    679
+   ],
+   "area_px": 6972
+  },
+  {
+   "id": "tea-jar-1",
+   "label": "tea jar 1",
+   "also_seen_as": [],
+   "bbox": [
+    2360,
+    153,
+    2424,
+    267
+   ],
+   "area_px": 7296
+  },
+  {
+   "id": "box-1",
+   "label": "box 1",
+   "also_seen_as": [],
+   "bbox": [
+    2362,
+    765,
+    2449,
+    875
+   ],
+   "area_px": 5095
+  },
+  {
+   "id": "tea-tin-2",
+   "label": "tea tin 2",
+   "also_seen_as": [
+    "tea canister 1"
+   ],
+   "bbox": [
+    2408,
+    971,
+    2487,
+    1118
+   ],
+   "area_px": 11613
+  },
+  {
+   "id": "tea-jar-7",
+   "label": "tea jar 7",
+   "also_seen_as": [],
+   "bbox": [
+    2421,
+    355,
+    2449,
+    438
+   ],
+   "area_px": 1815
+  },
+  {
+   "id": "tea-jar-12",
+   "label": "tea jar 12",
+   "also_seen_as": [],
+   "bbox": [
+    2422,
+    546,
+    2457,
+    652
+   ],
+   "area_px": 1765
+  },
+  {
+   "id": "tea-jar-2",
+   "label": "tea jar 2",
+   "also_seen_as": [],
+   "bbox": [
+    2423,
+    118,
+    2494,
+    248
+   ],
+   "area_px": 9230
+  },
+  {
+   "id": "box-2",
+   "label": "box 2",
+   "also_seen_as": [],
+   "bbox": [
+    2430,
+    765,
+    2508,
+    883
+   ],
+   "area_px": 9204
+  },
+  {
+   "id": "tea-tin-1",
+   "label": "tea tin 1",
+   "also_seen_as": [
+    "tea canister 2"
+   ],
+   "bbox": [
+    2452,
+    1038,
+    2566,
+    1178
+   ],
+   "area_px": 15960
+  },
+  {
+   "id": "teapot",
+   "label": "teapot",
+   "also_seen_as": [],
+   "bbox": [
+    2457,
+    796,
+    2587,
+    900
+   ],
+   "area_px": 13520
+  },
+  {
+   "id": "tea-tin-3",
+   "label": "tea tin 3",
+   "also_seen_as": [
+    "tea canister 3"
+   ],
+   "bbox": [
+    2482,
+    931,
+    2591,
+    1079
+   ],
+   "area_px": 5223
+  },
+  {
+   "id": "tea-jar-3",
+   "label": "tea jar 3",
+   "also_seen_as": [],
+   "bbox": [
+    2491,
+    81,
+    2580,
+    217
+   ],
+   "area_px": 12104
+  },
+  {
+   "id": "tea-jar-8",
+   "label": "tea jar 8",
+   "also_seen_as": [],
+   "bbox": [
+    2495,
+    321,
+    2525,
+    421
+   ],
+   "area_px": 2211
+  },
+  {
+   "id": "tea-jar-13",
+   "label": "tea jar 13",
+   "also_seen_as": [],
+   "bbox": [
+    2499,
+    535,
+    2558,
+    667
+   ],
+   "area_px": 3419
+  },
+  {
+   "id": "tea-cups-2",
+   "label": "tea cups",
+   "also_seen_as": [],
+   "bbox": [
+    2556,
+    856,
+    2616,
+    909
+   ],
+   "area_px": 2497
+  },
+  {
+   "id": "tea-jar-4",
+   "label": "tea jar 4",
+   "also_seen_as": [],
+   "bbox": [
+    2582,
+    28,
+    2680,
+    176
+   ],
+   "area_px": 14504
+  },
+  {
+   "id": "tea-jar-9",
+   "label": "tea jar 9",
+   "also_seen_as": [],
+   "bbox": [
+    2590,
+    307,
+    2623,
+    420
+   ],
+   "area_px": 2517
+  },
+  {
+   "id": "tea-tin-4",
+   "label": "tea tin 4",
+   "also_seen_as": [
+    "tea canister 4"
+   ],
+   "bbox": [
+    2591,
+    975,
+    2699,
+    1142
+   ],
+   "area_px": 6968
+  },
+  {
+   "id": "tea-jar-14",
+   "label": "tea jar 14",
+   "also_seen_as": [],
+   "bbox": [
+    2597,
+    526,
+    2661,
+    670
+   ],
+   "area_px": 2993
+  },
+  {
+   "id": "tea-tin-5",
+   "label": "tea tin 5",
+   "also_seen_as": [],
+   "bbox": [
+    2624,
+    827,
+    2750,
+    990
+   ],
+   "area_px": 11279
+  },
+  {
+   "id": "tea-jar-10",
+   "label": "tea jar 10",
+   "also_seen_as": [],
+   "bbox": [
+    2674,
+    239,
+    2752,
+    408
+   ],
+   "area_px": 11683
+  },
+  {
+   "id": "tea-jar-5",
+   "label": "tea jar 5",
+   "also_seen_as": [],
+   "bbox": [
+    2679,
+    1,
+    2751,
+    135
+   ],
+   "area_px": 9648
+  },
+  {
+   "id": "tea-jar-15",
+   "label": "tea jar 15",
+   "also_seen_as": [],
+   "bbox": [
+    2690,
+    515,
+    2752,
+    682
+   ],
+   "area_px": 8784
+  }
+ ]
+}

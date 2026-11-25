@@ -1,0 +1,93 @@
+{
+ "horizon": 0.5,
+ "horizon_note": "From the street lamp (about 3.8 m to the lantern) and the stairwell doorway; the painted street vanishes a little lower because it bends.",
+ "floor": "#00FF00",
+ "clearance_px": 10,
+ "objects": {
+  "lamp-post": "#0000FF",
+  "box-left": "#FF8000",
+  "crates-left": "#FFFF00",
+  "pillars": "#FF00FF",
+  "step": "#00FFFF"
+ },
+ "islands": [
+  "lamp-post",
+  "pillars"
+ ],
+ "exits": {
+  "stairwell": {
+   "color": "#FFFFFF",
+   "to": "office-day",
+   "stand": [
+    0.8,
+    0.8
+   ],
+   "note": "stairs up to Matt's office and Pete & Kate's flat"
+  },
+  "tea-house-doors": {
+   "color": "#C0C0C0",
+   "to": "tea-house",
+   "stand": [
+    0.69,
+    0.75
+   ]
+  },
+  "far-end": {
+   "box": [
+    0.3,
+    0.54,
+    0.46,
+    0.63
+   ],
+   "to": "map",
+   "stand": [
+    0.38,
+    0.63
+   ]
+  }
+ },
+ "exclude": [],
+ "min_feet_y": 0.6,
+ "max_feet_y": 0.96,
+ "lights": [
+  {
+   "name": "lamp",
+   "type": "point",
+   "floor": [
+    0.56,
+    0.72
+   ],
+   "reach": 0.35,
+   "strength": 0.3,
+   "blur": 4,
+   "note": "The street lamp is lit even by day; weak, short shadows.",
+   "height_m": 3.8
+  },
+  {
+   "name": "sky",
+   "type": "window",
+   "floor": [
+    0.38,
+    0.58
+   ],
+   "dir": [
+    0.0,
+    1.0
+   ],
+   "length": 0.3,
+   "strength": 0.3,
+   "blur": 6,
+   "note": "Overcast winter sky down the street; soft shadows toward the camera."
+  }
+ ],
+ "depth_m": {
+  "lamp-post": 0.25,
+  "box-left": 0.5,
+  "crates-left": 0.5,
+  "pillars": 0.35,
+  "step": 0.5
+ },
+ "body_radius_m": 0.25,
+ "fov_deg": 60,
+ "spots": {}
+}

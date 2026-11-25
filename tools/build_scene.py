@@ -62,14 +62,29 @@ for name, color in L['objects'].items():
                     'baseline_cols': base[::8], 'baseline_step': 8})
 exits = {}
 for name, e in L.get('exits', {}).items():
+    if 'box' in e:      # an exit at the edge of the screen (end of a street): a box in fractions of the image
+        bx0, by0, bx1, by1 = e['box']
+        bb = [int(bx0 * W), int(by0 * H), int(bx1 * W), int(by1 * H)]
+        st = e.get('stand', [(bx0 + bx1) / 2, by1])
+        exits[name] = {'to': e.get('to'), 'bbox': bb, 'stand': [int(st[0] * W), int(st[1] * H)], 'edge': True}
+        continue
     m = mask_of(e['color'])
+    lab_, n = ndimage.label(m)
+    if n > 1:           # stray specks of the same colour elsewhere (washing on a line): keep the doorway itself
+        sizes = ndimage.sum(m, lab_, range(1, n + 1))
+        m = lab_ == (np.argmax(sizes) + 1)
     ys, xs = np.nonzero(m)
+    st = [int(np.median(xs)), int(ys.max())]
+    if 'stand' in e:
+        st = [int(e['stand'][0] * W), int(e['stand'][1] * H)]
     exits[name] = {'to': e.get('to'), 'bbox': [int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1],
-                   'stand': [int(np.median(xs)), int(ys.max())]}
+                   'stand': st}
 # walkable: the visible floor, shrunk so feet keep clear of furniture and walls
 walk = ndimage.binary_erosion(floor, iterations=L.get('clearance_px', 10))
 # a little floor in front of each exit is walkable even if the label map clipped it
 for e in exits.values():
+    if e.get('edge'):
+        continue
     x0, _, x1, y1 = e['bbox']
     walk[max(0, y1 - 8):min(H, y1 + 30), x0 + 20:x1 - 20] |= floor[max(0, y1 - 8):min(H, y1 + 30), x0 + 20:x1 - 20] | True
 # floor that lies behind a piece of furniture's front line (under a desk, between its legs) is not walkable
@@ -78,7 +93,26 @@ for name, color in L['objects'].items():
     if m.sum() < 400:
         continue
     ys, xs = np.nonzero(m)
-    walk[ys.min():ys.max() + 1, xs.min():xs.max() + 1] = False
+    if name in L.get('islands', []):
+        # stands out in the room (a table with chairs round it): Matt walks round it, so only its
+        # floor-plan footprint blocks him. The floor its picture hides is still floor: in each
+        # column, island pixels below the furthest visible floor count as walkable.
+        top = np.where(floor.any(0), floor.argmax(0), H)
+        hidden = m & (np.arange(H)[:, None] >= top[None, :])
+        walk |= ndimage.binary_erosion(floor | hidden, iterations=L.get('clearance_px', 10)) & hidden
+        continue
+    if name in L.get('column_cut', []):
+        # set at an angle (a counter running back into the room): per column, only the floor
+        # above the object's lowest painted pixel is behind it
+        for x in range(xs.min(), xs.max() + 1):
+            col = np.nonzero(m[:, x])[0]
+            if len(col):
+                walk[:col.max() + 1, x] = False
+    else:
+        walk[ys.min():ys.max() + 1, xs.min():xs.max() + 1] = False
+# hand-marked floor the label map hid (behind a chair's legs), as fractions of the image; footprints still apply
+for x0, y0, x1, y1 in L.get('include', []):
+    walk[int(y0 * H):int(y1 * H), int(x0 * W):int(x1 * W)] = True
 # ---- FLOOR PLAN: solid furniture footprints in metres, and Matt's body radius
 # Camera: eye 1.6 m above the floor, horizon at L['horizon'], focal length f px (from an assumed
 # horizontal field of view). A floor pixel (x, y) is at depth Z = f*1.6/(y - hor) and X = (x - W/2)*Z/f.
@@ -113,6 +147,7 @@ walk &= ~blocked
 for x0, y0, x1, y1 in L.get('exclude', []):
     walk[int(y0 * H):int(y1 * H), int(x0 * W):int(x1 * W)] = False
 walk[int(L.get('max_feet_y', 0.96) * H):, :] = False
+walk[:int(L.get('min_feet_y', 0.0) * H), :] = False
 walk = ndimage.binary_opening(walk, iterations=2)
 lab_, n = ndimage.label(walk)
 sizes = ndimage.sum(walk, lab_, range(1, n + 1))

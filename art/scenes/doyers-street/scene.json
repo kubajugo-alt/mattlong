@@ -1,0 +1,371 @@
+{
+ "size": [
+  2752,
+  1536
+ ],
+ "horizon": 0.5,
+ "eye_m": 1.6,
+ "scale_rule": "height_px = (feet_y - horizon*H) * height_m / eye_m",
+ "walk": {
+  "file": "walk.png",
+  "scale": 4
+ },
+ "camera": {
+  "f_px": 2383.3019112147754,
+  "eye_m": 1.6
+ },
+ "footprints": [
+  {
+   "name": "lamp-post",
+   "x0": 0.5579250720461095,
+   "x1": 0.9682997118155621,
+   "z0": 10.989288351422596,
+   "z1": 11.239288351422596
+  },
+  {
+   "name": "box-left",
+   "x0": -4.321329639889197,
+   "x1": -3.700831024930748,
+   "z0": 10.5631109638328,
+   "z1": 11.0631109638328
+  },
+  {
+   "name": "crates-left",
+   "x0": -4.982857142857143,
+   "x1": -4.48,
+   "z0": 15.564420644667923,
+   "z1": 16.064420644667923
+  },
+  {
+   "name": "pillars",
+   "x0": 1.5046153846153847,
+   "x1": 3.8030769230769232,
+   "z0": 7.333236649891617,
+   "z1": 7.683236649891617
+  },
+  {
+   "name": "step",
+   "x0": 2.718350515463918,
+   "x1": 3.7080412371134024,
+   "z0": 7.862439294729157,
+   "z1": 8.362439294729157
+  }
+ ],
+ "body_radius_m": 0.25,
+ "floor": {
+  "file": "floor.png",
+  "scale": 4
+ },
+ "lights": [
+  {
+   "name": "lamp",
+   "type": "point",
+   "floor": [
+    0.56,
+    0.72
+   ],
+   "reach": 0.35,
+   "strength": 0.3,
+   "blur": 4,
+   "note": "The street lamp is lit even by day; weak, short shadows.",
+   "height_m": 3.8
+  },
+  {
+   "name": "sky",
+   "type": "window",
+   "floor": [
+    0.38,
+    0.58
+   ],
+   "dir": [
+    0.0,
+    1.0
+   ],
+   "length": 0.3,
+   "strength": 0.3,
+   "blur": 6,
+   "note": "Overcast winter sky down the street; soft shadows toward the camera."
+  }
+ ],
+ "spots": {},
+ "objects": [
+  {
+   "name": "crates-left",
+   "bbox": [
+    613,
+    900,
+    691,
+    1014
+   ],
+   "baseline": 1013,
+   "baseline_cols": [
+    995,
+    1013,
+    1013,
+    1012,
+    1012,
+    1011,
+    1011,
+    1010,
+    1009,
+    1006
+   ],
+   "baseline_step": 8
+  },
+  {
+   "name": "lamp-post",
+   "bbox": [
+    1506,
+    328,
+    1587,
+    1116
+   ],
+   "baseline": 1115,
+   "baseline_cols": [
+    1095,
+    1115,
+    1114,
+    1110,
+    1111,
+    1114,
+    1111,
+    1112,
+    1114,
+    1114,
+    379
+   ],
+   "baseline_step": 8
+  },
+  {
+   "name": "box-left",
+   "bbox": [
+    401,
+    929,
+    542,
+    1130
+   ],
+   "baseline": 1129,
+   "baseline_cols": [
+    1095,
+    1115,
+    1113,
+    1116,
+    1119,
+    1123,
+    1124,
+    1126,
+    1127,
+    1128,
+    1129,
+    1129,
+    1124,
+    1117,
+    1110,
+    1105,
+    1102,
+    1090
+   ],
+   "baseline_step": 8
+  },
+  {
+   "name": "step",
+   "bbox": [
+    2200,
+    1152,
+    2501,
+    1254
+   ],
+   "baseline": 1253,
+   "baseline_cols": [
+    1179,
+    1186,
+    1189,
+    1194,
+    1196,
+    1198,
+    1200,
+    1202,
+    1204,
+    1206,
+    1209,
+    1210,
+    1211,
+    1213,
+    1215,
+    1217,
+    1220,
+    1222,
+    1223,
+    1225,
+    1228,
+    1229,
+    1231,
+    1234,
+    1236,
+    1237,
+    1239,
+    1240,
+    1241,
+    1242,
+    1244,
+    1246,
+    1248,
+    1250,
+    1252,
+    1252,
+    1252,
+    1201
+   ],
+   "baseline_step": 8
+  },
+  {
+   "name": "pillars",
+   "bbox": [
+    1865,
+    261,
+    2613,
+    1289
+   ],
+   "baseline": 1288,
+   "baseline_cols": [
+    1108,
+    1113,
+    1116,
+    1123,
+    1123,
+    1122,
+    1117,
+    1115,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    1177,
+    1181,
+    1183,
+    1186,
+    1187,
+    1186,
+    1183,
+    1181,
+    1178,
+    1176,
+    1177,
+    1175,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    1269,
+    1272,
+    1276,
+    1283,
+    1286,
+    1288,
+    1286,
+    1282,
+    1283,
+    1284,
+    1283,
+    1279,
+    1274,
+    1261,
+    1257
+   ],
+   "baseline_step": 8
+  }
+ ],
+ "exits": {
+  "stairwell": {
+   "to": "office-day",
+   "bbox": [
+    2306,
+    519,
+    2514,
+    1138
+   ],
+   "stand": [
+    2201,
+    1228
+   ]
+  },
+  "tea-house-doors": {
+   "to": "tea-house",
+   "bbox": [
+    1921,
+    572,
+    2119,
+    1149
+   ],
+   "stand": [
+    1898,
+    1152
+   ]
+  },
+  "far-end": {
+   "to": "map",
+   "bbox": [
+    825,
+    829,
+    1265,
+    967
+   ],
+   "stand": [
+    1045,
+    967
+   ],
+   "edge": true
+  }
+ }
+}

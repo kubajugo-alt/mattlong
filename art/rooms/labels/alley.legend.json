@@ -1,0 +1,90 @@
+{
+ "horizon": 0.4,
+ "horizon_note": "Set from the dustbins (0.75 m) and the back door; the painted alley vanishes lower (0.56) but the props Matt walks among agree on 0.40.",
+ "floor": "#00FF00",
+ "clearance_px": 10,
+ "objects": {
+  "rags": "#FF0000",
+  "crates-left": "#FF8000",
+  "crates-right": "#FFFF00",
+  "dustbins": "#0000FF",
+  "steps": "#00FFFF",
+  "crate-front": "#FF00FF",
+  "bin-far": "#8000FF"
+ },
+ "exits": {
+  "back-door": {
+   "color": "#FFFFFF",
+   "to": "pawnshop",
+   "stand": [
+    0.68,
+    0.88
+   ]
+  },
+  "far-end": {
+   "box": [
+    0.28,
+    0.52,
+    0.46,
+    0.68
+   ],
+   "to": "map",
+   "stand": [
+    0.38,
+    0.69
+   ]
+  },
+  "street": {
+   "box": [
+    0.15,
+    0.93,
+    0.75,
+    1.0
+   ],
+   "to": "map",
+   "stand": [
+    0.45,
+    0.95
+   ]
+  }
+ },
+ "exclude": [],
+ "max_feet_y": 0.96,
+ "lights": [
+  {
+   "name": "sky",
+   "type": "window",
+   "floor": [
+    0.36,
+    0.6
+   ],
+   "dir": [
+    0.05,
+    1.0
+   ],
+   "length": 0.35,
+   "strength": 0.35,
+   "blur": 6,
+   "note": "Grey overcast light from the open far end; soft shadows fall toward the camera."
+  }
+ ],
+ "depth_m": {
+  "rags": 0.9,
+  "crates-left": 0.5,
+  "crates-right": 0.6,
+  "dustbins": 0.7,
+  "steps": 0.6,
+  "crate-front": 0.6,
+  "bin-far": 0.4
+ },
+ "body_radius_m": 0.25,
+ "fov_deg": 60,
+ "spots": {
+  "junkie": {
+   "x": 0.24,
+   "y": 0.8,
+   "note": "the junkie slumps against the rag heap"
+  }
+ },
+ "islands": []
+}

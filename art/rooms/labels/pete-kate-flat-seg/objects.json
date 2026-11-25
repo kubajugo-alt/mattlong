@@ -1,0 +1,911 @@
+{
+ "image": "pete-kate-flat.png",
+ "size": [
+  2752,
+  1536
+ ],
+ "model": "gemini-3.5-flash",
+ "objects": [
+  {
+   "id": "pot",
+   "label": "pot",
+   "also_seen_as": [],
+   "bbox": [
+    0,
+    761,
+    141,
+    884
+   ],
+   "area_px": 17343
+  },
+  {
+   "id": "stove",
+   "label": "stove",
+   "also_seen_as": [],
+   "bbox": [
+    0,
+    911,
+    295,
+    1429
+   ],
+   "area_px": 130824
+  },
+  {
+   "id": "metal-bucket",
+   "label": "metal bucket",
+   "also_seen_as": [
+    "bucket"
+   ],
+   "bbox": [
+    0,
+    1279,
+    189,
+    1531
+   ],
+   "area_px": 42402
+  },
+  {
+   "id": "stove-pipe",
+   "label": "stove pipe",
+   "also_seen_as": [],
+   "bbox": [
+    137,
+    0,
+    223,
+    829
+   ],
+   "area_px": 60303
+  },
+  {
+   "id": "window",
+   "label": "window",
+   "also_seen_as": [],
+   "bbox": [
+    290,
+    97,
+    507,
+    765
+   ],
+   "area_px": 103715
+  },
+  {
+   "id": "coffee-kettle",
+   "label": "coffee kettle",
+   "also_seen_as": [
+    "kettle"
+   ],
+   "bbox": [
+    280,
+    669,
+    426,
+    851
+   ],
+   "area_px": 26572
+  },
+  {
+   "id": "rug",
+   "label": "rug",
+   "also_seen_as": [],
+   "bbox": [
+    334,
+    1263,
+    935,
+    1534
+   ],
+   "area_px": 162871
+  },
+  {
+   "id": "kitchen-cabinet",
+   "label": "kitchen cabinet",
+   "also_seen_as": [
+    "kitchen counter"
+   ],
+   "bbox": [
+    395,
+    739,
+    821,
+    1227
+   ],
+   "area_px": 207888
+  },
+  {
+   "id": "sink",
+   "label": "sink",
+   "also_seen_as": [],
+   "bbox": [
+    405,
+    767,
+    722,
+    894
+   ],
+   "area_px": 21570
+  },
+  {
+   "id": "faucet",
+   "label": "faucet",
+   "also_seen_as": [],
+   "bbox": [
+    410,
+    717,
+    529,
+    792
+   ],
+   "area_px": 8925
+  },
+  {
+   "id": "small-bin",
+   "label": "small bin",
+   "also_seen_as": [],
+   "bbox": [
+    515,
+    1076,
+    555,
+    1247
+   ],
+   "area_px": 6840
+  },
+  {
+   "id": "upper-cabinet",
+   "label": "upper cabinet",
+   "also_seen_as": [
+    "hanging wall cabinet"
+   ],
+   "bbox": [
+    525,
+    193,
+    729,
+    575
+   ],
+   "area_px": 72728
+  },
+  {
+   "id": "dish-rack",
+   "label": "dish rack",
+   "also_seen_as": [],
+   "bbox": [
+    553,
+    703,
+    728,
+    761
+   ],
+   "area_px": 10150
+  },
+  {
+   "id": "dish-rack-and-board",
+   "label": "dish rack and board",
+   "also_seen_as": [],
+   "bbox": [
+    564,
+    598,
+    762,
+    754
+   ],
+   "area_px": 30888
+  },
+  {
+   "id": "pitcher",
+   "label": "pitcher",
+   "also_seen_as": [
+    "jar"
+   ],
+   "bbox": [
+    619,
+    672,
+    681,
+    719
+   ],
+   "area_px": 2575
+  },
+  {
+   "id": "cutting-board",
+   "label": "cutting board",
+   "also_seen_as": [],
+   "bbox": [
+    677,
+    600,
+    763,
+    740
+   ],
+   "area_px": 12040
+  },
+  {
+   "id": "spindle-chair",
+   "label": "spindle chair",
+   "also_seen_as": [
+    "chair 1"
+   ],
+   "bbox": [
+    739,
+    752,
+    1009,
+    1232
+   ],
+   "area_px": 129600
+  },
+  {
+   "id": "dining-table",
+   "label": "dining table",
+   "also_seen_as": [],
+   "bbox": [
+    881,
+    816,
+    1234,
+    1265
+   ],
+   "area_px": 158497
+  },
+  {
+   "id": "saucer-1",
+   "label": "saucer 1",
+   "also_seen_as": [
+    "saucer"
+   ],
+   "bbox": [
+    941,
+    857,
+    1030,
+    880
+   ],
+   "area_px": 2047
+  },
+  {
+   "id": "teacup-1",
+   "label": "teacup 1",
+   "also_seen_as": [
+    "teacup"
+   ],
+   "bbox": [
+    947,
+    827,
+    1013,
+    871
+   ],
+   "area_px": 2904
+  },
+  {
+   "id": "framed-picture",
+   "label": "framed picture",
+   "also_seen_as": [],
+   "bbox": [
+    965,
+    382,
+    1117,
+    596
+   ],
+   "area_px": 30637
+  },
+  {
+   "id": "dining-chair",
+   "label": "dining chair",
+   "also_seen_as": [
+    "chair 2",
+    "wooden chair 2"
+   ],
+   "bbox": [
+    1029,
+    720,
+    1228,
+    1145
+   ],
+   "area_px": 84575
+  },
+  {
+   "id": "chair-2",
+   "label": "chair 2",
+   "also_seen_as": [
+    "chair 1"
+   ],
+   "bbox": [
+    1032,
+    721,
+    1207,
+    826
+   ],
+   "area_px": 10697
+  },
+  {
+   "id": "glass",
+   "label": "glass",
+   "also_seen_as": [
+    "cup",
+    "small glass"
+   ],
+   "bbox": [
+    1036,
+    847,
+    1078,
+    900
+   ],
+   "area_px": 2226
+  },
+  {
+   "id": "saucer-2",
+   "label": "saucer 2",
+   "also_seen_as": [],
+   "bbox": [
+    1086,
+    824,
+    1156,
+    845
+   ],
+   "area_px": 1470
+  },
+  {
+   "id": "teacup-2",
+   "label": "teacup 2",
+   "also_seen_as": [],
+   "bbox": [
+    1092,
+    800,
+    1151,
+    839
+   ],
+   "area_px": 2301
+  },
+  {
+   "id": "newspaper",
+   "label": "newspaper",
+   "also_seen_as": [
+    "newspaper on dining table"
+   ],
+   "bbox": [
+    1096,
+    856,
+    1367,
+    1006
+   ],
+   "area_px": 40650
+  },
+  {
+   "id": "salt-shaker",
+   "label": "salt shaker",
+   "also_seen_as": [],
+   "bbox": [
+    1144,
+    818,
+    1177,
+    869
+   ],
+   "area_px": 1683
+  },
+  {
+   "id": "pepper-shaker",
+   "label": "pepper shaker",
+   "also_seen_as": [],
+   "bbox": [
+    1175,
+    829,
+    1196,
+    865
+   ],
+   "area_px": 756
+  },
+  {
+   "id": "tea-pot",
+   "label": "tea pot",
+   "also_seen_as": [
+    "pitcher",
+    "teapot"
+   ],
+   "bbox": [
+    1218,
+    791,
+    1263,
+    853
+   ],
+   "area_px": 2288
+  },
+  {
+   "id": "framed-photo-1",
+   "label": "framed photo 1",
+   "also_seen_as": [],
+   "bbox": [
+    1252,
+    363,
+    1346,
+    487
+   ],
+   "area_px": 11530
+  },
+  {
+   "id": "framed-photo-3",
+   "label": "framed photo 3",
+   "also_seen_as": [],
+   "bbox": [
+    1271,
+    523,
+    1335,
+    609
+   ],
+   "area_px": 5504
+  },
+  {
+   "id": "cigarette-pack",
+   "label": "cigarette pack",
+   "also_seen_as": [
+    "matchbox"
+   ],
+   "bbox": [
+    1294,
+    859,
+    1341,
+    887
+   ],
+   "area_px": 1316
+  },
+  {
+   "id": "teacup-3",
+   "label": "teacup 3",
+   "also_seen_as": [],
+   "bbox": [
+    1360,
+    827,
+    1445,
+    870
+   ],
+   "area_px": 2527
+  },
+  {
+   "id": "saucer-3",
+   "label": "saucer 3",
+   "also_seen_as": [],
+   "bbox": [
+    1357,
+    853,
+    1449,
+    877
+   ],
+   "area_px": 2208
+  },
+  {
+   "id": "framed-photo-4",
+   "label": "framed photo 4",
+   "also_seen_as": [],
+   "bbox": [
+    1362,
+    497,
+    1428,
+    588
+   ],
+   "area_px": 6006
+  },
+  {
+   "id": "wooden-chair-3",
+   "label": "wooden chair 3",
+   "also_seen_as": [
+    "chair 3"
+   ],
+   "bbox": [
+    1374,
+    754,
+    1682,
+    1262
+   ],
+   "area_px": 156464
+  },
+  {
+   "id": "framed-photo-2",
+   "label": "framed photo 2",
+   "also_seen_as": [],
+   "bbox": [
+    1379,
+    397,
+    1429,
+    470
+   ],
+   "area_px": 3518
+  },
+  {
+   "id": "door",
+   "label": "door",
+   "also_seen_as": [],
+   "bbox": [
+    1516,
+    322,
+    1812,
+    915
+   ],
+   "area_px": 175528
+  },
+  {
+   "id": "wooden-chair-1",
+   "label": "wooden chair 1",
+   "also_seen_as": [
+    "chair 4"
+   ],
+   "bbox": [
+    1731,
+    894,
+    2142,
+    1536
+   ],
+   "area_px": 164806
+  },
+  {
+   "id": "door-handle",
+   "label": "door handle",
+   "also_seen_as": [],
+   "bbox": [
+    1756,
+    613,
+    1789,
+    718
+   ],
+   "area_px": 1480
+  },
+  {
+   "id": "door-handle-2",
+   "label": "door handle",
+   "also_seen_as": [],
+   "bbox": [
+    1757,
+    659,
+    1780,
+    720
+   ],
+   "area_px": 1403
+  },
+  {
+   "id": "light-switch",
+   "label": "light switch",
+   "also_seen_as": [],
+   "bbox": [
+    1827,
+    578,
+    1854,
+    623
+   ],
+   "area_px": 1207
+  },
+  {
+   "id": "bookshelf",
+   "label": "bookshelf",
+   "also_seen_as": [],
+   "bbox": [
+    1980,
+    257,
+    2269,
+    915
+   ],
+   "area_px": 146496
+  },
+  {
+   "id": "desk",
+   "label": "desk",
+   "also_seen_as": [],
+   "bbox": [
+    1999,
+    950,
+    2752,
+    1536
+   ],
+   "area_px": 264759
+  },
+  {
+   "id": "archive-box-1",
+   "label": "archive box 1",
+   "also_seen_as": [
+    "small storage box 1"
+   ],
+   "bbox": [
+    2068,
+    174,
+    2129,
+    267
+   ],
+   "area_px": 3889
+  },
+  {
+   "id": "books-on-shelf-1",
+   "label": "books on shelf 1",
+   "also_seen_as": [],
+   "bbox": [
+    2014,
+    321,
+    2207,
+    479
+   ],
+   "area_px": 30494
+  },
+  {
+   "id": "binders-on-shelf-2",
+   "label": "binders on shelf 2",
+   "also_seen_as": [],
+   "bbox": [
+    2015,
+    504,
+    2207,
+    643
+   ],
+   "area_px": 26688
+  },
+  {
+   "id": "binders-on-bottom-shelf",
+   "label": "binders on bottom shelf",
+   "also_seen_as": [
+    "books on shelf 3"
+   ],
+   "bbox": [
+    2018,
+    812,
+    2207,
+    906
+   ],
+   "area_px": 17766
+  },
+  {
+   "id": "binders-on-shelf-3",
+   "label": "binders on shelf 3",
+   "also_seen_as": [
+    "books on shelf 2"
+   ],
+   "bbox": [
+    2024,
+    676,
+    2189,
+    807
+   ],
+   "area_px": 21615
+  },
+  {
+   "id": "loose-papers-1",
+   "label": "loose papers 1",
+   "also_seen_as": [],
+   "bbox": [
+    2064,
+    902,
+    2212,
+    951
+   ],
+   "area_px": 4162
+  },
+  {
+   "id": "paper-stack-on-shelf-3",
+   "label": "paper stack on shelf 3",
+   "also_seen_as": [
+    "papers on shelf"
+   ],
+   "bbox": [
+    2123,
+    761,
+    2194,
+    823
+   ],
+   "area_px": 2746
+  },
+  {
+   "id": "archive-box-2",
+   "label": "archive box 2",
+   "also_seen_as": [
+    "small storage box 2"
+   ],
+   "bbox": [
+    2122,
+    147,
+    2294,
+    246
+   ],
+   "area_px": 17028
+  },
+  {
+   "id": "box-on-shelf",
+   "label": "box on shelf",
+   "also_seen_as": [],
+   "bbox": [
+    2133,
+    849,
+    2207,
+    907
+   ],
+   "area_px": 4292
+  },
+  {
+   "id": "typewriter",
+   "label": "typewriter",
+   "also_seen_as": [],
+   "bbox": [
+    2170,
+    778,
+    2547,
+    1027
+   ],
+   "area_px": 60395
+  },
+  {
+   "id": "wall-shelf",
+   "label": "wall shelf",
+   "also_seen_as": [
+    "wall shelf above desk"
+   ],
+   "bbox": [
+    2257,
+    126,
+    2751,
+    560
+   ],
+   "area_px": 214396
+  },
+  {
+   "id": "binders-on-wall-shelf",
+   "label": "binders on wall shelf",
+   "also_seen_as": [],
+   "bbox": [
+    2422,
+    311,
+    2597,
+    530
+   ],
+   "area_px": 32030
+  },
+  {
+   "id": "archive-box-4",
+   "label": "archive box 4",
+   "also_seen_as": [
+    "storage box 1"
+   ],
+   "bbox": [
+    2287,
+    138,
+    2421,
+    274
+   ],
+   "area_px": 11548
+  },
+  {
+   "id": "archive-box-3",
+   "label": "archive box 3",
+   "also_seen_as": [],
+   "bbox": [
+    2294,
+    51,
+    2449,
+    181
+   ],
+   "area_px": 13149
+  },
+  {
+   "id": "loose-papers-2",
+   "label": "loose papers 2",
+   "also_seen_as": [
+    "desk papers"
+   ],
+   "bbox": [
+    2313,
+    1033,
+    2516,
+    1110
+   ],
+   "area_px": 7548
+  },
+  {
+   "id": "newspaper-clippings-on-wall",
+   "label": "newspaper clippings on wall",
+   "also_seen_as": [],
+   "bbox": [
+    2435,
+    612,
+    2752,
+    819
+   ],
+   "area_px": 34097
+  },
+  {
+   "id": "newspaper-clipping-1",
+   "label": "newspaper clipping 1",
+   "also_seen_as": [],
+   "bbox": [
+    2435,
+    612,
+    2552,
+    782
+   ],
+   "area_px": 14532
+  },
+  {
+   "id": "archive-box-5",
+   "label": "archive box 5",
+   "also_seen_as": [
+    "storage box 2"
+   ],
+   "bbox": [
+    2441,
+    0,
+    2588,
+    219
+   ],
+   "area_px": 24797
+  },
+  {
+   "id": "newspaper-stack-1",
+   "label": "newspaper stack 1",
+   "also_seen_as": [
+    "stack of paper on desk"
+   ],
+   "bbox": [
+    2479,
+    935,
+    2745,
+    1098
+   ],
+   "area_px": 21174
+  },
+  {
+   "id": "newspaper-stack-2",
+   "label": "newspaper stack 2",
+   "also_seen_as": [
+    "stack of newspapers on floor"
+   ],
+   "bbox": [
+    2491,
+    1322,
+    2752,
+    1536
+   ],
+   "area_px": 49907
+  },
+  {
+   "id": "paper-stack-on-wall-shelf",
+   "label": "paper stack on wall shelf",
+   "also_seen_as": [],
+   "bbox": [
+    2566,
+    348,
+    2752,
+    519
+   ],
+   "area_px": 25508
+  },
+  {
+   "id": "photo-on-wall",
+   "label": "photo on wall",
+   "also_seen_as": [],
+   "bbox": [
+    2568,
+    617,
+    2624,
+    717
+   ],
+   "area_px": 2192
+  },
+  {
+   "id": "archive-box-6",
+   "label": "archive box 6",
+   "also_seen_as": [
+    "storage box 3"
+   ],
+   "bbox": [
+    2617,
+    0,
+    2748,
+    157
+   ],
+   "area_px": 20567
+  },
+  {
+   "id": "newspaper-clipping-3",
+   "label": "newspaper clipping 3",
+   "also_seen_as": [
+    "newspaper clipping on wall"
+   ],
+   "bbox": [
+    2625,
+    725,
+    2700,
+    857
+   ],
+   "area_px": 8050
+  },
+  {
+   "id": "newspaper-clipping-2",
+   "label": "newspaper clipping 2",
+   "also_seen_as": [],
+   "bbox": [
+    2655,
+    598,
+    2752,
+    806
+   ],
+   "area_px": 20176
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "from_label_map": {"counter": "counter", "clothes-rail": "clothes-rail"},
+ "drop": ["counter-desk", "hanging-coats", "coat-1", "coat-2", "hanging-weights", "floor-debris-2", "clocks-on-top-shelf", "clocks-on-second-shelf",
+          "clocks-on-third-shelf", "clocks-on-bottom-shelf", "wire-mesh-cabinet-right", "door-handle", "violin-2-2"],
+ "merge": {"pawnbrokers-balls": ["hanging-ball-1", "hanging-ball-2", "hanging-ball-3"],
+           "alarm-clocks": ["alarm-clock-1", "alarm-clock-2", "alarm-clock-3", "alarm-clock-4", "alarm-clock-5", "alarm-clock-6", "alarm-clock-7", "alarm-clock-8",
+                            "alarm-clock-9", "alarm-clock-10", "alarm-clock-11", "alarm-clock-12", "alarm-clock-13", "alarm-clock-14", "alarm-clock-15", "alarm-clock-16"],
+           "violins": ["violin-1", "violin-3"], "suitcases-top": ["suitcase-1", "suitcase-3", "suitcase-4", "box-on-closet-shelf"],
+           "cases-on-shelves": ["suitcase-2", "briefcase-1", "briefcase-2"], "typewriters": ["typewriter-1", "typewriter-2"], "radios": ["radio-1", "radio-2"],
+           "floor-debris": ["floor-debris-1", "debris"]},
+ "rename": {"front-door": "front-door", "wire-mesh-cabinet-door": "glass-cabinet", "violin-2": "violin-on-floor", "open-ledger": "sols-ledger",
+            "cage-partition": "brass-gate", "door": "back-door", "upper-wire-cage-storage": "caged-storage", "hanging-light-fixture": "lamp",
+            "pawnstamp-device": "ticket-stamp", "stamp-press": "stamp", "radio": "radio-on-shelf", "box-2": "cash-box", "open-suitcase": "open-suitcase"},
+ "names": {"pawnbrokers-balls": "pawnbroker's balls", "front-door": "shop door", "transom-window": "transom window", "doorknob": "door handle",
+           "glass-cabinet": "glass-fronted cabinet", "box": "box", "violin-on-floor": "violin", "tool-set": "tool set", "radio-on-shelf": "radio",
+           "trumpet": "trumpet", "alarm-clocks": "alarm clocks and pocket watches", "small-case": "small case", "cash-box": "box",
+           "violins": "violins", "open-suitcase": "open case of oddments", "suitcase": "suitcase", "small-bottles": "small bottles", "small-box": "small box",
+           "ticket-stamp": "ticket stamp", "framed-picture": "picture", "counter": "counter", "brass-gate": "brass gate", "back-door": "back door",
+           "stamp": "stamp", "sols-ledger": "Sol's ledger", "caged-storage": "caged storage", "lamp": "lamp", "clothes-rail": "pawned coats",
+           "mannequin": "dressmaker's dummy", "suitcases-top": "suitcases", "books": "books", "radios": "radios", "typewriters": "typewriters",
+           "cases-on-shelves": "cases", "saxophone": "saxophone", "floor-debris": "litter on the floor"}
+}

@@ -1,0 +1,18 @@
+{
+ "from_label_map": {"counter": "counter", "front-table": "table-front", "window-table": "window-table"},
+ "drop": ["table-1", "table-2", "window-blind-1", "window-blind-2", "cup-1", "cup-2", "small-pad", "tea-jar-7", "tea-jar-12", "tea-jar-8", "tea-jar-9", "wall-sconce"],
+ "merge": {"tea-jars": ["tea-jar-1", "tea-jar-2", "tea-jar-3", "tea-jar-4", "tea-jar-5", "tea-jar-6", "tea-jar-10", "tea-jar-11", "tea-jar-13", "tea-jar-14", "tea-jar-15"],
+           "tea-tins": ["tea-tin-1", "tea-tin-2", "tea-tin-3", "tea-tin-4", "tea-tin-5", "box-1", "box-2"],
+           "lanterns": ["paper-lantern-1", "paper-lantern-2", "lantern-1", "lantern-2"]},
+ "rename": {"left-window": "street-window", "beaded-curtain": "bead-curtain", "door": "laundry-door", "hanging-clothes": "laundry-washing",
+            "washing-machine": "washtub", "round-table": "small-table-behind-counter", "paper-note": "note-on-counter", "teapot": "teapot",
+            "tea-cups-2": "teacups-behind-counter", "tea-cups": "teacups", "trash-can": "laundry-basket", "hanging-scroll-1": "scroll-tea", "hanging-scroll-2": "scroll-right",
+            "ceiling-lamp": "laundry-lamp"},
+ "names": {"counter": "counter", "front-table": "table", "window-table": "table by the window", "stool-1": "stool", "stool-2": "stool", "stool-3": "stool",
+           "stool-4": "stool", "stool-5": "stool", "street-window": "window onto Doyers Street", "blinds": "blinds", "bead-curtain": "bead curtain",
+           "framed-picture": "picture in the back room", "laundry-door": "laundry door", "door-handle": "door handle", "laundry-washing": "washing in the laundry",
+           "washtub": "washtub", "laundry-basket": "laundry basket", "laundry-lamp": "lamp", "cash-register": "cash register", "abacus": "abacus",
+           "call-bell": "bell", "note-on-counter": "note", "small-table-behind-counter": "small table", "shelving-unit": "tea shelves", "tea-jars": "tea jars",
+           "tea-tins": "tea tins", "teapot": "teapot", "teacups-behind-counter": "teacups", "teacups": "teacups", "lanterns": "paper lanterns",
+           "hanging-scroll": "calligraphy scroll", "scroll-tea": "scroll (tea)", "scroll-right": "calligraphy scroll"}
+}

@@ -1,0 +1,19 @@
+{
+ "from_label_map": {"street-lamp": "lamp-post", "porch-pillars": "pillars", "wooden-box": "box-left", "crates": "crates-left", "step": "step"},
+ "drop": ["snow-pile-1", "snow-pile-2", "snow-patch-1", "snow-patch-2", "snow-patch-2-2", "snow-patch-3", "snow-patch-3-2", "snow-patch-4", "snow-patch-5", "snow-patch-6",
+          "puddle-reflection", "steam", "stacked-box-1", "stacked-box-2", "staircase", "lantern-8-2", "balcony-2", "balcony-3", "sign"],
+ "merge": {"paper-lanterns": ["lantern-1", "lantern-2", "lantern-3", "lantern-4", "lantern-5", "lantern-6", "lantern-7", "lantern-8", "lantern-9", "lantern-10", "lantern-11",
+                              "lantern-12", "lantern-13", "lantern-14", "lantern-15", "glowing-chinese-lantern-3", "glowing-chinese-lantern-5", "glowing-chinese-lantern-6"],
+           "washing": ["white-shirt-1", "hanging-clothes", "shirt-2", "shirt-3", "towel-1", "towel-2", "shorts-1", "sock-1", "hanging-garment-7", "hanging-garment-8", "hanging-garment-9"],
+           "fire-escapes": ["fire-escape-1", "fire-escape-2", "fire-escape-3", "fire-escape-4", "fire-escape-2-2", "fire-escape-1-2", "fire-escape-2-3"],
+           "upper-windows": ["window-1", "window-2", "window-3", "window-4", "window-5", "window-2-2"],
+           "far-shop-signs": ["storefront-sign-1", "vertical-store-sign-1", "vertical-store-sign-2", "store-sign-awning", "awning-2"]},
+ "rename": {"street-lamp-1": "far-street-lamp", "glowing-chinese-lantern-4": "tea-house-lantern", "lattice-window-panel": "tea-house-doors",
+            "lattice-door-panel": "lattice-panel", "main-sign-board": "tea-house-sign", "stairs": "stairwell", "store-sign-2": "restaurant-sign",
+            "left-storefront-window": "shop-window", "tiled-chinese-roof": "tea-house-roof", "street-drain-grate": "drain", "snow-bank": "snow-bank"},
+ "names": {"street-lamp": "street lamp", "far-street-lamp": "street lamp", "porch-pillars": "pillars", "wooden-box": "wooden box", "crates": "crates",
+           "step": "step", "paper-lanterns": "paper lanterns", "washing": "washing on the line", "fire-escapes": "fire escapes", "upper-windows": "windows",
+           "far-shop-signs": "shop signs", "tea-house-lantern": "lantern", "tea-house-doors": "tea house doors", "lattice-panel": "carved lattice panel",
+           "tea-house-sign": "tea house sign", "stairwell": "stairs up to the office", "stair-handrail": "handrail", "restaurant-sign": "restaurant sign",
+           "shop-window": "shop window", "tea-house-roof": "tiled roof", "drain": "drain grate", "snow-bank": "snow bank", "pipe": "drainpipe"}
+}
