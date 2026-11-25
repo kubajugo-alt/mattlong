@@ -32,7 +32,7 @@ No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 | 26 | `stamp` | stamp | 1618, 735, 1724, 825 |
 | 27 | `sols-ledger` | Sol's ledger | 1660, 833, 2081, 925 |
 | 28 | `lamp` | lamp | 1729, 159, 1908, 223 |
-| 29 | `sol` | Sol Abramowitz | 1741, 481, 2013, 859 |
+| 29 | `sol` | Sol Abramowitz | 1735, 480, 2020, 861 |
 | 30 | `clothes-rail` | pawned coats | 1829, 307, 2215, 894 |
 | 31 | `suitcases-top` | suitcases | 1869, 1, 2752, 304 |
 | 32 | `mannequin` | dressmaker's dummy | 2055, 350, 2215, 787 |

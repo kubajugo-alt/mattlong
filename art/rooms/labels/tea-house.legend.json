@@ -80,11 +80,14 @@
   {
    "name": "lee-wing",
    "file": "art/cast/final/leewing.png",
-   "x": 2303,
-   "y": 513,
-   "scale": 0.3502,
+   "x": 2203,
+   "y": 504,
+   "scale": 0.4806,
    "depth_m": 0.4,
-   "note": "Lee Wing inside the counter by the tea-jar shelves; scaled by the room rule for 1.65 m with feet at y 0.86 (hidden by the counter)."
+   "note": "Lee Wing inside the counter by the tea-jar shelves. Feet placed from the counter: a 0.95 m counter whose top edge is at y 0.635 in his column stands at y 1.05, so he does too (below the frame).",
+   "behind": [
+    "counter"
+   ]
   }
  ]
 }

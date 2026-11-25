@@ -60,11 +60,14 @@
   {
    "name": "sol",
    "file": "art/cast/final/sol.png",
-   "x": 1707,
-   "y": 476,
-   "scale": 0.3683,
+   "x": 1700,
+   "y": 475,
+   "scale": 0.3868,
    "depth_m": 0.4,
-   "note": "Sol Abramowitz behind the open ledger on his counter; scaled by the room rule for 1.63 m with feet at y 0.86 (hidden by the counter)."
+   "note": "Sol behind the open ledger. Feet placed from the counter: a 1 m counter whose back edge is at y 0.533 in his column stands at y 0.887.",
+   "behind": [
+    "counter"
+   ]
   }
  ]
 }

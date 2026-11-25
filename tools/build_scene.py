@@ -83,6 +83,7 @@ all_objs = list(L['objects'].items()) + [(pr['name'], None) for pr in L.get('pro
 # a prop sits among the painted furniture: wherever a piece of furniture stands nearer the camera than the
 # prop (its front line lower, column by column), cut the furniture's pixels out of the prop so the painting
 # shows in front (the table legs and edge in front of Kate)
+pr_by = {pr['name']: pr for pr in L.get('props', [])}
 for pname in prop_m:
     plow, _ = front_line(prop_m[pname])
     pfront = plow.max()                      # where the prop stands on the floor nearest the camera
@@ -95,9 +96,18 @@ for pname in prop_m:
         # outline: shelves running along a side wall reach the bottom of the frame only at their near end)
         olow = np.where(om.any(0), H - 1 - np.argmax(om[::-1], 0), -1)
         nearer = (olow >= 0) & (plow >= 0) & (olow > pfront + 6)
+        if oname in pr_by[pname].get('behind', []):      # stated in the legend: this furniture is in front
+            nearer = np.ones(W, bool)
         cut |= om & nearer[None, :]
     a = prop_rgba[pname].copy()
-    a[..., 3] = (a[..., 3] * (1 - ndimage.gaussian_filter(cut.astype(float), 1.0))).astype(np.uint8)
+    # soft shade on the character just above where the furniture covers it (a counter top, a table edge),
+    # so the occlusion line reads as contact, not a cut
+    if cut.any():
+        ys_, _ = np.nonzero(prop_m[pname]); ph = ys_.max() - ys_.min() + 1
+        dist = ndimage.distance_transform_edt(~cut)
+        shade = 1 - 0.38 * np.exp(-dist / max(4.0, 0.035 * ph))
+        a[..., :3] = (a[..., :3] * shade[..., None]).clip(0, 255).astype(np.uint8)
+    a[..., 3] = (a[..., 3] * (1 - ndimage.gaussian_filter(cut.astype(float), 1.6))).astype(np.uint8)
     prop_rgba[pname] = a
     prop_m[pname] = a[..., 3] > 128
 
