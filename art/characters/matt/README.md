@@ -49,8 +49,15 @@ the foot). `foot` in `joints.json` holds the ball joint and the heel, ball and
 toe contact points; `footNeutral` in `mesh.json` levels the drawn shoe, which
 stands slightly on its toes.
 
-Motion (review player, `review/index.html`): walk angles follow published gait
-data (Winter); the lowest contact point is planted on the floor and the body
-travels over it (root motion); two-bone IK for reaching; head stabilised
+Motion (review player, `review/index.html`): the body moves forward at a
+steady pace and footprints are placed on the floor ahead of time; each foot
+lands on the heel, rolls flat, lifts the heel and pushes off the toes, then
+swings in an arc to the next footprint. Legs are solved hip-to-ankle with
+two-bone IK, so planted feet cannot slide; the hip is lowered only when a leg
+could not otherwise reach. (An earlier version drove the legs from recorded
+gait angles and derived the body position from the lowest foot; with our limb
+lengths that made the body jerk backwards at every step.) Two-bone IK also
+drives reaching; `node tools/check-walk.js review` checks for sliding,
+floating and backward motion; head stabilised
 against pelvis and chest with spring lag; cloth springs on the jacket skirt and
 trouser hems respond to acceleration; poses blend over 0.45 s when switching.

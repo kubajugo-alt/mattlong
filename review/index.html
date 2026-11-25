@@ -331,9 +331,9 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
     // ---- animation state: blending, gait phase, root motion, springs
     let animStart = 0, prevPose = null, blendFrom = null, blendStart = -1;
     const BLEND = 0.45;
-    function setAnim(n) { blendFrom = prevPose; blendStart = t; anim = n; animStart = t; }
+    let baseX = 0;
+    function setAnim(n) { blendFrom = prevPose; blendStart = t; anim = n; animStart = t; if (prevPose && typeof prevPose.hx === 'number') baseX = prevPose.hx; }
     if (reduce) { anim = 'Rest'; animSeg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x.textContent === 'Rest'))); }
-    const root = { x: 0, y: 0, anchor: null, ax: 0 };
     let camX = 0;
     const head = { a: 0, v: 0 };
 
@@ -343,7 +343,7 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
       const byFile = {}; (await Promise.all(files.map(loadImg))).forEach((im, i) => { byFile[files[i]] = im; });
       r.parts.forEach(p => { imgs[p.id] = byFile[p.file]; });
       r.byId = Object.fromEntries(r.parts.map(p => [p.id, p]));
-      if (m) { mesh = m; prepMesh(m); setupGL(byFile); }
+      if (m) { mesh = m; prepMesh(m); setupGL(byFile); window.__rigDebug = { pose, boneMatrices, mesh: m, apply }; }   // used by tools/check-walk.js
       if (!gl) { mode = 'Pieces'; if (modeSeg) modeSeg.remove(); }
       raf = requestAnimationFrame(tick);
     });
@@ -356,8 +356,14 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
       m.boneIndex = Object.fromEntries(m.bones.map((b, i) => [b.id, i]));
       const J = m.joints;
       REST = { thigh: segAngle(J.hip, J.knee), shin: segAngle(J.knee, J.ankle), upper: segAngle(J.shoulder, J.elbow), fore: segAngle(J.elbow, J.hand) };
-      LEN = { upper: Math.hypot(J.elbow[0] - J.shoulder[0], J.elbow[1] - J.shoulder[1]), fore: Math.hypot(J.hand[0] - J.elbow[0], J.hand[1] - J.elbow[1]) };
+      LEN = { upper: Math.hypot(J.elbow[0] - J.shoulder[0], J.elbow[1] - J.shoulder[1]), fore: Math.hypot(J.hand[0] - J.elbow[0], J.hand[1] - J.elbow[1]),
+        thigh: Math.hypot(J.knee[0] - J.hip[0], J.knee[1] - J.hip[1]), shin: Math.hypot(J.ankle[0] - J.knee[0], J.ankle[1] - J.knee[1]) };
+      // the foot with its sole levelled: heel and ball contact points relative to the ankle
+      const lev = (q) => { const c = Math.cos(m.footNeutral), s2 = Math.sin(m.footNeutral), x = q[0] - J.ankle[0], y = q[1] - J.ankle[1]; return [c * x - s2 * y, s2 * x + c * y]; };
+      FOOT = { heel: lev(m.contacts.heel), ball: lev(m.contacts.ball) };
+      FOOT.sole = (FOOT.heel[1] + FOOT.ball[1]) / 2;        // ankle height above the floor when flat
     }
+    let FOOT = null;
 
     // ---- gait: sagittal joint angles over one stride (degrees), after Winter's normative walking data.
     // hip: + flexion (thigh forward); knee: + flexion; ankle: + dorsiflexion (toes up); mtp: + toe extension.
@@ -375,14 +381,23 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
     const ease = (x) => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
     const easeOutBack = (x) => { x = Math.min(1, Math.max(0, x)); const c = 1.4; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
 
-    // Joint angles for one leg given hip/knee/ankle/mtp in degrees, relative to its parent bones.
-    function legRel(sfx, hip, knee, ank, mtp, pelvis, out) {
-      const thighW = -hip * D - REST.thigh;             // rotation of the thigh in the world
-      const shinW = (-hip + knee) * D - REST.shin;
-      out['thigh' + sfx] = thighW - pelvis;
-      out['shin' + sfx] = shinW - thighW;
-      out['foot' + sfx] = mesh.footNeutral - ank * D;
-      out['toe' + sfx] = -mtp * D;
+    const rot2 = (v, a) => [v[0] * Math.cos(a) - v[1] * Math.sin(a), v[0] * Math.sin(a) + v[1] * Math.cos(a)];
+    // Where the ankle is when the foot, pitched by phi (radians, + = toes down), pivots on a floor point.
+    function ankleFrom(pivotLocal, pivotWorld, phi) { const r = rot2(pivotLocal, phi); return [pivotWorld[0] - r[0], pivotWorld[1] - r[1]]; }
+    // Two-bone leg: hip and ankle in world pixels -> thigh/shin rotations; the knee bends forward.
+    function legIK(sfx, hipW, ank, phi, toe, pelvis, out) {
+      let dx = ank[0] - hipW[0], dy = ank[1] - hipW[1], d = Math.hypot(dx, dy);
+      const max = (LEN.thigh + LEN.shin) * 0.999; if (d > max) { dx *= max / d; dy *= max / d; d = max; }
+      const base = segAngle([0, 0], [dx, dy]);
+      const A = Math.acos(Math.max(-1, Math.min(1, (LEN.thigh * LEN.thigh + d * d - LEN.shin * LEN.shin) / (2 * LEN.thigh * d))));
+      const thighSeg = base - A;
+      const knee = [hipW[0] - Math.sin(thighSeg) * LEN.thigh, hipW[1] + Math.cos(thighSeg) * LEN.thigh];
+      const shinSeg = segAngle(knee, [hipW[0] + dx, hipW[1] + dy]);
+      const thighRot = thighSeg - REST.thigh, shinRot = shinSeg - REST.shin;
+      out['thigh' + sfx] = thighRot - pelvis;
+      out['shin' + sfx] = shinRot - thighRot;
+      out['foot' + sfx] = mesh.footNeutral + phi - shinRot;
+      out['toe' + sfx] = toe;
     }
     // Arm angles for shoulder flexion / elbow flexion in degrees.
     function armRel(sfx, flex, elbow, chestW, out) {
@@ -390,37 +405,67 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
       out['upperArm' + sfx] = -flex * D - REST.upper - chestW;
       out['foreArm' + sfx] = -elbow * D - REST.fore + REST.upper;
     }
+    const lerp = (a, b, k) => a + (b - a) * k;
+    // One foot through a stride. p = 0 heel strike; stance until 0.62, then swing to the next footprint.
+    // Returns the ankle position, foot pitch and toe bend, with footprints at heel x = h0 + n * STRIDE.
+    const STRIDE = 1450, STRIKE = 0.62;
+    function footAt(p, heelX, floor) {
+      const H = FOOT.heel, B = FOOT.ball, ballX = heelX + (B[0] - H[0]);
+      const strike = (hx) => ankleFrom(H, [hx, floor], -17 * D);
+      const toeOff = (hx) => ankleFrom(B, [hx + (B[0] - H[0]), floor], 34 * D);
+      if (p < 0.12) { const phi = -17 * D * (1 - ease(p / 0.12)); return { ank: ankleFrom(H, [heelX, floor], phi), phi, toe: 0 }; }
+      if (p < 0.42) return { ank: ankleFrom(H, [heelX, floor], 0), phi: 0, toe: 0 };
+      if (p < STRIKE) { const phi = 34 * D * ease((p - 0.42) / (STRIKE - 0.42)); return { ank: ankleFrom(B, [ballX, floor], phi), phi, toe: -phi }; }
+      const s = (p - STRIKE) / (1 - STRIKE), a0 = toeOff(heelX), a1 = strike(heelX + STRIDE);
+      const k = s * s * s * (s * (s * 6 - 15) + 10);                     // smootherstep across the floor
+      const lift = 105 * Math.sin(Math.PI * Math.min(1, s / 0.92)) * (1 - 0.35 * s);
+      const phi = s < 0.45 ? 34 * D * (1 - ease(s / 0.45)) : -17 * D * ease((s - 0.45) / 0.55);
+      return { ank: [lerp(a0[0], a1[0], k), lerp(a0[1], a1[1], k) - lift], phi, toe: -34 * D * (1 - ease(s / 0.22)) };
+    }
 
     // Target poses. Every pose: lean (pelvis), chest, and relative angles per bone.
     function pose(name, tt) {
       const o = { lean: 0, chest: 0, nod: 0 };
       if (!mesh) return o;
-      if (name === 'Rest') { o.rest = true; return o; }
+      const J = mesh.joints, floor = mesh.floorY, hip0 = J.hip;
+      const standH = floor - (J.ankle[1] - hip0[1]) - FOOT.sole;       // hip height with straight legs and flat feet
+      if (name === 'Rest') { o.rest = true; o.hx = baseX; o.hy = hip0[1]; return o; }
       if (name === 'Walk') {
-        const p = (tt / 1.15) % 1;                           // one stride every 1.15 s
-        const tilt = 1.3 * Math.sin(4 * Math.PI * p);        // pelvis rocks twice per stride
-        o.lean = (2.5 + tilt) * D; o.chest = (-1.2 * tilt + 0.5) * D;
-        legRel('', curve(GAIT.hip, p), curve(GAIT.knee, p), curve(GAIT.ankle, p), curve(GAIT.mtp, p), o.lean, o);
-        legRel('Back', curve(GAIT.hip, p + 0.5), curve(GAIT.knee, p + 0.5), curve(GAIT.ankle, p + 0.5), curve(GAIT.mtp, p + 0.5), o.lean, o);
+        const T = 1.15, v = STRIDE / T, tau = tt - animStart;
+        const p = ((tau / T) % 1 + 1) % 1;
+        const hx = baseX + v * tau;
+        const legs = {};
+        [['', 0], ['Back', 0.5]].forEach(([sfx, off]) => {
+          const q = tau / T + off, k = Math.floor(q), ph = q - k;
+          const strikeHipX = baseX + v * (k - off) * T;              // where the hip was at this foot's heel strike
+          legs[sfx] = footAt(ph, strikeHipX + 330, floor);           // heel lands ahead of the hip
+        });
+        // pelvis: lowest in double support, highest in mid-stance; lowered further only if a leg can't reach
+        let hy = standH + 3 + 9 * Math.cos(4 * Math.PI * p);
+        const reach = (LEN.thigh + LEN.shin) * 0.997;
+        Object.values(legs).forEach(L => { const dx = L.ank[0] - hx; if (Math.abs(dx) < reach) hy = Math.max(hy, L.ank[1] - Math.sqrt(reach * reach - dx * dx)); });
+        const tilt = 1.2 * Math.sin(4 * Math.PI * p);
+        o.lean = (2.5 + tilt) * D; o.chest = (-1.0 * tilt + 0.5) * D; o.hx = hx; o.hy = hy;
+        Object.entries(legs).forEach(([sfx, L]) => legIK(sfx, [hx, hy], L.ank, L.phi, L.toe, o.lean, o));
         const chestW = o.lean + o.chest;
         const sw = Math.cos(2 * Math.PI * (p - 0.5)), swB = Math.cos(2 * Math.PI * p);   // near arm swings with the far leg
-        armRel('', 4 + 17 * sw, 14 + 16 * Math.max(0, sw), chestW, o);
-        armRel('Back', 4 + 17 * swB, 14 + 16 * Math.max(0, swB), chestW, o);
+        armRel('', 3 + 16 * sw, 14 + 16 * Math.max(0, sw), chestW, o);
+        armRel('Back', 3 + 16 * swB, 14 + 16 * Math.max(0, swB), chestW, o);
         o.nod = 0.8 * Math.sin(4 * Math.PI * p + 0.6) * D;
         return o;
       }
-      // standing poses share a stance with the weight shifting slowly between the feet
-      const br = Math.sin(tt * 2 * Math.PI / 4.2);           // breathing, ~14 breaths a minute
-      const sway = Math.sin(tt * 2 * Math.PI / 7.5);         // weight shift
-      o.lean = (0.6 * sway) * D; o.chest = (0.5 * br - 0.3) * D;
-      legRel('', 3 + 1.5 * sway, 2 + 1.5 * Math.max(0, -sway), 0, 0, o.lean, o);
-      legRel('Back', -4 + 1.5 * sway, 2 + 1.5 * Math.max(0, sway), 0, 0, o.lean, o);
+      // standing: feet stay on their footprints, the weight shifts slowly, he breathes
+      const br = Math.sin(tt * 2 * Math.PI / 4.2), sway = Math.sin(tt * 2 * Math.PI / 7.5);
+      const hx = baseX + 14 * sway, hy = standH + 7 + 2 * br;
+      o.lean = (0.5 * sway) * D; o.chest = (0.5 * br - 0.3) * D; o.hx = hx; o.hy = hy;
+      const restAnk = (dx) => [baseX + (J.ankle[0] - hip0[0]) + dx, floor - FOOT.sole];
+      legIK('', [hx, hy], restAnk(30), 0, 0, o.lean, o);
+      legIK('Back', [hx, hy], restAnk(-70), 0, 0, o.lean, o);
       const chestW = o.lean + o.chest;
       armRel('', 1 + 1.5 * br, 8 + 1.5 * br, chestW, o);
       armRel('Back', -1 - 1.5 * br, 8, chestW, o);
       o.nod = 0.6 * Math.sin(tt * 2 * Math.PI / 5.3) * D;
       if (name === 'Gesture') {
-        // anticipation, a raise that overshoots and settles, a beat of emphasis, then lower
         const c = (tt % 4.2) / 4.2;
         const up = c < 0.12 ? -0.12 * ease(c / 0.12) : c < 0.32 ? -0.12 + 1.12 * easeOutBack((c - 0.12) / 0.2) : c < 0.7 ? 1 : 1 - ease((c - 0.7) / 0.22);
         const beat = c > 0.38 && c < 0.66 ? Math.sin((c - 0.38) / 0.28 * Math.PI * 3) * 0.08 : 0;
@@ -552,27 +597,13 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
       if (P.rest) { head.a = 0; head.v = 0; }
       raw.headRel = head.a;
 
-      // 2. bones without root motion, then plant the feet: the lowest contact point rests on the floor
-      //    and, once planted, stays put while the body travels over it
+      // 2. bones, then move the whole skeleton so the hip sits where the pose puts it
       const W0 = boneMatrices(raw);
-      const C = mesh.contacts, fi = mesh.boneIndex;
-      const pts = [];
-      ['', 'Back'].forEach(sfx => {
-        pts.push({ k: 'heel' + sfx, p: apply(W0[fi['foot' + sfx]], C.heel) });
-        pts.push({ k: 'ball' + sfx, p: apply(W0[fi['foot' + sfx]], C.ball) });
-        pts.push({ k: 'toe' + sfx, p: apply(W0[fi['toe' + sfx]], C.toe) });
-      });
-      const floor = mesh.floorY;
-      let low = pts[0]; pts.forEach(q => { if (q.p[1] > low.p[1]) low = q; });
-      const cur = root.anchor && pts.find(q => q.k === root.anchor);
-      if (!cur || low.p[1] - cur.p[1] > 1.5) { root.anchor = low.k; root.ax = root.x + low.p[0]; }
-      const anchor = pts.find(q => q.k === root.anchor);
-      const travel = anim === 'Walk';
-      if (travel) root.x = root.ax - anchor.p[0]; else root.ax = root.x + anchor.p[0];
-      root.y = floor - low.p[1];
-      if (P.rest) { root.y = 0; }
-      const Wb = W0.map(m => [m[0], m[1], m[2], m[3], m[4] + root.x, m[5] + root.y]);
-      if (dt > 0) camX += (root.x - camX) * Math.min(1, dt * 3); else if (!travel) camX = root.x;
+      const C = mesh.contacts, fi = mesh.boneIndex, floor = mesh.floorY;
+      const ry = (raw.hy ?? J.hip[1]) - J.hip[1];
+      const Wb = W0.map(m => [m[0], m[1], m[2], m[3], m[4] + (raw.hx || 0), m[5] + ry]);
+      if (dt > 0) camX += ((raw.hx || 0) - camX) * Math.min(1, dt * 8); else camX = raw.hx || 0;
+      const root = { x: raw.hx || 0, y: ry };
 
       // 3. view: source pixels -> screen
       const hip = J.hip, ox = W / 2, oy = floorY - (floor - hip[1]) * scale;

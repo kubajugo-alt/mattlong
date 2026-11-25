@@ -13,14 +13,13 @@
       "id": "m0-rig-v2",
       "milestone": "m0",
       "kind": "rig",
-      "title": "Matt as a cut-out puppet (v6, motion system)",
+      "title": "Matt as a cut-out puppet (v7, planted walk)",
       "rig": "samples/m0/rig2/rig.json",
-      "about": "Skinned mesh driven by a motion system. Walk: hip, knee, ankle and toe angles follow published walking data (the knee bends about 60° on the swing); the shoe rolls heel to toe on new foot and toe bones; the planted foot stays fixed on the floor and the body travels over it, so the camera follows him and the floor scrolls. The pelvis rocks, the chest counter-turns, the head keeps level and lags a touch behind; the jacket skirt and trouser hems react to acceleration. Idle: breathing and a slow weight shift. Gesture: anticipation, a raise that overshoots and settles, a beat of emphasis. Reach: the hand goes to a target (the brass dot) by two-bone IK, leaning in for far ones. Switching animations blends between them.",
+      "about": "Skinned mesh with a motion system. Walk: the body moves forward at a steady pace and each footstep is placed on the floor in advance; the foot lands on the heel with the toes up, rolls flat, lifts the heel and pushes off the toes, then swings in an arc to the next footprint. The legs are solved from hip to ankle (inverse kinematics), so the planted foot cannot slide and the body never moves backwards; the hip rises and falls about 2% of his height per step, the standing knee stays nearly straight and the swinging knee folds to about 55°. Pelvis rocks, chest counter-turns, arms swing opposite to the legs, head stays level with a slight lag; jacket skirt and trouser hems react to acceleration. Idle, Gesture and Reach keep the feet on their footprints. Switching animations blends between them.",
       "lookFor": [
-        "Walk: do the feet stay planted, and does the heel-to-toe roll read?",
-        "Walk: is the pace (one stride every 1.15 s) right for Matt, or should he be slower and wearier?",
+        "Walk: does it now read as a person walking? Pace, stride length, bounce.",
         "Gesture and Reach: natural timing, or too much?",
-        "Known: there is only the side view; the far leg is a darker copy of the near one."
+        "Known: side view only; the far leg is a darker copy of the near one."
       ],
       "mesh": "samples/m0/rig2/mesh.json"
     },
