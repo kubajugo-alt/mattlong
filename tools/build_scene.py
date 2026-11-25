@@ -85,13 +85,14 @@ all_objs = list(L['objects'].items()) + [(pr['name'], None) for pr in L.get('pro
 # shows in front (the table legs and edge in front of Kate)
 for pname in prop_m:
     plow, _ = front_line(prop_m[pname])
+    pfront = plow.max()                      # where the prop stands on the floor nearest the camera
     cut = np.zeros((H, W), bool)
     for oname, ocol in L['objects'].items():
         om = mask_of(ocol)
         if om.sum() < 400:
             continue
         olow, _ = front_line(om)
-        nearer = (olow >= 0) & (plow >= 0) & (olow > plow + 6)
+        nearer = (olow >= 0) & (plow >= 0) & (olow > pfront + 6)
         cut |= om & nearer[None, :]
     a = prop_rgba[pname].copy()
     a[..., 3] = (a[..., 3] * (1 - ndimage.gaussian_filter(cut.astype(float), 1.0))).astype(np.uint8)

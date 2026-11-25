@@ -156,16 +156,16 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   });
 
   // ---- lights and shadows
-  function shadowParams() {
-    const W = S.sc.size[0], H = S.sc.size[1], h = heightAt(M.y), out = [];
+  function shadowParams(px = M.x, py = M.y, h = heightAt(M.y)) {
+    const W = S.sc.size[0], H = S.sc.size[1], out = [];
     for (const L of S.sc.lights) {
       if (L.type === 'window') {
         const d = L.dir, n = Math.hypot(d[0], d[1]);
         out.push({ vx: d[0] / n * h * L.length, vy: d[1] / n * h * L.length * 0.55, a: L.strength, blur: L.blur });
       } else {
         const lx = L.floor[0] * W, ly = L.floor[1] * H;
-        const dx = M.x - lx, dy = (M.y - ly) / 0.55, dist = Math.hypot(dx, dy) || 1;
-        const lh = L.height_m || 2.5, lampPx = lh * pxPerM(M.y);
+        const dx = px - lx, dy = (py - ly) / 0.55, dist = Math.hypot(dx, dy) || 1;
+        const lh = L.height_m || 2.5, lampPx = lh * pxPerM(py);
         const len = Math.min(3.5, 1.85 / Math.max(0.2, lh - 0.05)) * dist / (dist + lampPx) * h * 1.4;
         const fall = Math.max(0, 1 - dist / (L.reach * W));
         out.push({ vx: dx / dist * len, vy: dy / dist * len * 0.55, a: L.strength * (0.35 + 0.65 * fall), blur: L.blur + len / 60 });
@@ -333,6 +333,16 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       ctx.restore();
     }
     ctx.restore(); ctx.restore();
+    // seated characters and their furniture cast shadows from the same lights as Matt
+    for (const o of S.occ) if (o.prop) {
+      const w = o.bbox[2] - o.bbox[0], ph = o.bbox[3] - o.bbox[1], ax = (o.bbox[0] + o.bbox[2]) / 2, ay = o.baseline;
+      if (!o.sil) { const c = document.createElement('canvas'); c.width = o.img.width; c.height = o.img.height; const x = c.getContext('2d');
+        x.drawImage(o.img, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height); o.sil = c; }
+      for (const p of shadowParams(ax, ay, ph)) for (const pass of [{ a: 0.55, b: 0.25 }, { a: 0.6, b: 1.6 }]) {
+        ctx.save(); ctx.globalAlpha = Math.min(0.85, p.a * pass.a * 1.6); ctx.filter = 'blur(' + Math.max(0.5, p.blur * pass.b * k).toFixed(1) + 'px)';
+        ctx.transform(1, 0, -p.vx / ph, -p.vy / ph, ax, ay);
+        ctx.drawImage(o.sil, o.bbox[0] - ax, -ph, w, ph); ctx.restore(); }
+    }
     // keep shadows only on the floor: redraw the non-floor background over them
     maskShadow();
 

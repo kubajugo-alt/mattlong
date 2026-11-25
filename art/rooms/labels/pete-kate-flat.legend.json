@@ -59,11 +59,11 @@
   {
    "name": "kate-at-table",
    "file": "art/cast/final/seated/kate-at-table.png",
-   "x": 668,
-   "y": 625,
-   "scale": 0.385,
+   "x": 664,
+   "y": 637,
+   "scale": 0.38,
    "depth_m": 1.0,
-   "note": "Kate at the kitchen table: the whole table set (table, cups, paper, back chair, her chair) is one cast-style sprite standing on the painted table's spot (front legs matched)."
+   "note": "Kate at the kitchen table: the whole table set is one cast-style sprite, fitted (least squares on legs, table-top edges and the back chair) onto the painted table, whose floor shadows are kept in the painting."
   },
   {
    "name": "pete-seated",

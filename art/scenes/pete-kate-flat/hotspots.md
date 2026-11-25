@@ -18,8 +18,8 @@ No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 | 12 | `upper-cabinet` | wall cupboard | 525, 193, 729, 575 |
 | 13 | `dish-rack` | dish rack | 553, 703, 728, 761 |
 | 14 | `pitcher` | pitcher | 619, 672, 681, 719 |
-| 15 | `cutting-board` | cutting board | 677, 600, 763, 740 |
-| 16 | `kate` | Kate | 691, 629, 1493, 1271 |
+| 15 | `kate` | Kate | 668, 641, 1478, 1274 |
+| 16 | `cutting-board` | cutting board | 677, 600, 763, 740 |
 | 17 | `dining-table` | kitchen table | 881, 816, 1234, 1265 |
 | 18 | `saucer-1` | saucer 1 | 941, 857, 1030, 880 |
 | 19 | `teacup-1` | teacup 1 | 947, 827, 1013, 871 |
@@ -39,7 +39,7 @@ No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 | 33 | `family-photo-4` | photograph | 1362, 497, 1428, 588 |
 | 34 | `family-photo-2` | photograph | 1379, 397, 1429, 470 |
 | 35 | `front-door` | front door | 1516, 322, 1812, 915 |
-| 36 | `pete` | Pete | 1638, 706, 2143, 1536 |
+| 36 | `pete` | Pete | 1638, 706, 2154, 1536 |
 | 37 | `door-handle` | door handle | 1756, 613, 1789, 718 |
 | 38 | `light-switch` | light switch | 1827, 578, 1854, 623 |
 | 39 | `bookcase` | Kate's bookcase | 1963, 202, 2368, 1151 |
