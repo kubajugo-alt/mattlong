@@ -57,7 +57,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   const NAMES = { corridor: 'the corridor', 'office-day': "Matt's office", 'office-night': "Matt's office", 'pete-kate-flat': "Pete & Kate's flat", 'doyers-street': 'Doyers Street',
                   'tea-house': "Lee Wing's tea house", pawnshop: 'the pawnshop', alley: 'the alley', map: 'the city map', 'tea-house-back': 'the back room', laundry: 'the laundry' };
   // the city map is not built yet: in this test its exits lead straight to the next Prologue location
-  const MAP_NEXT = { 'doyers-street': 'pawnshop', pawnshop: 'doyers-street', alley: 'doyers-street' };
+  const MAP_NEXT = { 'doyers-street': 'alley', alley: 'doyers-street' };
   async function loadScene(v) {
     const base = v + '/';
     const sc = await (await fetch(base + 'scene.json')).json();

@@ -67,12 +67,12 @@
     "horizon": 0.4
    },
    "pete-kate-flat": {
-    "horizon": 0.3,
-    "note": "Door leaf (2.1 m) gives 0.31, the table, stove and chairs about 0.25-0.27; split at 0.30 so Matt fits the door."
+    "horizon": 0.33,
+    "note": "matched to the seated Kate and Pete sprites and the door"
    },
    "doyers-street": {
-    "horizon": 0.5,
-    "note": "From the street lamp (about 3.8 m to the lantern) and the stairwell doorway; the painted street vanishes a little lower because it bends."
+    "horizon": 0.46,
+    "note": "repainted street; tea-house doors and apartment doorway"
    },
    "tea-house": {
     "horizon": 0.35,

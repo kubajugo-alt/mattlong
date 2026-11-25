@@ -1,29 +1,33 @@
-# Hotspots (23)
+# Hotspots (27)
 
 No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 
 | # | id | name | bbox (x0, y0, x1, y1) |
 |---|---|---|---|
-| 1 | `pipe` | drainpipe | 10, 1192, 74, 1414 |
-| 2 | `fire-escapes` | fire escapes | 240, 0, 2344, 783 |
-| 3 | `wooden-box` | wooden box | 401, 929, 541, 1130 |
-| 4 | `far-shop-signs` | shop signs | 524, 439, 1416, 805 |
-| 5 | `paper-lanterns` | paper lanterns | 595, 84, 1386, 821 |
-| 6 | `crates` | crates | 613, 900, 690, 1014 |
-| 7 | `washing` | washing on the line | 796, 272, 1366, 437 |
-| 8 | `far-street-lamp` | street lamp | 1155, 685, 1187, 914 |
-| 9 | `drain` | drain grate | 1361, 1207, 1632, 1284 |
-| 10 | `upper-windows` | windows | 1361, 0, 2170, 627 |
-| 11 | `restaurant-sign` | restaurant sign | 1437, 460, 1817, 704 |
-| 12 | `street-lamp` | street lamp | 1507, 329, 1586, 1116 |
-| 13 | `shop-window` | shop window | 1661, 959, 1795, 1086 |
-| 14 | `snow-bank` | snow bank | 1670, 1315, 2257, 1533 |
-| 15 | `tea-house-roof` | tiled roof | 1701, 0, 2751, 519 |
-| 16 | `tea-house-lantern` | lantern | 1730, 627, 1784, 701 |
-| 17 | `porch-pillars` | pillars | 1865, 261, 2613, 1289 |
-| 18 | `tea-house-doors` | tea house doors | 1925, 568, 2118, 916 |
-| 19 | `tea-house-sign` | tea house sign | 2178, 335, 2452, 506 |
-| 20 | `step` | step | 2201, 1152, 2499, 1253 |
-| 21 | `stairwell` | stairs up to the office | 2306, 517, 2516, 1118 |
-| 22 | `stair-handrail` | handrail | 2319, 714, 2509, 916 |
-| 23 | `lattice-panel` | carved lattice panel | 2638, 448, 2745, 916 |
+| 1 | `drainpipe` | drainpipe | 9, 1189, 71, 1414 |
+| 2 | `house-number` | house number | 22, 570, 70, 639 |
+| 3 | `apartment-steps` | steps | 88, 1141, 391, 1356 |
+| 4 | `apartment-hallway` | hallway and stairs | 116, 469, 224, 915 |
+| 5 | `apartment-door` | street door to the apartments | 219, 562, 417, 1145 |
+| 6 | `fire-escapes` | fire escapes | 243, 0, 2413, 811 |
+| 7 | `door-handle` | door handle | 383, 863, 405, 890 |
+| 8 | `wooden-box` | wooden box | 422, 929, 540, 1131 |
+| 9 | `far-shop-signs` | shop signs | 505, 438, 1406, 800 |
+| 10 | `paper-lanterns` | paper lanterns | 595, 88, 1788, 820 |
+| 11 | `far-crates` | crates | 609, 892, 1283, 1015 |
+| 12 | `washing` | washing on the line | 792, 274, 1366, 437 |
+| 13 | `far-street-lamp` | street lamp | 1149, 684, 1188, 915 |
+| 14 | `drain` | drain grate | 1366, 1211, 1631, 1287 |
+| 15 | `pawnbrokers-balls` | pawnbroker's balls | 1428, 602, 1716, 776 |
+| 16 | `street-lamp` | street lamp | 1497, 325, 1590, 1116 |
+| 17 | `pawnshop-door` | pawnshop door | 1619, 733, 1664, 1031 |
+| 18 | `pawnshop-bracket` | iron bracket | 1623, 595, 1854, 681 |
+| 19 | `pawnshop-window` | pawnshop window | 1667, 753, 1797, 966 |
+| 20 | `pawnshop-window-goods` | pledges in the window | 1689, 761, 1792, 879 |
+| 21 | `tea-house-roof` | tiled roof | 1704, 37, 2752, 519 |
+| 22 | `window` | window | 1720, 153, 1793, 413 |
+| 23 | `porch-pillars` | pillars | 1866, 260, 2613, 1288 |
+| 24 | `carved-panel` | carved panel | 1960, 971, 2092, 1081 |
+| 25 | `tea-house-sign` | tea house sign | 2180, 330, 2461, 508 |
+| 26 | `tea-house-doors` | tea house doors | 2193, 475, 2521, 1212 |
+| 27 | `tea-house-door-handle` | door handle | 2348, 924, 2367, 948 |

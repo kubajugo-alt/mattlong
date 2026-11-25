@@ -1,49 +1,67 @@
 {
- "horizon": 0.5,
- "horizon_note": "From the street lamp (about 3.8 m to the lantern) and the stairwell doorway; the painted street vanishes a little lower because it bends.",
+ "horizon": 0.46,
+ "horizon_note": "Repainted street (apartment entrance left, tea house and pawnshop right). From the tea-house doors and the apartment doorway: Matt is about 85% of a door's height, as in the office.",
  "floor": "#00FF00",
  "clearance_px": 10,
  "objects": {
   "lamp-post": "#0000FF",
+  "apartment-steps": "#00FFFF",
   "box-left": "#FF8000",
-  "crates-left": "#FFFF00",
-  "pillars": "#FF00FF",
-  "step": "#00FFFF"
+  "pillars": "#FF00FF"
  },
  "islands": [
   "lamp-post",
   "pillars"
  ],
  "exits": {
-  "stairwell": {
-   "color": "#FFFFFF",
+  "apartment-door": {
+   "box": [
+    0.03,
+    0.33,
+    0.155,
+    0.76
+   ],
    "to": "corridor",
    "stand": [
-    0.8,
-    0.8
+    0.18,
+    0.84
    ],
-   "note": "stairs up to the first-floor corridor (Matt's office and Pete & Kate's flat)"
+   "note": "the tenement's street door and hallway: stairs up to the first-floor corridor"
   },
   "tea-house-doors": {
    "color": "#C0C0C0",
    "to": "tea-house",
    "stand": [
-    0.69,
-    0.75
+    0.86,
+    0.8
+   ]
+  },
+  "pawnshop-door": {
+   "box": [
+    0.585,
+    0.4,
+    0.665,
+    0.7
+   ],
+   "to": "pawnshop",
+   "stand": [
+    0.625,
+    0.72
    ]
   },
   "far-end": {
    "box": [
-    0.3,
-    0.54,
-    0.46,
+    0.34,
+    0.55,
+    0.47,
     0.63
    ],
    "to": "map",
    "stand": [
-    0.38,
-    0.63
-   ]
+    0.42,
+    0.635
+   ],
+   "note": "the back of the street: the city map"
   }
  },
  "exclude": [],
@@ -55,19 +73,19 @@
    "type": "point",
    "floor": [
     0.56,
-    0.72
+    0.71
    ],
+   "height_m": 3.8,
    "reach": 0.35,
    "strength": 0.3,
    "blur": 4,
-   "note": "The street lamp is lit even by day; weak, short shadows.",
-   "height_m": 3.8
+   "note": "The street lamp is lit even by day; weak, short shadows."
   },
   {
    "name": "sky",
    "type": "window",
    "floor": [
-    0.38,
+    0.42,
     0.58
    ],
    "dir": [
@@ -82,10 +100,9 @@
  ],
  "depth_m": {
   "lamp-post": 0.25,
+  "apartment-steps": 0.6,
   "box-left": 0.5,
-  "crates-left": 0.5,
-  "pillars": 0.35,
-  "step": 0.5
+  "pillars": 0.35
  },
  "body_radius_m": 0.25,
  "fov_deg": 60,

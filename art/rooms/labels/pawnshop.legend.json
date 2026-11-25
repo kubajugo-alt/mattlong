@@ -15,7 +15,7 @@
  "exits": {
   "front-door": {
    "color": "#FFFFFF",
-   "to": "map",
+   "to": "doyers-street",
    "stand": [
     0.22,
     0.82

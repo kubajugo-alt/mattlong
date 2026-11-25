@@ -1,6 +1,6 @@
 {
- "horizon": 0.3,
- "horizon_note": "Door leaf (2.1 m) gives 0.31, the table, stove and chairs about 0.25-0.27; split at 0.30 so Matt fits the door.",
+ "horizon": 0.33,
+ "horizon_note": "Set so Matt is in proportion to Kate and Pete seated (their heads about 1.3 m off the floor, 70% of his height) and about 85% of the door, as in the office.",
  "floor": "#00FF00",
  "clearance_px": 10,
  "objects": {
@@ -28,13 +28,13 @@
     0.75
    ],
    "dir": [
-    1.0,
-    0.3
+    0.35,
+    1.0
    ],
-   "length": 0.6,
-   "strength": 0.55,
-   "blur": 3,
-   "note": "Morning sun through the kitchen window on the left; table and chair shadows fall right and a little forward."
+   "length": 0.16,
+   "strength": 0.4,
+   "blur": 7,
+   "note": "Soft, diffuse morning light: the sunlit patch on the floor was painted out, so shadows stay short and close under people and furniture, falling slightly right and toward the camera."
   }
  ],
  "depth_m": {
