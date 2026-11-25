@@ -1,0 +1,14 @@
+{
+  "name": "Matt Long — M0 cut-out test",
+  "note": "Pieces cut automatically from one generated parts sheet. Pivots are in each piece's own pixel coordinates; 'at' is where the joint sits on the parent piece. Legs are scaled 1.6x because the sheet drew them smaller than the rest.",
+  "root": "torso",
+  "parts": [
+    { "id": "legBack",  "file": "part_9.png", "parent": "torso", "at": [160, 600], "pivot": [94, 10],  "z": 0, "shade": 0.78, "scale": 1.6 },
+    { "id": "armBack",  "file": "part_1.png", "parent": "torso", "at": [86, 196],  "pivot": [55, 33],  "z": 1, "rest": [[55.1,33.1],[115.5,523.4]], "shade": 0.78 },
+    { "id": "legFront", "file": "part_8.png", "parent": "torso", "at": [190, 600], "pivot": [94, 10],  "z": 2, "scale": 1.6 },
+    { "id": "torso",    "file": "part_0.png", "parent": null,    "at": [0, 0],     "pivot": [175, 560], "z": 3 },
+    { "id": "head",     "file": "part_5.png", "parent": "torso", "at": [150, 40],  "pivot": [181, 340], "z": 4 },
+    { "id": "foreArm",  "file": "part_3.png", "parent": "upperArm", "at": [86.9, 352], "pivot": [22.3, 47.1], "z": 5, "rest": [[22.3,47.1],[287,523.9]] },
+    { "id": "upperArm", "file": "part_2.png", "parent": "torso", "at": [73, 194],  "pivot": [67.3, 24.7], "z": 6, "rest": [[67.3,24.7],[86.9,359.5]] }
+  ]
+}
