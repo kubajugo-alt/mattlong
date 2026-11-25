@@ -1,0 +1,12 @@
+{
+ "from_label_map": {"banister": "banister", "radiator": "radiator"},
+ "drop": ["door-handle", "door-handle-2", "wall-hook", "wooden-wainscoting-1", "wooden-wainscoting-2"],
+ "rename": {"left-door": "flat-door", "left-door-handle": "flat-door-handle", "deadbolt-keyhole": "flat-door-lock", "right-door": "office-door",
+            "right-door-handle": "office-door-handle", "room-number-plate": "office-number", "door": "street-door-below", "window": "end-window",
+            "hanging-light-bulb": "bulb", "bucket": "fire-bucket", "area-rug": "rug", "light-switch-2": "light-switch-right", "transom-window": "transom"},
+ "names": {"flat-door": "Pete and Kate's door", "flat-door-handle": "door handle", "flat-door-lock": "lock", "peephole": "spyhole", "doormat": "doormat",
+           "milk-bottle": "milk bottle", "newspaper": "morning paper", "light-switch": "light switch", "light-switch-right": "light switch",
+           "office-door": "door to Matt's office", "office-door-handle": "door handle", "office-number": "number 12", "transom": "transom window",
+           "banister": "banister", "street-door-below": "stairs down to the street", "end-window": "window", "bulb": "bare bulb", "pipe": "pipe",
+           "radiator": "radiator", "fire-bucket": "fire bucket", "rug": "rug"}
+}

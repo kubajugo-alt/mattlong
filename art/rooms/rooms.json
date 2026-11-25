@@ -42,6 +42,12 @@
    "name": "Alley behind the pawnshop (P3)",
    "light": "grey daylight from a strip of sky high above, deep shadows, wet ground",
    "look": "A narrow Bowery back alley in 1930 between tall brick walls: the pawnshop's back door on the right with a wooden step, fire escapes above, overflowing ash cans and wooden crates, a torn awning, laundry high overhead, a heap of rags and newspapers against the left wall where a homeless man sleeps (the man himself is not shown), puddles on the cobbles across the foreground, the alley opening to a busier street in the far background."
+  },
+  {
+   "id": "corridor",
+   "name": "First-floor corridor (between Matt's office and the flat)",
+   "light": "grey winter daylight from the small window at the far end and from the stairwell, a single bare bulb overhead, long soft shadows towards the camera",
+   "look": "The narrow first-floor landing and corridor of a shabby Chinatown tenement above a tea house on Doyers Street, seen straight down its length from one end at eye level. Bare, worn wooden floorboards run away from the camera down the middle as an open walkable strip about 2 metres wide, with a worn runner. RIGHT wall, near the camera: the half-glazed door of Matt Long's office, with a plain frosted-glass panel (no lettering), a brass handle and a small number plate, seen at an angle on the side wall. LEFT wall, a little further along: the plain panelled wooden front door of Pete and Kate's flat, with a doormat, a milk bottle and a folded newspaper beside it, seen at an angle on the side wall. At the far end, facing the camera: the top of a steep wooden staircase going DOWN towards the street door, with a turned newel post and banister, the stairwell dim, a little daylight coming up from below. Peeling patterned wallpaper above dark wainscoting, a single bare bulb hanging from the ceiling, a radiator, a fire bucket on a hook, a small window high on the end wall letting in grey winter light. Nothing stands in the middle of the floor."
   }
  ],
  "scale": {

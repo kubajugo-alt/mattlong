@@ -1,7 +1,7 @@
 # Scenes
 
-All seven Prologue rooms are built: `office-day`, `office-night`, `pete-kate-flat`, `doyers-street`,
-`tea-house`, `pawnshop`, `alley`. Each room's horizon (and how it was measured) is in its legend
+All eight Prologue rooms are built: `office-day`, `office-night`, `corridor`, `pete-kate-flat`, `doyers-street`,
+`tea-house`, `pawnshop`, `alley`. The corridor joins Matt's office, Pete & Kate's flat and the stairs down to the street. Each room's horizon (and how it was measured) is in its legend
 (`art/rooms/labels/<room>.legend.json`) and in `art/rooms/rooms.json`; `tools/scale_check.py` drops Matt
 into a room at several depths to check it.
 
@@ -64,3 +64,11 @@ ashtray in both. All procedural, toggled by "Ambient".
 
 Object detection output for the new rooms is in `art/rooms/labels/<room>-seg/` (masks + objects.json); curation
 in `art/rooms/labels/<room>.hotspots.json`.
+
+## Props: seated characters
+
+`props` in a legend places cast-style character sprites in a room (Kate at the kitchen table, the whole table set
+being part of her sprite; Pete astride his desk chair). Their furniture is painted out of the room and its painted
+shadows cleared; the engine draws props always, hides Matt behind them by their front line, blocks him with their
+footprint and casts their shadows from the room's lights like his. Furniture standing nearer the camera than a prop's
+floor contact is cut out of the prop so the painting shows in front.

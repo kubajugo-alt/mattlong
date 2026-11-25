@@ -1,0 +1,339 @@
+{
+ "image": "corridor.png",
+ "size": [
+  2752,
+  1536
+ ],
+ "model": "gemini-3.5-flash",
+ "objects": [
+  {
+   "id": "wooden-wainscoting-1",
+   "label": "wooden wainscoting 1",
+   "also_seen_as": [],
+   "bbox": [
+    0,
+    834,
+    282,
+    1536
+   ],
+   "area_px": 193610
+  },
+  {
+   "id": "left-door",
+   "label": "left door",
+   "also_seen_as": [],
+   "bbox": [
+    286,
+    7,
+    633,
+    1453
+   ],
+   "area_px": 400297
+  },
+  {
+   "id": "doormat",
+   "label": "doormat",
+   "also_seen_as": [
+    "door mat"
+   ],
+   "bbox": [
+    375,
+    1261,
+    800,
+    1424
+   ],
+   "area_px": 69275
+  },
+  {
+   "id": "peephole",
+   "label": "peephole",
+   "also_seen_as": [],
+   "bbox": [
+    450,
+    497,
+    462,
+    513
+   ],
+   "area_px": 146
+  },
+  {
+   "id": "left-door-handle",
+   "label": "left door handle",
+   "also_seen_as": [],
+   "bbox": [
+    539,
+    786,
+    586,
+    837
+   ],
+   "area_px": 2397
+  },
+  {
+   "id": "deadbolt-keyhole",
+   "label": "deadbolt keyhole",
+   "also_seen_as": [],
+   "bbox": [
+    545,
+    688,
+    561,
+    710
+   ],
+   "area_px": 352
+  },
+  {
+   "id": "door-handle",
+   "label": "door handle",
+   "also_seen_as": [
+    "doorknob"
+   ],
+   "bbox": [
+    545,
+    776,
+    584,
+    871
+   ],
+   "area_px": 3705
+  },
+  {
+   "id": "wooden-wainscoting-2",
+   "label": "wooden wainscoting 2",
+   "also_seen_as": [],
+   "bbox": [
+    631,
+    771,
+    890,
+    1174
+   ],
+   "area_px": 89967
+  },
+  {
+   "id": "light-switch",
+   "label": "light switch",
+   "also_seen_as": [
+    "left light switch"
+   ],
+   "bbox": [
+    640,
+    637,
+    670,
+    710
+   ],
+   "area_px": 2190
+  },
+  {
+   "id": "milk-bottle",
+   "label": "milk bottle",
+   "also_seen_as": [],
+   "bbox": [
+    685,
+    1109,
+    731,
+    1236
+   ],
+   "area_px": 4797
+  },
+  {
+   "id": "area-rug",
+   "label": "area rug",
+   "also_seen_as": [],
+   "bbox": [
+    767,
+    1258,
+    2316,
+    1478
+   ],
+   "area_px": 273583
+  },
+  {
+   "id": "newspaper",
+   "label": "newspaper",
+   "also_seen_as": [],
+   "bbox": [
+    744,
+    1148,
+    932,
+    1224
+   ],
+   "area_px": 7902
+  },
+  {
+   "id": "banister",
+   "label": "banister",
+   "also_seen_as": [
+    "stair railing"
+   ],
+   "bbox": [
+    868,
+    727,
+    1404,
+    1084
+   ],
+   "area_px": 100554
+  },
+  {
+   "id": "door",
+   "label": "door",
+   "also_seen_as": [],
+   "bbox": [
+    1282,
+    912,
+    1442,
+    1060
+   ],
+   "area_px": 9555
+  },
+  {
+   "id": "window",
+   "label": "window",
+   "also_seen_as": [],
+   "bbox": [
+    1303,
+    444,
+    1450,
+    661
+   ],
+   "area_px": 23404
+  },
+  {
+   "id": "hanging-light-bulb",
+   "label": "hanging light bulb",
+   "also_seen_as": [
+    "ceiling lamp"
+   ],
+   "bbox": [
+    1352,
+    52,
+    1400,
+    243
+   ],
+   "area_px": 3323
+  },
+  {
+   "id": "pipe",
+   "label": "pipe",
+   "also_seen_as": [],
+   "bbox": [
+    1842,
+    202,
+    1865,
+    768
+   ],
+   "area_px": 6096
+  },
+  {
+   "id": "radiator",
+   "label": "radiator",
+   "also_seen_as": [],
+   "bbox": [
+    1866,
+    849,
+    2029,
+    1192
+   ],
+   "area_px": 55909
+  },
+  {
+   "id": "bucket",
+   "label": "bucket",
+   "also_seen_as": [
+    "hanging bucket"
+   ],
+   "bbox": [
+    1888,
+    484,
+    2011,
+    685
+   ],
+   "area_px": 13427
+  },
+  {
+   "id": "wall-hook",
+   "label": "wall hook",
+   "also_seen_as": [],
+   "bbox": [
+    1937,
+    471,
+    2012,
+    519
+   ],
+   "area_px": 1512
+  },
+  {
+   "id": "right-door",
+   "label": "right door",
+   "also_seen_as": [],
+   "bbox": [
+    2203,
+    71,
+    2470,
+    1220
+   ],
+   "area_px": 159468
+  },
+  {
+   "id": "transom-window",
+   "label": "transom window",
+   "also_seen_as": [],
+   "bbox": [
+    2203,
+    0,
+    2453,
+    186
+   ],
+   "area_px": 25282
+  },
+  {
+   "id": "room-number-plate",
+   "label": "room number plate",
+   "also_seen_as": [
+    "door number plate",
+    "room number plaque"
+   ],
+   "bbox": [
+    2275,
+    828,
+    2339,
+    873
+   ],
+   "area_px": 2312
+  },
+  {
+   "id": "right-door-handle",
+   "label": "right door handle",
+   "also_seen_as": [],
+   "bbox": [
+    2389,
+    793,
+    2455,
+    857
+   ],
+   "area_px": 4224
+  },
+  {
+   "id": "door-handle-2",
+   "label": "door handle",
+   "also_seen_as": [],
+   "bbox": [
+    2395,
+    789,
+    2455,
+    920
+   ],
+   "area_px": 7860
+  },
+  {
+   "id": "light-switch-2",
+   "label": "light switch",
+   "also_seen_as": [
+    "right light switch"
+   ],
+   "bbox": [
+    2536,
+    614,
+    2579,
+    718
+   ],
+   "area_px": 4298
+  }
+ ]
+}

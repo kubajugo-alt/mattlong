@@ -17,12 +17,12 @@
  "exits": {
   "stairwell": {
    "color": "#FFFFFF",
-   "to": "office-day",
+   "to": "corridor",
    "stand": [
     0.8,
     0.8
    ],
-   "note": "stairs up to Matt's office and Pete & Kate's flat"
+   "note": "stairs up to the first-floor corridor (Matt's office and Pete & Kate's flat)"
   },
   "tea-house-doors": {
    "color": "#C0C0C0",

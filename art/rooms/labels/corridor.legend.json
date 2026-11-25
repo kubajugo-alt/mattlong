@@ -1,0 +1,70 @@
+{
+ "horizon": 0.38,
+ "horizon_note": "From the banister (about 0.9 m) and the floorboards' vanishing point; the tenement doors are tall (about 2.4 m with transoms).",
+ "floor": "#00FF00",
+ "floor_note": "Floor traced by hand from the painting (door bottoms and wall bases); Gemini's map left the rug unlabelled.",
+ "clearance_px": 10,
+ "objects": {
+  "banister": "#00FFFF",
+  "radiator": "#8000FF"
+ },
+ "exits": {
+  "flat-door": {
+   "color": "#FFFFFF",
+   "to": "pete-kate-flat",
+   "stand": [
+    0.21,
+    0.84
+   ]
+  },
+  "office-door": {
+   "color": "#C0C0C0",
+   "to": "office-day",
+   "stand": [
+    0.79,
+    0.84
+   ]
+  },
+  "stairs": {
+   "box": [
+    0.36,
+    0.45,
+    0.66,
+    0.7
+   ],
+   "to": "doyers-street",
+   "stand": [
+    0.57,
+    0.715
+   ],
+   "note": "down the stairs to the street door"
+  }
+ },
+ "exclude": [],
+ "max_feet_y": 0.96,
+ "lights": [
+  {
+   "name": "end-window",
+   "type": "window",
+   "floor": [
+    0.5,
+    0.7
+   ],
+   "dir": [
+    0.0,
+    1.0
+   ],
+   "length": 0.45,
+   "strength": 0.45,
+   "blur": 4,
+   "note": "Grey daylight from the window at the far end and up the stairwell: shadows fall toward the camera."
+  }
+ ],
+ "depth_m": {
+  "banister": 0.15,
+  "radiator": 0.2
+ },
+ "body_radius_m": 0.25,
+ "fov_deg": 60,
+ "spots": {}
+}

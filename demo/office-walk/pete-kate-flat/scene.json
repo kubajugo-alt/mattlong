@@ -4298,7 +4298,7 @@
  ],
  "exits": {
   "door": {
-   "to": "doyers-street",
+   "to": "corridor",
    "bbox": [
     1509,
     321,

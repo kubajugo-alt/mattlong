@@ -1191,7 +1191,7 @@
  ],
  "exits": {
   "stairwell": {
-   "to": "office-day",
+   "to": "corridor",
    "bbox": [
     2306,
     519,

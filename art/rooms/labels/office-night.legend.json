@@ -16,7 +16,7 @@
  "exits": {
   "door": {
    "color": "#FFFFFF",
-   "to": "doyers-street"
+   "to": "corridor"
   }
  },
  "exclude": [],

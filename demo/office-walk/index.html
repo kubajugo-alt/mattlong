@@ -29,6 +29,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       <select id="room">
         <option value="office-day">Matt's office, morning</option>
         <option value="office-night">Matt's office, night</option>
+        <option value="corridor">First-floor corridor</option>
         <option value="pete-kate-flat">Pete &amp; Kate's flat</option>
         <option value="doyers-street">Doyers Street</option>
         <option value="tea-house">Lee Wing's tea house</option>
@@ -53,7 +54,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   const maskOf = async (src) => { const i = await load(src); const c = document.createElement('canvas'); c.width = i.width; c.height = i.height; const x = c.getContext('2d'); x.drawImage(i, 0, 0); const d = x.getImageData(0, 0, i.width, i.height).data; const m = new Uint8Array(i.width * i.height); for (let k = 0; k < m.length; k++) m[k] = d[k * 4] > 128 ? 1 : 0; return { w: i.width, h: i.height, m, img: c }; };
 
   const scenes = {}; let S = null, mode = 'day', room = 'office-day', sprites = null, spriteImgs = {};
-  const NAMES = { 'office-day': "Matt's office", 'office-night': "Matt's office", 'pete-kate-flat': "Pete & Kate's flat", 'doyers-street': 'Doyers Street',
+  const NAMES = { corridor: 'the corridor', 'office-day': "Matt's office", 'office-night': "Matt's office", 'pete-kate-flat': "Pete & Kate's flat", 'doyers-street': 'Doyers Street',
                   'tea-house': "Lee Wing's tea house", pawnshop: 'the pawnshop', alley: 'the alley', map: 'the city map', 'tea-house-back': 'the back room', laundry: 'the laundry' };
   // the city map is not built yet: in this test its exits lead straight to the next Prologue location
   const MAP_NEXT = { 'doyers-street': 'pawnshop', pawnshop: 'doyers-street', alley: 'doyers-street' };
