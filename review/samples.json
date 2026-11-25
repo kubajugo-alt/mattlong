@@ -13,15 +13,39 @@
       "id": "m0-rig-v2",
       "milestone": "m0",
       "kind": "rig",
-      "title": "Matt as a cut-out puppet (v7, planted walk)",
+      "title": "Matt as a cut-out puppet (v8, walk matched to Muybridge)",
       "rig": "samples/m0/rig2/rig.json",
-      "about": "Skinned mesh with a motion system. Walk: the body moves forward at a steady pace and each footstep is placed on the floor in advance; the foot lands on the heel with the toes up, rolls flat, lifts the heel and pushes off the toes, then swings in an arc to the next footprint. The legs are solved from hip to ankle (inverse kinematics), so the planted foot cannot slide and the body never moves backwards; the hip rises and falls about 2% of his height per step, the standing knee stays nearly straight and the swinging knee folds to about 55°. Pelvis rocks, chest counter-turns, arms swing opposite to the legs, head stays level with a slight lag; jacket skirt and trouser hems react to acceleration. Idle, Gesture and Reach keep the feet on their footprints. Switching animations blends between them.",
+      "about": "Skinned mesh with a motion system. The walk is now tuned against Eadweard Muybridge's 1887 photographs of a man walking (Animal Locomotion, plate 1): steps of about 0.41 x his height, the front heel landing well ahead of the hip, a push-off up on the toes of about 58°, the swing foot trailing high behind before it comes through, a forward lean of about 6° with the gaze slightly down, and fuller elbow bend on the forward arm. Footprints are placed in advance and legs are solved hip-to-ankle, so the planted foot cannot slide and the body never moves backwards. Idle, Gesture and Reach keep the feet planted; switching animations blends.",
       "lookFor": [
-        "Walk: does it now read as a person walking? Pace, stride length, bounce.",
-        "Gesture and Reach: natural timing, or too much?",
+        "Walk: does it read as a man walking now? Compare with the Muybridge samples.",
+        "Pace: one stride every 1.15 s. Slower and wearier for Matt?",
         "Known: side view only; the far leg is a darker copy of the near one."
       ],
       "mesh": "samples/m0/rig2/mesh.json"
+    },
+    {
+      "id": "m0-walk-ref",
+      "milestone": "m0",
+      "kind": "image",
+      "title": "Walk vs Muybridge: 12 frames",
+      "src": "samples/m0/walk-vs-muybridge.jpg",
+      "about": "Top: Eadweard Muybridge, Animal Locomotion plate 1 (1887), a man walking, 12 consecutive frames covering just under one stride (public domain; Wellcome Collection). Bottom: Matt rendered at the same moments of his stride.",
+      "credit": "https://wellcomecollection.org/works/bgd7pfcz",
+      "lookFor": [
+        "Leg spread at contact (frames 3 and 10), the trailing back foot after push-off (4-5), the passing pose (7).",
+        "Muybridge's walker is unclothed and barefoot; Matt's jacket and shoes change the silhouette, not the mechanics."
+      ]
+    },
+    {
+      "id": "m0-walk-keys",
+      "milestone": "m0",
+      "kind": "image",
+      "title": "Walk vs Muybridge: key poses",
+      "src": "samples/m0/walk-keyposes.jpg",
+      "about": "The four key poses of a walk, Muybridge left and Matt right in each pair: contact (frame 3), push-off (5), passing (7), contact on the other leg (10).",
+      "lookFor": [
+        "Do Matt's legs, lean and arms match the photograph in each pair?"
+      ]
     },
     {
       "id": "m0-proportions",

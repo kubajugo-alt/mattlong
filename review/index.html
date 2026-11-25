@@ -343,7 +343,7 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
       const byFile = {}; (await Promise.all(files.map(loadImg))).forEach((im, i) => { byFile[files[i]] = im; });
       r.parts.forEach(p => { imgs[p.id] = byFile[p.file]; });
       r.byId = Object.fromEntries(r.parts.map(p => [p.id, p]));
-      if (m) { mesh = m; prepMesh(m); setupGL(byFile); window.__rigDebug = { pose, boneMatrices, mesh: m, apply }; }   // used by tools/check-walk.js
+      if (m) { mesh = m; prepMesh(m); setupGL(byFile); window.__rigDebug = { pose, boneMatrices, mesh: m, apply, G }; }   // used by tools/check-walk.js
       if (!gl) { mode = 'Pieces'; if (modeSeg) modeSeg.remove(); }
       raf = requestAnimationFrame(tick);
     });
@@ -408,22 +408,29 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
     const lerp = (a, b, k) => a + (b - a) * k;
     // One foot through a stride. p = 0 heel strike; stance until 0.62, then swing to the next footprint.
     // Returns the ankle position, foot pitch and toe bend, with footprints at heel x = h0 + n * STRIDE.
-    const STRIDE = 1450, STRIKE = 0.62;
+    // Walk tuning, matched against Muybridge's Animal Locomotion plate 1 (1887): step ~0.41 x height,
+    // front heel ~0.23 x height ahead of the hip at contact, push-off ~58 deg, swing foot trailing high.
+    const G = { stride: 1840, heelAhead: 500, toeOff: 58, strike: -17, heelRise: 0.40, lift: 165, bob: 12, lean: 6.5, gaze: 3,
+                armFlex: 14, armBias: 2, elbow: 15, elbowFwd: 25 };
+    const STRIDE = G.stride, STRIKE = 0.62;
     function footAt(p, heelX, floor) {
       const H = FOOT.heel, B = FOOT.ball, ballX = heelX + (B[0] - H[0]);
-      const strike = (hx) => ankleFrom(H, [hx, floor], -17 * D);
-      const toeOff = (hx) => ankleFrom(B, [hx + (B[0] - H[0]), floor], 34 * D);
-      if (p < 0.12) { const phi = -17 * D * (1 - ease(p / 0.12)); return { ank: ankleFrom(H, [heelX, floor], phi), phi, toe: 0 }; }
-      if (p < 0.42) return { ank: ankleFrom(H, [heelX, floor], 0), phi: 0, toe: 0 };
-      if (p < STRIKE) { const phi = 34 * D * ease((p - 0.42) / (STRIKE - 0.42)); return { ank: ankleFrom(B, [ballX, floor], phi), phi, toe: -phi }; }
+      const strike = (hx) => ankleFrom(H, [hx, floor], G.strike * D);
+      const toeOff = (hx) => ankleFrom(B, [hx + (B[0] - H[0]), floor], G.toeOff * D);
+      if (p < 0.12) { const phi = G.strike * D * (1 - ease(p / 0.12)); return { ank: ankleFrom(H, [heelX, floor], phi), phi, toe: 0 }; }
+      if (p < G.heelRise) return { ank: ankleFrom(H, [heelX, floor], 0), phi: 0, toe: 0 };
+      if (p < STRIKE) { const phi = G.toeOff * D * Math.pow((p - G.heelRise) / (STRIKE - G.heelRise), 1.6); return { ank: ankleFrom(B, [ballX, floor], phi), phi, toe: -phi }; }
       const s = (p - STRIKE) / (1 - STRIKE), a0 = toeOff(heelX), a1 = strike(heelX + STRIDE);
       const k = s * s * s * (s * (s * 6 - 15) + 10);                     // smootherstep across the floor
-      const lift = 105 * Math.sin(Math.PI * Math.min(1, s / 0.92)) * (1 - 0.35 * s);
-      const phi = s < 0.45 ? 34 * D * (1 - ease(s / 0.45)) : -17 * D * ease((s - 0.45) / 0.55);
-      return { ank: [lerp(a0[0], a1[0], k), lerp(a0[1], a1[1], k) - lift], phi, toe: -34 * D * (1 - ease(s / 0.22)) };
+      // the foot rises steeply behind him right after push-off, then swings through low
+      const lift = G.lift * Math.pow(Math.sin(Math.PI * Math.pow(s, 0.6)), 1.3);
+      const phi = s < 0.55 ? G.toeOff * D * (1 - ease(s / 0.55)) : G.strike * D * ease((s - 0.55) / 0.45);
+      return { ank: [lerp(a0[0], a1[0], k), lerp(a0[1], a1[1], k) - lift], phi, toe: -G.toeOff * D * (1 - ease(s / 0.25)) };
     }
 
     // Target poses. Every pose: lean (pelvis), chest, and relative angles per bone.
+    // Rotations are clockwise-positive on screen; he faces right, so a forward lean or a raised
+    // limb is negative and looking down is positive.
     function pose(name, tt) {
       const o = { lean: 0, chest: 0, nod: 0 };
       if (!mesh) return o;
@@ -438,20 +445,20 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
         [['', 0], ['Back', 0.5]].forEach(([sfx, off]) => {
           const q = tau / T + off, k = Math.floor(q), ph = q - k;
           const strikeHipX = baseX + v * (k - off) * T;              // where the hip was at this foot's heel strike
-          legs[sfx] = footAt(ph, strikeHipX + 330, floor);           // heel lands ahead of the hip
+          legs[sfx] = footAt(ph, strikeHipX + G.heelAhead, floor);   // heel lands ahead of the hip
         });
         // pelvis: lowest in double support, highest in mid-stance; lowered further only if a leg can't reach
-        let hy = standH + 3 + 9 * Math.cos(4 * Math.PI * p);
+        let hy = standH + 3 + G.bob * Math.cos(4 * Math.PI * p);
         const reach = (LEN.thigh + LEN.shin) * 0.997;
         Object.values(legs).forEach(L => { const dx = L.ank[0] - hx; if (Math.abs(dx) < reach) hy = Math.max(hy, L.ank[1] - Math.sqrt(reach * reach - dx * dx)); });
         const tilt = 1.2 * Math.sin(4 * Math.PI * p);
-        o.lean = (2.5 + tilt) * D; o.chest = (-1.0 * tilt + 0.5) * D; o.hx = hx; o.hy = hy;
+        o.lean = (-G.lean + tilt) * D; o.chest = (-1.0 * tilt + 0.5) * D; o.hx = hx; o.hy = hy;
         Object.entries(legs).forEach(([sfx, L]) => legIK(sfx, [hx, hy], L.ank, L.phi, L.toe, o.lean, o));
         const chestW = o.lean + o.chest;
         const sw = Math.cos(2 * Math.PI * (p - 0.5)), swB = Math.cos(2 * Math.PI * p);   // near arm swings with the far leg
-        armRel('', 3 + 16 * sw, 14 + 16 * Math.max(0, sw), chestW, o);
-        armRel('Back', 3 + 16 * swB, 14 + 16 * Math.max(0, swB), chestW, o);
-        o.nod = 0.8 * Math.sin(4 * Math.PI * p + 0.6) * D;
+        armRel('', G.armBias + G.armFlex * sw, G.elbow + G.elbowFwd * Math.max(0, sw), chestW, o);
+        armRel('Back', G.armBias + G.armFlex * swB, G.elbow + G.elbowFwd * Math.max(0, swB), chestW, o);
+        o.nod = (G.gaze + 0.8 * Math.sin(4 * Math.PI * p + 0.6)) * D;
         return o;
       }
       // standing: feet stay on their footprints, the weight shifts slowly, he breathes

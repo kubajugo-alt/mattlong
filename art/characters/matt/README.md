@@ -61,3 +61,9 @@ drives reaching; `node tools/check-walk.js review` checks for sliding,
 floating and backward motion; head stabilised
 against pelvis and chest with spring lag; cloth springs on the jacket skirt and
 trouser hems respond to acceleration; poses blend over 0.45 s when switching.
+
+Walk tuning: the gait parameters live in one object `G` in the player
+(stride, heel placement, push-off angle, swing lift, bob, lean, gaze, arm
+swing) and are matched against Muybridge's plate 1 (`reference/muybridge-plate1`).
+Rotations are clockwise-positive on screen and Matt faces right, so a forward
+lean or a raised limb is negative and looking down is positive.
