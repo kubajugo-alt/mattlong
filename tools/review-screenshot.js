@@ -3,7 +3,7 @@ const fs = require('fs'), path = require('path');
 const root = process.argv[2], out = process.argv[3];
 const types = { '.html': 'text/html', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.mp3': 'audio/mpeg' };
 (async () => {
-  const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1400, height: 1000 } });
+  const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1400, height: 1000 }, deviceScaleFactor: 2 });
   await ctx.route('http://review.local/**', (r) => {
     const u = new URL(r.request().url()); const f = path.join(root, decodeURIComponent(u.pathname));
     if (!fs.existsSync(f)) return r.fulfill({ status: 404, body: '' });

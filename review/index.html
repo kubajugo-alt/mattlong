@@ -406,14 +406,15 @@ header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-cont
             const par = chain[i - 1], dx = c.at[0] - par.pivot[0], dy = c.at[1] - par.pivot[1];
             ctx.translate(dx, dy);
             if (ex) { const L = Math.hypot(dx, dy) || 1; ctx.translate(dx / L * 160 * ex, dy / L * 160 * ex); }
-            ctx.rotate(P[c.id] || 0);
+            // joint patches turn part of the way with the piece they cover
+            ctx.rotate(c.follow ? c.follow.k * (P[c.follow.of] || 0) : (P[c.id] || 0));
           }
         });
         const im = imgs[p.id];
         if (p.shade) ctx.filter = 'brightness(' + p.shade + ')';
         if (im && im.naturalWidth) ctx.drawImage(im, -p.pivot[0], -p.pivot[1]);
         ctx.filter = 'none';
-        if (showJoints && !p.shade && p.parent) { const m = ctx.getTransform(); joints.push([m.e, m.f]); }
+        if (showJoints && !p.shade && p.parent && !p.follow) { const m = ctx.getTransform(); joints.push([m.e, m.f]); }
       });
       if (showJoints) {
         ctx.setTransform(1, 0, 0, 1, 0, 0);

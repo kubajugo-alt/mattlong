@@ -9,7 +9,7 @@
    "file": "thigh.png",
    "parent": "torso",
    "at": [
-    211,
+    210,
     810
    ],
    "pivot": [
@@ -35,11 +35,30 @@
    "shade": 0.72
   },
   {
+   "id": "kneeBack",
+   "file": "kneePatch.png",
+   "parent": "thighBack",
+   "at": [
+    135,
+    745
+   ],
+   "pivot": [
+    105,
+    120
+   ],
+   "z": 1.5,
+   "shade": 0.72,
+   "follow": {
+    "of": "shinBack",
+    "k": 0.5
+   }
+  },
+  {
    "id": "upperArmBack",
    "file": "upperArmFar.png",
    "parent": "torso",
    "at": [
-    101,
+    100,
     275
    ],
    "pivot": [
@@ -65,11 +84,30 @@
    "shade": 0.8
   },
   {
+   "id": "elbowBack",
+   "file": "elbowPatchFar.png",
+   "parent": "upperArmBack",
+   "at": [
+    123,
+    464
+   ],
+   "pivot": [
+    85,
+    85
+   ],
+   "z": 3.5,
+   "shade": 0.8,
+   "follow": {
+    "of": "foreArmBack",
+    "k": 0.5
+   }
+  },
+  {
    "id": "thigh",
    "file": "thigh.png",
    "parent": "torso",
    "at": [
-    211,
+    210,
     810
    ],
    "pivot": [
@@ -93,11 +131,29 @@
    "z": 5
   },
   {
+   "id": "knee",
+   "file": "kneePatch.png",
+   "parent": "thigh",
+   "at": [
+    135,
+    745
+   ],
+   "pivot": [
+    105,
+    120
+   ],
+   "z": 5.5,
+   "follow": {
+    "of": "shin",
+    "k": 0.5
+   }
+  },
+  {
    "id": "head",
    "file": "head.png",
    "parent": "torso",
    "at": [
-    246,
+    245,
     80
    ],
    "pivot": [
@@ -115,7 +171,7 @@
     0
    ],
    "pivot": [
-    211,
+    210,
     810
    ],
    "z": 7
@@ -125,7 +181,7 @@
    "file": "upperArm.png",
    "parent": "torso",
    "at": [
-    101,
+    100,
     275
    ],
    "pivot": [
@@ -147,6 +203,24 @@
     62
    ],
    "z": 9
+  },
+  {
+   "id": "elbow",
+   "file": "elbowPatch.png",
+   "parent": "upperArm",
+   "at": [
+    123,
+    464
+   ],
+   "pivot": [
+    85,
+    85
+   ],
+   "z": 9.5,
+   "follow": {
+    "of": "foreArm",
+    "k": 0.5
+   }
   }
  ],
  "joints": {

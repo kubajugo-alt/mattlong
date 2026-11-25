@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached image for a 2D cut-out animation rig. Remove both of the man's legs completely: the trousers and both shoes, everything below the jacket. Keep the suit jacket exactly as drawn, including its complete natural bottom edge (the hem, the front corners and the back vent) with a clean outline where the trousers used to show beneath it. Change nothing else: same framing, position, scale, head, hat, collar, jacket, lighting, painting style, and the flat pure green background.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/rig2/src/noarm.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T01:46:40.875Z",
+  "usage": {
+    "promptTokenCount": 365,
+    "candidatesTokenCount": 1258,
+    "totalTokenCount": 1830,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 107
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 207,
+    "serviceTier": "standard"
+  }
+}
