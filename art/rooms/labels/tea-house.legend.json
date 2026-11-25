@@ -80,11 +80,11 @@
   {
    "name": "lee-wing",
    "file": "art/cast/final/leewing.png",
-   "x": 2203,
+   "x": 2234,
    "y": 414,
-   "scale": 0.4806,
+   "scale": 0.389,
    "depth_m": 0.4,
-   "note": "Lee Wing inside the counter by the tea-jar shelves, sized from the counter (feet at y 1.05), then raised 90 px (as if on the step behind the counter) so his clasped hands show above it.",
+   "note": "Lee Wing inside the counter by the tea-jar shelves. Head top kept where it was; size from the head comparison: his head (eye to chin, 175 px in both sprites) is 68 px, about 15% smaller than Matt's when Matt stands at the counter's front (79 px), since Lee stands about 0.7 m further back.",
    "behind": [
     "counter"
    ]
