@@ -29,6 +29,15 @@
 | cough | Thin young man coughing twice, a rough wet cough in the cold, outdoors, then a sniff |
 | dishes | Dishes and porcelain cups being washed and stacked in a small back room kitchen, muffled behind a curtain |
 | newsboy-1..3 | Speech, eleven_v4, voice VALF (loY1uopAz31XyhAEhNSa): "Extra! Extra! Read all about it!" / "Papers! Get your morning papers here, two cents!" / "Morning edition! Get your paper, mister!" |
+| paper | An envelope picked up off a wooden floor and a sheet of paper unfolded, crisp paper rustle, indoors, close |
+| drawer | Old wooden desk drawer sliding open with a scrape and a rattle of loose pencils inside |
+| radio_dance_band | A 1930 dance band playing through an old valve radio speaker, tinny, crackly, muffled, distant trumpets and clarinet, no vocals |
+| switch | Old 1930 rotary light switch turned with a heavy click, then a second click |
+| pour | Hot coffee poured from a metal percolator into a china cup, close, indoors |
+| till | Old mechanical cash register: keys pressed, a bell rings and the cash drawer slides open |
+| abacus | Wooden abacus beads clicked quickly back and forth by experienced fingers, several sharp clacks |
+| knock | Three slow knocks with a gloved hand on a wooden office door with a frosted glass panel |
+
 
 Removed after the plausibility review: typewriter (Pete sits with his back to it, and nobody else types), thunder
 (snow and winter rain, not a storm; replaced by the El train on the Bowery).

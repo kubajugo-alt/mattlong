@@ -1,4 +1,5 @@
 {
+ "abacus": 2.48,
  "bead-curtain": 3.0,
  "bed-alley": 30.0,
  "bed-corridor": 30.0,
@@ -16,15 +17,22 @@
  "cough": 5.0,
  "dishes": 15.0,
  "door": 6.0,
+ "drawer": 2.0,
  "el-train": 20.0,
  "floor-creak": 3.0,
+ "knock": 2.0,
  "newsboy-1": 4.16,
  "newsboy-2": 3.92,
  "newsboy-3": 3.36,
+ "paper": 2.48,
+ "pour": 3.0,
  "radiator": 8.0,
+ "radio_dance_band": 8.0,
  "shop-bell": 4.0,
  "steps-cobble": 10,
  "steps-tile": 10,
  "steps-wood": 10,
- "teacup": 1.0
+ "switch": 1.2,
+ "teacup": 1.0,
+ "till": 2.48
 }

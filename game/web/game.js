@@ -119,8 +119,7 @@
       case 'hide': if (arg === 'kate-at-table') STORY.kateGone = true; else { STORY.hidden.add(arg); STORY.hiddenHot.add(E.room() + ':' + arg); } break;
       case 'go': await fadeTo(() => E.enter(arg, E.room())); break;
       case 'scene': if (E.room() !== arg) await fadeTo(() => E.enter(arg, null)); break;
-      case 'sfx': { const map = { door: 'door', 'shop-bell': 'shop-bell', cough: 'cough', knock: 'door' };
-        const n = arg in map ? map[arg] : null; if (n) E.shot(n, 0.6, [E.M.x, E.M.y]); break; }
+      case 'sfx': if (arg !== 'rain') E.shot(arg, arg === 'radio_dance_band' ? 0.5 : 0.7, [E.M.x, E.M.y]); break;   // rain: the night office's own rain bed
       case 'anim': { const [who, a] = arg.split(':');
         if (who === 'inez' && a === 'walk_in') STORY.hidden.delete('inez-seated');
         if (who === 'inez' && a === 'walk_out') STORY.hidden.add('inez-seated');

@@ -82,6 +82,16 @@
     "cols": 6,
     "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
    }
+  },
+  {
+   "name": "eviction-notice",
+   "file": "art/props/eviction-envelope.png",
+   "x": 878,
+   "y": 1090,
+   "scale": 1.0,
+   "depth_m": 0.05,
+   "floor": true,
+   "note": "The eviction notice's envelope, cut from the original painting (now painted out of the floor) so it can go when Matt picks it up. Flat on the floor: never drawn over Matt, no cast shadow."
   }
  ]
 }

@@ -185,6 +185,8 @@ for name, color in all_objs:
              'baseline_cols': base[::8], 'baseline_step': 8, **({'prop': True} if name in prop_m else {})}
     if pr_by.get(name, {}).get('hidden'):      # an alternative version shown later by the story (e.g. Kate's empty chair)
         entry['hidden'] = True
+    if pr_by.get(name, {}).get('floor'):       # lies flat on the floor: never drawn over Matt, casts no shadow
+        entry['floor'] = True
     if anim is not None:
         a_ = pr_by[name]['anim']
         entry['anim'] = {'frames': a_['n'], 'cols': a_['cols'], 'fps': a_.get('fps', 7)}
@@ -256,7 +258,7 @@ depths = L.get('depth_m', {})
 radius = L.get('body_radius_m', 0.25)
 pts = []
 for name, color in all_objs:
-    if name not in depths:
+    if name not in depths or pr_by.get(name, {}).get('floor'):     # flat things on the floor don't block
         continue
     m = get_mask(name, color)
     if m.sum() < 400:
