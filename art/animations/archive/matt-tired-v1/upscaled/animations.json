@@ -1,0 +1,86 @@
+{
+ "walk-matt-side": {
+  "status": "succeeded",
+  "frame_width": 530,
+  "frame_height": 1052,
+  "frames": 36,
+  "cols": 6
+ },
+ "walk-matt-front": {
+  "status": "succeeded",
+  "frame_width": 499,
+  "frame_height": 1065,
+  "frames": 36,
+  "cols": 6
+ },
+ "walk-matt-back": {
+  "status": "succeeded",
+  "frame_width": 395,
+  "frame_height": 1059,
+  "frames": 36,
+  "cols": 6
+ },
+ "interact-matt-side": {
+  "status": "succeeded",
+  "frame_width": 579,
+  "frame_height": 1029,
+  "frames": 36,
+  "cols": 6
+ },
+ "walk-matt-towel-side": {
+  "status": "succeeded",
+  "frame_width": 469,
+  "frame_height": 1044,
+  "frames": 36,
+  "cols": 6
+ },
+ "walk-matt-towel-front": {
+  "status": "succeeded",
+  "frame_width": 460,
+  "frame_height": 1046,
+  "frames": 36,
+  "cols": 6
+ },
+ "walk-matt-towel-back": {
+  "status": "succeeded",
+  "frame_width": 405,
+  "frame_height": 1043,
+  "frames": 36,
+  "cols": 6
+ },
+ "interact-matt-towel-side": {
+  "status": "succeeded",
+  "frame_width": 522,
+  "frame_height": 1030,
+  "frames": 36,
+  "cols": 6
+ },
+ "walk-matt-boxers-side": {
+  "status": "succeeded",
+  "frame_width": 423,
+  "frame_height": 1039,
+  "frames": 36,
+  "cols": 6
+ },
+ "walk-matt-boxers-front": {
+  "status": "succeeded",
+  "frame_width": 425,
+  "frame_height": 1041,
+  "frames": 36,
+  "cols": 6
+ },
+ "walk-matt-boxers-back": {
+  "status": "succeeded",
+  "frame_width": 376,
+  "frame_height": 1046,
+  "frames": 36,
+  "cols": 6
+ },
+ "interact-matt-boxers-side": {
+  "status": "succeeded",
+  "frame_width": 591,
+  "frame_height": 1030,
+  "frames": 36,
+  "cols": 6
+ }
+}
