@@ -39,6 +39,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     </label>
     <label><input type="checkbox" id="ambient" checked> Ambient</label>
     <label><input type="checkbox" id="parallax" checked> Parallax</label>
+    <label><input type="checkbox" id="sound" checked> Sound</label>
     <label><input type="checkbox" id="showHot"> Hotspots</label>
     <label><input type="checkbox" id="showWalk"> Walkable floor</label>
     <label><input type="checkbox" id="showBase"> Object baselines</label>
@@ -255,6 +256,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       const c = CARS.imgs[Math.floor(Math.random() * CARS.imgs.length)], dir = Math.random() < 0.5 ? 1 : -1;
       const w = c.i.width * CARS.h / c.i.height, x0 = CARS.area[0] * W - w - 40, x1 = CARS.area[1] * W + 40;
       CARS.list.push({ c, dir, w, x: dir > 0 ? x0 : x1, end: dir > 0 ? x1 : x0, v: 300 + Math.random() * 120 });
+      shot('car-pass', 0.32, 0, 0.95 + Math.random() * 0.1).then(h => { if (h && h.p) { const t = AU.ac.currentTime; h.p.pan.setValueAtTime(-0.7 * dir, t); h.p.pan.linearRampToValueAtTime(0.7 * dir, t + 6); }
+        if (h) { const t = AU.ac.currentTime; h.g.gain.setValueAtTime(0.32, t + 5); h.g.gain.linearRampToValueAtTime(0, t + 8); h.src.stop(t + 8.2); } });
       CARS.next = 7 + Math.random() * 13;
     }
     if (!CARS.list.length) return;
@@ -381,6 +384,76 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // ---- frame
   let last = performance.now();
   const sil = document.createElement('canvas'), sx = sil.getContext('2d');
+  // ---- sound (ElevenLabs effects): a looping bed per room, footsteps on the walk cycle, occasional one-shots,
+  // doors on exits, engines with the passing cars. Starts on the first click (browsers need a gesture).
+  const SND = {
+    'office-day':    { beds: [['bed-office-day', 0.9]], floor: 'wood', shots: [['radiator', 30, 70, 0.45], ['floor-creak', 40, 90, 0.35]] },
+    'office-night':  { beds: [['bed-rain', 0.9], ['bed-neon', 0.35]], floor: 'wood', shots: [['thunder', 40, 100, 0.5], ['floor-creak', 50, 100, 0.3]] },
+    corridor:        { beds: [['bed-corridor', 0.9]], floor: 'wood', shots: [['floor-creak', 25, 60, 0.45], ['typewriter', 30, 70, 0.3]] },
+    'pete-kate-flat':{ beds: [['bed-flat', 0.9]], floor: 'wood', shots: [['teacup', 18, 45, 0.5], ['typewriter', 40, 90, 0.4]] },
+    'doyers-street': { beds: [['bed-street', 1.0]], floor: 'cobble', shots: [['car-horn', 30, 80, 0.35]] },
+    'tea-house':     { beds: [['bed-tea', 0.9]], floor: 'tile', shots: [['teacup', 15, 40, 0.45]] },
+    pawnshop:        { beds: [['bed-pawn', 0.9]], floor: 'wood', shots: [['clock-chime', 25, 60, 0.45]] },
+    alley:           { beds: [['bed-alley', 1.0]], floor: 'cobble', shots: [['bin-lid', 25, 60, 0.4]] },
+  };
+  const AU = { ac: null, master: null, buf: {}, beds: [], next: {}, roomOn: null, lastPhase: 0 };
+  const soundOn = () => document.getElementById('sound').checked;
+  function audioStart() {
+    if (AU.ac) { if (AU.ac.state === 'suspended') AU.ac.resume(); return; }
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    AU.ac = new AC(); AU.master = AU.ac.createGain(); AU.master.gain.value = soundOn() ? 1 : 0; AU.master.connect(AU.ac.destination);
+  }
+  window.addEventListener('pointerdown', audioStart);
+  document.getElementById('sound').addEventListener('change', () => { if (AU.master) AU.master.gain.setTargetAtTime(soundOn() ? 1 : 0, AU.ac.currentTime, 0.2); });
+  function sbuf(name) {
+    if (!AU.buf[name]) AU.buf[name] = fetch('sfx/' + name + '.mp3').then(r => r.arrayBuffer()).then(a => AU.ac.decodeAudioData(a)).catch(() => null);
+    return AU.buf[name];
+  }
+  async function shot(name, vol = 1, pan = 0, rate = 1) {
+    if (!AU.ac) return null; const b = await sbuf(name); if (!b) return null;
+    const src = AU.ac.createBufferSource(), g = AU.ac.createGain(), p = AU.ac.createStereoPanner ? AU.ac.createStereoPanner() : null;
+    src.buffer = b; src.playbackRate.value = rate; g.gain.value = vol; src.connect(g);
+    if (p) { p.pan.value = Math.max(-1, Math.min(1, pan)); g.connect(p); p.connect(AU.master); } else g.connect(AU.master);
+    src.start(); return { src, g, p };
+  }
+  // a bed loops by overlapping copies with 2.5 s crossfades (no gap from mp3 padding)
+  function bedLoop(name, vol, token) {
+    sbuf(name).then(b => {
+      if (!b || AU.roomOn !== token) return;
+      const run = () => {
+        if (AU.roomOn !== token) return;
+        const t = AU.ac.currentTime, src = AU.ac.createBufferSource(), g = AU.ac.createGain(), X = 2.5, d = b.duration;
+        src.buffer = b; src.connect(g); g.connect(AU.master);
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + X); g.gain.setValueAtTime(vol, t + d - X); g.gain.linearRampToValueAtTime(0, t + d);
+        src.start(t); AU.beds.push({ src, g, token });
+        setTimeout(run, (d - X) * 1000);
+      };
+      run();
+    });
+  }
+  function roomSound(id) {
+    if (!AU.ac) return;
+    const t = AU.ac.currentTime;
+    for (const b of AU.beds) { b.g.gain.cancelScheduledValues(t); b.g.gain.setValueAtTime(b.g.gain.value, t); b.g.gain.linearRampToValueAtTime(0, t + 1.2); b.src.stop(t + 1.3); }
+    AU.beds = []; AU.roomOn = id + ':' + Math.random(); AU.next = {};
+    for (const [n, v] of (SND[id] || {}).beds || []) bedLoop(n, v, AU.roomOn);
+  }
+  function soundTick(now) {
+    if (!AU.ac) return;
+    if (!AU.roomOn || !AU.roomOn.startsWith(room + ':')) roomSound(room);
+    const R = SND[room] || {}, t = now / 1000, W = S.sc.size[0];
+    for (const [n, lo, hi, v] of R.shots || []) {
+      if (AU.next[n] === undefined) AU.next[n] = t + lo * (0.3 + Math.random() * 0.7);
+      if (t > AU.next[n]) { shot(n, v, (Math.random() - 0.5) * 0.8, 0.95 + Math.random() * 0.1); AU.next[n] = t + lo + Math.random() * (hi - lo); }
+    }
+    // footsteps: two per walk cycle, louder near the camera, panned with Matt
+    if (M.moving && R.floor) {
+      const ph = M.phase, crossed = (AU.lastPhase < 0.5 && ph >= 0.5) || ph < AU.lastPhase;
+      if (crossed) { const near = Math.min(1, heightAt(M.y) / (S.sc.size[1] * 0.55));
+        shot('steps-' + R.floor + '-' + (1 + Math.floor(Math.random() * 10)), 0.35 + 0.65 * near, (M.x / W - 0.5) * 1.2, 0.93 + Math.random() * 0.14); }
+    }
+    AU.lastPhase = M.phase;
+  }
   // ---- parallax: the camera drifts with Matt; everything shifts sideways by its disparity (1 at the bottom
   // of the frame, 0 at the horizon). The painting is displaced per pixel on the GPU using a depth map built
   // from the scene: floor by perspective, furniture and characters by where they stand, walls by the floor
@@ -459,13 +532,18 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       M.phase = (M.phase + step / pxPerM(M.y) / 1.5) % 1; M.moving = true;
       if (!M.path.length) { M.moving = false; status.textContent = 'Click the floor';
         if (M.exiting) { let to = M.exiting.to; if (to === 'office-day' && room === 'doyers-street') to = 'office-day'; if (to === 'map') to = MAP_NEXT[room];
-          if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room; M.exiting = null; enter(to, from); }
+          if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room;
+            const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || '';
+            if (/pawnshop-door|front-door/.test(exn) && (room === 'doyers-street' || room === 'pawnshop')) shot('shop-bell', 0.6);
+            else if (/door|stairwell|apartment/.test(exn)) shot('door', 0.6);
+            M.exiting = null; enter(to, from); }
           else { status.textContent = (NAMES[M.exiting.to] || M.exiting.to) + ' is not drawn yet'; M.exiting = null; } } }
     }
     // light on Matt follows the floor around his feet, smoothed
     const target = Math.min(1.15, Math.max(mode === 'night' ? 0.22 : 0.55, 0.45 + floorBrightness(M.x, M.y) * (mode === 'night' ? 1.6 : 0.9)));
     M.light += (target - M.light) * Math.min(1, dt * 4);
 
+    soundTick(now);
     const dpr = Math.min(2, window.devicePixelRatio || 1), cw = Math.round(cv.clientWidth * dpr), ch = Math.round(cv.clientHeight * dpr);
     if (cv.width !== cw || cv.height !== ch) { cv.width = cw; cv.height = ch; }
     const k = cw / W;
