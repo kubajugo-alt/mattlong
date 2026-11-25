@@ -45,7 +45,7 @@
    ],
    "to": "pawnshop",
    "stand": [
-    0.6,
+    0.625,
     0.72
    ]
   },
@@ -110,12 +110,12 @@
  "props": [
   {
    "name": "junkie",
-   "file": "art/cast/final/junkie.png",
-   "x": 1749,
+   "file": "art/cast/final/junkie-facing-right.png",
+   "x": 552,
    "y": 662,
    "scale": 0.2196,
    "depth_m": 0.35,
-   "note": "The junkie, hunched against the wall between the pawnshop window and the tea-house pillar; scaled by the street's rule for 1.75 m with his feet at y 0.765."
+   "note": "The junkie on the left pavement beside the bin, just past the open apartment door, looking across at the pawnshop (the cast sprite mirrored); scaled by the street's rule for 1.75 m with his feet at y 0.765."
   }
  ]
 }
