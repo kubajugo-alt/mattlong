@@ -17,6 +17,7 @@ Rebuild:
     python3 tools/register_part.py art/characters/matt/source art/characters/matt/joints.json arm
     python3 tools/register_part.py art/characters/matt/source art/characters/matt/joints.json leg
     python3 tools/build_rig.py art/characters/matt/source art/characters/matt/joints.json <out dir>
+    python3 tools/build_mesh.py <out dir> art/characters/matt/joints.json
 
 The register step writes `arm.png`, `fararm.png` and `leg.png` (the free drawings
 fitted into the master frame). The head is cut along the top edge of the collar
@@ -27,3 +28,10 @@ Joint blending: elbows and knees get a soft-edged patch cut from the rest-pose
 drawing, drawn over both pieces and turned halfway between them (`follow` in
 the rig file); the overlapping ends of the forearm and shin fade in. Settings
 live under `blend` in `joints.json` (defaults in `tools/build_rig.py`).
+
+Skinned mesh (`build_mesh.py`, default renderer): head, torso, whole arm and
+whole leg each get a triangle grid; vertices are weighted to bones so limbs bend
+smoothly, shoulders and hips stretch with the torso, and the jacket skirt is
+pulled by the thighs and carries a spring "jiggle" factor for follow-through.
+Settings live under `mesh` in `joints.json` (grid size, blend widths, skirt
+pull, jiggle). The rigid pieces and joint patches remain as the fallback renderer.

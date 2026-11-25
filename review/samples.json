@@ -13,15 +13,16 @@
       "id": "m0-rig-v2",
       "milestone": "m0",
       "kind": "rig",
-      "title": "Matt as a cut-out puppet (v4)",
+      "title": "Matt as a cut-out puppet (v5, skinned mesh)",
       "rig": "samples/m0/rig2/rig.json",
-      "about": "Two changes since v3. The jacket now ends at its natural hem: it comes from an edit of the same picture with the legs removed, so the front corner and back vent are drawn, not cut. The joints are blended: elbows and knees get a soft disc of the original drawing laid over the seam that turns halfway between the two pieces, and the overlapping ends of forearm and shin fade in. Arms and leg are drawn alone and fitted back into place; the far arm shows its palm; the head holds no clothing.",
+      "about": "Now a skinned mesh: each drawing (head, torso, whole arm, whole leg) is covered by a grid of small triangles, and every corner is pulled by one or more bones. Sleeves and trousers bend smoothly through the elbow and knee with no seam; the shoulder and hip stretch with the torso; the jacket skirt is pulled a little by the thighs and trails behind with spring-like follow-through. Switch Mesh / Pieces to compare with the rigid pieces, and tick Show mesh to see the triangles.",
       "lookFor": [
-        "Gesture: is the elbow seam gone?",
-        "Walk: does the knee read as one trouser leg as it bends?",
-        "Rest: does the jacket hem look natural?",
-        "Known: he walks on the spot; the far leg is a darker copy of the near one."
-      ]
+        "Walk: does the jacket now move like cloth, or is the follow-through too much or too little?",
+        "Gesture: does the sleeve bend and the shoulder stretch naturally?",
+        "Compare Mesh with Pieces: is the mesh clearly better?",
+        "Known: he walks on the spot; the far leg is a darker copy of the near one; the jacket's sway strength is a single setting I can tune."
+      ],
+      "mesh": "samples/m0/rig2/mesh.json"
     },
     {
       "id": "m0-rig-pieces",

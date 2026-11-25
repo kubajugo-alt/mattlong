@@ -205,6 +205,11 @@ if far is not None:
     off['upperArmFar'] = save('upperArmFar', upper_far, far_img)
     off['foreArmFar'] = save('foreArmFar', fore_far, far_img, extra=fore_fade)
     off['elbowPatchFar'] = patch('elbowPatchFar', far, far_img, el, B.get('elbow_patch_r', 85))
+# whole limbs (unsplit) for the skinned-mesh renderer: one continuous drawing per limb
+off['armFull'] = save('armFull', arm, arm_img)
+off['legFull'] = save('legFull', leg, leg_img)
+if far is not None:
+    off['farArmFull'] = save('farArmFull', far, far_img)
 far_u = 'upperArmFar' if far is not None else 'upperArm'
 far_f = 'foreArmFar' if far is not None else 'foreArm'
 far_p = 'elbowPatchFar' if far is not None else 'elbowPatch'
@@ -237,6 +242,7 @@ rig = {
         {'id': 'foreArm', 'file': 'foreArm.png', 'parent': 'upperArm', 'at': local(E, 'upperArm'), 'pivot': local(E, 'foreArm'), 'z': 9},
         {'id': 'elbow', 'file': 'elbowPatch.png', 'parent': 'upperArm', 'at': local(E, 'upperArm'), 'pivot': local(E, 'elbowPatch'), 'z': 9.5, 'follow': {'of': 'foreArm', 'k': 0.5}},
     ],
+    'offsets': off,
     'joints': {k: v for k, v in [('shoulder', S), ('elbow', E), ('wrist', Wr), ('neck', neck), ('hip', hip), ('knee', knee), ('ankle', ankle)]},
 }
 json.dump(rig, open(os.path.join(out, 'rig.json'), 'w'), indent=1)

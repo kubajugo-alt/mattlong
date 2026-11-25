@@ -7,12 +7,12 @@ notes.
 - Published (private): https://claude.ai/artifact/Sbs5UsA855DLjP1jwZu56i
 - `samples.json` lists milestones and samples; files live under `samples/<milestone>/`.
 - Sample kinds: `image` (`src`, optional `full`), `audio` (`tracks`, optional `line`
-  and `credit`), `rig` (a rig JSON: parts with file, parent, `at`, `pivot`, `z`,
-  optional `rest` axis, `scale`, `shade`).
+  and `credit`), `rig` (`rig`: the rigid-pieces file from `tools/build_rig.py`;
+  optional `mesh`: the skinned mesh from `tools/build_mesh.py`, drawn with WebGL).
 - Verdicts are stored in the artifact's database, collection `reviews`, one
   document per sample id: `{status, note, title, milestone, updatedAt}`.
   Claude reads them before each round of work.
 - To add samples: add files and entries, then republish the page with every
   new file in `files`.
-- `tools/review-screenshot.js <review dir> <out dir>` captures the rig sample in each animation
+- `tools/review-screenshot.js <review dir> <out dir>` captures the rig sample in each animation (WebGL via SwiftShader)
   for a quick check before publishing.

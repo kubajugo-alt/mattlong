@@ -223,6 +223,64 @@
    }
   }
  ],
+ "offsets": {
+  "torso": [
+   590,
+   425
+  ],
+  "head": [
+   659,
+   116
+  ],
+  "upperArm": [
+   593,
+   588
+  ],
+  "foreArm": [
+   617,
+   990
+  ],
+  "elbowPatch": [
+   631,
+   967
+  ],
+  "thigh": [
+   640,
+   1045
+  ],
+  "shin": [
+   660,
+   1695
+  ],
+  "kneePatch": [
+   670,
+   1670
+  ],
+  "upperArmFar": [
+   593,
+   588
+  ],
+  "foreArmFar": [
+   617,
+   990
+  ],
+  "elbowPatchFar": [
+   631,
+   967
+  ],
+  "armFull": [
+   593,
+   484
+  ],
+  "legFull": [
+   640,
+   1045
+  ],
+  "farArmFull": [
+   593,
+   483
+  ]
+ },
  "joints": {
   "shoulder": [
    690,
