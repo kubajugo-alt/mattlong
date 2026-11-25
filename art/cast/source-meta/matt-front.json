@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Redraw the man in the attached image in a straight front view facing the camera squarely, standing upright with a straight back, feet a little apart, arms relaxed at his sides. Keep exactly his face, stubble, dented fedora, the open knee-length double-breasted trench coat with epaulettes, cuff straps and loose belt, the waistcoat, shirt, loosened tie, trousers and shoes, the same painted 1940s film-noir style, strictly black-and-white greyscale, hard key light from the upper left, full figure from the top of the hat to the soles of the shoes at the same size as the reference figure, flat pure chroma-key green background (#00FF00), no floor, no shadow, no text.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/cast/matt.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T09:00:33.228Z",
+  "usage": {
+    "promptTokenCount": 419,
+    "candidatesTokenCount": 1315,
+    "totalTokenCount": 1962,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 161
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 228,
+    "serviceTier": "standard"
+  }
+}
