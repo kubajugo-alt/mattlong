@@ -337,12 +337,18 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     maskShadow();
 
     // occlusion: objects whose baseline (at Matt's x) is below his feet are drawn after him
-    const front = [];
+    // the object's front line at Matt's feet: per-column (sloped counters, legged furniture); beside the
+    // object, its nearest edge column
+    const baseAt = (o, x) => { const c = o.baseline_cols; if (!c) return o.baseline;
+      let i = Math.round((Math.min(o.bbox[2] - 1, Math.max(o.bbox[0], x)) - o.bbox[0]) / o.baseline_step);
+      i = Math.max(0, Math.min(c.length - 1, i)); for (let k = 0; k < c.length; k++) { for (const j of [i - k, i + k]) if (j >= 0 && j < c.length && c[j] != null) return c[j]; } return o.baseline; };
+    const front = [], behindProps = [];
     for (const o of S.occ) {
       const inX = M.x > o.bbox[0] - dw / 2 && M.x < o.bbox[2] + dw / 2;
-      const base = o.baseline;   // the object's front line on the floor
-      if (inX && base > M.y) front.push(o);
+      if (inX && baseAt(o, M.x) > M.y) front.push(o); else if (o.prop) behindProps.push(o);
     }
+    // seated characters are sprites, not part of the painting: draw the ones behind Matt first
+    for (const o of behindProps) ctx.drawImage(o.img, o.bbox[0], o.bbox[1], o.bbox[2] - o.bbox[0], o.bbox[3] - o.bbox[1]);
     // Matt
     ctx.save(); ctx.translate(M.x, M.y); ctx.scale(fx, 1);
     ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';

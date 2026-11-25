@@ -6,8 +6,6 @@
  "objects": {
   "stove": "#FF8000",
   "sink": "#FFFF00",
-  "table": "#0000FF",
-  "front-chair": "#FF0000",
   "desk": "#FF00FF",
   "bookcase": "#00FFFF",
   "bucket": "#8000FF",
@@ -42,11 +40,11 @@
  "depth_m": {
   "stove": 0.65,
   "sink": 0.6,
-  "table": 0.9,
   "bookcase": 0.3,
-  "bucket": 0.3
+  "bucket": 0.3,
+  "desk": 0.6
  },
- "body_radius_m": 0.2,
+ "body_radius_m": 0.25,
  "fov_deg": 60,
  "spots": {
   "kitchen-table": {
@@ -55,18 +53,27 @@
    "note": "where Pete sits nursing his coffee"
   }
  },
- "islands": [
-  "table",
-  "front-chair"
+ "islands": [],
+ "solid_note": "Every listed object and prop is solid. Footprints follow each object's front line (its outline filled round the legs), extended back by depth_m.",
+ "props": [
+  {
+   "name": "kate-at-table",
+   "file": "art/cast/final/seated/kate-at-table.png",
+   "x": 668,
+   "y": 625,
+   "scale": 0.385,
+   "depth_m": 1.0,
+   "note": "Kate at the kitchen table: the whole table set (table, cups, paper, back chair, her chair) is one cast-style sprite standing on the painted table's spot (front legs matched)."
+  },
+  {
+   "name": "pete-seated",
+   "file": "art/cast/final/seated/pete-seated-backwards.png",
+   "x": 1634,
+   "y": 701,
+   "scale": 0.47,
+   "depth_m": 0.55,
+   "note": "Pete astride his desk chair backwards, facing the middle of the room; placed on the desk chair's spot."
+  }
  ],
- "body_radius_note": "A cramped tenement kitchen: 0.2 m clearance so Matt can squeeze between the table and the chair by the desk.",
- "solid_note": "The chair in front of the desk occludes but does not block: the flat is too tight to walk round it to the door. The desk runs back along the right wall, so its painted outline blocks it (no front-line footprint).",
- "include": [
-  [
-   0.62,
-   0.62,
-   0.72,
-   0.88
-  ]
- ]
+ "props_note": "The painting has the table set and Pete's desk chair painted out (the original is art/rooms/archive-pete-kate-flat-with-chairs.png); Kate at the table and Pete on his chair are cast-style sprites."
 }

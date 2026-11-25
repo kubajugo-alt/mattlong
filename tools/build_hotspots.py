@@ -32,6 +32,14 @@ def label_mask(name):
 masks = {}
 for o in objs['objects']:
     masks[o['id']] = np.asarray(Image.open(os.path.join(seg, 'masks', o['id'] + '.png'))) > 0
+# props placed by the scene builder (seated characters): their outline from the scene's cut-out
+if C.get('scene_props'):
+    sc = json.load(open(os.path.join(scene, 'scene.json')))
+    for o in sc['objects']:
+        if o.get('prop'):
+            a = np.asarray(Image.open(os.path.join(scene, 'occ', o['name'] + '.png')).convert('RGBA'))[..., 3] > 128
+            full = np.zeros((H, W), bool); x0, y0, x1, y1 = o['bbox']; full[y0:y1, x0:x1] = a[:y1 - y0, :x1 - x0]
+            masks[o['name']] = full
 for hid, src in C.get('merge', {}).items():
     for s in src:
         if s in masks:

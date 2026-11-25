@@ -3,17 +3,77 @@
  "horizon_note": "From the bead-curtain doorway and the laundry door (2.1 m) and the window table.",
  "floor": "#00FF00",
  "clearance_px": 10,
- "objects": {"counter": "#0000FF", "table-front": "#FF0000", "stools-front": "#FF8000", "window-table": "#FFFF00", "shelves": "#00FFFF"},
- "islands": ["table-front", "stools-front", "window-table"],
- "column_cut": ["counter"],
- "exits": {"bead-curtain": {"color": "#FFFFFF", "to": "tea-house-back"},
-           "laundry": {"color": "#C0C0C0", "to": "laundry"},
-           "street": {"box": [0.30, 0.94, 0.58, 1.0], "to": "doyers-street", "stand": [0.44, 0.95]}},
+ "objects": {
+  "counter": "#0000FF",
+  "table-front": "#FF0000",
+  "stools-front": "#FF8000",
+  "window-table": "#FFFF00",
+  "shelves": "#00FFFF"
+ },
+ "islands": [
+  "table-front",
+  "stools-front",
+  "window-table"
+ ],
+ "column_cut": [
+  "counter"
+ ],
+ "exits": {
+  "bead-curtain": {
+   "color": "#FFFFFF",
+   "to": "tea-house-back"
+  },
+  "laundry": {
+   "color": "#C0C0C0",
+   "to": "laundry"
+  },
+  "street": {
+   "box": [
+    0.3,
+    0.94,
+    0.58,
+    1.0
+   ],
+   "to": "doyers-street",
+   "stand": [
+    0.44,
+    0.95
+   ]
+  }
+ },
  "exclude": [],
  "max_feet_y": 0.96,
- "lights": [{"name": "window", "type": "window", "floor": [0.12, 0.75], "dir": [1.0, 0.35], "length": 0.6, "strength": 0.5, "blur": 3, "note": "Snow light through the street window on the left; shadows fall right and toward the camera."}],
- "depth_m": {"table-front": 0.7, "stools-front": 0.4, "window-table": 1.0},
+ "lights": [
+  {
+   "name": "window",
+   "type": "window",
+   "floor": [
+    0.12,
+    0.75
+   ],
+   "dir": [
+    1.0,
+    0.35
+   ],
+   "length": 0.6,
+   "strength": 0.5,
+   "blur": 3,
+   "note": "Snow light through the street window on the left; shadows fall right and toward the camera."
+  }
+ ],
+ "depth_m": {
+  "table-front": 0.7,
+  "stools-front": 0.4,
+  "window-table": 1.0,
+  "counter": 0.7
+ },
  "body_radius_m": 0.25,
  "fov_deg": 60,
- "spots": {"counter": {"x": 0.56, "y": 0.80, "note": "where Matt stands to talk to Lee Wing across the counter"}}
+ "spots": {
+  "counter": {
+   "x": 0.56,
+   "y": 0.8,
+   "note": "where Matt stands to talk to Lee Wing across the counter"
+  }
+ }
 }
