@@ -154,6 +154,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }).catch(() => { status.textContent = 'Scene could not be loaded'; });
   roomSel.addEventListener('change', () => enter(roomSel.value));
 
+  // Matt's frames: one row, or a grid when sprites.json gives `cols`
+  const frameXY = (sp, fi) => { const c = sp.cols || sp.frames; return [(fi % c) * sp.fw, Math.floor(fi / c) * sp.fh]; };
   // ---- depth
   const heightAt = (y) => Math.max(0, (y - S.sc.horizon * S.sc.size[1]) * 1.85 / S.sc.eye_m);
   const pxPerM = (y) => (y - S.sc.horizon * S.sc.size[1]) / S.sc.eye_m;
@@ -712,7 +714,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 
     // shadows: silhouette projected on the floor, clipped to bare floor
     sil.width = sp.fw; sil.height = sp.fh;
-    sx.clearRect(0, 0, sp.fw, sp.fh); sx.drawImage(img, fi * sp.fw, 0, sp.fw, sp.fh, 0, 0, sp.fw, sp.fh);
+    const [gx, gy] = frameXY(sp, fi); sx.clearRect(0, 0, sp.fw, sp.fh); sx.drawImage(img, gx, gy, sp.fw, sp.fh, 0, 0, sp.fw, sp.fh);
     sx.globalCompositeOperation = 'source-in'; sx.fillStyle = '#000'; sx.fillRect(0, 0, sp.fw, sp.fh); sx.globalCompositeOperation = 'source-over';
     ctx.save(); ctx.translate(par(M.y), 0);
     ctx.globalCompositeOperation = 'source-over';
@@ -757,13 +759,13 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.save(); ctx.translate(M.x + par(M.y), M.y); ctx.scale(fx, 1);
     ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
     if (!M.moving) {                                                     // standing still: face, breathing and head sway
-      let src = img, sx0 = fi * sp.fw;
-      if (sp.face) { src = faceCompose('matt-' + M.dir, img, sx0, 0, sp.fw, sp.fh, sp.face, sp.faceImg, mouthOf('matt'), eyesOf('matt', now)); sx0 = 0; }
+      let src = img, [sx0, sy0] = frameXY(sp, fi);
+      if (sp.face) { src = faceCompose('matt-' + M.dir, img, sx0, sy0, sp.fw, sp.fh, sp.face, sp.faceImg, mouthOf('matt'), eyesOf('matt', now)); sx0 = 0; sy0 = 0; }
       if (document.getElementById('ambient').checked)
-        ctx.drawImage(warpFrame('matt-' + M.dir, src, sx0, 0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7), -sp.feet_x * sc, -feetY * sc, dw, dh);
-      else ctx.drawImage(src, sx0, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
+        ctx.drawImage(warpFrame('matt-' + M.dir, src, sx0, sy0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7), -sp.feet_x * sc, -feetY * sc, dw, dh);
+      else ctx.drawImage(src, sx0, sy0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
     }
-    else ctx.drawImage(img, fi * sp.fw, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
+    else { const [gx, gy] = frameXY(sp, fi); ctx.drawImage(img, gx, gy, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh); }
     ctx.restore(); ctx.filter = 'none';
     for (const o of front) drawOcc(o, now);
 
@@ -815,8 +817,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   const warpCv = new Map();
   function warpFrame(key, img, sx, sy, sw, sh, rig, t, seed) {
     let c = warpCv.get(key); if (!c || c.width !== sw || c.height !== sh) { c = document.createElement('canvas'); c.width = sw; c.height = sh; warpCv.set(key, c); c.t = -1; }
-    if (c.src === img && c.sx === sx && Math.abs(t - c.t) < 0.07) return c;      // re-warp at ~15 Hz
-    c.src = img; c.sx = sx; c.t = t;
+    if (c.src === img && c.sx === sx && c.sy === sy && Math.abs(t - c.t) < 0.07) return c;      // re-warp at ~15 Hz
+    c.src = img; c.sx = sx; c.sy = sy; c.t = t;
     const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, sw, sh);
     const b = Math.sin(t * 2 * Math.PI / 3.8 + seed), sc = 0.024 * b;                                 // one breath ~3.8 s
     const ang = 0.016 * Math.sin(t * 2 * Math.PI / 7.3 + seed * 1.7) + 0.006 * Math.sin(t * 2 * Math.PI / 2.9 + seed);
@@ -950,7 +952,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
   const faceCv = new Map();
   function faceCompose(key, img, sx, sy, sw, sh, face, sheet, mouth, eyes) {
-    const k = key + '|' + mouth + '|' + eyes + '|' + sx; let c = faceCv.get(k);
+    const k = key + '|' + mouth + '|' + eyes + '|' + sx + ',' + sy; let c = faceCv.get(k);
     if (c && c.src === img) return c;
     c = document.createElement('canvas'); c.width = sw; c.height = sh; c.src = img; const x = c.getContext('2d');
     x.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
