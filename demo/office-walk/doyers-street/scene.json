@@ -1126,6 +1126,37 @@
    "baseline_step": 8
   },
   {
+   "name": "apartment-door-leaf",
+   "bbox": [
+    300,
+    600,
+    428,
+    1160
+   ],
+   "baseline": 1159,
+   "baseline_cols": [
+    1143,
+    1148,
+    1153,
+    1158,
+    1159,
+    1159,
+    1159,
+    1159,
+    1159,
+    1159,
+    1159,
+    1159,
+    1159,
+    1159,
+    1159,
+    1156
+   ],
+   "baseline_step": 8,
+   "prop": true,
+   "no_shadow": true
+  },
+  {
    "name": "pillars",
    "bbox": [
     1866,

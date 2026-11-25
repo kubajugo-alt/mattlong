@@ -187,6 +187,8 @@ for name, color in all_objs:
         entry['hidden'] = True
     if pr_by.get(name, {}).get('floor'):       # lies flat on the floor: never drawn over Matt, casts no shadow
         entry['floor'] = True
+    if pr_by.get(name, {}).get('no_shadow'):   # a piece of the painting itself (a door leaf): it casts no extra shadow
+        entry['no_shadow'] = True
     if anim is not None:
         a_ = pr_by[name]['anim']
         entry['anim'] = {'frames': a_['n'], 'cols': a_['cols'], 'fps': a_.get('fps', 7)}
@@ -258,7 +260,7 @@ depths = L.get('depth_m', {})
 radius = L.get('body_radius_m', 0.25)
 pts = []
 for name, color in all_objs:
-    if name not in depths or pr_by.get(name, {}).get('floor'):     # flat things on the floor don't block
+    if name not in depths or pr_by.get(name, {}).get('floor') or pr_by.get(name, {}).get('no_shadow'):     # flat things and painted pieces don't block
         continue
     m = get_mask(name, color)
     if m.sum() < 400:

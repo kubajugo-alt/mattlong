@@ -729,7 +729,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     }
     ctx.restore(); ctx.restore();
     // seated characters and their furniture cast shadows from the same lights as Matt
-    for (const o of S.occ) if (o.prop && !gone(o) && !o.floor) {
+    for (const o of S.occ) if (o.prop && !gone(o) && !o.floor && !o.no_shadow) {
       const w = o.bbox[2] - o.bbox[0], ph = o.bbox[3] - o.bbox[1], ax = (o.bbox[0] + o.bbox[2]) / 2, ay = o.baseline;
       if (!o.sil) { const c = document.createElement('canvas'); c.width = w; c.height = ph; const x = c.getContext('2d');
         x.drawImage(o.img, 0, 0, w, ph, 0, 0, w, ph); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height); o.sil = c; }

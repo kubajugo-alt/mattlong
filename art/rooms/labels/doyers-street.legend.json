@@ -143,6 +143,15 @@
     "cols": 6,
     "note": "Ludo griffin-hd idle loop, 36 frames, start and end on the static pose."
    }
+  },
+  {
+   "name": "apartment-door-leaf",
+   "file": "art/props/apartment-door-leaf.png",
+   "x": 300,
+   "y": 600,
+   "scale": 1.0,
+   "no_shadow": true,
+   "note": "The open apartment door's leaf, cut from the painting along its edge, drawn over the newspaper boy's raised hand (he stands behind it). Part of the painting: no shadow, no footprint."
   }
  ]
 }
