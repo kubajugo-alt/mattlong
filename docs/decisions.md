@@ -30,6 +30,10 @@ the bible disagree, this file wins.
   Hotspot highlight is white, not coloured (red stays reserved for the two accents).
   All interface art is painted by Gemini: `art/ui/` (prompts in `art/ui/raw/*.json`).
 
+- **Lee Wing's property (26 Nov 2026):** the tea house is not in Matt's building (the bible had it under his
+  office). Lee owns the tea house and a couple of tenements on Doyers Street, Matt's (with Pete and Kate's flat)
+  among them; he is still Matt's landlord.
+
 ## Story fixes
 
 1. **Why the bag waits until 4.2.** After Pete's story runs (3.5), Brancato's men
