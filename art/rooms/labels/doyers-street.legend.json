@@ -1,6 +1,6 @@
 {
- "horizon": 0.46,
- "horizon_note": "Repainted street (apartment entrance left, tea house and pawnshop right). From the tea-house doors and the apartment doorway: Matt is about 85% of a door's height, as in the office.",
+ "horizon": 0.48,
+ "horizon_note": "From the doors Matt walks through (2.1 m rule): pawnshop door 0.48, apartment door 0.457, tea-house double doors 0.45-0.49. At 0.48 Matt is 88% of the pawnshop door, as in the office.",
  "floor": "#00FF00",
  "clearance_px": 10,
  "objects": {
@@ -111,11 +111,11 @@
   {
    "name": "junkie",
    "file": "art/cast/final/junkie-facing-right.png",
-   "x": 449,
-   "y": 748,
-   "scale": 0.1405,
+   "x": 444,
+   "y": 715,
+   "scale": 0.1546,
    "depth_m": 0.35,
-   "note": "The junkie standing in the recessed shop doorway past the open apartment door, the bin in front of him hiding his legs; at the doorway's depth (feet y 0.70) he is about 85% of the door's height. Mirrored cast sprite, looking across at the pawnshop.",
+   "note": "The junkie standing in the recessed shop doorway past the open apartment door, the bin in front of him hiding him to the waist; sized against the doorway and enlarged 10% on review. Mirrored cast sprite, looking across at the pawnshop.",
    "behind": [
     "box-left"
    ]
