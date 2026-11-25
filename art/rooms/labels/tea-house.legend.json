@@ -75,5 +75,16 @@
    "y": 0.8,
    "note": "where Matt stands to talk to Lee Wing across the counter"
   }
- }
+ },
+ "props": [
+  {
+   "name": "lee-wing",
+   "file": "art/cast/final/leewing.png",
+   "x": 2303,
+   "y": 513,
+   "scale": 0.3502,
+   "depth_m": 0.4,
+   "note": "Lee Wing inside the counter by the tea-jar shelves; scaled by the room rule for 1.65 m with feet at y 0.86 (hidden by the counter)."
+  }
+ ]
 }

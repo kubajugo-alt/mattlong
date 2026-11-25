@@ -1,4 +1,4 @@
-# Hotspots (36)
+# Hotspots (37)
 
 No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 
@@ -32,11 +32,12 @@ No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 | 26 | `stamp` | stamp | 1618, 735, 1724, 825 |
 | 27 | `sols-ledger` | Sol's ledger | 1660, 833, 2081, 925 |
 | 28 | `lamp` | lamp | 1729, 159, 1908, 223 |
-| 29 | `clothes-rail` | pawned coats | 1829, 307, 2215, 894 |
-| 30 | `suitcases-top` | suitcases | 1869, 1, 2752, 304 |
-| 31 | `mannequin` | dressmaker's dummy | 2055, 350, 2215, 787 |
-| 32 | `books` | books | 2251, 311, 2329, 426 |
-| 33 | `typewriters` | typewriters | 2301, 687, 2750, 887 |
-| 34 | `radios` | radios | 2310, 257, 2530, 631 |
-| 35 | `cases-on-shelves` | cases | 2340, 896, 2746, 1471 |
-| 36 | `saxophone` | saxophone | 2564, 207, 2751, 656 |
+| 29 | `sol` | Sol Abramowitz | 1741, 481, 2013, 859 |
+| 30 | `clothes-rail` | pawned coats | 1829, 307, 2215, 894 |
+| 31 | `suitcases-top` | suitcases | 1869, 1, 2752, 304 |
+| 32 | `mannequin` | dressmaker's dummy | 2055, 350, 2215, 787 |
+| 33 | `books` | books | 2251, 311, 2329, 426 |
+| 34 | `typewriters` | typewriters | 2301, 687, 2750, 887 |
+| 35 | `radios` | radios | 2310, 257, 2530, 631 |
+| 36 | `cases-on-shelves` | cases | 2340, 896, 2746, 1471 |
+| 37 | `saxophone` | saxophone | 2564, 207, 2751, 656 |

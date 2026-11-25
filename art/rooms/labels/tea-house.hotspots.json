@@ -63,7 +63,8 @@
   "trash-can": "laundry-basket",
   "hanging-scroll-1": "scroll-tea",
   "hanging-scroll-2": "scroll-right",
-  "ceiling-lamp": "laundry-lamp"
+  "ceiling-lamp": "laundry-lamp",
+  "lee-wing": "lee-wing"
  },
  "names": {
   "counter": "counter",
@@ -98,6 +99,8 @@
   "lanterns": "paper lanterns",
   "hanging-scroll": "calligraphy scroll",
   "scroll-tea": "scroll (tea)",
-  "scroll-right": "calligraphy scroll"
- }
+  "scroll-right": "calligraphy scroll",
+  "lee-wing": "Lee Wing"
+ },
+ "scene_props": true
 }

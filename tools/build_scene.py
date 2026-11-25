@@ -91,7 +91,9 @@ for pname in prop_m:
         om = mask_of(ocol)
         if om.sum() < 400:
             continue
-        olow, _ = front_line(om)
+        # where the furniture really stands in each column (its lowest painted pixel there, not its filled
+        # outline: shelves running along a side wall reach the bottom of the frame only at their near end)
+        olow = np.where(om.any(0), H - 1 - np.argmax(om[::-1], 0), -1)
         nearer = (olow >= 0) & (plow >= 0) & (olow > pfront + 6)
         cut |= om & nearer[None, :]
     a = prop_rgba[pname].copy()

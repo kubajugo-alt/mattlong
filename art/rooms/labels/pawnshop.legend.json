@@ -55,5 +55,16 @@
    "y": 0.8,
    "note": "where Matt stands to deal with Sol over the counter"
   }
- }
+ },
+ "props": [
+  {
+   "name": "sol",
+   "file": "art/cast/final/sol.png",
+   "x": 1707,
+   "y": 476,
+   "scale": 0.3683,
+   "depth_m": 0.4,
+   "note": "Sol Abramowitz behind the open ledger on his counter; scaled by the room rule for 1.63 m with feet at y 0.86 (hidden by the counter)."
+  }
+ ]
 }
