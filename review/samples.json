@@ -15,7 +15,7 @@
       "kind": "rig",
       "title": "Matt as a cut-out puppet (v5, skinned mesh)",
       "rig": "samples/m0/rig2/rig.json",
-      "about": "Now a skinned mesh: each drawing (head, torso, whole arm, whole leg) is covered by a grid of small triangles, and every corner is pulled by one or more bones. Sleeves and trousers bend smoothly through the elbow and knee with no seam; the shoulder and hip stretch with the torso; the jacket skirt is pulled a little by the thighs and trails behind with spring-like follow-through. Switch Mesh / Pieces to compare with the rigid pieces, and tick Show mesh to see the triangles.",
+      "about": "Now a skinned mesh, with joints checked against standard adult proportions (see the proportions sample): each drawing (head, torso, whole arm, whole leg) is covered by a grid of small triangles, and every corner is pulled by one or more bones. Sleeves and trousers bend smoothly through the elbow and knee with no seam; the shoulder and hip stretch with the torso; the jacket skirt is pulled a little by the thighs and trails behind with spring-like follow-through. Switch Mesh / Pieces to compare with the rigid pieces, and tick Show mesh to see the triangles.",
       "lookFor": [
         "Walk: does the jacket now move like cloth, or is the follow-through too much or too little?",
         "Gesture: does the sleeve bend and the shoulder stretch naturally?",
@@ -23,6 +23,18 @@
         "Known: he walks on the spot; the far leg is a darker copy of the near one; the jacket's sway strength is a single setting I can tune."
       ],
       "mesh": "samples/m0/rig2/mesh.json"
+    },
+    {
+      "id": "m0-proportions",
+      "milestone": "m0",
+      "kind": "image",
+      "title": "Matt's proportions and joints",
+      "src": "samples/m0/matt-proportions.jpg",
+      "about": "Blue lines: where each joint sits on an average adult man, as a fraction of height from the floor (Drillis & Contini). Yellow ticks: head heights; Matt is 7.3 heads tall (crown hidden under the hat, worked out from eyes and chin). Red dots: the rig's joints. Before this check the shoulder was 56 px and the elbow 50 px too low (about 2.5% of his height), the ankle 46 px too high and the knee 15 px low; all now sit on the standard lines, and the neck pivot moved from the front of the collar to the middle of the neck.",
+      "lookFor": [
+        "Do the dots sit where you'd expect the joints under the suit?",
+        "Is 7.3 heads the right build for Matt, or should he be leaner and taller?"
+      ]
     },
     {
       "id": "m0-rig-pieces",

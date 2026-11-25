@@ -4,16 +4,16 @@
  "ground_y": 2413,
  "arm": {
   "shoulder": [
-   690,
-   700
+   693,
+   645
   ],
   "elbow": [
-   716,
-   1052
+   712,
+   1005
   ],
   "wrist": [
    786,
-   1330
+   1328
   ],
   "finger": [
    838,
@@ -29,23 +29,23 @@
  "leg": {
   "hip": [
    800,
-   1235
+   1228
   ],
   "knee": [
    775,
-   1790
+   1777
   ],
   "ankle": [
-   757,
-   2255
+   745,
+   2300
   ],
   "hem_y": 1400,
   "r_joint": 95
  },
  "torso": {
   "neck": [
-   835,
-   505
+   820,
+   430
   ],
   "neck_cut": [
    [
@@ -92,5 +92,11 @@
    45,
    215
   ]
+ },
+ "proportions": {
+  "crown_y": 174,
+  "chin_y": 480,
+  "sole_y": 2413,
+  "note": "Joint heights follow standard adult proportions (Drillis & Contini) as fractions of stature: shoulder (humeral head centre) 0.79, elbow 0.63, wrist 0.485, hip 0.53, knee 0.285, ankle 0.05 in shoes."
  }
 }

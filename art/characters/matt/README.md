@@ -35,3 +35,10 @@ smoothly, shoulders and hips stretch with the torso, and the jacket skirt is
 pulled by the thighs and carries a spring "jiggle" factor for follow-through.
 Settings live under `mesh` in `joints.json` (grid size, blend widths, skirt
 pull, jiggle). The rigid pieces and joint patches remain as the fallback renderer.
+
+Proportions: joints follow standard adult proportions (Drillis & Contini),
+as fractions of stature from the floor: shoulder (humeral head centre) 0.79,
+elbow 0.63, wrist 0.485, hip 0.53, knee 0.285, ankle 0.05 in shoes. Matt
+measures 7.3 heads (crown 174, chin 480, soles 2413 in master pixels; the
+crown is under the hat, so it is placed from the eye line). The neck pivot is
+mid-neck. `joints.json` records these measurements under `proportions`.
