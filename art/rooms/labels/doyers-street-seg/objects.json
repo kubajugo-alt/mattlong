@@ -7,20 +7,20 @@
  "model": "gemini-3.5-flash",
  "objects": [
   {
-   "id": "wall-pipe",
-   "label": "wall pipe",
+   "id": "pipe",
+   "label": "pipe",
    "also_seen_as": [],
    "bbox": [
-    9,
-    1189,
-    71,
+    12,
+    1193,
+    69,
     1414
    ],
-   "area_px": 13950
+   "area_px": 12597
   },
   {
-   "id": "address-plate",
-   "label": "address plate",
+   "id": "house-number-sign",
+   "label": "house number sign",
    "also_seen_as": [],
    "bbox": [
     22,
@@ -28,57 +28,57 @@
     70,
     639
    ],
-   "area_px": 2535
+   "area_px": 2562
   },
   {
-   "id": "doorway-stairs",
-   "label": "doorway stairs",
+   "id": "steps",
+   "label": "steps",
    "also_seen_as": [
-    "brick entrance steps"
+    "entrance steps"
    ],
    "bbox": [
-    105,
-    1144,
-    387,
-    1355
+    117,
+    1142,
+    392,
+    1349
    ],
-   "area_px": 14520
+   "area_px": 15738
   },
   {
-   "id": "front-entrance-window",
-   "label": "front entrance window",
+   "id": "stair-railing",
+   "label": "stair railing",
    "also_seen_as": [],
    "bbox": [
-    116,
-    469,
-    224,
-    915
+    115,
+    771,
+    194,
+    869
    ],
-   "area_px": 22835
+   "area_px": 7742
   },
   {
-   "id": "open-doorway",
-   "label": "open doorway",
+   "id": "open-wooden-door",
+   "label": "open wooden door",
    "also_seen_as": [],
    "bbox": [
-    219,
+    223,
     562,
-    417,
-    1145
+    421,
+    1096
    ],
-   "area_px": 109479
+   "area_px": 101915
   },
   {
    "id": "fire-escape-1",
    "label": "fire escape 1",
    "also_seen_as": [],
    "bbox": [
-    243,
-    129,
-    574,
-    402
+    238,
+    0,
+    573,
+    404
    ],
-   "area_px": 59627
+   "area_px": 107605
   },
   {
    "id": "door-handle",
@@ -86,65 +86,65 @@
    "also_seen_as": [],
    "bbox": [
     383,
-    863,
-    405,
-    890
+    861,
+    411,
+    924
    ],
-   "area_px": 594
+   "area_px": 1764
   },
   {
-   "id": "large-trash-receptacle",
-   "label": "large trash receptacle",
+   "id": "trash-bin",
+   "label": "trash bin",
    "also_seen_as": [
-    "trash bin"
+    "trash bin 1"
    ],
    "bbox": [
     422,
-    944,
-    540,
-    1134
+    942,
+    499,
+    1131
    ],
-   "area_px": 12199
+   "area_px": 11733
   },
   {
-   "id": "store-sign-1",
-   "label": "store sign 1",
+   "id": "storefront-sign",
+   "label": "storefront sign",
    "also_seen_as": [
-    "chinese shop sign 1"
+    "shop sign 4"
    ],
    "bbox": [
-    505,
-    476,
+    525,
+    483,
     638,
     695
    ],
-   "area_px": 12591
+   "area_px": 12515
   },
   {
-   "id": "small-lantern-1",
-   "label": "small lantern 1",
+   "id": "shop-light-1",
+   "label": "shop light 1",
    "also_seen_as": [
-    "paper lantern 1"
+    "lantern 1"
    ],
    "bbox": [
-    595,
-    708,
+    594,
+    709,
     636,
     750
    ],
-   "area_px": 1201
+   "area_px": 1243
   },
   {
    "id": "fire-escape-2",
    "label": "fire escape 2",
    "also_seen_as": [],
    "bbox": [
-    609,
-    118,
-    751,
-    659
+    598,
+    0,
+    765,
+    650
    ],
-   "area_px": 76822
+   "area_px": 108550
   },
   {
    "id": "stacked-boxes",
@@ -153,253 +153,191 @@
     "wooden crate"
    ],
    "bbox": [
-    609,
+    610,
     898,
-    691,
-    1015
+    692,
+    1019
    ],
-   "area_px": 9594
+   "area_px": 9922
   },
   {
-   "id": "small-lantern-2",
-   "label": "small lantern 2",
+   "id": "shop-light-2",
+   "label": "shop light 2",
    "also_seen_as": [
-    "paper lantern 2"
+    "lantern 2"
    ],
    "bbox": [
     689,
-    746,
-    739,
-    790
+    747,
+    718,
+    782
    ],
-   "area_px": 1452
+   "area_px": 756
   },
   {
    "id": "lantern-1",
    "label": "lantern 1",
    "also_seen_as": [
-    "hanging lantern 1"
+    "chinese lantern 1"
    ],
    "bbox": [
-    725,
-    88,
+    723,
+    87,
     790,
-    198
+    195
    ],
-   "area_px": 7150
+   "area_px": 7236
   },
   {
-   "id": "steaming-puddle",
-   "label": "steaming puddle",
-   "also_seen_as": [],
-   "bbox": [
-    735,
-    1054,
-    1871,
-    1514
-   ],
-   "area_px": 522560
-  },
-  {
-   "id": "vertical-sign-1",
-   "label": "vertical sign 1",
-   "also_seen_as": [],
-   "bbox": [
-    738,
-    519,
-    785,
-    650
-   ],
-   "area_px": 6157
-  },
-  {
-   "id": "hanging-store-sign-1",
-   "label": "hanging store sign 1",
-   "also_seen_as": [],
-   "bbox": [
-    746,
-    688,
-    809,
-    788
-   ],
-   "area_px": 6300
-  },
-  {
-   "id": "hanging-shirt-1",
-   "label": "hanging shirt 1",
+   "id": "hanging-sign-1",
+   "label": "hanging sign 1",
    "also_seen_as": [
-    "hung garment 1"
+    "shop sign 3"
    ],
    "bbox": [
-    792,
-    353,
-    850,
-    421
+    737,
+    513,
+    789,
+    649
    ],
-   "area_px": 2514
+   "area_px": 7072
   },
   {
    "id": "fire-escape-3",
    "label": "fire escape 3",
-   "also_seen_as": [
-    "fire escape 1"
-   ],
+   "also_seen_as": [],
    "bbox": [
-    800,
-    413,
-    900,
+    795,
+    499,
+    903,
     740
    ],
-   "area_px": 32700
+   "area_px": 26028
+  },
+  {
+   "id": "hanging-laundry-1",
+   "label": "hanging laundry 1",
+   "also_seen_as": [],
+   "bbox": [
+    795,
+    350,
+    847,
+    422
+   ],
+   "area_px": 3744
   },
   {
    "id": "fire-escape-1-2",
    "label": "fire escape 1",
+   "also_seen_as": [
+    "balcony 1"
+   ],
+   "bbox": [
+    797,
+    671,
+    900,
+    741
+   ],
+   "area_px": 7210
+  },
+  {
+   "id": "clothesline",
+   "label": "clothesline",
    "also_seen_as": [],
    "bbox": [
-    803,
-    671,
-    890,
-    733
+    861,
+    304,
+    1237,
+    438
    ],
-   "area_px": 5394
+   "area_px": 29606
   },
   {
-   "id": "small-lantern-3",
-   "label": "small lantern 3",
-   "also_seen_as": [
-    "wall lamp"
-   ],
+   "id": "lantern-3",
+   "label": "lantern 3",
+   "also_seen_as": [],
    "bbox": [
-    810,
+    809,
     791,
     836,
-    820
+    821
    ],
-   "area_px": 541
+   "area_px": 573
   },
   {
-   "id": "lantern-row-1",
-   "label": "lantern row 1",
-   "also_seen_as": [
-    "street background lantern 1"
-   ],
+   "id": "hanging-lantern-9",
+   "label": "hanging lantern 9",
+   "also_seen_as": [],
    "bbox": [
     827,
-    561,
+    560,
     848,
-    599
+    601
    ],
-   "area_px": 698
+   "area_px": 703
   },
   {
-   "id": "vertical-sign-3",
-   "label": "vertical sign 3",
-   "also_seen_as": [
-    "shop sign 1"
-   ],
+   "id": "hanging-sign-1-2",
+   "label": "hanging sign 1",
+   "also_seen_as": [],
    "bbox": [
-    868,
-    642,
-    899,
-    723
+    885,
+    779,
+    928,
+    827
    ],
-   "area_px": 2511
+   "area_px": 2064
   },
   {
-   "id": "hanging-shirt-2",
-   "label": "hanging shirt 2",
-   "also_seen_as": [
-    "hanging shirt 1",
-    "hung garment 2"
-   ],
+   "id": "hanging-laundry-2",
+   "label": "hanging laundry 2",
+   "also_seen_as": [],
    "bbox": [
-    894,
-    357,
-    953,
-    424
+    893,
+    356,
+    949,
+    426
    ],
-   "area_px": 2778
+   "area_px": 3920
   },
   {
-   "id": "lantern-row-2",
-   "label": "lantern row 2",
-   "also_seen_as": [
-    "street background lantern 2"
-   ],
+   "id": "hanging-lantern-10",
+   "label": "hanging lantern 10",
+   "also_seen_as": [],
    "bbox": [
-    902,
-    557,
+    901,
+    558,
     927,
-    587
+    585
    ],
-   "area_px": 497
+   "area_px": 511
   },
   {
    "id": "lantern-2",
    "label": "lantern 2",
    "also_seen_as": [
-    "hanging lantern 2"
+    "chinese lantern 2",
+    "hanging street lantern 1"
    ],
    "bbox": [
     913,
-    160,
+    153,
     995,
-    288
+    241
    ],
-   "area_px": 4991
+   "area_px": 4759
   },
   {
-   "id": "hung-garment-3",
-   "label": "hung garment 3",
+   "id": "hanging-laundry-3",
+   "label": "hanging laundry 3",
    "also_seen_as": [],
    "bbox": [
-    960,
-    357,
-    982,
-    388
-   ],
-   "area_px": 682
-  },
-  {
-   "id": "hanging-shirt-2-2",
-   "label": "hanging shirt 2",
-   "also_seen_as": [],
-   "bbox": [
-    980,
+    975,
     353,
     1018,
-    406
+    437
    ],
-   "area_px": 1362
-  },
-  {
-   "id": "hanging-shirt-3",
-   "label": "hanging shirt 3",
-   "also_seen_as": [
-    "hung garment 4"
-   ],
-   "bbox": [
-    980,
-    356,
-    1019,
-    406
-   ],
-   "area_px": 1293
-  },
-  {
-   "id": "lantern-row-3",
-   "label": "lantern row 3",
-   "also_seen_as": [
-    "street background lantern 3"
-   ],
-   "bbox": [
-    982,
-    561,
-    1003,
-    591
-   ],
-   "area_px": 545
+   "area_px": 1980
   },
   {
    "id": "fire-escape-4",
@@ -408,680 +346,574 @@
     "fire escape 2"
    ],
    "bbox": [
-    982,
-    552,
+    978,
+    628,
     1066,
-    784
+    787
    ],
-   "area_px": 19488
+   "area_px": 13992
   },
   {
-   "id": "lantern-row-4",
-   "label": "lantern row 4",
-   "also_seen_as": [
-    "street background lantern 4"
+   "id": "hanging-lantern-11",
+   "label": "hanging lantern 11",
+   "also_seen_as": [],
+   "bbox": [
+    983,
+    561,
+    1004,
+    592
    ],
+   "area_px": 551
+  },
+  {
+   "id": "balcony-2",
+   "label": "balcony 2",
+   "also_seen_as": [],
+   "bbox": [
+    982,
+    742,
+    1060,
+    798
+   ],
+   "area_px": 4368
+  },
+  {
+   "id": "hanging-lantern-12",
+   "label": "hanging lantern 12",
+   "also_seen_as": [],
    "bbox": [
     1041,
-    561,
-    1068,
+    560,
+    1069,
     588
    ],
-   "area_px": 603
+   "area_px": 623
   },
   {
-   "id": "hanging-pants",
-   "label": "hanging pants",
-   "also_seen_as": [
-    "hanging trousers",
-    "hung garment 5"
-   ],
+   "id": "hanging-laundry-4",
+   "label": "hanging laundry 4",
+   "also_seen_as": [],
    "bbox": [
     1060,
-    350,
-    1110,
-    437
+    346,
+    1112,
+    436
    ],
-   "area_px": 3562
+   "area_px": 3594
   },
   {
-   "id": "lantern-3",
+   "id": "hanging-lantern-13",
+   "label": "hanging lantern 13",
+   "also_seen_as": [],
+   "bbox": [
+    1062,
+    608,
+    1083,
+    629
+   ],
+   "area_px": 342
+  },
+  {
+   "id": "lantern-3-2",
    "label": "lantern 3",
    "also_seen_as": [
-    "hanging lantern 3"
+    "chinese lantern 3",
+    "hanging street lantern 2"
    ],
    "bbox": [
     1100,
-    168,
+    171,
     1155,
-    318
+    278
    ],
-   "area_px": 4915
+   "area_px": 4766
   },
   {
-   "id": "fire-escape-5",
-   "label": "fire escape 5",
-   "also_seen_as": [
-    "fire escape 3"
-   ],
+   "id": "balcony-3",
+   "label": "balcony 3",
+   "also_seen_as": [],
    "bbox": [
     1099,
-    586,
-    1168,
-    811
+    691,
+    1164,
+    799
    ],
-   "area_px": 15525
+   "area_px": 7020
   },
   {
-   "id": "lantern-row-5",
-   "label": "lantern row 5",
-   "also_seen_as": [
-    "street background lantern 5"
-   ],
+   "id": "hanging-lantern-14",
+   "label": "hanging lantern 14",
+   "also_seen_as": [],
    "bbox": [
-    1127,
-    553,
-    1151,
-    583
+    1129,
+    593,
+    1147,
+    622
    ],
-   "area_px": 720
+   "area_px": 422
   },
   {
-   "id": "hanging-cloth-1",
-   "label": "hanging cloth 1",
-   "also_seen_as": [
-    "hanging shirt 3",
-    "hung garment 6"
-   ],
+   "id": "hanging-laundry-5",
+   "label": "hanging laundry 5",
+   "also_seen_as": [],
    "bbox": [
-    1131,
-    334,
-    1180,
-    404
+    1132,
+    332,
+    1179,
+    401
    ],
-   "area_px": 2530
+   "area_px": 2229
   },
   {
    "id": "street-lamp-2",
    "label": "street lamp 2",
    "also_seen_as": [
-    "lamp post 1",
-    "street post lamp"
+    "lamp post 2",
+    "street lamp"
    ],
    "bbox": [
-    1149,
-    684,
+    1154,
+    677,
     1188,
-    915
+    917
    ],
-   "area_px": 9009
+   "area_px": 8160
   },
   {
-   "id": "vertical-sign-2",
-   "label": "vertical sign 2",
+   "id": "hanging-sign-2",
+   "label": "hanging sign 2",
    "also_seen_as": [
-    "chinese shop sign 2",
-    "vertical signboard 2"
+    "shop sign 2",
+    "vertical sign"
    ],
    "bbox": [
     1179,
-    438,
+    439,
     1228,
-    662
+    659
    ],
-   "area_px": 10206
+   "area_px": 9889
   },
   {
-   "id": "store-canopy-2",
-   "label": "store canopy 2",
-   "also_seen_as": [
-    "hanging store sign 2"
-   ],
-   "bbox": [
-    1179,
-    687,
-    1291,
-    800
-   ],
-   "area_px": 12656
-  },
-  {
-   "id": "hung-garment-7",
-   "label": "hung garment 7",
+   "id": "storefront-awning-2",
+   "label": "storefront awning 2",
    "also_seen_as": [],
    "bbox": [
-    1188,
-    324,
-    1205,
-    361
+    1210,
+    697,
+    1261,
+    776
    ],
-   "area_px": 450
+   "area_px": 2715
   },
   {
    "id": "shop-sign-3",
    "label": "shop sign 3",
    "also_seen_as": [],
    "bbox": [
-    1205,
-    691,
-    1269,
-    778
+    1208,
+    712,
+    1262,
+    768
    ],
-   "area_px": 2925
+   "area_px": 3024
   },
   {
-   "id": "box",
-   "label": "box",
+   "id": "hanging-laundry-6",
+   "label": "hanging laundry 6",
    "also_seen_as": [],
    "bbox": [
-    1209,
-    892,
-    1247,
-    967
-   ],
-   "area_px": 2850
-  },
-  {
-   "id": "hung-garment-8",
-   "label": "hung garment 8",
-   "also_seen_as": [
-    "hanging shirt 4"
-   ],
-   "bbox": [
     1212,
-    313,
-    1264,
-    406
+    314,
+    1262,
+    404
    ],
-   "area_px": 4064
+   "area_px": 3638
   },
   {
    "id": "fire-escape-2-2",
    "label": "fire escape 2",
    "also_seen_as": [],
    "bbox": [
-    1216,
-    99,
-    1350,
-    679
+    1220,
+    352,
+    1355,
+    687
    ],
-   "area_px": 77720
+   "area_px": 31451
   },
   {
-   "id": "boxes",
-   "label": "boxes",
-   "also_seen_as": [],
-   "bbox": [
-    1224,
-    922,
-    1283,
-    999
-   ],
-   "area_px": 4543
-  },
-  {
-   "id": "hanging-lantern-4",
-   "label": "hanging lantern 4",
-   "also_seen_as": [],
-   "bbox": [
-    1260,
-    150,
-    1342,
-    218
-   ],
-   "area_px": 4251
-  },
-  {
-   "id": "store-canopy-1",
-   "label": "store canopy 1",
+   "id": "hanging-street-lantern-3",
+   "label": "hanging street lantern 3",
    "also_seen_as": [
-    "hanging store sign 3"
+    "chinese lantern 4"
    ],
    "bbox": [
     1257,
-    648,
-    1406,
-    767
+    150,
+    1320,
+    218
    ],
-   "area_px": 17731
+   "area_px": 3063
   },
   {
-   "id": "hung-garment-9",
-   "label": "hung garment 9",
+   "id": "storefront-awning-1",
+   "label": "storefront awning 1",
    "also_seen_as": [],
    "bbox": [
-    1265,
-    287,
-    1304,
-    379
+    1263,
+    641,
+    1408,
+    774
    ],
-   "area_px": 3588
+   "area_px": 19285
   },
   {
-   "id": "lantern-canopy-1",
-   "label": "lantern canopy 1",
+   "id": "hanging-lantern-7",
+   "label": "hanging lantern 7",
    "also_seen_as": [
-    "chinese paper lantern 1"
+    "paper lantern 5"
    ],
    "bbox": [
-    1282,
+    1283,
     769,
-    1314,
-    796
+    1313,
+    810
    ],
-   "area_px": 706
+   "area_px": 744
   },
   {
-   "id": "shop-sign-4",
-   "label": "shop sign 4",
+   "id": "shop-sign-2",
+   "label": "shop sign 2",
    "also_seen_as": [],
    "bbox": [
-    1302,
-    671,
-    1370,
-    738
+    1300,
+    685,
+    1365,
+    731
    ],
-   "area_px": 4556
+   "area_px": 2990
   },
   {
-   "id": "hung-garment-10",
-   "label": "hung garment 10",
+   "id": "hanging-laundry-7",
+   "label": "hanging laundry 7",
    "also_seen_as": [],
    "bbox": [
     1318,
-    274,
-    1366,
+    280,
+    1360,
     340
    ],
-   "area_px": 2295
+   "area_px": 1648
   },
   {
-   "id": "snow-pile-1",
-   "label": "snow pile 1",
+   "id": "hanging-lantern-8",
+   "label": "hanging lantern 8",
    "also_seen_as": [],
-   "bbox": [
-    1332,
-    1132,
-    1466,
-    1176
-   ],
-   "area_px": 3221
-  },
-  {
-   "id": "lantern-canopy-2",
-   "label": "lantern canopy 2",
-   "also_seen_as": [
-    "chinese paper lantern 2"
-   ],
    "bbox": [
     1344,
     760,
     1386,
     792
    ],
-   "area_px": 1120
+   "area_px": 1094
   },
   {
-   "id": "sewer-grate",
-   "label": "sewer grate",
+   "id": "paper-lantern-4",
+   "label": "paper lantern 4",
    "also_seen_as": [],
    "bbox": [
-    1366,
-    1211,
-    1631,
-    1287
+    1343,
+    764,
+    1386,
+    797
    ],
-   "area_px": 20140
+   "area_px": 1419
   },
   {
-   "id": "fire-escape-3-2",
-   "label": "fire escape 3",
-   "also_seen_as": [],
-   "bbox": [
-    1402,
-    0,
-    1668,
-    573
-   ],
-   "area_px": 152418
-  },
-  {
-   "id": "hanging-spheres-1",
-   "label": "hanging spheres 1",
+   "id": "drain-cover",
+   "label": "drain cover",
    "also_seen_as": [
-    "hanging sphere 1"
+    "drain grate"
    ],
    "bbox": [
-    1428,
-    707,
-    1464,
+    1370,
+    1214,
+    1631,
+    1283
+   ],
+   "area_px": 18009
+  },
+  {
+   "id": "fire-escape-1-3",
+   "label": "fire escape 1",
+   "also_seen_as": [
+    "fire escape 3"
+   ],
+   "bbox": [
+    1400,
+    0,
+    1679,
+    568
+   ],
+   "area_px": 158472
+  },
+  {
+   "id": "hanging-lantern-6",
+   "label": "hanging lantern 6",
+   "also_seen_as": [
+    "paper lantern 3"
+   ],
+   "bbox": [
+    1426,
+    722,
+    1466,
     776
    ],
-   "area_px": 2484
+   "area_px": 2160
   },
   {
-   "id": "hanging-spheres-2",
-   "label": "hanging spheres 2",
+   "id": "hanging-lantern-5",
+   "label": "hanging lantern 5",
    "also_seen_as": [
-    "hanging sphere 2"
+    "paper lantern 2"
    ],
    "bbox": [
     1475,
-    686,
+    723,
     1520,
-    770
+    769
    ],
-   "area_px": 3780
+   "area_px": 2070
+  },
+  {
+   "id": "shop-window",
+   "label": "shop window",
+   "also_seen_as": [],
+   "bbox": [
+    1486,
+    745,
+    1631,
+    954
+   ],
+   "area_px": 30305
   },
   {
    "id": "street-lamp-1",
    "label": "street lamp 1",
    "also_seen_as": [],
    "bbox": [
-    1481,
-    326,
-    1596,
-    1114
+    1487,
+    335,
+    1599,
+    912
    ],
-   "area_px": 90620
+   "area_px": 64624
   },
   {
-   "id": "hanging-sphere-3",
-   "label": "hanging sphere 3",
+   "id": "hanging-paper-lantern-2",
+   "label": "hanging paper lantern 2",
    "also_seen_as": [],
    "bbox": [
-    1611,
-    684,
-    1664,
-    742
+    1525,
+    685,
+    1576,
+    746
    ],
-   "area_px": 3074
+   "area_px": 3111
   },
   {
-   "id": "hanging-spheres-3",
-   "label": "hanging spheres 3",
+   "id": "hanging-lantern-4",
+   "label": "hanging lantern 4",
    "also_seen_as": [
-    "metal sphere ornaments"
+    "chinese lantern 5",
+    "hanging lantern 1",
+    "hanging paper lantern 1",
+    "paper lantern 1"
    ],
    "bbox": [
-    1612,
-    602,
-    1668,
-    740
+    1578,
+    645,
+    1621,
+    718
    ],
-   "area_px": 7728
+   "area_px": 2216
   },
   {
-   "id": "shopfront-door",
-   "label": "shopfront door",
-   "also_seen_as": [],
-   "bbox": [
-    1619,
-    733,
-    1664,
-    1031
-   ],
-   "area_px": 13410
-  },
-  {
-   "id": "sign-bracket",
-   "label": "sign bracket",
-   "also_seen_as": [],
-   "bbox": [
-    1623,
-    595,
-    1854,
-    681
-   ],
-   "area_px": 19866
-  },
-  {
-   "id": "snow-pile-1-2",
+   "id": "snow-pile-1",
    "label": "snow pile 1",
    "also_seen_as": [],
    "bbox": [
-    1668,
-    1318,
-    2293,
-    1534
+    1590,
+    1050,
+    1643,
+    1075
    ],
-   "area_px": 33423
+   "area_px": 796
   },
   {
-   "id": "hanging-spheres-4",
-   "label": "hanging spheres 4",
+   "id": "building-window-2",
+   "label": "building window 2",
    "also_seen_as": [],
    "bbox": [
+    1603,
+    239,
     1663,
-    611,
-    1716,
-    739
+    490
    ],
-   "area_px": 6784
-  },
-  {
-   "id": "hanging-sphere-4",
-   "label": "hanging sphere 4",
-   "also_seen_as": [],
-   "bbox": [
-    1664,
-    683,
-    1716,
-    738
-   ],
-   "area_px": 2860
-  },
-  {
-   "id": "shop-window",
-   "label": "shop window",
-   "also_seen_as": [
-    "shop window display"
-   ],
-   "bbox": [
-    1667,
-    753,
-    1797,
-    966
-   ],
-   "area_px": 27690
-  },
-  {
-   "id": "display-pocket-watch-1",
-   "label": "display pocket watch 1",
-   "also_seen_as": [
-    "hanging clock 1",
-    "pocket watch 1"
-   ],
-   "bbox": [
-    1689,
-    774,
-    1716,
-    843
-   ],
-   "area_px": 1863
-  },
-  {
-   "id": "traditional-chinese-roof-canopy",
-   "label": "traditional chinese roof canopy",
-   "also_seen_as": [],
-   "bbox": [
-    1704,
-    37,
-    2752,
-    519
-   ],
-   "area_px": 364422
-  },
-  {
-   "id": "left-building-window",
-   "label": "left building window",
-   "also_seen_as": [],
-   "bbox": [
-    1720,
-    153,
-    1793,
-    413
-   ],
-   "area_px": 15546
-  },
-  {
-   "id": "display-pocket-watch-2",
-   "label": "display pocket watch 2",
-   "also_seen_as": [
-    "hanging clock 2",
-    "pocket watch 2"
-   ],
-   "bbox": [
-    1725,
-    768,
-    1749,
-    845
-   ],
-   "area_px": 1848
-  },
-  {
-   "id": "hanging-lantern-5",
-   "label": "hanging lantern 5",
-   "also_seen_as": [
-    "chinese paper lantern 3",
-    "hanging lantern",
-    "lantern"
-   ],
-   "bbox": [
-    1730,
-    629,
-    1788,
-    731
-   ],
-   "area_px": 2844
-  },
-  {
-   "id": "display-violin",
-   "label": "display violin",
-   "also_seen_as": [
-    "violin"
-   ],
-   "bbox": [
-    1741,
-    761,
-    1792,
-    879
-   ],
-   "area_px": 6018
-  },
-  {
-   "id": "snow-pile-2",
-   "label": "snow pile 2",
-   "also_seen_as": [
-    "snow pile 3"
-   ],
-   "bbox": [
-    1787,
-    1089,
-    1945,
-    1149
-   ],
-   "area_px": 9480
-  },
-  {
-   "id": "carved-wall-panel",
-   "label": "carved wall panel",
-   "also_seen_as": [],
-   "bbox": [
-    1960,
-    971,
-    2092,
-    1081
-   ],
-   "area_px": 11166
-  },
-  {
-   "id": "lower-fire-escape-balcony",
-   "label": "lower fire escape balcony",
-   "also_seen_as": [
-    "fire escape 4"
-   ],
-   "bbox": [
-    1989,
-    0,
-    2413,
-    231
-   ],
-   "area_px": 26898
+   "area_px": 15060
   },
   {
    "id": "snow-pile-4",
    "label": "snow pile 4",
    "also_seen_as": [],
    "bbox": [
-    2033,
-    1141,
-    2102,
-    1182
+    1667,
+    1309,
+    2267,
+    1536
    ],
-   "area_px": 1658
+   "area_px": 37712
   },
   {
-   "id": "chinese-sign-plaque",
-   "label": "chinese sign plaque",
+   "id": "traditional-tiled-roof",
+   "label": "traditional tiled roof",
    "also_seen_as": [
-    "chinese shop sign 3"
+    "chinese eaves roof"
    ],
    "bbox": [
-    2180,
-    330,
-    2461,
-    508
+    1701,
+    0,
+    2710,
+    517
    ],
-   "area_px": 50018
+   "area_px": 131142
   },
   {
-   "id": "wooden-teahouse-doors",
-   "label": "wooden teahouse doors",
+   "id": "bowler-hat",
+   "label": "bowler hat",
    "also_seen_as": [],
    "bbox": [
-    2193,
-    475,
-    2521,
-    1212
+    1712,
+    1041,
+    1779,
+    1081
    ],
-   "area_px": 241736
+   "area_px": 2680
   },
   {
-   "id": "door-knob-1",
-   "label": "door knob 1",
+   "id": "building-window-1",
+   "label": "building window 1",
    "also_seen_as": [],
    "bbox": [
-    2348,
-    924,
-    2367,
-    948
+    1720,
+    158,
+    1792,
+    415
    ],
-   "area_px": 456
+   "area_px": 12861
   },
   {
-   "id": "door-knob-2",
-   "label": "door knob 2",
-   "also_seen_as": [],
+   "id": "trash-can",
+   "label": "trash can",
+   "also_seen_as": [
+    "trash bin 2"
+   ],
    "bbox": [
-    2372,
-    927,
-    2392,
-    950
+    1765,
+    941,
+    1839,
+    1095
    ],
-   "area_px": 460
+   "area_px": 11396
   },
   {
-   "id": "snow-pile-2-2",
+   "id": "snow-pile-2",
    "label": "snow pile 2",
    "also_seen_as": [],
    "bbox": [
-    2459,
-    1254,
-    2680,
+    1825,
+    1090,
+    2185,
+    1202
+   ],
+   "area_px": 6348
+  },
+  {
+   "id": "building-window-3",
+   "label": "building window 3",
+   "also_seen_as": [],
+   "bbox": [
+    1947,
+    0,
+    2178,
+    251
+   ],
+   "area_px": 57981
+  },
+  {
+   "id": "fire-escape-balcony-2",
+   "label": "fire escape balcony 2",
+   "also_seen_as": [
+    "fire escape 4"
+   ],
+   "bbox": [
+    1986,
+    0,
+    2497,
+    232
+   ],
+   "area_px": 118552
+  },
+  {
+   "id": "chinese-shop-sign",
+   "label": "chinese shop sign",
+   "also_seen_as": [
+    "shop sign 1"
+   ],
+   "bbox": [
+    2180,
+    335,
+    2458,
+    508
+   ],
+   "area_px": 30031
+  },
+  {
+   "id": "wooden-double-doors",
+   "label": "wooden double doors",
+   "also_seen_as": [],
+   "bbox": [
+    2191,
+    473,
+    2524,
+    1226
+   ],
+   "area_px": 250749
+  },
+  {
+   "id": "door-handles",
+   "label": "door handles",
+   "also_seen_as": [],
+   "bbox": [
+    2348,
+    926,
+    2392,
+    954
+   ],
+   "area_px": 1232
+  },
+  {
+   "id": "snow-pile-3",
+   "label": "snow pile 3",
+   "also_seen_as": [],
+   "bbox": [
+    2458,
+    1253,
+    2655,
     1342
    ],
-   "area_px": 7733
+   "area_px": 7141
   }
  ]
 }

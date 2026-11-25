@@ -1,33 +1,31 @@
-# Hotspots (27)
+# Hotspots (25)
 
 No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 
 | # | id | name | bbox (x0, y0, x1, y1) |
 |---|---|---|---|
-| 1 | `drainpipe` | drainpipe | 9, 1189, 71, 1414 |
+| 1 | `drainpipe` | drainpipe | 12, 1193, 69, 1414 |
 | 2 | `house-number` | house number | 22, 570, 70, 639 |
 | 3 | `apartment-steps` | steps | 88, 1141, 391, 1356 |
-| 4 | `apartment-hallway` | hallway and stairs | 116, 469, 224, 915 |
-| 5 | `apartment-door` | street door to the apartments | 219, 562, 417, 1145 |
-| 6 | `fire-escapes` | fire escapes | 243, 0, 2413, 811 |
-| 7 | `door-handle` | door handle | 383, 863, 405, 890 |
+| 4 | `hallway-banister` | banister inside | 115, 771, 194, 869 |
+| 5 | `apartment-door` | street door to the apartments | 223, 562, 421, 1096 |
+| 6 | `fire-escapes` | fire escapes | 238, 0, 1679, 787 |
+| 7 | `door-handle` | door handle | 383, 861, 411, 924 |
 | 8 | `wooden-box` | wooden box | 422, 929, 540, 1131 |
-| 9 | `far-shop-signs` | shop signs | 505, 438, 1406, 800 |
-| 10 | `paper-lanterns` | paper lanterns | 595, 88, 1788, 820 |
-| 11 | `far-crates` | crates | 609, 892, 1283, 1015 |
-| 12 | `washing` | washing on the line | 792, 274, 1366, 437 |
-| 13 | `far-street-lamp` | street lamp | 1149, 684, 1188, 915 |
-| 14 | `drain` | drain grate | 1366, 1211, 1631, 1287 |
-| 15 | `pawnbrokers-balls` | pawnbroker's balls | 1428, 602, 1716, 776 |
-| 16 | `street-lamp` | street lamp | 1497, 325, 1590, 1116 |
-| 17 | `pawnshop-door` | pawnshop door | 1619, 733, 1664, 1031 |
-| 18 | `pawnshop-bracket` | iron bracket | 1623, 595, 1854, 681 |
-| 19 | `pawnshop-window` | pawnshop window | 1667, 753, 1797, 966 |
-| 20 | `pawnshop-window-goods` | pledges in the window | 1689, 761, 1792, 879 |
-| 21 | `tea-house-roof` | tiled roof | 1704, 37, 2752, 519 |
-| 22 | `window` | window | 1720, 153, 1793, 413 |
+| 9 | `newsboy` | newspaper boy | 434, 768, 570, 1077 |
+| 10 | `far-shop-signs` | shop signs | 525, 439, 1408, 776 |
+| 11 | `paper-lanterns` | paper lanterns | 594, 87, 1621, 821 |
+| 12 | `far-crates` | crates | 610, 898, 692, 1019 |
+| 13 | `washing` | washing on the line | 795, 280, 1360, 438 |
+| 14 | `far-street-lamp` | street lamp | 1154, 677, 1188, 917 |
+| 15 | `drain` | drain grate | 1370, 1214, 1631, 1283 |
+| 16 | `pawnbrokers-balls` | pawnbroker's balls | 1426, 722, 1520, 776 |
+| 17 | `pawnshop-window` | pawnshop window | 1486, 745, 1631, 954 |
+| 18 | `street-lamp` | street lamp | 1497, 325, 1590, 1116 |
+| 19 | `upper-windows` | windows | 1603, 0, 2178, 490 |
+| 20 | `tea-house-roof` | tiled roof | 1701, 0, 2710, 517 |
+| 21 | `hat-in-the-passage` | old hat in the passage | 1712, 1041, 1779, 1081 |
+| 22 | `passage-dustbin` | dustbin in the passage | 1765, 941, 1839, 1095 |
 | 23 | `porch-pillars` | pillars | 1866, 260, 2613, 1288 |
-| 24 | `carved-panel` | carved panel | 1960, 971, 2092, 1081 |
-| 25 | `tea-house-sign` | tea house sign | 2180, 330, 2461, 508 |
-| 26 | `tea-house-doors` | tea house doors | 2193, 475, 2521, 1212 |
-| 27 | `tea-house-door-handle` | door handle | 2348, 924, 2367, 948 |
+| 24 | `tea-house-sign` | tea house sign | 2180, 335, 2458, 508 |
+| 25 | `tea-house-doors` | tea house doors | 2191, 473, 2524, 1226 |

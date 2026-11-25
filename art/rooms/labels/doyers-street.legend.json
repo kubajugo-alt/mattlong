@@ -38,16 +38,17 @@
   },
   "pawnshop-door": {
    "box": [
-    0.585,
-    0.4,
-    0.665,
+    0.5,
+    0.42,
+    0.6,
     0.7
    ],
    "to": "pawnshop",
    "stand": [
-    0.625,
+    0.53,
     0.72
-   ]
+   ],
+   "note": "the pawnshop's door (behind the lamp post) and window"
   },
   "far-end": {
    "box": [
@@ -62,6 +63,20 @@
     0.635
    ],
    "note": "the back of the street: the city map"
+  },
+  "passage": {
+   "box": [
+    0.615,
+    0.38,
+    0.67,
+    0.71
+   ],
+   "to": "alley",
+   "stand": [
+    0.642,
+    0.73
+   ],
+   "note": "the narrow passage beside the pawnshop, through to the alley behind it"
   }
  },
  "exclude": [],
@@ -106,5 +121,19 @@
  },
  "body_radius_m": 0.25,
  "fov_deg": 60,
- "spots": {}
+ "spots": {},
+ "props": [
+  {
+   "name": "newsboy",
+   "file": "art/cast/final/newsboy.png",
+   "x": 433,
+   "y": 767,
+   "scale": 0.1334,
+   "depth_m": 0.3,
+   "behind": [
+    "box-left"
+   ],
+   "note": "Background newspaper boy calling the headline from the recessed shop doorway past the open apartment door (where the junkie stood), the bin in front of him; 1.50 m at the same depth."
+  }
+ ]
 }

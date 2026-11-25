@@ -34,18 +34,19 @@
     0.69
    ]
   },
-  "street": {
+  "passage": {
    "box": [
-    0.15,
-    0.93,
-    0.75,
-    1.0
+    0.49,
+    0.36,
+    0.565,
+    0.66
    ],
-   "to": "map",
+   "to": "doyers-street",
    "stand": [
-    0.45,
-    0.95
-   ]
+    0.47,
+    0.7
+   ],
+   "note": "the passage behind the crates and bins, through to Doyers Street beside the pawnshop"
   }
  },
  "exclude": [],
