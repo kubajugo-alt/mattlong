@@ -74,7 +74,9 @@ for pr in L.get('props', []):
     im = Image.open(pr['file']).convert('RGBA')
     im = im.resize((round(im.width * pr['scale']), round(im.height * pr['scale'])), Image.LANCZOS)
     full = Image.new('RGBA', (W, H)); full.paste(im, (pr['x'], pr['y']), im)
-    a = np.asarray(full)
+    a = np.asarray(full).copy()
+    if 'tone' in pr:              # darker for a night room
+        a[..., :3] = (a[..., :3] * pr['tone']).clip(0, 255).astype(np.uint8)
     prop_m[pr['name']] = a[..., 3] > 128
     prop_rgba[pr['name']] = a
     L.setdefault('islands', []).append(pr['name'])
@@ -89,6 +91,8 @@ for pname in prop_m:
     pfront = plow.max()                      # where the prop stands on the floor nearest the camera
     cut = np.zeros((H, W), bool)
     for oname, ocol in L['objects'].items():
+        if oname in pr_by[pname].get('in_front_of', []):   # stated in the legend: the prop is in front of this (Inez on the sofa)
+            continue
         om = mask_of(ocol)
         if om.sum() < 400:
             continue
