@@ -1,0 +1,50 @@
+{
+ "horizon": 0.4,
+ "floor": "#00FF00",
+ "clearance_px": 10,
+ "objects": {
+  "couch": "#FF0000",
+  "side-table": "#FF8000",
+  "filing-cabinet": "#FFFF00",
+  "desk": "#0000FF",
+  "coat-stand": "#FF00FF",
+  "bookcase": "#00FFFF",
+  "radiator": "#8000FF",
+  "papers-left": "#804000",
+  "papers-right": "#FF80C0"
+ },
+ "exits": {
+  "door": {
+   "color": "#FFFFFF",
+   "to": "doyers-street"
+  }
+ },
+ "exclude": [
+  [
+   0.115,
+   0.86,
+   0.205,
+   0.965
+  ]
+ ],
+ "max_feet_y": 0.955,
+ "note": "exclude: the newspaper pile in the front left, which the label map left unlabelled",
+ "lights": [
+  {
+   "name": "window",
+   "type": "window",
+   "floor": [
+    0.87,
+    0.8
+   ],
+   "dir": [
+    -1.0,
+    0.32
+   ],
+   "length": 0.7,
+   "strength": 0.6,
+   "blur": 3,
+   "note": "Daylight through the right-hand window; the blind stripes on the floor run down to the left, so shadows fall left and slightly toward the camera."
+  }
+ ]
+}
