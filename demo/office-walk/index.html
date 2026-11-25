@@ -242,6 +242,34 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.globalAlpha = 1;
     ctx.restore();
   }
+  // Doyers Street: now and then a car passes along the cross street at the far end, between the far buildings
+  const CARS = { list: [], next: 4, imgs: null, area: [0.313, 0.437], ground: 0.61, h: 95 }; window.CARS = CARS;
+  function streetTraffic(dt, W, H) {
+    if (!CARS.imgs) { CARS.imgs = []; for (const [n, face] of [['car-sedan', -1], ['car-truck', 1]]) load('sprites/' + n + '.webp').then(i => CARS.imgs.push({ i, face })); }
+    CARS.next -= dt;
+    if (CARS.next <= 0 && CARS.imgs.length) {
+      const c = CARS.imgs[Math.floor(Math.random() * CARS.imgs.length)], dir = Math.random() < 0.5 ? 1 : -1;
+      const w = c.i.width * CARS.h / c.i.height, x0 = CARS.area[0] * W - w - 40, x1 = CARS.area[1] * W + 40;
+      CARS.list.push({ c, dir, w, x: dir > 0 ? x0 : x1, end: dir > 0 ? x1 : x0, v: 300 + Math.random() * 120 });
+      CARS.next = 7 + Math.random() * 13;
+    }
+    if (!CARS.list.length) return;
+    const gy = CARS.ground * H, L = CARS.area[0] * W, R = CARS.area[1] * W;
+    ctx.save(); ctx.beginPath(); ctx.rect(L, gy - CARS.h * 2, R - L, CARS.h * 2 + 6); ctx.clip();
+    for (let i = CARS.list.length - 1; i >= 0; i--) {
+      const k = CARS.list[i]; k.x += k.dir * k.v * dt;
+      if ((k.dir > 0 && k.x > k.end) || (k.dir < 0 && k.x < k.end)) { CARS.list.splice(i, 1); continue; }
+      ctx.save(); ctx.globalAlpha = 0.35; ctx.filter = 'blur(3px)'; ctx.fillStyle = '#000';
+      ctx.beginPath(); ctx.ellipse(k.x + k.w / 2, gy - 2, k.w * 0.46, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      ctx.save(); ctx.translate(k.x + k.w / 2, gy); ctx.scale(k.dir * k.c.face, 1);
+      ctx.filter = 'brightness(0.82) contrast(0.9)';          // a little haze at that distance
+      ctx.drawImage(k.c.i, -k.w / 2, -CARS.h, k.w, CARS.h); ctx.restore();
+    }
+    ctx.restore();
+    // the far street lamp (painted, x 1164-1178) stands in front of the cross street: repaint its pole over the cars
+    ctx.drawImage(S.bg, 1163, gy - CARS.h * 2, 17, CARS.h * 2 + 8, 1163, gy - CARS.h * 2, 17, CARS.h * 2 + 8);
+    const lamp = S.occ.find(o => o.name === 'lamp-post'); if (lamp) drawOcc(lamp, performance.now());   // the near lamp post stays in front
+  }
   function ambientOver(dt, W, H) {          // dust in the light, in front of everything
     const lm = lightMask(), mc = moteCanvas();
     const mx = mc.getContext('2d'); mx.clearRect(0, 0, mc.width, mc.height);
@@ -346,6 +374,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     }
     // keep shadows only on the floor: redraw the non-floor background over them
     maskShadow();
+    if (room === 'doyers-street') streetTraffic(dt, W, H);   // after the shadow mask: the far street is not floor
 
     // occlusion: objects whose baseline (at Matt's x) is below his feet are drawn after him
     // the object's front line at Matt's feet: per-column (sloped counters, legged furniture); beside the
@@ -400,7 +429,12 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // furniture and props; animated props (idle loops) pick the frame for the current time from their sheet
   function drawOcc(o, now) {
     const w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1];
-    if (o.anim) { const f = Math.floor(now / 1000 * o.anim.fps + (o.phase || 0)) % o.anim.frames, c = o.anim.cols;
+    if (o.anim) {
+      // mostly still on the first frame; now and then play the idle loop once through
+      if (o.playAt === undefined) o.playAt = now + 2000 + Math.random() * 9000;
+      let f = 0; const t = (now - o.playAt) / 1000 * o.anim.fps;
+      if (t >= 0) { f = Math.floor(t); if (f >= o.anim.frames) { f = 0; o.playAt = now + 6000 + Math.random() * 10000; } }
+      const c = o.anim.cols;
       ctx.drawImage(o.img, (f % c) * w, Math.floor(f / c) * h, w, h, o.bbox[0], o.bbox[1], w, h); }
     else ctx.drawImage(o.img, o.bbox[0], o.bbox[1], w, h);
   }
