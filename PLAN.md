@@ -11,7 +11,7 @@ playable on desktop and mobile, with final-quality art, voices and music.
 | Title | *Matt Long: The Bloody Angle* (series name + case title) |
 | Platform | Browser game, TypeScript, own point-and-click engine, data-driven scenes; deploy to Netlify |
 | Repo | `kubajugo-alt/mattlong` |
-| Art | All AI-generated in **Canva**; characters as **cut-out rigs** animated in code |
+| Art | All AI-generated with **Gemini** (`gemini-3-pro-image`, via the API; Canva dropped in M0); characters as **cut-out rigs** animated in code |
 | Colour | Greyscale + red for exactly two things: Inéz's lipstick and the Serenol label |
 | Voice | Full cast with ElevenLabs from the first build |
 | Music | Public-domain period jazz + ambience |
@@ -81,16 +81,16 @@ Target play time: 20–30 minutes.
 
 ## 4. Asset pipelines
 
-**Art (Canva).**
+**Art (Gemini image API, `tools/gen-image.mjs`).**
 1. Style guide first: one master prompt (1930 NYC, film-noir lighting, painted,
    one dominant light source, 8–12 greys) and 2–3 approved reference images used
    as `imageReferences` on every later generation for consistency.
 2. Backgrounds generated at 16:9, then `tools/` converts to strict greyscale,
    levels and adds a depth/foreground split where needed.
 3. Characters: a turnaround sheet per character (approved by you), then each body
-   part generated or cut separately, background removed in Canva, assembled into
+   part generated or cut separately, background keyed out by `tools/`, assembled into
    a rig file. Silhouette rules from the bible (fedora, fur collar, etc.).
-4. Every image logged in `assets/SOURCES.md` (prompt, Canva link, date).
+4. Every image logged in `assets/SOURCES.md` (prompt, model, references, date — the generator writes a .json sidecar).
 
 **Voices (ElevenLabs).** Casting sheet with one designed voice per character
 (light period accents, never caricature) for your approval before any lines are
@@ -107,7 +107,7 @@ licence in `SOURCES.md`.
 
 | # | Milestone | Done when |
 |---|---|---|
-| M0 | **Pipeline spikes** | Canva images reach the repo as files; 3 Matt test poses look like one man; one rigged arm animates; one ElevenLabs line lands as a file; one PD jazz track sourced with licence |
+| M0 | **Pipeline spikes** | Generated images reach the repo as files; 3 Matt test poses look like one man; one rigged arm animates; one ElevenLabs line lands as a file; one PD jazz track sourced with licence |
 | M1 | **Engine skeleton** | P1 playable with grey placeholder art: walk, hotspots, voice-over, scene exit, desktop + touch input |
 | M2 | **Core systems** | Ink dialogue, inventory + combine, journal, map, saves, settings, hotspot highlight; whole Prologue playable with placeholders |
 | M3 | **Script** (runs alongside M1–M2) | Full Prologue dialogue in ink, reviewed and approved by you |
@@ -125,7 +125,7 @@ viewport. GitHub Actions runs all of it on every PR.
 | Risk | Mitigation |
 |---|---|
 | AI characters drift between images | Turnaround sheets + references on every call; cut-out rigs need only one approved image set per character |
-| Getting Canva/ElevenLabs output into the repo as files | Proven in M0 before anything depends on it |
+| Getting generated files into the repo | Proven in M0 before anything depends on it |
 | Voice lines regenerated as the script changes (credits) | Script approved (M3) before the full voice batch; per-line regeneration only |
 | Mobile performance with grain/post-FX | Post-FX quality setting; tested on a phone viewport each milestone |
 | Writing that spoils the reveal ladder | Script reviewed against the bible's "no facts before their rung" rule |

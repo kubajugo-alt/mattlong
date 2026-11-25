@@ -8,7 +8,7 @@ the bible disagree, this file wins.
 - **Title:** *Matt Long: The Bloody Angle*. "Matt Long" is the series name;
   "The Bloody Angle" is this case.
 - **Platform:** browser game in TypeScript, own engine, deployed to Netlify.
-- **Art:** all AI-generated in Canva; characters are cut-out rigs animated in code.
+- **Art:** all AI-generated with the Gemini image API (Canva dropped in M0: it only returns thumbnails); characters are cut-out rigs animated in code.
 - **Colour:** greyscale plus red for two things only: Inéz's lipstick and the
   Serenol label. (Resolves the bible's accent-colour question.)
 - **Voice:** full cast voiced with ElevenLabs from the first build.
