@@ -85,6 +85,10 @@
    "alley": {
     "horizon": 0.4,
     "note": "Set from the dustbins (0.75 m) and the back door; the painted alley vanishes lower (0.56) but the props Matt walks among agree on 0.40."
+   },
+   "corridor": {
+    "horizon": 0.32,
+    "note": "door leaves, 2.1 m"
    }
   },
   "formula": "height_px = (feet_y - horizon_y) * height_m / 1.6 ; at the door (feet_y = door_bottom) a 1.85 m man is 1.85/2.1 = 88% of the door's height"
