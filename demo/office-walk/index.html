@@ -440,7 +440,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     // Matt
     ctx.save(); ctx.translate(M.x, M.y); ctx.scale(fx, 1);
     ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
-    ctx.drawImage(img, fi * sp.fw, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
+    if (!M.moving && document.getElementById('ambient').checked)       // standing still: breathing and head sway
+      ctx.drawImage(warpFrame('matt-' + M.dir, img, fi * sp.fw, 0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7), -sp.feet_x * sc, -feetY * sc, dw, dh);
+    else ctx.drawImage(img, fi * sp.fw, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
     ctx.restore(); ctx.filter = 'none';
     for (const o of front) drawOcc(o, now);
 
@@ -474,6 +476,64 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     }
     requestAnimationFrame(tick);
   }
+  // ---- breathing and head sway on still frames: a triangle mesh over the figure, warped only around the
+  // chest (slow swell and lift) and the head (tiny sway about the neck); furniture keeps zero weight.
+  // Points are fractions of the frame: head centre + radius (of height), neck pivot, chest centre + radii.
+  const RIGS = {
+    'kate-at-table': { head: [0.27, 0.07, 0.07], neck: [0.28, 0.13], chest: [0.26, 0.25, 0.07, 0.09] },
+    'pete-seated':   { head: [0.39, 0.12, 0.08], neck: [0.43, 0.19], chest: [0.52, 0.30, 0.12, 0.10] },
+    'lee-wing':      { head: [0.43, 0.08, 0.07], neck: [0.45, 0.15], chest: [0.45, 0.27, 0.25, 0.09] },
+    'sol':           { head: [0.32, 0.10, 0.07], neck: [0.33, 0.17], chest: [0.38, 0.28, 0.28, 0.08] },
+    'junkie':        { head: [0.55, 0.10, 0.07], neck: [0.55, 0.17], chest: [0.55, 0.30, 0.30, 0.10] },
+    'newsboy':       { head: [0.62, 0.15, 0.07], neck: [0.62, 0.21], chest: [0.62, 0.32, 0.25, 0.08] },
+    'inez-seated':   { head: [0.25, 0.12, 0.09], neck: [0.27, 0.21], chest: [0.30, 0.31, 0.12, 0.08] },
+    'matt-front':    { head: [0.45, 0.09, 0.06], neck: [0.45, 0.15], chest: [0.45, 0.25, 0.22, 0.08] },
+    'matt-side':     { head: [0.42, 0.09, 0.06], neck: [0.42, 0.15], chest: [0.42, 0.25, 0.18, 0.08] },
+    'matt-back':     { head: [0.47, 0.09, 0.06], neck: [0.47, 0.15], chest: [0.47, 0.25, 0.22, 0.08] },
+  };
+  const warpCv = new Map();
+  function warpFrame(key, img, sx, sy, sw, sh, rig, t, seed) {
+    let c = warpCv.get(key); if (!c || c.width !== sw || c.height !== sh) { c = document.createElement('canvas'); c.width = sw; c.height = sh; warpCv.set(key, c); c.t = -1; }
+    if (c.src === img && c.sx === sx && Math.abs(t - c.t) < 0.07) return c;      // re-warp at ~15 Hz
+    c.src = img; c.sx = sx; c.t = t;
+    const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, sw, sh);
+    const b = Math.sin(t * 2 * Math.PI / 3.8 + seed), sc = 0.013 * b;                                 // one breath ~3.8 s
+    const ang = 0.016 * Math.sin(t * 2 * Math.PI / 7.3 + seed * 1.7) + 0.006 * Math.sin(t * 2 * Math.PI / 2.9 + seed);
+    const [hu, hv, hr] = rig.head, [nu, nv] = rig.neck, [cu, cv, crx, cry] = rig.chest;
+    const disp = (u, v) => {
+      let X = u * sw, Y = v * sh;
+      const wc = Math.exp(-(((u - cu) / crx) ** 2) - (((v - cv) / cry) ** 2));
+      X += (u - cu) * sw * sc * wc; Y += (v - cv) * sh * sc * 0.6 * wc - sh * 0.003 * b * wc;
+      const d = Math.hypot((u - hu) * sw, (v - hv) * sh) / (hr * sh);
+      let wh = Math.max(0, Math.min(1, 1.7 - d)); if (v > nv) wh *= Math.max(0, 1 - (v - nv) / 0.04);
+      if (wh > 0) { const a = ang * wh, px = nu * sw, py = nv * sh, dx = X - px, dy = Y - py;
+        X = px + dx * Math.cos(a) - dy * Math.sin(a); Y = py + dx * Math.sin(a) + dy * Math.cos(a); }
+      return [X, Y];
+    };
+    // the affected area: the head and chest boxes, padded
+    const u0 = Math.max(0, Math.min(hu - hr * sh / sw * 2, cu - crx * 2.2)), u1 = Math.min(1, Math.max(hu + hr * sh / sw * 2, cu + crx * 2.2));
+    const v0 = Math.max(0, hv - hr * 2), v1 = Math.min(1, cv + cry * 2.5);
+    x.save(); x.beginPath(); x.rect(0, 0, sw, sh); x.rect(u0 * sw, v0 * sh, (u1 - u0) * sw, (v1 - v0) * sh); x.clip('evenodd');
+    x.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh); x.restore();
+    const NX = 7, NY = 10, P = [];
+    for (let j = 0; j <= NY; j++) for (let i = 0; i <= NX; i++) { const u = u0 + (u1 - u0) * i / NX, v = v0 + (v1 - v0) * j / NY;
+      const onEdge = i === 0 || j === 0 || i === NX || j === NY; P.push({ s: [u * sw, v * sh], d: onEdge ? [u * sw, v * sh] : disp(u, v) }); }
+    const tri = (a, b2, c2) => {
+      const [x0, y0] = a.s, [x1, y1] = b2.s, [x2, y2] = c2.s, [X0, Y0] = a.d, [X1, Y1] = b2.d, [X2, Y2] = c2.d;
+      const den = (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0); if (!den) return;
+      const m11 = ((X1 - X0) * (y2 - y0) - (X2 - X0) * (y1 - y0)) / den, m12 = ((X2 - X0) * (x1 - x0) - (X1 - X0) * (x2 - x0)) / den;
+      const m21 = ((Y1 - Y0) * (y2 - y0) - (Y2 - Y0) * (y1 - y0)) / den, m22 = ((Y2 - Y0) * (x1 - x0) - (Y1 - Y0) * (x2 - x0)) / den;
+      const cxm = (X0 + X1 + X2) / 3, cym = (Y0 + Y1 + Y2) / 3, g = (p) => [p[0] + (p[0] - cxm) * 0.03, p[1] + (p[1] - cym) * 0.03];
+      const [A0, B0] = g([X0, Y0]), [A1, B1] = g([X1, Y1]), [A2, B2] = g([X2, Y2]);
+      x.save(); x.beginPath(); x.moveTo(A0, B0); x.lineTo(A1, B1); x.lineTo(A2, B2); x.closePath(); x.clip();
+      x.transform(m11, m21, m12, m22, X0 - m11 * x0 - m12 * y0, Y0 - m21 * x0 - m22 * y0);
+      const bx = Math.max(0, Math.min(x0, x1, x2) - 2), by = Math.max(0, Math.min(y0, y1, y2) - 2), bw = Math.min(sw, Math.max(x0, x1, x2) + 2) - bx, bh = Math.min(sh, Math.max(y0, y1, y2) + 2) - by;
+      x.drawImage(img, sx + bx, sy + by, bw, bh, bx, by, bw, bh); x.restore();
+    };
+    for (let j = 0; j < NY; j++) for (let i = 0; i < NX; i++) { const a = P[j * (NX + 1) + i], b2 = P[j * (NX + 1) + i + 1], c2 = P[(j + 1) * (NX + 1) + i], d2 = P[(j + 1) * (NX + 1) + i + 1];
+      tri(a, b2, d2); tri(a, d2, c2); }
+    return c;
+  }
   // furniture and props; animated props (idle loops) pick the frame for the current time from their sheet
   function drawOcc(o, now) {
     const w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1];
@@ -483,7 +543,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       let f = 0; const t = (now - o.playAt) / 1000 * o.anim.fps;
       if (t >= 0) { f = Math.floor(t); if (f >= o.anim.frames) { f = 0; o.playAt = now + 6000 + Math.random() * 10000; } }
       const c = o.anim.cols;
-      ctx.drawImage(o.img, (f % c) * w, Math.floor(f / c) * h, w, h, o.bbox[0], o.bbox[1], w, h); }
+      if (f === 0 && RIGS[o.name] && document.getElementById('ambient').checked) {
+        if (o.seed === undefined) o.seed = Math.random() * 6.28;
+        ctx.drawImage(warpFrame(o.name, o.img, 0, 0, w, h, RIGS[o.name], now / 1000, o.seed), o.bbox[0], o.bbox[1], w, h);
+      } else ctx.drawImage(o.img, (f % c) * w, Math.floor(f / c) * h, w, h, o.bbox[0], o.bbox[1], w, h); }
     else ctx.drawImage(o.img, o.bbox[0], o.bbox[1], w, h);
   }
   // redraw everything that is not floor over the shadow layer, so shadows never fall on walls or furniture
