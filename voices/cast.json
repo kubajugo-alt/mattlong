@@ -1,0 +1,10 @@
+{
+  "model": "eleven_v4",
+  "note": "Lead voices chosen 25 Nov 2026 from casting round 1 (voices/casting/).",
+  "voices": {
+    "matt": {"name": "Robert - Measured Thriller Narrator", "voice_id": "R5WgLZ1iq28vajcXtks0", "direction": "dry, tired, understated; narrates the whole game"},
+    "pete": {"name": "Jordan - Warm & Gritty", "voice_id": "OwEAPhTFInN6VSRT9QXm", "direction": "warm, quick, charming"},
+    "kate": {"name": "Quin - Crisp & Clear", "voice_id": "7Z3zS2SJzkpg95KpVJoe", "direction": "crisp, patient, sharp"},
+    "inez": {"name": "Monica - Sultry Latina Storyteller", "voice_id": "0aLkhNYQFqOzWIqVTl94", "direction": "low, poised, controlled; Puerto Rican accent"}
+  }
+}

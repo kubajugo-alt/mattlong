@@ -12,6 +12,7 @@ the bible disagree, this file wins.
 - **Colour:** greyscale plus red for two things only: Inéz's lipstick and the
   Serenol label. (Resolves the bible's accent-colour question.)
 - **Voice:** full cast voiced with ElevenLabs from the first build.
+  - Leads cast 25 Nov 2026 (`voices/cast.json`): Matt = Robert, Pete = Jordan, Kate = Quin, Inéz = Monica.
 - **Music:** public-domain period jazz (US recordings from 1925 or earlier) and
   CC0 ambience.
 - **Devices:** desktop and mobile touch, both first-class.
