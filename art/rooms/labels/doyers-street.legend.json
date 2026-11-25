@@ -111,11 +111,14 @@
   {
    "name": "junkie",
    "file": "art/cast/final/junkie-facing-right.png",
-   "x": 552,
-   "y": 662,
-   "scale": 0.2196,
+   "x": 449,
+   "y": 678,
+   "scale": 0.1405,
    "depth_m": 0.35,
-   "note": "The junkie on the left pavement beside the bin, just past the open apartment door, looking across at the pawnshop (the cast sprite mirrored); scaled by the street's rule for 1.75 m with his feet at y 0.765."
+   "note": "The junkie standing in the recessed shop doorway past the open apartment door, the bin in front of him hiding his legs; at the doorway's depth (feet y 0.655) he is about 85% of the door's height. Mirrored cast sprite, looking across at the pawnshop.",
+   "behind": [
+    "box-left"
+   ]
   }
  ]
 }

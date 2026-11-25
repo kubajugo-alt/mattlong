@@ -12,8 +12,8 @@ No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 | 6 | `fire-escapes` | fire escapes | 243, 0, 2413, 811 |
 | 7 | `door-handle` | door handle | 383, 863, 405, 890 |
 | 8 | `wooden-box` | wooden box | 422, 929, 540, 1131 |
-| 9 | `far-shop-signs` | shop signs | 505, 438, 1406, 800 |
-| 10 | `junkie` | junkie | 555, 665, 715, 1175 |
+| 9 | `junkie` | junkie | 451, 680, 553, 960 |
+| 10 | `far-shop-signs` | shop signs | 505, 438, 1406, 800 |
 | 11 | `paper-lanterns` | paper lanterns | 595, 88, 1788, 820 |
 | 12 | `far-crates` | crates | 609, 892, 1283, 1015 |
 | 13 | `washing` | washing on the line | 792, 274, 1366, 437 |
