@@ -1,0 +1,182 @@
+{
+ "name": "Matt Long",
+ "height": 2300,
+ "groundY": 1178,
+ "root": "torso",
+ "parts": [
+  {
+   "id": "thighBack",
+   "file": "thigh.png",
+   "parent": "torso",
+   "at": [
+    211,
+    787
+   ],
+   "pivot": [
+    180,
+    40
+   ],
+   "z": 0,
+   "shade": 0.72
+  },
+  {
+   "id": "shinBack",
+   "file": "shin.png",
+   "parent": "thighBack",
+   "at": [
+    155,
+    595
+   ],
+   "pivot": [
+    115,
+    95
+   ],
+   "z": 1,
+   "shade": 0.72
+  },
+  {
+   "id": "upperArmBack",
+   "file": "upperArm.png",
+   "parent": "torso",
+   "at": [
+    101,
+    252
+   ],
+   "pivot": [
+    107,
+    112
+   ],
+   "z": 2,
+   "shade": 0.68
+  },
+  {
+   "id": "foreArmBack",
+   "file": "foreArm.png",
+   "parent": "upperArmBack",
+   "at": [
+    133,
+    464
+   ],
+   "pivot": [
+    98,
+    62
+   ],
+   "z": 3,
+   "shade": 0.68
+  },
+  {
+   "id": "thigh",
+   "file": "thigh.png",
+   "parent": "torso",
+   "at": [
+    211,
+    787
+   ],
+   "pivot": [
+    180,
+    40
+   ],
+   "z": 4
+  },
+  {
+   "id": "shin",
+   "file": "shin.png",
+   "parent": "thigh",
+   "at": [
+    155,
+    595
+   ],
+   "pivot": [
+    115,
+    95
+   ],
+   "z": 5
+  },
+  {
+   "id": "head",
+   "file": "head.png",
+   "parent": "torso",
+   "at": [
+    241,
+    57
+   ],
+   "pivot": [
+    171,
+    389
+   ],
+   "z": 6
+  },
+  {
+   "id": "torso",
+   "file": "torso.png",
+   "parent": null,
+   "at": [
+    0,
+    0
+   ],
+   "pivot": [
+    211,
+    787
+   ],
+   "z": 7
+  },
+  {
+   "id": "upperArm",
+   "file": "upperArm.png",
+   "parent": "torso",
+   "at": [
+    101,
+    252
+   ],
+   "pivot": [
+    107,
+    112
+   ],
+   "z": 8
+  },
+  {
+   "id": "foreArm",
+   "file": "foreArm.png",
+   "parent": "upperArm",
+   "at": [
+    133,
+    464
+   ],
+   "pivot": [
+    98,
+    62
+   ],
+   "z": 9
+  }
+ ],
+ "joints": {
+  "shoulder": [
+   690,
+   700
+  ],
+  "elbow": [
+   716,
+   1052
+  ],
+  "wrist": [
+   786,
+   1330
+  ],
+  "neck": [
+   830,
+   505
+  ],
+  "hip": [
+   800,
+   1235
+  ],
+  "knee": [
+   775,
+   1790
+  ],
+  "ankle": [
+   757,
+   2255
+  ]
+ }
+}

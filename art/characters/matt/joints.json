@@ -1,0 +1,63 @@
+{
+ "name": "Matt Long",
+ "height": 2300,
+ "ground_y": 2413,
+ "arm": {
+  "shoulder": [
+   690,
+   700
+  ],
+  "elbow": [
+   716,
+   1052
+  ],
+  "wrist": [
+   786,
+   1330
+  ],
+  "finger": [
+   838,
+   1505
+  ],
+  "r_upper": 118,
+  "r_fore": 95,
+  "r_hand": 75,
+  "max_y": 1565,
+  "r_joint": 62,
+  "r_cap": 112
+ },
+ "leg": {
+  "hip": [
+   800,
+   1235
+  ],
+  "knee": [
+   775,
+   1790
+  ],
+  "ankle": [
+   757,
+   2255
+  ],
+  "hem_y": 1400,
+  "r_joint": 95
+ },
+ "torso": {
+  "neck": [
+   830,
+   505
+  ],
+  "collar_line": [
+   [
+    750,
+    445
+   ],
+   [
+    910,
+    560
+   ]
+  ],
+  "neck_tuck": 45,
+  "hem_extra": 0
+ }
+}

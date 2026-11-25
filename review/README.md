@@ -14,5 +14,5 @@ notes.
   Claude reads them before each round of work.
 - To add samples: add files and entries, then republish the page with every
   new file in `files`.
-- `tools/review-screenshot.js <review dir> <out dir>` takes desktop and phone
-  screenshots for a quick check before publishing.
+- `tools/review-screenshot.js <review dir> <out dir>` captures the rig sample in each animation
+  for a quick check before publishing.

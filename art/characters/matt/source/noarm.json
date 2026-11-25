@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached image for a 2D cut-out animation rig. Delete the man's visible arm entirely, from the top of the shoulder seam: the whole sleeve, upper arm, elbow, cuff and hand. There must be NO sleeve stump and no partial arm. Show instead the side of the jacket body that the arm was covering: smooth grey wool with the side seam, the jacket's back edge and hem continuous, the shoulder rounded off like a jacket on a tailor's dummy. Also show the trouser side below the hem where the hand was. Keep the same framing, position, scale, pose, head, hat, legs, lighting, painting style and flat pure green background exactly as they are.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/rig2/master2.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T01:29:56.460Z",
+  "usage": {
+    "promptTokenCount": 405,
+    "candidatesTokenCount": 1294,
+    "totalTokenCount": 1883,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 147
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 184,
+    "serviceTier": "standard"
+  }
+}

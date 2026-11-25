@@ -3,7 +3,7 @@ const fs = require('fs'), path = require('path');
 const root = process.argv[2], out = process.argv[3];
 const types = { '.html': 'text/html', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.mp3': 'audio/mpeg' };
 (async () => {
-  const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1400, height: 950 } });
+  const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1400, height: 1000 } });
   await ctx.route('http://review.local/**', (r) => {
     const u = new URL(r.request().url()); const f = path.join(root, decodeURIComponent(u.pathname));
     if (!fs.existsSync(f)) return r.fulfill({ status: 404, body: '' });
@@ -12,13 +12,13 @@ const types = { '.html': 'text/html', '.json': 'application/json', '.png': 'imag
     r.fulfill({ status: 200, body, contentType: types[path.extname(f)] || 'application/octet-stream' });
   });
   const p = await ctx.newPage(); const errs = [];
-  p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
-  await p.goto('http://review.local/index.html#m0-rig'); await p.waitForTimeout(1500);
-  await p.check('#rig-joints'); await p.waitForTimeout(300); await p.screenshot({ path: out + '/rig.png' });
-  await p.click('.seg >> text=Gesture'); await p.waitForTimeout(1700); await p.screenshot({ path: out + '/gesture.png' });
-  await p.goto('http://review.local/index.html#m0-voice'); await p.waitForTimeout(600); await p.screenshot({ path: out + '/voice.png' });
-  await p.setViewportSize({ width: 400, height: 900 }); await p.goto('http://review.local/index.html#m0-poses'); await p.waitForTimeout(800);
-  await p.screenshot({ path: out + '/phone.png' });
-  console.log('phone scrollWidth', await p.evaluate(() => document.documentElement.scrollWidth));
+  p.on('pageerror', e => errs.push(e.message));
+  await p.goto('http://review.local/index.html#m0-rig-v2'); await p.waitForTimeout(1200);
+  const canvas = p.locator('canvas');
+  await p.click('.seg >> text=Rest'); await p.waitForTimeout(300); await canvas.screenshot({ path: out + '/r_rest.png' });
+  await p.click('.seg >> text=Walk');
+  for (let i = 0; i < 4; i++) { await p.waitForTimeout(420); await canvas.screenshot({ path: out + '/r_walk' + i + '.png' }); }
+  await p.click('.seg >> text=Gesture'); await p.waitForTimeout(2600); await canvas.screenshot({ path: out + '/r_gesture.png' });
+  await p.check('#rig-joints'); await p.click('.seg >> text=Exploded'); await p.waitForTimeout(2000); await canvas.screenshot({ path: out + '/r_exploded.png' });
   console.log('errors', JSON.stringify(errs)); await b.close();
 })();

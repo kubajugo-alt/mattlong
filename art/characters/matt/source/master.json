@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Redraw the man in the attached image as an animation model sheet pose. Keep exactly his face, dented fedora, grey three-piece suit, white shirt, dark tie, shoes and the painted black-and-white film-noir style. Camera: a pure 90-degree side profile, exactly like the attached image: he faces the right edge of the picture, only one eye visible, chest pointing right, his far arm completely hidden behind his body. Pose: standing straight, the near arm hanging straight down along his side with the hand open beside his thigh, elbow straight. Legs straight and parallel, the near foot about half a step in front of the far foot so the far shoe shows behind it. The whole figure from hat to shoe soles fits in the frame with space around it. Background: perfectly flat pure chroma-key green #00FF00 everywhere, no floor, no shadow, no gradient, no text.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/m0/art/matt_side.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T01:28:30.844Z",
+  "usage": {
+    "promptTokenCount": 452,
+    "candidatesTokenCount": 1356,
+    "totalTokenCount": 2027,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 194
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 219,
+    "serviceTier": "standard"
+  }
+}

@@ -1,33 +1,92 @@
 {
   "milestones": [
-    { "id": "m0", "label": "M0", "title": "Pipeline tests", "date": "25 Nov 2026",
-      "summary": "Can we make art, voice and music and get them into the game as files? Yes for all three. Art now comes from Gemini." }
+    {
+      "id": "m0",
+      "label": "M0",
+      "title": "Pipeline tests",
+      "date": "25 Nov 2026",
+      "summary": "Can we make art, voice and music and get them into the game as files? Yes for all three. Art now comes from Gemini."
+    }
   ],
   "samples": [
-    { "id": "m0-rig", "milestone": "m0", "kind": "rig", "title": "Matt as a cut-out puppet",
-      "rig": "samples/m0/rig/matt.json",
-      "about": "Seven pieces cut from one generated parts sheet and jointed in code: head, torso, two arms (the front one with an elbow), two legs. This is how every character will move in the game.",
-      "lookFor": ["Do the joints read as one body, or do seams show?", "Is the movement style right: stiff and graphic, or should it be smoother?", "Known: legs are too short and the back arm is a single piece. The proper rig gets separate thigh, shin and forearm pieces."] },
-    { "id": "m0-poses", "milestone": "m0", "kind": "image", "title": "Matt: reference and three poses",
-      "src": "samples/m0/matt-poses.jpg", "full": "samples/m0/matt-reference.jpg",
+    {
+      "id": "m0-rig-v2",
+      "milestone": "m0",
+      "kind": "rig",
+      "title": "Matt as a cut-out puppet (v2)",
+      "rig": "samples/m0/rig2/rig.json",
+      "about": "Rebuilt after your notes. One side-profile picture of Matt, plus two Gemini edits of that same picture (arm removed, far leg removed), cut into head, torso, upper arm, forearm with hand, thigh and shin with shoe. Every piece keeps its place from the source picture, so 'Rest' shows the original drawing exactly; joints sit at the shoulder, elbow, neck, hip and knee. The far arm and far leg are darker copies of the near ones, as in classic cut-out animation.",
+      "lookFor": [
+        "Rest: does it look like one drawing, with no seams?",
+        "Walk: do the knees bend in the right places, and does the planted foot stay on the floor?",
+        "Gesture: does the elbow bend cleanly, or does the sleeve break at the joint?",
+        "Known: the hidden top of the thigh is a rough fill under the jacket, and the walk is on the spot with no travel yet."
+      ]
+    },
+    {
+      "id": "m0-poses",
+      "milestone": "m0",
+      "kind": "image",
+      "title": "Matt: reference and three poses",
+      "src": "samples/m0/matt-poses.jpg",
+      "full": "samples/m0/matt-reference.jpg",
       "about": "Left: the first reference (Gemini added an overcoat). Then three poses generated with that reference attached: side profile, walking, talking.",
-      "lookFor": ["Is this Matt? Face, build, age, the dented fedora.", "Overcoat as his outdoor look, or suit only?", "Painted look and lighting: right for the game?"] },
-    { "id": "m0-parts", "milestone": "m0", "kind": "image", "title": "Parts sheet for the puppet",
+      "lookFor": [
+        "Is this Matt? Face, build, age, the dented fedora.",
+        "Overcoat as his outdoor look, or suit only?",
+        "Painted look and lighting: right for the game?"
+      ]
+    },
+    {
+      "id": "m0-parts",
+      "milestone": "m0",
+      "kind": "image",
+      "title": "Parts sheet for the puppet",
       "src": "samples/m0/matt-parts-sheet.jpg",
       "about": "One generation asked for every body part separately. Head and armless torso came out exactly right; arms and legs were a mix of whole limbs and halves.",
-      "lookFor": ["Nothing to approve here yet; this shows where the puppet pieces come from."] },
-    { "id": "m0-voice", "milestone": "m0", "kind": "audio", "title": "Matt's voice: first test",
+      "lookFor": [
+        "Nothing to approve here yet; this shows where the puppet pieces come from."
+      ]
+    },
+    {
+      "id": "m0-voice",
+      "milestone": "m0",
+      "kind": "audio",
+      "title": "Matt's voice: first test",
       "line": "Love letter from the landlord. He always writes when the money's late.",
       "tracks": [
-        { "label": "Take 1", "src": "samples/m0/matt-voice-take1.mp3" },
-        { "label": "Take 2", "src": "samples/m0/matt-voice-take2.mp3" }
+        {
+          "label": "Take 1",
+          "src": "samples/m0/matt-voice-take1.mp3"
+        },
+        {
+          "label": "Take 2",
+          "src": "samples/m0/matt-voice-take2.mp3"
+        }
       ],
       "about": "ElevenLabs library voice \"Obsidian\", direction: dry, tired. Not cast yet: the casting sheet in M5 will offer three to four candidates per character.",
-      "lookFor": ["Is the age and grain right for Matt?", "Too theatrical, or dry enough?"] },
-    { "id": "m0-music", "milestone": "m0", "kind": "audio", "title": "Period music: King Oliver, \"Tears\"",
-      "tracks": [ { "label": "45-second clip", "src": "samples/m0/tears-clip.mp3" } ],
+      "lookFor": [
+        "Is the age and grain right for Matt?",
+        "Too theatrical, or dry enough?"
+      ]
+    },
+    {
+      "id": "m0-music",
+      "milestone": "m0",
+      "kind": "audio",
+      "title": "Period music: King Oliver, \"Tears\"",
+      "tracks": [
+        {
+          "label": "45-second clip",
+          "src": "samples/m0/tears-clip.mp3"
+        }
+      ],
       "about": "King Oliver's Creole Jazz Band, recorded October 1923, with Louis Armstrong on second cornet. Public domain in the US. From the George Blood 78rpm transfers at the Internet Archive.",
       "credit": "https://archive.org/details/78_tears_king-olivers-jazz-band-king-oliver-louis-armstrong-honore-dutray-johnny-dodd_gbia0190842a",
-      "lookFor": ["Is the surface noise of a real 78 welcome, or should we clean recordings up?", "Right energy for Doyers Street?"] }
+      "lookFor": [
+        "Is the surface noise of a real 78 welcome, or should we clean recordings up?",
+        "Right energy for Doyers Street?"
+      ]
+    }
   ]
 }

@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached image for a 2D cut-out animation rig. Remove the far leg: the trouser leg and shoe that sit behind the near leg (the shoe whose heel shows behind). Keep only the near leg, complete from the jacket hem down to its shoe sole, with its full outline. Everything else must stay exactly the same: framing, position, scale, the near leg itself, the arm, head, hat, jacket, lighting, painting style, and the flat pure green background.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/rig2/master2.png"
+  ],
+  "aspect": "2:3",
+  "size": "2K",
+  "created": "2026-11-25T01:30:57.676Z",
+  "usage": {
+    "promptTokenCount": 360,
+    "candidatesTokenCount": 1258,
+    "totalTokenCount": 1779,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 102
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 161,
+    "serviceTier": "standard"
+  }
+}
