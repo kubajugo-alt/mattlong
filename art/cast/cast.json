@@ -326,6 +326,36 @@
       "height_cm": 185,
       "hat": false,
       "look": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible)."
+    },
+    {
+      "id": "matt-front",
+      "name": "Matt Long (front view)",
+      "group": "views",
+      "base": "matt",
+      "src": "matt",
+      "height_cm": 185,
+      "hat": true,
+      "look": "The same man as the second reference image, Matt Long, 37, wearing his usual clothes exactly as in the second reference image (rumpled grey three-piece suit, loosened tie, dented fedora). Pose: a straight front view facing the camera squarely, standing upright, feet a little apart, arms relaxed at his sides."
+    },
+    {
+      "id": "matt-towel-front",
+      "name": "Matt Long (bathhouse) (front view)",
+      "group": "views",
+      "base": "matt",
+      "src": "matt-towel",
+      "height_cm": 185,
+      "hat": false,
+      "look": "The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a straight front view facing the camera squarely, standing upright, feet a little apart, arms relaxed at his sides."
+    },
+    {
+      "id": "matt-boxers-front",
+      "name": "Matt Long (underwear) (front view)",
+      "group": "views",
+      "base": "matt",
+      "src": "matt-boxers",
+      "height_cm": 185,
+      "hat": false,
+      "look": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a straight front view facing the camera squarely, standing upright, feet a little apart, arms relaxed at his sides."
     }
   ],
   "heights_note": "height_cm is standing height without hat; hat=true adds about 9 cm to the outline when the lineup is scaled.",

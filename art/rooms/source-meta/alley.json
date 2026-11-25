@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Edit the attached image: remove every person and the car from the far end of the alley and the street beyond, leaving that background empty. Change nothing else: same alley, framing, lighting, objects, painting style, black-and-white greyscale.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/rooms/alley_v1.png"
+  ],
+  "aspect": "16:9",
+  "size": "2K",
+  "created": "2026-11-25T03:36:13.422Z",
+  "usage": {
+    "promptTokenCount": 311,
+    "candidatesTokenCount": 1262,
+    "totalTokenCount": 1735,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 53
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 162,
+    "serviceTier": "standard"
+  }
+}

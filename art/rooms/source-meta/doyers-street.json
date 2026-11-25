@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Painted background for a 2D point-and-click adventure game, in exactly the painting style of the attached reference image: the same 1940s film-noir painted look and brush texture, strictly black-and-white greyscale with no colour at all, hard light from one dominant source, deep blacks, crisp highlights, film-noir atmosphere. New York, winter 1930, every object period-accurate (nothing later than 1930). Wide 16:9 composition seen from an eye-level camera about 1.6 metres above the floor, looking straight ahead, so the horizon line sits at the middle of the image and vertical lines stay vertical. The floor fills roughly the lower third of the image as an open, uncluttered walkable area from left to right, where characters will stand: a 1.85 m man standing at the front edge of the floor would be about half the image height tall, so a standard 2.1 m door on the back wall is somewhat less than half the image height. Real-world proportions for all furniture and doors relative to that man. The scene is empty: no people, no figures, no text, no captions, no border. Lighting: overcast winter day after first snow, wet cobbles reflecting the light, steam rising from a grate. Scene: Doyers Street in New York's Chinatown, the crooked little street nicknamed the Bloody Angle: narrow, curving sharply in the middle distance, lined with three- and four-storey brick tenements with fire escapes, laundry lines strung overhead, paper lanterns, shop signs in Chinese characters (rendered as painted shapes, no legible text), a tea house entrance at street level on the right with a doorway to the stairs up to a private detective's office above it, a dark alley mouth on the left. Wet cobblestones and a narrow sidewalk across the foreground where characters walk, snow slush in the gutters, a steaming grate, a gas street lamp.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/cast/matt.png"
+  ],
+  "aspect": "16:9",
+  "size": "2K",
+  "created": "2026-11-25T03:34:26.908Z",
+  "usage": {
+    "promptTokenCount": 667,
+    "candidatesTokenCount": 1373,
+    "totalTokenCount": 2336,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 409
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 296,
+    "serviceTier": "standard"
+  }
+}

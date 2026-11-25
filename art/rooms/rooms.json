@@ -1,0 +1,61 @@
+{
+  "style": "Painted background for a 2D point-and-click adventure game, in exactly the painting style of the attached reference image: the same 1940s film-noir painted look and brush texture, strictly black-and-white greyscale with no colour at all, hard light from one dominant source, deep blacks, crisp highlights, film-noir atmosphere. New York, winter 1930, every object period-accurate (nothing later than 1930). Wide 16:9 composition seen from an eye-level camera about 1.6 metres above the floor, looking straight ahead, so the horizon line sits at the middle of the image and vertical lines stay vertical. The floor fills roughly the lower third of the image as an open, uncluttered walkable area from left to right, where characters will stand: a 1.85 m man standing at the front edge of the floor would be about half the image height tall, so a standard 2.1 m door on the back wall is somewhat less than half the image height. Real-world proportions for all furniture and doors relative to that man. The scene is empty: no people, no figures, no text, no captions, no border.",
+  "rooms": [
+    {
+      "id": "office-day",
+      "name": "Matt's office, morning (P1)",
+      "light": "pale grey winter morning light through venetian blinds, throwing striped shadows across the room",
+      "look": "Matt Long's private detective office above a Chinatown tea house on Doyers Street: a wide, deep, lived-in room seen straight on from the front, about 7 metres wide, with a large open area of bare, worn wooden floor across the whole foreground and middle where a man can walk freely from left to right; nothing stands in that open floor. All furniture is pushed back against the walls: against the back wall in the centre a big battered wooden desk with a telephone, overflowing ashtray, green-shaded desk lamp, whiskey bottle and glass, papers and files, a worn leather chair behind it, and a tall bookcase of case files beside it. Back wall on the left: the half-glazed office entrance door with a plain frosted-glass panel (no lettering), a coat stand with a trench coat beside it. Right wall: a tall window with venetian blinds looking out over the crooked street, a cast-iron radiator beneath it. Left wall: a large cork evidence board with pinned photographs, notes and string, a dented filing cabinet, a sagging leather couch where he sometimes sleeps, a hat on a hook. Dark wood wainscoting below faded patterned wallpaper, a stained ceiling with a lamp hanging on a cord, framed old police commendations, an old radio on a side table, stacks of newspapers. A cramped, shabby, masculine 1930 private eye's office, not clinical. An envelope (an eviction notice) lies on the floor just inside the door."
+    },
+    {
+      "id": "office-night",
+      "name": "Matt's office, night, rain (P5)",
+      "light": "night: the room lit only by the desk lamp and a flickering neon sign outside the window; rain streaks on the glass cast moving shadows; deep blacks",
+      "look": "Exactly the same office as the day version, from the same camera."
+    },
+    {
+      "id": "pete-kate-flat",
+      "name": "Pete & Kate's flat (P2)",
+      "light": "morning light from a kitchen window on the left, warm-feeling but rendered in greyscale, soft shadows",
+      "look": "A small, warm, cluttered tenement flat next door to Matt's office, shared by a reporter and his sister, an accountant. Left: a kitchen corner with a gas stove, a percolator coffee pot, a sink and a window. Centre: a round kitchen table with three mismatched chairs, coffee cups, a newspaper spread open. Right: a writing desk with a black typewriter, piles of newspapers and clippings on one side (his), neat bookshelves with ledgers and labelled boxes on the other (hers). A thin shared wall with framed photographs. Rag rug on worn floorboards. A front door on the back wall."
+    },
+    {
+      "id": "doyers-street",
+      "name": "Doyers Street (hub)",
+      "light": "overcast winter day after first snow, wet cobbles reflecting the light, steam rising from a grate",
+      "look": "Doyers Street in New York's Chinatown, the crooked little street nicknamed the Bloody Angle: narrow, curving sharply in the middle distance, lined with three- and four-storey brick tenements with fire escapes, laundry lines strung overhead, paper lanterns, shop signs in Chinese characters (rendered as painted shapes, no legible text), a tea house entrance at street level on the right with a doorway to the stairs up to a private detective's office above it, a dark alley mouth on the left. Wet cobblestones and a narrow sidewalk across the foreground where characters walk, snow slush in the gutters, a steaming grate, a gas street lamp."
+    },
+    {
+      "id": "tea-house",
+      "name": "Lee Wing's tea house (P4)",
+      "light": "dim interior, light from paper lanterns and a front window, wisps of smoke",
+      "look": "A small Chinatown tea house in 1930: dark lacquered wooden counter on the right with an abacus, tea tins and a brass bell; shelves of tea canisters behind it; a few small round tables with stools on the left; a bead curtain on the back wall leading to a back room; a doorway beside it to a laundry room with hanging garments visible; paper lanterns, calligraphy scrolls (painted shapes, no legible text), a front window. Worn tiled floor across the foreground."
+    },
+    {
+      "id": "pawnshop",
+      "name": "Bowery pawnshop (P3)",
+      "light": "a single dim bulb over the counter, grimy daylight from a barred front window",
+      "look": "A cramped Bowery pawnshop, 1930: a long wooden counter across the middle-right with a brass cage grille on top and a ticket ledger, shelves and cages behind it crammed with other people's lives: pocket watches, musical instruments, radios, typewriters, suitcases, a saxophone, coats on hangers, a mannequin; three brass balls hanging outside the barred front window on the left; a back door behind the counter. Dusty floorboards across the foreground."
+    },
+    {
+      "id": "alley",
+      "name": "Alley behind the pawnshop (P3)",
+      "light": "grey daylight from a strip of sky high above, deep shadows, wet ground",
+      "look": "A narrow Bowery back alley in 1930 between tall brick walls: the pawnshop's back door on the right with a wooden step, fire escapes above, overflowing ash cans and wooden crates, a torn awning, laundry high overhead, a heap of rags and newspapers against the left wall where a homeless man sleeps (the man himself is not shown), puddles on the cobbles across the foreground, the alley opening to a busier street in the far background."
+    }
+  ],
+  "scale": {
+    "rule": "Character height in pixels = (feet_y - horizon_y) x height_m / 1.6, where horizon_y is the camera's eye line (1.6 m above the floor), found from a known object such as a 2.1 m door. Characters shrink towards the horizon as they walk back.",
+    "rooms": {
+      "office-day": {
+        "horizon": 0.32,
+        "door_top": 0.205,
+        "door_bottom": 0.696
+      },
+      "office-night": {
+        "horizon": 0.32
+      }
+    }
+  },
+  "door_lettering": "The office door glass is left blank; the engine draws 'M. LONG — INVESTIGATIONS' (mirror-reversed) so it is spelled right and can change in the story."
+}

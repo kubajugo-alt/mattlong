@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Painted background for a 2D point-and-click adventure game, in exactly the painting style of the attached reference image: the same 1940s film-noir painted look and brush texture, strictly black-and-white greyscale with no colour at all, hard light from one dominant source, deep blacks, crisp highlights, film-noir atmosphere. New York, winter 1930, every object period-accurate (nothing later than 1930). Wide 16:9 composition seen from an eye-level camera about 1.6 metres above the floor, looking straight ahead, so the horizon line sits at the middle of the image and vertical lines stay vertical. The floor fills roughly the lower third of the image as an open, uncluttered walkable area from left to right, where characters will stand: a 1.85 m man standing at the front edge of the floor would be about half the image height tall, so a standard 2.1 m door on the back wall is somewhat less than half the image height. Real-world proportions for all furniture and doors relative to that man. The scene is empty: no people, no figures, no text, no captions, no border. Lighting: pale grey winter morning light through venetian blinds, throwing striped shadows across the room. Scene: Matt Long's private detective office above a Chinatown tea house on Doyers Street: a wide, deep, lived-in room seen straight on from the front, about 7 metres wide, with a large open area of bare, worn wooden floor across the whole foreground and middle where a man can walk freely from left to right; nothing stands in that open floor. All furniture is pushed back against the walls: against the back wall in the centre a big battered wooden desk with a telephone, overflowing ashtray, green-shaded desk lamp, whiskey bottle and glass, papers and files, a worn leather chair behind it, and a tall bookcase of case files beside it. Back wall on the left: the half-glazed office entrance door with a plain frosted-glass panel (no lettering), a coat stand with a trench coat beside it. Right wall: a tall window with venetian blinds looking out over the crooked street, a cast-iron radiator beneath it. Left wall: a large cork evidence board with pinned photographs, notes and string, a dented filing cabinet, a sagging leather couch where he sometimes sleeps, a hat on a hook. Dark wood wainscoting below faded patterned wallpaper, a stained ceiling with a lamp hanging on a cord, framed old police commendations, an old radio on a side table, stacks of newspapers. A cramped, shabby, masculine 1930 private eye's office, not clinical. An envelope (an eviction notice) lies on the floor just inside the door.",
+  "refs": [
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/cast/matt.png"
+  ],
+  "aspect": "16:9",
+  "size": "2K",
+  "created": "2026-11-25T03:39:59.331Z",
+  "usage": {
+    "promptTokenCount": 843,
+    "candidatesTokenCount": 1486,
+    "totalTokenCount": 2578,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 585
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 249,
+    "serviceTier": "standard"
+  }
+}

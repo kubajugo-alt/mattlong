@@ -8,6 +8,13 @@
       "summary": "Static designs of the whole cast (24 figures), all generated against the same Matt image as the style anchor and one shared proportion rule, cut out and forced to greyscale (only Inéz's lipstick is red). For sprite animation in Ludo.ai later."
     },
     {
+      "id": "rooms",
+      "label": "Rooms",
+      "title": "Prologue backgrounds",
+      "date": "25 Nov 2026",
+      "summary": "The seven screens of the Prologue, painted in the cast's style, with a fixed eye-level camera so characters fit: a 1.85 m man at the front of the floor is half the image height."
+    },
+    {
       "id": "m0",
       "label": "M0",
       "title": "Pipeline tests",
@@ -495,6 +502,97 @@
       "about": "Sergeant Dooley, about 40, Corrigan's heavy. Very large and broad-shouldered, flat-nosed, small eyes, heavy jaw. A 1930 NYPD sergeant's uniform: long dark wool tunic with brass buttons and sergeant's chevrons, a peaked police cap, a nightstick hanging from the belt, big hands.",
       "lookFor": [
         "Right for the character? Face, age, build, clothes, 1930 period."
+      ]
+    },
+    {
+      "id": "room-office-day",
+      "milestone": "rooms",
+      "kind": "image",
+      "title": "Matt's office, morning (P1)",
+      "src": "samples/rooms/office-day.jpg",
+      "full": "samples/rooms/office-day-scale.jpg",
+      "about": "Matt Long's private detective office above a Chinatown tea house on Doyers Street: a wide, deep, lived-in room seen straight on from the front, about 7 metres wide, with a large open area of bare, worn wooden floor across the whole foreground and middle where a man can walk freely from left to right; nothing stands in that open floor. All furniture is pushed back against the walls: against the back wall in the centre a big battered wooden desk with a telephone, overflowing ashtray, green-shaded desk lamp, whiskey bottle and glass, papers and files, a worn leather chair behind it, and a tall bookcase of case files beside it. Back wall on the left: the half-glazed office entrance door with a plain frosted-glass panel (no lettering), a coat stand with a trench coat beside it. Right wall: a tall window with venetian blinds looking out over the crooked street, a cast-iron radiator beneath it. Left wall: a large cork evidence board with pinned photographs, notes and string, a dented filing cabinet, a sagging leather couch where he sometimes sleeps, a hat on a hook. Dark wood wainscoting below faded patterned wallpaper, a stained ceiling with a lamp hanging on a cord, framed old police commendations, an old radio on a side table, stacks of newspapers. A cramped, shabby, masculine 1930 private eye's office, not clinical. An envelope (an eviction notice) lies on the floor just inside the door. Open 'Reference at full size' to see Matt standing in it at game scale.",
+      "lookFor": [
+        "Right room for the scene?",
+        "Does Matt fit the furniture and doors?"
+      ]
+    },
+    {
+      "id": "room-office-night",
+      "milestone": "rooms",
+      "kind": "image",
+      "title": "Matt's office, night, rain (P5)",
+      "src": "samples/rooms/office-night.jpg",
+      "full": "samples/rooms/office-night-scale.jpg",
+      "about": "Exactly the same office as described: frosted-glass door on the back wall, coat stand, venetian-blind window on the right with rain running down the glass, scarred desk centre-left with telephone, ashtray, lamp switched on, whiskey bottle, swivel chair, cork evidence board and filing cabinet on the left wall, folding screen and cot in a back corner, radiator under the window, bare floorboards. Open 'Reference at full size' to see Matt standing in it at game scale.",
+      "lookFor": [
+        "Right room for the scene?",
+        "Does Matt fit the furniture and doors?"
+      ]
+    },
+    {
+      "id": "room-pete-kate-flat",
+      "milestone": "rooms",
+      "kind": "image",
+      "title": "Pete & Kate's flat (P2)",
+      "src": "samples/rooms/pete-kate-flat.jpg",
+      "full": "samples/rooms/pete-kate-flat-scale.jpg",
+      "about": "A small, warm, cluttered tenement flat next door to Matt's office, shared by a reporter and his sister, an accountant. Left: a kitchen corner with a gas stove, a percolator coffee pot, a sink and a window. Centre: a round kitchen table with three mismatched chairs, coffee cups, a newspaper spread open. Right: a writing desk with a black typewriter, piles of newspapers and clippings on one side (his), neat bookshelves with ledgers and labelled boxes on the other (hers). A thin shared wall with framed photographs. Rag rug on worn floorboards. A front door on the back wall. Open 'Reference at full size' to see Matt standing in it at game scale.",
+      "lookFor": [
+        "Right room for the scene?",
+        "Does Matt fit the furniture and doors?"
+      ]
+    },
+    {
+      "id": "room-doyers-street",
+      "milestone": "rooms",
+      "kind": "image",
+      "title": "Doyers Street (hub)",
+      "src": "samples/rooms/doyers-street.jpg",
+      "full": "samples/rooms/doyers-street-scale.jpg",
+      "about": "Doyers Street in New York's Chinatown, the crooked little street nicknamed the Bloody Angle: narrow, curving sharply in the middle distance, lined with three- and four-storey brick tenements with fire escapes, laundry lines strung overhead, paper lanterns, shop signs in Chinese characters (rendered as painted shapes, no legible text), a tea house entrance at street level on the right with a doorway to the stairs up to a private detective's office above it, a dark alley mouth on the left. Wet cobblestones and a narrow sidewalk across the foreground where characters walk, snow slush in the gutters, a steaming grate, a gas street lamp. Open 'Reference at full size' to see Matt standing in it at game scale.",
+      "lookFor": [
+        "Right room for the scene?",
+        "Does Matt fit the furniture and doors?"
+      ]
+    },
+    {
+      "id": "room-tea-house",
+      "milestone": "rooms",
+      "kind": "image",
+      "title": "Lee Wing's tea house (P4)",
+      "src": "samples/rooms/tea-house.jpg",
+      "full": "samples/rooms/tea-house-scale.jpg",
+      "about": "A small Chinatown tea house in 1930: dark lacquered wooden counter on the right with an abacus, tea tins and a brass bell; shelves of tea canisters behind it; a few small round tables with stools on the left; a bead curtain on the back wall leading to a back room; a doorway beside it to a laundry room with hanging garments visible; paper lanterns, calligraphy scrolls (painted shapes, no legible text), a front window. Worn tiled floor across the foreground. Open 'Reference at full size' to see Matt standing in it at game scale.",
+      "lookFor": [
+        "Right room for the scene?",
+        "Does Matt fit the furniture and doors?"
+      ]
+    },
+    {
+      "id": "room-pawnshop",
+      "milestone": "rooms",
+      "kind": "image",
+      "title": "Bowery pawnshop (P3)",
+      "src": "samples/rooms/pawnshop.jpg",
+      "full": "samples/rooms/pawnshop-scale.jpg",
+      "about": "A cramped Bowery pawnshop, 1930: a long wooden counter across the middle-right with a brass cage grille on top and a ticket ledger, shelves and cages behind it crammed with other people's lives: pocket watches, musical instruments, radios, typewriters, suitcases, a saxophone, coats on hangers, a mannequin; three brass balls hanging outside the barred front window on the left; a back door behind the counter. Dusty floorboards across the foreground. Open 'Reference at full size' to see Matt standing in it at game scale.",
+      "lookFor": [
+        "Right room for the scene?",
+        "Does Matt fit the furniture and doors?"
+      ]
+    },
+    {
+      "id": "room-alley",
+      "milestone": "rooms",
+      "kind": "image",
+      "title": "Alley behind the pawnshop (P3)",
+      "src": "samples/rooms/alley.jpg",
+      "full": "samples/rooms/alley-scale.jpg",
+      "about": "A narrow Bowery back alley in 1930 between tall brick walls: the pawnshop's back door on the right with a wooden step, fire escapes above, overflowing ash cans and wooden crates, a torn awning, laundry high overhead, a heap of rags and newspapers against the left wall where a homeless man sleeps (the man himself is not shown), puddles on the cobbles across the foreground, the alley opening to a busier street in the far background. Open 'Reference at full size' to see Matt standing in it at game scale.",
+      "lookFor": [
+        "Right room for the scene?",
+        "Does Matt fit the furniture and doors?"
       ]
     },
     {
