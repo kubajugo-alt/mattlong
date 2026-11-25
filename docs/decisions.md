@@ -21,8 +21,9 @@ the bible disagree, this file wins.
   Natalia, Julian). (Resolves the bible's explicitness question.)
 - **First milestone:** the Prologue (P1–P5).
 
-- **Interface (25 Nov 2026, replaces the bible's fedora pop-up):** inventory is a slim
-  strip of 1930 film that slides up from the bottom edge, one item per frame; the
+- **Interface (25 Nov 2026, replaces the bible's fedora pop-up):** inventory is the inside
+  of Matt's open briefcase, sliding up from the bottom edge, items in its felt-lined
+  compartments (2 rows of 6); the
   notebook is its own button (journal), not an inventory item. Dialogue choices are
   plain subtitle-style lines low on the screen over a soft shadow, the scene stays
   visible; Mask choices carry a small half-mask icon. UI type is Jost (Futura-like).

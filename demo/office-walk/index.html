@@ -31,15 +31,15 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 .hb[aria-pressed="true"] img { filter: drop-shadow(0 0 .8cqw rgba(255,255,255,.75)); }
 #bInv { left: 1.4cqw } #bNote { left: 8.6cqw } #bTorch { left: 15.8cqw } #bMap { right: 8.6cqw } #bMenu { right: 1.4cqw }
 .tip { position: absolute; transform: translate(-50%, 0); background: rgba(12,12,14,.86); color: #f1eee8; font: 500 max(12px, 1.15cqw)/1 "Jost", sans-serif; letter-spacing: .04em; padding: .5cqw .9cqw; border-radius: 2px; white-space: nowrap; pointer-events: none; }
-/* inventory: a strip of 1930 film slides up from the bottom edge, one item per frame */
-.inv { position: absolute; left: 50%; bottom: 0; width: max(32cqw, 430px); aspect-ratio: 1600 / 473; transform: translate(-50%, 110%); transition: transform .35s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
-.inv.open { transform: translate(-50%, 15%); pointer-events: auto; }
+/* inventory: Matt's open briefcase slides up from the bottom edge; items sit in its felt-lined compartments (2 rows of 6) */
+.inv { position: absolute; left: 50%; bottom: 0; width: max(34cqw, 440px); aspect-ratio: 1600 / 640; transform: translate(-50%, 110%); transition: transform .35s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
+.inv.open { transform: translate(-50%, 4%); pointer-events: auto; }
 .inv > img { width: 100%; height: 100%; filter: drop-shadow(0 -.4cqw 1.2cqw rgba(0,0,0,.7)); }
-.slot { position: absolute; top: 16%; height: 66%; width: 10.5%; border: 0; padding: 4% .6%; background: none; cursor: pointer; }
+.slot { position: absolute; width: 12%; height: 29%; margin: -.6% 0 0 -.3%; border: 0; padding: .4%; background: none; cursor: pointer; }
 .slot img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .2cqw .3cqw rgba(0,0,0,.9)); transition: transform .12s; }
 .slot:hover img { transform: scale(1.1); }
 .slot[aria-pressed="true"] { background: rgba(255,255,255,.14); border-radius: .3cqw; }
-.inv.open ~ .cap { bottom: max(10cqw, 120px); }
+.inv.open ~ .cap { bottom: max(14cqw, 180px); }
 /* caption band: Matt's look line / subtitles */
 .cap { position: absolute; left: 50%; bottom: 3cqw; transform: translateX(-50%); max-width: 70cqw; text-align: center; color: #f4f1ea; font: 500 max(14px, 1.7cqw)/1.35 "Jost", sans-serif; text-shadow: 0 0 .5cqw #000, 0 0 1cqw #000; opacity: 0; transition: opacity .3s; pointer-events: none; }
 .cap.on { opacity: 1 }
@@ -70,7 +70,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       <button class="hb" id="bTorch" aria-pressed="false" aria-label="Show hotspots" data-tip="Show what I can use"><img alt="" src="ui/btn-torch.webp"></button>
       <button class="hb" id="bMap" aria-label="City map" data-tip="City map"><img alt="" src="ui/btn-map.webp"></button>
       <button class="hb" id="bMenu" aria-label="Menu" data-tip="Menu"><img alt="" src="ui/btn-watch.webp"></button>
-      <div class="inv" id="inv"><img alt="" src="ui/panel-filmstrip.webp"></div>
+      <div class="inv" id="inv"><img alt="" src="ui/panel-briefcase.webp"></div>
       <div class="cap" id="cap" role="status"></div>
       <div class="dlg" id="dlg"><ol id="choices"></ol></div>
       <div class="card" id="card"><div><h2>Prologue</h2><p>Rent Day</p><small>Doyers Street · Thursday, 20 November 1930</small></div></div>
@@ -856,7 +856,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     a.play().catch(() => { TALK.who = null; status.textContent = 'Could not play the line'; });
   }
 
-  // ---- game interface preview: film-strip inventory, notebook, torch, map, menu, captions, dialogue choices, title card
+  // ---- game interface preview: briefcase inventory, notebook, torch, map, menu, captions, dialogue choices, title card
   const ITEMS = [
     ['eviction-notice', 'Eviction notice', "Love letter from the landlord. He always writes when the money's late."],
     ['flask', 'Hip flask', 'Half full. Or half empty, depending on the hour.'],
@@ -869,10 +869,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   ];
   const $ = (id) => document.getElementById(id);
   const slots = $('inv'), cap = $('cap'); let capT = 0, picked = null;
-  const FRAME_X = [1.35, 13.79, 26.16, 38.51, 50.79, 63.07, 75.38, 87.75];   // % across the film strip, measured from the painted frames
+  const CELL_X = [8.8, 23.0, 37.4, 51.2, 65.6, 80.2], CELL_Y = [26.5, 58.5];   // % of the briefcase: the painted compartments
   function caption(who, text, ms = 4200) { cap.innerHTML = ''; const b = document.createElement('b'); b.textContent = who; cap.append(b, text); cap.classList.add('on'); clearTimeout(capT); capT = setTimeout(() => cap.classList.remove('on'), ms); }
   for (const [k, [id, name, look]] of ITEMS.entries()) {
-    const b = document.createElement('button'); b.className = 'slot'; b.style.left = FRAME_X[k] + '%'; b.setAttribute('aria-label', name); b.dataset.tip = name; b.setAttribute('aria-pressed', 'false');
+    const b = document.createElement('button'); b.className = 'slot'; b.style.left = CELL_X[k % 6] + '%'; b.style.top = CELL_Y[Math.floor(k / 6)] + '%'; b.setAttribute('aria-label', name); b.dataset.tip = name; b.setAttribute('aria-pressed', 'false');
     const im = document.createElement('img'); im.alt = ''; im.src = 'ui/item-' + id + '.webp'; b.append(im);
     b.addEventListener('click', () => { picked = picked === id ? null : id; slots.querySelectorAll('.slot').forEach(x => x.setAttribute('aria-pressed', x === b && picked ? 'true' : 'false'));
       if (picked) caption('Matt', look); });

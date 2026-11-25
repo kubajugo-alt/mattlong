@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. The inside of an open, battered 1930 leather briefcase seen straight from above, shaped as a long, narrow, shallow horizontal tray that spans the whole frame width: worn dark leather edges with brass corner fittings and stitching, the inside lined with dark worn felt, divided by thin leather partitions into exactly eight equal, evenly spaced, EMPTY square compartments in a single row. The case is about one third of the image height, vertically centred, on a completely flat pure chroma green (#00FF00) background above and below. Nothing inside the compartments.",
+  "refs": [
+    "art/rooms/final/office-day.png"
+  ],
+  "aspect": "21:9",
+  "size": "2K",
+  "created": "2026-11-25T17:14:52.511Z",
+  "usage": {
+    "promptTokenCount": 431,
+    "candidatesTokenCount": 2032,
+    "totalTokenCount": 2463,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 173
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1680
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

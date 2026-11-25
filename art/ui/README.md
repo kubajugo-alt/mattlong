@@ -9,6 +9,6 @@ generations with their prompt sidecars (.json); the keyed PNGs sit here; the dem
   Lee Wing's account book, fifty dollars, photo of Michael, Michael's door key.
 - Buttons: fedora (inventory), notebook (journal), torch (show hotspots), map, pocket watch (menu); half-mask icon
   for Mask choices.
-- Panels: film strip (inventory, 8 frames at 1.35/13.79/26.16/38.51/50.79/63.07/75.38/87.75 % across), title card frame.
-- Dropped: fedora-interior inventory and typewriter-paper dialogue panel (too intrusive), cigar-box tray, back of
+- Panels: briefcase interior (inventory; compartments at x 8.8/23.0/37.4/51.2/65.6/80.2 %, y 26.5/58.5 %), title card frame.
+- Dropped: film-strip inventory (too big), fedora-interior inventory and typewriter-paper dialogue panel (too intrusive), cigar-box tray, back of
   Natalia's photo (Gemini invented a plot clue on it).
