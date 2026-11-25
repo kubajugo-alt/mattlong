@@ -50,12 +50,17 @@
       "office-day": {
         "horizon": 0.32,
         "door_top": 0.205,
-        "door_bottom": 0.696
+        "door_bottom": 0.696,
+        "door_x": [
+          0.33,
+          0.43
+        ]
       },
       "office-night": {
         "horizon": 0.32
       }
-    }
+    },
+    "formula": "height_px = (feet_y - horizon_y) * height_m / 1.6 ; at the door (feet_y = door_bottom) a 1.85 m man is 1.85/2.1 = 88% of the door's height"
   },
   "door_lettering": "The office door glass is left blank; the engine draws 'M. LONG — INVESTIGATIONS' (mirror-reversed) so it is spelled right and can change in the story."
 }
