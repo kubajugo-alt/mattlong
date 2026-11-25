@@ -77,8 +77,14 @@ def lineup(chars, out, title):
 
 for c in cast['characters']:
     finish(c['id'], c.get('accent') == 'lips')
-main = [c for c in cast['characters'] if c['group'] in ('main', 'variant')]
+main = [c for c in cast['characters'] if c['group'] in ('main', 'variant')]  # bathhouse and shower sets get their own lineups
 minor = [c for c in cast['characters'] if c['group'] == 'minor']
 lineup(main, os.path.join(dst, 'lineup-main.jpg'), 'Matt Long: The Bloody Angle — main cast')
 lineup(minor, os.path.join(dst, 'lineup-minor.jpg'), 'Matt Long: The Bloody Angle — minor cast')
+bath = []
+for b in dict.fromkeys(c['base'] for c in cast['characters'] if c['group'] == 'bathhouse'):
+    bath += [x for x in cast['characters'] if x['id'] == b]
+    bath += [x for x in cast['characters'] if x['group'] in ('bathhouse', 'shower') and x['base'] == b]
+if bath:
+    lineup(bath, os.path.join(dst, 'lineup-bathhouse.jpg'), 'Matt Long: The Bloody Angle — bathhouse')
 print('finished', len(cast['characters']))

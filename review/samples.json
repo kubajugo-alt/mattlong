@@ -54,6 +54,107 @@
       ]
     },
     {
+      "id": "cast-lineup-bathhouse",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Bathhouse and shower: Matt, Pete, Julian",
+      "src": "samples/cast/lineup-bathhouse.jpg",
+      "full": "samples/cast/lineup-bathhouse.jpg",
+      "about": "Each man in street clothes, in a bath towel, in white 1930s boxer shorts and, for Matt and Julian, unclothed in the prison shower with both hands covering the groin. Pete's shower version and all back views were refused by the image model.",
+      "lookFor": [
+        "Same man in both versions?",
+        "Builds: Matt a drinker, Pete gangly, Julian slim and elegant?"
+      ]
+    },
+    {
+      "id": "cast-matt-towel",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long (bathhouse)",
+      "src": "samples/cast/matt-towel.jpg",
+      "about": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+      "lookFor": [
+        "Right for the character and the scene?"
+      ]
+    },
+    {
+      "id": "cast-pete-towel",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Pete Duckerton (bathhouse)",
+      "src": "samples/cast/pete-towel.jpg",
+      "about": "The same man as the second reference image, Pete Duckerton, about 35: the same boyish face and eager grin, dark brown untidy hair (the same dark hair colour as his sideburns in the second reference), now visible without his hat, clearly a man of 35 with faint lines round the eyes and a day's stubble, not younger; skinny and gangly, narrow shoulders, an ordinary unathletic body with almost no muscle definition, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+      "lookFor": [
+        "Right for the character and the scene?"
+      ]
+    },
+    {
+      "id": "cast-julian-towel",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Julian Moss (bathhouse)",
+      "src": "samples/cast/julian-towel.jpg",
+      "about": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+      "lookFor": [
+        "Right for the character and the scene?"
+      ]
+    },
+    {
+      "id": "cast-matt-boxers",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long (underwear)",
+      "src": "samples/cast/matt-boxers.jpg",
+      "about": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+      "lookFor": [
+        "Same man as his towel version?"
+      ]
+    },
+    {
+      "id": "cast-pete-boxers",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Pete Duckerton (underwear)",
+      "src": "samples/cast/pete-boxers.jpg",
+      "about": "The same man as the second reference image, Pete Duckerton, about 35: the same boyish face and eager grin, dark brown untidy hair (the same dark hair colour as his sideburns in the second reference), now visible without his hat, clearly a man of 35 with faint lines round the eyes and a day's stubble, not younger; skinny and gangly, narrow shoulders, an ordinary unathletic body with almost no muscle definition, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+      "lookFor": [
+        "Same man as his towel version?"
+      ]
+    },
+    {
+      "id": "cast-julian-boxers",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Julian Moss (underwear)",
+      "src": "samples/cast/julian-boxers.jpg",
+      "about": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+      "lookFor": [
+        "Same man as his towel version?"
+      ]
+    },
+    {
+      "id": "cast-matt-shower-front",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Matt Long (shower, front, covered)",
+      "src": "samples/cast/matt-shower-front.jpg",
+      "about": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink,, in a 1930s prison shower: a non-explicit, non-sexual front three-quarter view of the unclothed figure standing upright, both hands held together low in front of his groin so that it is completely covered and nothing intimate is visible, wary expression, barefoot. Natural, untrimmed body hair as men had in 1930: chest hair, hair on the forearms and legs.",
+      "lookFor": [
+        "Usable for the shower scene?"
+      ]
+    },
+    {
+      "id": "cast-julian-shower-front",
+      "milestone": "cast",
+      "kind": "image",
+      "title": "Julian Moss (shower, front, covered)",
+      "src": "samples/cast/julian-shower-front.jpg",
+      "about": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers,, in a 1930s prison shower: a non-explicit, non-sexual front three-quarter view of the unclothed figure standing upright, both hands held together low in front of his groin so that it is completely covered and nothing intimate is visible, wary expression, barefoot. Natural, untrimmed body hair as men had in 1930: chest hair, hair on the forearms and legs.",
+      "lookFor": [
+        "Usable for the shower scene?"
+      ]
+    },
+    {
       "id": "cast-matt",
       "milestone": "cast",
       "kind": "image",

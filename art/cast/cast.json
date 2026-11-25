@@ -194,8 +194,89 @@
       "look": "Sergeant Dooley, about 40, Corrigan's heavy. Very large and broad-shouldered, flat-nosed, small eyes, heavy jaw. A 1930 NYPD sergeant's uniform: long dark wool tunic with brass buttons and sergeant's chevrons, a peaked police cap, a nightstick hanging from the belt, big hands.",
       "height_cm": 193,
       "hat": true
+    },
+    {
+      "id": "matt-towel",
+      "name": "Matt Long (bathhouse)",
+      "group": "bathhouse",
+      "base": "matt",
+      "height_cm": 185,
+      "hat": false,
+      "look": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms."
+    },
+    {
+      "id": "pete-towel",
+      "name": "Pete Duckerton (bathhouse)",
+      "group": "bathhouse",
+      "base": "pete",
+      "height_cm": 175,
+      "hat": false,
+      "look": "The same man as the second reference image, Pete Duckerton, about 35: the same boyish face and eager grin, dark brown untidy hair (the same dark hair colour as his sideburns in the second reference), now visible without his hat, clearly a man of 35 with faint lines round the eyes and a day's stubble, not younger; skinny and gangly, narrow shoulders, an ordinary unathletic body with almost no muscle definition, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms."
+    },
+    {
+      "id": "julian-towel",
+      "name": "Julian Moss (bathhouse)",
+      "group": "bathhouse",
+      "base": "julian",
+      "height_cm": 180,
+      "hat": false,
+      "look": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms."
+    },
+    {
+      "id": "matt-boxers",
+      "name": "Matt Long (underwear)",
+      "group": "bathhouse",
+      "base": "matt",
+      "height_cm": 185,
+      "hat": false,
+      "look": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms."
+    },
+    {
+      "id": "pete-boxers",
+      "name": "Pete Duckerton (underwear)",
+      "group": "bathhouse",
+      "base": "pete",
+      "height_cm": 175,
+      "hat": false,
+      "look": "The same man as the second reference image, Pete Duckerton, about 35: the same boyish face and eager grin, dark brown untidy hair (the same dark hair colour as his sideburns in the second reference), now visible without his hat, clearly a man of 35 with faint lines round the eyes and a day's stubble, not younger; skinny and gangly, narrow shoulders, an ordinary unathletic body with almost no muscle definition, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms."
+    },
+    {
+      "id": "julian-boxers",
+      "name": "Julian Moss (underwear)",
+      "group": "bathhouse",
+      "base": "julian",
+      "height_cm": 180,
+      "hat": false,
+      "look": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms."
+    },
+    {
+      "id": "matt-shower-front",
+      "name": "Matt Long (shower, front, covered)",
+      "group": "shower",
+      "base": "matt",
+      "height_cm": 185,
+      "hat": false,
+      "look": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink,, in a 1930s prison shower: a non-explicit, non-sexual front three-quarter view of the unclothed figure standing upright, both hands held together low in front of his groin so that it is completely covered and nothing intimate is visible, wary expression, barefoot. Natural, untrimmed body hair as men had in 1930: chest hair, hair on the forearms and legs."
+    },
+    {
+      "id": "julian-shower-front",
+      "name": "Julian Moss (shower, front, covered)",
+      "group": "shower",
+      "base": "julian",
+      "height_cm": 180,
+      "hat": false,
+      "look": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers,, in a 1930s prison shower: a non-explicit, non-sexual front three-quarter view of the unclothed figure standing upright, both hands held together low in front of his groin so that it is completely covered and nothing intimate is visible, wary expression, barefoot. Natural, untrimmed body hair as men had in 1930: chest hair, hair on the forearms and legs."
     }
   ],
   "heights_note": "height_cm is standing height without hat; hat=true adds about 9 cm to the outline when the lineup is scaled.",
-  "proportions": "Body proportions identical to the reference figure: about 7.5 heads tall, the head the same size relative to the body as the reference's head, legs the same length relative to the body, shoulders at the same relative height. A heavier or older build is shown only by width, posture and clothing, never by a bigger head or shorter legs."
+  "proportions": "Body proportions identical to the reference figure: about 7.5 heads tall, the head the same size relative to the body as the reference's head, legs the same length relative to the body, shoulders at the same relative height. A heavier or older build is shown only by width, posture and clothing, never by a bigger head or shorter legs.",
+  "blocked": {
+    "ids": [
+      "matt-shower-back",
+      "pete-shower-back",
+      "julian-shower-back",
+      "pete-shower-front"
+    ],
+    "reason": "Google's image model refused these (PROHIBITED_CONTENT) on 25 Nov 2026; not retried. Needs another tool or a hand-painted pass."
+  }
 }

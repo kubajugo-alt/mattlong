@@ -24,3 +24,15 @@ as Matt; heavier or older builds are shown by width, posture and clothes only.
 The proportion check found Natalia, Corrigan, Sol, Hartley and Stefan with
 heads too large and Inéz, Kate and Zofia with heads too small; all were
 regenerated with the rule.
+
+## Bathhouse and shower variants
+
+Matt, Pete and Julian each have a bath-towel version and a white 1930s
+boxer-shorts version (group `bathhouse`), generated with the style anchor plus
+the man's own design as a second reference so face, body and body hair carry
+over. Bodies are ordinary 1930s builds with natural, untrimmed body hair.
+
+Shower versions (group `shower`) are non-explicit: front three-quarter view with
+both hands covering the groin. Matt's and Julian's exist. Pete's front view and
+all three back views were refused by Google's image model; see `blocked` in
+`cast.json`. They were not retried. No full-frontal versions are made.
