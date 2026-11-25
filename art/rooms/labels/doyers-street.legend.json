@@ -106,19 +106,5 @@
  },
  "body_radius_m": 0.25,
  "fov_deg": 60,
- "spots": {},
- "props": [
-  {
-   "name": "junkie",
-   "file": "art/cast/final/junkie-facing-right.png",
-   "x": 444,
-   "y": 715,
-   "scale": 0.1546,
-   "depth_m": 0.35,
-   "note": "The junkie standing in the recessed shop doorway past the open apartment door, the bin in front of him hiding him to the waist; sized against the doorway and enlarged 10% on review. Mirrored cast sprite, looking across at the pawnshop.",
-   "behind": [
-    "box-left"
-   ]
-  }
- ]
+ "spots": {}
 }

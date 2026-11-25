@@ -1,17 +1,101 @@
 {
- "from_label_map": {"steps": "steps"},
- "drop": ["puddle-2", "puddle-1", "puddle-3", "puddle-2-2", "puddle-1-2", "puddle-5", "puddle-3-2", "fire-escape-balcony-1", "clothesline-2",
-          "awning-support-bar", "wooden-steps", "door-step", "building-window-2", "building-window-1"],
- "merge": {"washing": ["shirt-1", "shirt-2", "shirt-3", "shirt-4", "pants-1", "pants-2", "pants-3", "hanging-clothes-1", "hanging-clothes-2", "hanging-clothes-2-2",
-                       "hanging-cloth-1", "hanging-cloth-2", "hanging-cloth-3", "clothesline-1"],
-           "fire-escapes": ["fire-escape-1", "fire-escape-2", "fire-escape-1-2", "fire-escape-ladder-1", "fire-escape-ladder-2"],
-           "crates-left": ["wooden-crate-1", "wooden-crate-2"], "boxes-far": ["wooden-box-1", "wooden-box-2"],
-           "crates-right": ["lower-wooden-crate", "upper-wooden-crate"], "crates-front": ["wooden-crate-3", "wooden-crate-4"],
-           "windows": ["window-1", "building-window-3", "window-4", "window-5"]},
- "rename": {"pile-of-newspapers": "rag-heap", "door": "back-door", "doorway": "side-doorway", "trash-bin": "bin-far",
-            "metal-trash-can-1": "dustbin-1", "metal-trash-can-2": "dustbin-2", "trash-can-3": "dustbin-3"},
- "names": {"rag-heap": "heap of rags and newspapers", "loose-newspaper": "loose newspaper", "drainpipe": "drainpipe", "side-doorway": "doorway",
-           "washing": "washing on the lines", "fire-escapes": "fire escapes", "crates-left": "crates", "boxes-far": "boxes", "crates-right": "stacked crates",
-           "crates-front": "crates", "windows": "windows", "bin-far": "dustbin", "dustbin-1": "dustbin", "dustbin-2": "dustbin", "dustbin-3": "dustbin",
-           "trash-can-lid": "dustbin lid", "torn-awning": "torn awning", "steps": "steps", "back-door": "pawnshop back door", "doorknob": "door handle"}
+ "from_label_map": {
+  "steps": "steps"
+ },
+ "drop": [
+  "puddle-2",
+  "puddle-1",
+  "puddle-3",
+  "puddle-2-2",
+  "puddle-1-2",
+  "puddle-5",
+  "puddle-3-2",
+  "fire-escape-balcony-1",
+  "clothesline-2",
+  "awning-support-bar",
+  "wooden-steps",
+  "door-step",
+  "building-window-2",
+  "building-window-1"
+ ],
+ "merge": {
+  "washing": [
+   "shirt-1",
+   "shirt-2",
+   "shirt-3",
+   "shirt-4",
+   "pants-1",
+   "pants-2",
+   "pants-3",
+   "hanging-clothes-1",
+   "hanging-clothes-2",
+   "hanging-clothes-2-2",
+   "hanging-cloth-1",
+   "hanging-cloth-2",
+   "hanging-cloth-3",
+   "clothesline-1"
+  ],
+  "fire-escapes": [
+   "fire-escape-1",
+   "fire-escape-2",
+   "fire-escape-1-2",
+   "fire-escape-ladder-1",
+   "fire-escape-ladder-2"
+  ],
+  "crates-left": [
+   "wooden-crate-1",
+   "wooden-crate-2"
+  ],
+  "boxes-far": [
+   "wooden-box-1",
+   "wooden-box-2"
+  ],
+  "crates-right": [
+   "lower-wooden-crate",
+   "upper-wooden-crate"
+  ],
+  "crates-front": [
+   "wooden-crate-3",
+   "wooden-crate-4"
+  ],
+  "windows": [
+   "window-1",
+   "building-window-3",
+   "window-4",
+   "window-5"
+  ]
+ },
+ "rename": {
+  "pile-of-newspapers": "rag-heap",
+  "door": "back-door",
+  "doorway": "side-doorway",
+  "trash-bin": "bin-far",
+  "metal-trash-can-1": "dustbin-1",
+  "metal-trash-can-2": "dustbin-2",
+  "trash-can-3": "dustbin-3"
+ },
+ "names": {
+  "rag-heap": "heap of rags and newspapers",
+  "loose-newspaper": "loose newspaper",
+  "drainpipe": "drainpipe",
+  "side-doorway": "doorway",
+  "washing": "washing on the lines",
+  "fire-escapes": "fire escapes",
+  "crates-left": "crates",
+  "boxes-far": "boxes",
+  "crates-right": "stacked crates",
+  "crates-front": "crates",
+  "windows": "windows",
+  "bin-far": "dustbin",
+  "dustbin-1": "dustbin",
+  "dustbin-2": "dustbin",
+  "dustbin-3": "dustbin",
+  "trash-can-lid": "dustbin lid",
+  "torn-awning": "torn awning",
+  "steps": "steps",
+  "back-door": "pawnshop back door",
+  "doorknob": "door handle",
+  "junkie": "junkie"
+ },
+ "scene_props": true
 }

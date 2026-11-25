@@ -133,8 +133,6 @@
   "carved-panel": "carved panel",
   "drain": "drain grate",
   "window": "window",
-  "drainpipe": "drainpipe",
-  "junkie": "junkie"
- },
- "scene_props": true
+  "drainpipe": "drainpipe"
+ }
 }
