@@ -13,14 +13,13 @@ const types = { '.html': 'text/html', '.json': 'application/json', '.png': 'imag
     r.fulfill({ status: 200, body, contentType: types[path.extname(f)] || 'application/octet-stream' });
   });
   const p = await ctx.newPage(); const errs = [];
-  p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') errs.push(m.text()); });
-  await p.goto('http://review.local/index.html#m0-rig-v2'); await p.waitForTimeout(2000);
+  p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+  await p.goto('http://review.local/index.html#m0-rig-v2'); await p.waitForTimeout(2500);
   const box = p.locator('.stage > div').first();
   const shot = async (n) => box.screenshot({ path: out + '/' + n + '.png' });
-  await p.click('.seg >> text=Rest'); await p.waitForTimeout(400); await shot('m_rest');
-  await p.click('.seg >> text=Walk');
-  for (let i = 0; i < 4; i++) { await p.waitForTimeout(400); await shot('m_walk' + i); }
-  await p.click('.seg >> text=Gesture'); await p.waitForTimeout(2800); await shot('m_gesture');
-  await p.check('#rig-mesh'); await p.click('.seg >> text=Walk'); await p.waitForTimeout(700); await shot('m_wire');
+  for (let i = 0; i < 8; i++) { await p.waitForTimeout(150); await shot('w' + i); }
+  await p.click('.seg >> text=Idle'); await p.waitForTimeout(1500); await shot('idle');
+  await p.click('.seg >> text=Gesture'); await p.waitForTimeout(1500); await shot('gest');
+  await p.click('.seg >> text=Reach'); for (let i = 0; i < 3; i++) { await p.waitForTimeout(2600 * (i ? 1 : 0.6)); await shot('reach' + i); }
   console.log('errors', JSON.stringify(errs.slice(0, 5))); await b.close();
 })();

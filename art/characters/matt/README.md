@@ -42,3 +42,15 @@ elbow 0.63, wrist 0.485, hip 0.53, knee 0.285, ankle 0.05 in shoes. Matt
 measures 7.3 heads (crown 174, chin 480, soles 2413 in master pixels; the
 crown is under the hat, so it is placed from the eye line). The neck pivot is
 mid-neck. `joints.json` records these measurements under `proportions`.
+
+Skeleton (mesh renderer): pelvis (root, at the hip) -> chest (bends at the
+waist, carries head and arms); legs thigh -> shin -> foot (ankle) -> toe (ball of
+the foot). `foot` in `joints.json` holds the ball joint and the heel, ball and
+toe contact points; `footNeutral` in `mesh.json` levels the drawn shoe, which
+stands slightly on its toes.
+
+Motion (review player, `review/index.html`): walk angles follow published gait
+data (Winter); the lowest contact point is planted on the floor and the body
+travels over it (root motion); two-bone IK for reaching; head stabilised
+against pelvis and chest with spring lag; cloth springs on the jacket skirt and
+trouser hems respond to acceleration; poses blend over 0.45 s when switching.

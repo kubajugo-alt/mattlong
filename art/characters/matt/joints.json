@@ -98,5 +98,35 @@
   "chin_y": 480,
   "sole_y": 2413,
   "note": "Joint heights follow standard adult proportions (Drillis & Contini) as fractions of stature: shoulder (humeral head centre) 0.79, elbow 0.63, wrist 0.485, hip 0.53, knee 0.285, ankle 0.05 in shoes."
+ },
+ "spine": {
+  "waist": [
+   735,
+   1075
+  ],
+  "waist_blend": 110
+ },
+ "foot": {
+  "ball": [
+   880,
+   2385
+  ],
+  "heel_contact": [
+   700,
+   2385
+  ],
+  "ball_contact": [
+   880,
+   2411
+  ],
+  "toe_contact": [
+   985,
+   2400
+  ],
+  "ankle_blend": 28,
+  "toe_blend": 22
+ },
+ "mesh": {
+  "hem_jiggle": 0.35
  }
 }
