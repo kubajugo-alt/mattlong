@@ -1,725 +1,831 @@
 {
-  "milestones": [
+ "milestones": [
+  {
+   "id": "voices",
+   "label": "Voices",
+   "title": "Voice casting",
+   "date": "25 Nov 2026",
+   "summary": "Three ElevenLabs voices auditioned for each lead, all reading the same in-character line (model eleven_v4). Pick one per character, or reject all and I'll search again."
+  },
+  {
+   "id": "cast",
+   "label": "Cast",
+   "title": "Character designs",
+   "date": "25 Nov 2026",
+   "summary": "Static designs of the whole cast (24 figures), all generated against the same Matt image as the style anchor and one shared proportion rule, cut out and forced to greyscale (only Inéz's lipstick is red). For sprite animation in Ludo.ai later."
+  },
+  {
+   "id": "rooms",
+   "label": "Rooms",
+   "title": "Prologue backgrounds",
+   "date": "25 Nov 2026",
+   "summary": "The seven screens of the Prologue, painted in the cast's style, with a fixed eye-level camera so characters fit: a 1.85 m man at the front of the floor is half the image height."
+  },
+  {
+   "id": "m0",
+   "label": "M0",
+   "title": "Pipeline tests",
+   "date": "25 Nov 2026",
+   "summary": "Can we make art, voice and music and get them into the game as files? Yes for all three. Art now comes from Gemini."
+  }
+ ],
+ "samples": [
+  {
+   "id": "voices-matt",
+   "milestone": "voices",
+   "kind": "audio",
+   "title": "Matt Long: three candidates",
+   "tracks": [
     {
-      "id": "cast",
-      "label": "Cast",
-      "title": "Character designs",
-      "date": "25 Nov 2026",
-      "summary": "Static designs of the whole cast (24 figures), all generated against the same Matt image as the style anchor and one shared proportion rule, cut out and forced to greyscale (only Inéz's lipstick is red). For sprite animation in Ludo.ai later."
+     "label": "A · Robert: dry Great Lakes baritone, understated",
+     "src": "samples/voices/matt-robert.mp3"
     },
     {
-      "id": "rooms",
-      "label": "Rooms",
-      "title": "Prologue backgrounds",
-      "date": "25 Nov 2026",
-      "summary": "The seven screens of the Prologue, painted in the cast's style, with a fixed eye-level camera so characters fit: a 1.85 m man at the front of the floor is half the image height."
+     "label": "B · Tino: deep, damaged, raspy noir",
+     "src": "samples/voices/matt-tino.mp3"
     },
     {
-      "id": "m0",
-      "label": "M0",
-      "title": "Pipeline tests",
-      "date": "25 Nov 2026",
-      "summary": "Can we make art, voice and music and get them into the game as files? Yes for all three. Art now comes from Gemini."
+     "label": "C · Obsidian: gravelly, dark, heavy",
+     "src": "samples/voices/matt-obsidian.mp3"
     }
-  ],
-  "samples": [
+   ],
+   "about": "Line: “She came in out of the rain like she'd paid it to stop. I didn't ask for the money up front. That was my first mistake.”",
+   "lookFor": [
+    "Which one sounds like a tired ex-cop who still has a sense of humour?",
+    "Too much gravel? Matt narrates the whole game, so the voice has to wear well over hours."
+   ]
+  },
+  {
+   "id": "voices-pete",
+   "milestone": "voices",
+   "kind": "audio",
+   "title": "Pete: three candidates",
+   "tracks": [
     {
-      "id": "cast-lineup-main",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Lineup: main cast",
-      "src": "samples/cast/lineup-main.jpg",
-      "full": "samples/cast/lineup-main.jpg",
-      "about": "The 12 main characters plus Michael wounded (Act 3), at their real relative heights.",
-      "lookFor": [
-        "Does the style hold across all of them?",
-        "Heights and builds: Corrigan's bulk, Brancato small, Whitcombe tall and thin, Grayson forgettable?"
-      ]
+     "label": "A · Nick: warm, smooth, young",
+     "src": "samples/voices/pete-nick.mp3"
     },
     {
-      "id": "cast-lineup-minor",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Lineup: minor cast",
-      "src": "samples/cast/lineup-minor.jpg",
-      "full": "samples/cast/lineup-minor.jpg",
-      "about": "The 11 minor characters, including the alley junkie from the Prologue, at their real relative heights.",
-      "lookFor": [
-        "Any character that breaks the style or doesn't match the bible?"
-      ]
+     "label": "B · Jordan: warm with a bit of grit",
+     "src": "samples/voices/pete-jordan.mp3"
     },
     {
-      "id": "cast-proportions",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Proportion check: same eye height",
-      "src": "samples/cast/lineup-eyelevel.jpg",
-      "full": "samples/cast/lineup-eyelevel.jpg",
-      "about": "Every character scaled so the distance from eyes to floor is identical (yellow line), so head size, torso and leg length can be compared directly. After this check, Natalia, Corrigan, Sol, Hartley, Stefan, Inéz, Kate and Zofia were regenerated with one shared rule: about 7.5 heads tall, the same head-to-body ratio and leg length as Matt, with heavier or older builds shown only by width, posture and clothes.",
-      "lookFor": [
-        "Does anyone still look out of proportion next to the others?"
-      ]
-    },
-    {
-      "id": "cast-lineup-bathhouse",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Bathhouse and shower: Matt, Pete, Julian",
-      "src": "samples/cast/lineup-bathhouse.jpg",
-      "full": "samples/cast/lineup-bathhouse.jpg",
-      "about": "Each man in street clothes, in a bath towel, in white 1930s boxer shorts and, for Matt and Julian, unclothed in the prison shower with both hands covering the groin. Pete's clothed design was redone to match his older face. His shower version was refused three times by the image model, and all back views were refused.",
-      "lookFor": [
-        "Same man in both versions?",
-        "Builds: Matt a drinker, Pete gangly, Julian slim and elegant?"
-      ]
-    },
-    {
-      "id": "cast-matt-towel",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long (bathhouse)",
-      "src": "samples/cast/matt-towel.jpg",
-      "about": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
-      "lookFor": [
-        "Right for the character and the scene?"
-      ]
-    },
-    {
-      "id": "cast-pete-towel",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Pete Duckerton (bathhouse)",
-      "src": "samples/cast/pete-towel.jpg",
-      "about": "The same man as the second reference image, Pete Duckerton, about 35: the same boyish face and eager grin, dark brown untidy hair (the same dark hair colour as his sideburns in the second reference), now visible without his hat, clearly a man of 35 with faint lines round the eyes and a day's stubble, not younger; skinny and gangly, narrow shoulders, an ordinary unathletic body with almost no muscle definition, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
-      "lookFor": [
-        "Right for the character and the scene?"
-      ]
-    },
-    {
-      "id": "cast-julian-towel",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Julian Moss (bathhouse)",
-      "src": "samples/cast/julian-towel.jpg",
-      "about": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
-      "lookFor": [
-        "Right for the character and the scene?"
-      ]
-    },
-    {
-      "id": "cast-matt-boxers",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long (underwear)",
-      "src": "samples/cast/matt-boxers.jpg",
-      "about": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
-      "lookFor": [
-        "Same man as his towel version?"
-      ]
-    },
-    {
-      "id": "cast-pete-boxers",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Pete Duckerton (underwear)",
-      "src": "samples/cast/pete-boxers.jpg",
-      "about": "The same man as the second reference image, Pete Duckerton, about 35: the same boyish face and eager grin, dark brown untidy hair (the same dark hair colour as his sideburns in the second reference), now visible without his hat, clearly a man of 35 with faint lines round the eyes and a day's stubble, not younger; skinny and gangly, narrow shoulders, an ordinary unathletic body with almost no muscle definition, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
-      "lookFor": [
-        "Same man as his towel version?"
-      ]
-    },
-    {
-      "id": "cast-julian-boxers",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Julian Moss (underwear)",
-      "src": "samples/cast/julian-boxers.jpg",
-      "about": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
-      "lookFor": [
-        "Same man as his towel version?"
-      ]
-    },
-    {
-      "id": "cast-matt-shower-front",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long (shower, front, covered)",
-      "src": "samples/cast/matt-shower-front.jpg",
-      "about": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink,, in a 1930s prison shower: a non-explicit, non-sexual front three-quarter view of the unclothed figure standing upright, both hands held together low in front of his groin so that it is completely covered and nothing intimate is visible, wary expression, barefoot. Natural, untrimmed body hair as men had in 1930: chest hair, hair on the forearms and legs.",
-      "lookFor": [
-        "Usable for the shower scene?"
-      ]
-    },
-    {
-      "id": "cast-julian-shower-front",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Julian Moss (shower, front, covered)",
-      "src": "samples/cast/julian-shower-front.jpg",
-      "about": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers,, in a 1930s prison shower: a non-explicit, non-sexual front three-quarter view of the unclothed figure standing upright, both hands held together low in front of his groin so that it is completely covered and nothing intimate is visible, wary expression, barefoot. Natural, untrimmed body hair as men had in 1930: chest hair, hair on the forearms and legs.",
-      "lookFor": [
-        "Usable for the shower scene?"
-      ]
-    },
-    {
-      "id": "cast-matt",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long",
-      "src": "samples/cast/matt.jpg",
-      "about": "Matt Long, 37, private investigator and ex-NYPD detective. Tall, lean, a little stooped with tiredness. Rumpled grey single-breasted three-piece suit, white shirt, loosened dark tie, a fedora with a dented crown, two-day stubble, tired sharp eyes, square jaw. Hands relaxed at his sides.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-matt-turnaround",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt: turnaround of every state",
-      "src": "samples/cast/lineup-matt-turnaround.jpg",
-      "full": "samples/cast/lineup-matt-turnaround.jpg",
-      "about": "Front, strict side profile (facing right) and back view for each of Matt's states: clothed, bath towel, boxer shorts. The covered shower state has only the front view; Google's image model refused the unclothed side and back views.",
-      "lookFor": [
-        "Same man from every angle?",
-        "Are the side views true profiles for walk sprites in Ludo.ai?"
-      ]
-    },
-    {
-      "id": "cast-matt-side",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long (side view)",
-      "src": "samples/cast/matt-side.jpg",
-      "about": "The same man as the second reference image, Matt Long, 37, wearing his usual clothes exactly as in the second reference image (rumpled grey three-piece suit, loosened tie, dented fedora). Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible.",
-      "lookFor": [
-        "Consistent with his front view?"
-      ]
-    },
-    {
-      "id": "cast-matt-back",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long (back view)",
-      "src": "samples/cast/matt-back.jpg",
-      "about": "The same man as the second reference image, Matt Long, 37, wearing his usual clothes exactly as in the second reference image (rumpled grey three-piece suit, loosened tie, dented fedora). Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible).",
-      "lookFor": [
-        "Consistent with his front view?"
-      ]
-    },
-    {
-      "id": "cast-matt-towel-side",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long (bathhouse) (side view)",
-      "src": "samples/cast/matt-towel-side.jpg",
-      "about": "The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible.",
-      "lookFor": [
-        "Consistent with his front view?"
-      ]
-    },
-    {
-      "id": "cast-matt-towel-back",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long (bathhouse) (back view)",
-      "src": "samples/cast/matt-towel-back.jpg",
-      "about": "The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible).",
-      "lookFor": [
-        "Consistent with his front view?"
-      ]
-    },
-    {
-      "id": "cast-matt-boxers-side",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long (underwear) (side view)",
-      "src": "samples/cast/matt-boxers-side.jpg",
-      "about": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible.",
-      "lookFor": [
-        "Consistent with his front view?"
-      ]
-    },
-    {
-      "id": "cast-matt-boxers-back",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Matt Long (underwear) (back view)",
-      "src": "samples/cast/matt-boxers-back.jpg",
-      "about": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible).",
-      "lookFor": [
-        "Consistent with his front view?"
-      ]
-    },
-    {
-      "id": "cast-pete",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Pete Duckerton",
-      "src": "samples/cast/pete.jpg",
-      "about": "Pete Duckerton, 35, crime reporter. The same man as the third reference image: his face, dark brown untidy hair and build, clearly a man of 35 with faint lines round the eyes and a day's stubble, an eager grin, slim and gangly. Dressed exactly as in the second reference image: fedora pushed back on his head with a press card tucked in the hatband, rumpled striped suit, long knitted scarf hanging untied round his neck, a rolled-up newspaper in one hand, the other hand in his trouser pocket.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-kate",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Kate Duckerton",
-      "src": "samples/cast/kate.jpg",
-      "about": "Kate Duckerton, about 33, accountant. Neat dark bob, round wire-rimmed spectacles, composed and precise, slightly shorter than average. A tailored belted wool coat over a plain calf-length dress, sensible low-heeled shoes, holding a cloth-bound ledger against her chest with both hands.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-natalia",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Natalia Long (née Kowalska)",
-      "src": "samples/cast/natalia.jpg",
-      "about": "Natalia Long, about 34, Polish immigrant who works in a Greenpoint bakery. Strong features, sturdy build, hair pinned up under a modest small felt Sunday hat. Plain long-sleeved working dress with a white apron, flour dusted on her sleeves and forearms, arms folded, a blunt steady look.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-inez",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Inéz Venta",
-      "src": "samples/cast/inez.jpg",
-      "about": "Inéz Venta, about 28, glamorous society girl whose family has secretly lost everything. Slim and poised. Platinum-blonde finger-waved hair, dark eyes, the only colour on her is deep red lipstick (#B3141F). A long fitted coat with a big fur collar, the coat visibly mended once too often at a cuff, a small clutch bag in one gloved hand, elegant heeled shoes.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-michael",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Capt. Dr. Michael Harlan",
-      "src": "samples/cast/michael.jpg",
-      "about": "Captain Dr. Michael Harlan, 36, US Army Medical Corps surgeon decorated in France. Square-jawed, upright military bearing, short neat hair, clean-shaven. 1930 US Army officer's service uniform: olive-drab wool tunic with four pockets and Sam Browne belt, matching trousers, polished shoes, a medical corps collar badge, campaign ribbons; service cap held under one arm.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-michael-wounded",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Michael Harlan (wounded, Act 3)",
-      "src": "samples/cast/michael-wounded.jpg",
-      "about": "The same Captain Dr. Michael Harlan, 36, square-jawed, now gaunt and feverish after being stabbed: unshaven, hollow cheeks, damp hair, wearing a borrowed loose white undershirt and trousers with braces, a bandage around his ribs showing under the shirt, one hand pressed to his side, barefoot, standing unsteadily.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-julian",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Julian Moss",
-      "src": "samples/cast/julian.jpg",
-      "about": "Julian Moss, about 30, Black jazz pianist at a Village speakeasy. Slim and elegant, long fingers, a guarded half smile, neatly pomaded short hair, pencil moustache. A sharp double-breasted three-piece suit, silk pocket square, two-tone shoes, one hand resting in his trouser pocket.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-corrigan",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Lt. Frank Corrigan",
-      "src": "samples/cast/corrigan.jpg",
-      "about": "Lieutenant Frank Corrigan, about 50, NYPD vice-squad detective. Heavyset and broad, red-faced (rendered in grey), thick neck, fatherly smile that doesn't reach the eyes. An immaculate long dark double-breasted overcoat, homburg hat, gloves, a rosary with a small crucifix looped over the fingers of one hand.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-brancato",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Salvatore \"Sal\" Brancato",
-      "src": "samples/cast/brancato.jpg",
-      "about": "Salvatore 'Sal' Brancato, about 50, bootlegger and owner of a haulage company and social clubs. Small and elegant, noticeably shorter than average, calm and still, slicked-back greying hair, thin moustache. An expensive tailored dark three-piece suit, a pale silk tie, a white carnation in the lapel, grey spats over polished shoes, a slim cigar between two fingers.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-whitcombe",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Arthur Whitcombe",
-      "src": "samples/cast/whitcombe.jpg",
-      "about": "Arthur Whitcombe, about 60, vice-president of a pharmaceutical company and philanthropist. Tall, thin, distinguished, silver hair neatly parted, pince-nez glasses on a cord. A conservative dark three-piece suit with a watch chain, a small charity pin on his lapel, a walking stick with a silver handle.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-grayson",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Harold Grayson",
-      "src": "samples/cast/grayson.jpg",
-      "about": "Harold Grayson, about 55, Washington government official. Deliberately forgettable: average height, average build, thinning grey hair, a bland unremarkable face, round steel spectacles. A plain grey three-piece suit, plain tie, a grey overcoat over one arm and a leather briefcase in the other hand.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-leewing",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Lee Wing",
-      "src": "samples/cast/leewing.jpg",
-      "about": "Lee Wing, about 60, Chinese-American owner of a tea house in Chinatown. Slight, older man, calm watchful eyes, short grey hair, wire glasses pushed up on his forehead. A buttoned knitted cardigan over a collarless shirt, loose dark trousers, cloth slippers, hands clasped in front of him.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-sol",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Sol Abramowitz",
-      "src": "samples/cast/sol.jpg",
-      "about": "Sol Abramowitz, about 65, Jewish pawnbroker on the Bowery. Stooped, bald on top with a fringe of white hair, bushy eyebrows, a jeweller's loupe on a cord, a knitted waistcoat over a shirt with sleeve garters, dark trousers, a pencil behind his ear, wary expression.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-junkie",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Alley junkie (Prologue)",
-      "src": "samples/cast/junkie.jpg",
-      "about": "A thin, jittery young man in his twenties who sleeps in a Bowery alley. Hollow cheeks, unshaven, hair uncombed, a too-big threadbare overcoat with the collar turned up, fingerless gloves, a flat cap, worn-out shoes, shoulders hunched, hands tucked under his arms against the cold.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-ruiz",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Pvt. Eddie Ruiz",
-      "src": "samples/cast/ruiz.jpg",
-      "about": "Private Eddie Ruiz, about 22, Puerto Rican army orderly at the Governors Island hospital. Friendly open face, short dark hair, slim. A white hospital orderly's jacket buttoned to the collar over army olive-drab trousers, garrison cap, carrying a folded towel over one arm.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-gibbs",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Walter Gibbs",
-      "src": "samples/cast/gibbs.jpg",
-      "about": "Walter Gibbs, about 35, a wounded First World War veteran in withdrawal. Gaunt, sweating, haunted eyes, close-cropped hair, a scar on one cheek. Hospital-issue striped pyjamas with a grey wool army blanket clutched around his shoulders, bare feet, trembling hands.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-lulu",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "\"Lulu\"",
-      "src": "samples/cast/lulu.jpg",
-      "about": "'Lulu', about 40, the bartender at The Velvet Door speakeasy, a queer man with a theatrical flair. Tall, theatrical, pencil-thin moustache, hair slicked into a wave. A white shirt with sleeve garters, a satin waistcoat, a bow tie, a bar towel over one shoulder, polishing a cocktail glass. Show the whole figure, head to shoes, at the same size as the reference figure.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-hartley",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Mr. Hartley",
-      "src": "samples/cast/hartley.jpg",
-      "about": "Mr. Hartley, about 55, newspaper editor. Paunchy, balding, harried, an unlit cigar clamped in his mouth. A rumpled white shirt with rolled-up sleeves and a translucent celluloid newspaperman's eyeshade visor on a band around his forehead, pale grey, his eyes clearly visible beneath it, braces, a loosened tie, trousers, a sheaf of proof pages in one fist.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-zofia",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Zofia Venta",
-      "src": "samples/cast/zofia.jpg",
-      "about": "Zofia Venta, about 55, Inéz's Polish mother, from a once-wealthy family. Faded elegance, grey hair in a bun, a pearl necklace, a dark old-fashioned dress with lace at the collar, a knitted shawl around her shoulders, a rosary in one hand.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-stefan",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Stefan",
-      "src": "samples/cast/stefan.jpg",
-      "about": "Stefan, about 38, a Polish butcher in Greenpoint and Natalia's fiancé. Big, solid, decent, wary. Short fair hair, broad face, thick forearms. A white butcher's coat with a long apron over it, his Sunday cap in his hands.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-nicky",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Nicky \"Two Dimes\"",
-      "src": "samples/cast/nicky.jpg",
-      "about": "Nicky 'Two Dimes', about 30, a bookie who works for the mob. Wiry and flashy, sly grin, toothpick in his mouth. A loud checked suit, a two-tone fedora tilted to one side, a flashy tie, spats, a silver dime balanced on the thumb of one raised hand, ready to flip it.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-hale",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Mrs. Hale",
-      "src": "samples/cast/hale.jpg",
-      "about": "Mrs. Hale, about 60, a Black landlady who runs a Harlem rooming house. Dignified, sturdy, kind but firm. Grey hair in a neat bun, a plain dark dress with a white collar, a cardigan, an apron, reading glasses on a chain, a ring of keys in one hand.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "cast-dooley",
-      "milestone": "cast",
-      "kind": "image",
-      "title": "Sgt. Dooley",
-      "src": "samples/cast/dooley.jpg",
-      "about": "Sergeant Dooley, about 40, Corrigan's heavy. Very large and broad-shouldered, flat-nosed, small eyes, heavy jaw. A 1930 NYPD sergeant's uniform: long dark wool tunic with brass buttons and sergeant's chevrons, a peaked police cap, a nightstick hanging from the belt, big hands.",
-      "lookFor": [
-        "Right for the character? Face, age, build, clothes, 1930 period."
-      ]
-    },
-    {
-      "id": "room-office-day",
-      "milestone": "rooms",
-      "kind": "image",
-      "title": "Matt's office, morning (P1)",
-      "src": "samples/rooms/office-day.jpg",
-      "full": "samples/rooms/office-day-scale.jpg",
-      "about": "Matt Long's private detective office above a Chinatown tea house on Doyers Street: a wide, deep, lived-in room seen straight on from the front, about 7 metres wide, with a large open area of bare, worn wooden floor across the whole foreground and middle where a man can walk freely from left to right; nothing stands in that open floor. All furniture is pushed back against the walls: against the back wall in the centre a big battered wooden desk with a telephone, overflowing ashtray, green-shaded desk lamp, whiskey bottle and glass, papers and files, a worn leather chair behind it, and a tall bookcase of case files beside it. Back wall on the left: the half-glazed office entrance door with a plain frosted-glass panel (no lettering), a coat stand with a trench coat beside it. Right wall: a tall window with venetian blinds looking out over the crooked street, a cast-iron radiator beneath it. Left wall: a large cork evidence board with pinned photographs, notes and string, a dented filing cabinet, a sagging leather couch where he sometimes sleeps, a hat on a hook. Dark wood wainscoting below faded patterned wallpaper, a stained ceiling with a lamp hanging on a cord, framed old police commendations, an old radio on a side table, stacks of newspapers. A cramped, shabby, masculine 1930 private eye's office, not clinical. An envelope (an eviction notice) lies on the floor just inside the door. Open 'Reference at full size' to see Matt standing in it at game scale.",
-      "lookFor": [
-        "Right room for the scene?",
-        "Does Matt fit the furniture and doors?"
-      ]
-    },
-    {
-      "id": "room-office-night",
-      "milestone": "rooms",
-      "kind": "image",
-      "title": "Matt's office, night, rain (P5)",
-      "src": "samples/rooms/office-night.jpg",
-      "full": "samples/rooms/office-night-scale.jpg",
-      "about": "Exactly the same office as described: frosted-glass door on the back wall, coat stand, venetian-blind window on the right with rain running down the glass, scarred desk centre-left with telephone, ashtray, lamp switched on, whiskey bottle, swivel chair, cork evidence board and filing cabinet on the left wall, folding screen and cot in a back corner, radiator under the window, bare floorboards. Open 'Reference at full size' to see Matt standing in it at game scale.",
-      "lookFor": [
-        "Right room for the scene?",
-        "Does Matt fit the furniture and doors?"
-      ]
-    },
-    {
-      "id": "room-pete-kate-flat",
-      "milestone": "rooms",
-      "kind": "image",
-      "title": "Pete & Kate's flat (P2)",
-      "src": "samples/rooms/pete-kate-flat.jpg",
-      "full": "samples/rooms/pete-kate-flat-scale.jpg",
-      "about": "A small, warm, cluttered tenement flat next door to Matt's office, shared by a reporter and his sister, an accountant. Left: a kitchen corner with a gas stove, a percolator coffee pot, a sink and a window. Centre: a round kitchen table with three mismatched chairs, coffee cups, a newspaper spread open. Right: a writing desk with a black typewriter, piles of newspapers and clippings on one side (his), neat bookshelves with ledgers and labelled boxes on the other (hers). A thin shared wall with framed photographs. Rag rug on worn floorboards. A front door on the back wall. Open 'Reference at full size' to see Matt standing in it at game scale.",
-      "lookFor": [
-        "Right room for the scene?",
-        "Does Matt fit the furniture and doors?"
-      ]
-    },
-    {
-      "id": "room-doyers-street",
-      "milestone": "rooms",
-      "kind": "image",
-      "title": "Doyers Street (hub)",
-      "src": "samples/rooms/doyers-street.jpg",
-      "full": "samples/rooms/doyers-street-scale.jpg",
-      "about": "Doyers Street in New York's Chinatown, the crooked little street nicknamed the Bloody Angle: narrow, curving sharply in the middle distance, lined with three- and four-storey brick tenements with fire escapes, laundry lines strung overhead, paper lanterns, shop signs in Chinese characters (rendered as painted shapes, no legible text), a tea house entrance at street level on the right with a doorway to the stairs up to a private detective's office above it, a dark alley mouth on the left. Wet cobblestones and a narrow sidewalk across the foreground where characters walk, snow slush in the gutters, a steaming grate, a gas street lamp. Open 'Reference at full size' to see Matt standing in it at game scale.",
-      "lookFor": [
-        "Right room for the scene?",
-        "Does Matt fit the furniture and doors?"
-      ]
-    },
-    {
-      "id": "room-tea-house",
-      "milestone": "rooms",
-      "kind": "image",
-      "title": "Lee Wing's tea house (P4)",
-      "src": "samples/rooms/tea-house.jpg",
-      "full": "samples/rooms/tea-house-scale.jpg",
-      "about": "A small Chinatown tea house in 1930: dark lacquered wooden counter on the right with an abacus, tea tins and a brass bell; shelves of tea canisters behind it; a few small round tables with stools on the left; a bead curtain on the back wall leading to a back room; a doorway beside it to a laundry room with hanging garments visible; paper lanterns, calligraphy scrolls (painted shapes, no legible text), a front window. Worn tiled floor across the foreground. Open 'Reference at full size' to see Matt standing in it at game scale.",
-      "lookFor": [
-        "Right room for the scene?",
-        "Does Matt fit the furniture and doors?"
-      ]
-    },
-    {
-      "id": "room-pawnshop",
-      "milestone": "rooms",
-      "kind": "image",
-      "title": "Bowery pawnshop (P3)",
-      "src": "samples/rooms/pawnshop.jpg",
-      "full": "samples/rooms/pawnshop-scale.jpg",
-      "about": "A cramped Bowery pawnshop, 1930: a long wooden counter across the middle-right with a brass cage grille on top and a ticket ledger, shelves and cages behind it crammed with other people's lives: pocket watches, musical instruments, radios, typewriters, suitcases, a saxophone, coats on hangers, a mannequin; three brass balls hanging outside the barred front window on the left; a back door behind the counter. Dusty floorboards across the foreground. Open 'Reference at full size' to see Matt standing in it at game scale.",
-      "lookFor": [
-        "Right room for the scene?",
-        "Does Matt fit the furniture and doors?"
-      ]
-    },
-    {
-      "id": "room-alley",
-      "milestone": "rooms",
-      "kind": "image",
-      "title": "Alley behind the pawnshop (P3)",
-      "src": "samples/rooms/alley.jpg",
-      "full": "samples/rooms/alley-scale.jpg",
-      "about": "A narrow Bowery back alley in 1930 between tall brick walls: the pawnshop's back door on the right with a wooden step, fire escapes above, overflowing ash cans and wooden crates, a torn awning, laundry high overhead, a heap of rags and newspapers against the left wall where a homeless man sleeps (the man himself is not shown), puddles on the cobbles across the foreground, the alley opening to a busier street in the far background. Open 'Reference at full size' to see Matt standing in it at game scale.",
-      "lookFor": [
-        "Right room for the scene?",
-        "Does Matt fit the furniture and doors?"
-      ]
-    },
-    {
-      "id": "m0-rig-v2",
-      "milestone": "m0",
-      "kind": "rig",
-      "title": "Matt as a cut-out puppet (v8, walk matched to Muybridge)",
-      "rig": "samples/m0/rig2/rig.json",
-      "about": "Skinned mesh with a motion system. The walk is now tuned against Eadweard Muybridge's 1887 photographs of a man walking (Animal Locomotion, plate 1): steps of about 0.41 x his height, the front heel landing well ahead of the hip, a push-off up on the toes of about 58°, the swing foot trailing high behind before it comes through, a forward lean of about 6° with the gaze slightly down, and fuller elbow bend on the forward arm. Footprints are placed in advance and legs are solved hip-to-ankle, so the planted foot cannot slide and the body never moves backwards. Idle, Gesture and Reach keep the feet planted; switching animations blends.",
-      "lookFor": [
-        "Walk: does it read as a man walking now? Compare with the Muybridge samples.",
-        "Pace: one stride every 1.15 s. Slower and wearier for Matt?",
-        "Known: side view only; the far leg is a darker copy of the near one."
-      ],
-      "mesh": "samples/m0/rig2/mesh.json"
-    },
-    {
-      "id": "m0-walk-ref",
-      "milestone": "m0",
-      "kind": "image",
-      "title": "Walk vs Muybridge: 12 frames",
-      "src": "samples/m0/walk-vs-muybridge.jpg",
-      "about": "Top: Eadweard Muybridge, Animal Locomotion plate 1 (1887), a man walking, 12 consecutive frames covering just under one stride (public domain; Wellcome Collection). Bottom: Matt rendered at the same moments of his stride.",
-      "credit": "https://wellcomecollection.org/works/bgd7pfcz",
-      "lookFor": [
-        "Leg spread at contact (frames 3 and 10), the trailing back foot after push-off (4-5), the passing pose (7).",
-        "Muybridge's walker is unclothed and barefoot; Matt's jacket and shoes change the silhouette, not the mechanics."
-      ]
-    },
-    {
-      "id": "m0-walk-keys",
-      "milestone": "m0",
-      "kind": "image",
-      "title": "Walk vs Muybridge: key poses",
-      "src": "samples/m0/walk-keyposes.jpg",
-      "about": "The four key poses of a walk, Muybridge left and Matt right in each pair: contact (frame 3), push-off (5), passing (7), contact on the other leg (10).",
-      "lookFor": [
-        "Do Matt's legs, lean and arms match the photograph in each pair?"
-      ]
-    },
-    {
-      "id": "m0-proportions",
-      "milestone": "m0",
-      "kind": "image",
-      "title": "Matt's proportions and joints",
-      "src": "samples/m0/matt-proportions.jpg",
-      "about": "Blue lines: where each joint sits on an average adult man, as a fraction of height from the floor (Drillis & Contini). Yellow ticks: head heights; Matt is 7.3 heads tall (crown hidden under the hat, worked out from eyes and chin). Red dots: the rig's joints. Before this check the shoulder was 56 px and the elbow 50 px too low (about 2.5% of his height), the ankle 46 px too high and the knee 15 px low; all now sit on the standard lines, and the neck pivot moved from the front of the collar to the middle of the neck.",
-      "lookFor": [
-        "Do the dots sit where you'd expect the joints under the suit?",
-        "Is 7.3 heads the right build for Matt, or should he be leaner and taller?"
-      ]
-    },
-    {
-      "id": "m0-rig-pieces",
-      "milestone": "m0",
-      "kind": "image",
-      "title": "Matt's puppet pieces",
-      "src": "samples/m0/matt-rig-pieces.jpg",
-      "about": "Every piece of the puppet on its own: head, torso with shoulder socket and natural hem, near upper arm, forearm and elbow patch, far upper arm and forearm (palm side), thigh, shin with shoe, knee patch. Patches are soft-edged discs that sit over the joints. The far leg reuses the near leg, darkened.",
-      "lookFor": [
-        "Any leftover background, clothing on the head, or ragged edges?"
-      ]
-    },
-    {
-      "id": "m0-poses",
-      "milestone": "m0",
-      "kind": "image",
-      "title": "Matt: reference and three poses",
-      "src": "samples/m0/matt-poses.jpg",
-      "full": "samples/m0/matt-reference.jpg",
-      "about": "Left: the first reference (Gemini added an overcoat). Then three poses generated with that reference attached: side profile, walking, talking.",
-      "lookFor": [
-        "Is this Matt? Face, build, age, the dented fedora.",
-        "Overcoat as his outdoor look, or suit only?",
-        "Painted look and lighting: right for the game?"
-      ]
-    },
-    {
-      "id": "m0-parts",
-      "milestone": "m0",
-      "kind": "image",
-      "title": "Parts sheet for the puppet",
-      "src": "samples/m0/matt-parts-sheet.jpg",
-      "about": "One generation asked for every body part separately. Head and armless torso came out exactly right; arms and legs were a mix of whole limbs and halves.",
-      "lookFor": [
-        "Nothing to approve here yet; this shows where the puppet pieces come from."
-      ]
-    },
-    {
-      "id": "m0-voice",
-      "milestone": "m0",
-      "kind": "audio",
-      "title": "Matt's voice: first test",
-      "line": "Love letter from the landlord. He always writes when the money's late.",
-      "tracks": [
-        {
-          "label": "Take 1",
-          "src": "samples/m0/matt-voice-take1.mp3"
-        },
-        {
-          "label": "Take 2",
-          "src": "samples/m0/matt-voice-take2.mp3"
-        }
-      ],
-      "about": "ElevenLabs library voice \"Obsidian\", direction: dry, tired. Not cast yet: the casting sheet in M5 will offer three to four candidates per character.",
-      "lookFor": [
-        "Is the age and grain right for Matt?",
-        "Too theatrical, or dry enough?"
-      ]
-    },
-    {
-      "id": "m0-music",
-      "milestone": "m0",
-      "kind": "audio",
-      "title": "Period music: King Oliver, \"Tears\"",
-      "tracks": [
-        {
-          "label": "45-second clip",
-          "src": "samples/m0/tears-clip.mp3"
-        }
-      ],
-      "about": "King Oliver's Creole Jazz Band, recorded October 1923, with Louis Armstrong on second cornet. Public domain in the US. From the George Blood 78rpm transfers at the Internet Archive.",
-      "credit": "https://archive.org/details/78_tears_king-olivers-jazz-band-king-oliver-louis-armstrong-honore-dutray-johnny-dodd_gbia0190842a",
-      "lookFor": [
-        "Is the surface noise of a real 78 welcome, or should we clean recordings up?",
-        "Right energy for Doyers Street?"
-      ]
+     "label": "C · Mark: eager, clean-cut, 1950s 'swell kid'",
+     "src": "samples/voices/pete-mark.mp3"
     }
-  ]
+   ],
+   "about": "Line: “Coffee's on me. Technically it's on Kate. Don't tell Kate.”",
+   "lookFor": [
+    "Does he sound like a young reporter with charm, not a kid?",
+    "Does he still contrast with Matt?"
+   ]
+  },
+  {
+   "id": "voices-kate",
+   "milestone": "voices",
+   "kind": "audio",
+   "title": "Kate: three candidates",
+   "tracks": [
+    {
+     "label": "A · Quin: crisp and clear",
+     "src": "samples/voices/kate-quin.mp3"
+    },
+    {
+     "label": "B · Carrie: grounded, calm authority",
+     "src": "samples/voices/kate-carrie.mp3"
+    },
+    {
+     "label": "C · Cass: deeper and smooth",
+     "src": "samples/voices/kate-cass.mp3"
+    }
+   ],
+   "about": "Line: “Pete, a story isn't true because it's exciting. It's true because it adds up.”",
+   "lookFor": [
+    "Sharp, sensible and warm underneath?"
+   ]
+  },
+  {
+   "id": "voices-inez",
+   "milestone": "voices",
+   "kind": "audio",
+   "title": "Inéz: three candidates",
+   "tracks": [
+    {
+     "label": "A · Monica: low, sultry, Latina accent",
+     "src": "samples/voices/inez-monica.mp3"
+    },
+    {
+     "label": "B · Lilith: classy, cinematic, Latina accent",
+     "src": "samples/voices/inez-lilith.mp3"
+    },
+    {
+     "label": "C · Celeste: deep and husky, no accent",
+     "src": "samples/voices/inez-celeste.mp3"
+    }
+   ],
+   "about": "Line: “They tell me you find people, Mr. Long. I need you to find one man. Quietly.”",
+   "lookFor": [
+    "Is the accent right for a Puerto Rican woman in New York (Polish side unheard so far)?",
+    "Poised, not cartoon femme fatale?"
+   ]
+  },
+  {
+   "id": "cast-lineup-main",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Lineup: main cast",
+   "src": "samples/cast/lineup-main.jpg",
+   "full": "samples/cast/lineup-main.jpg",
+   "about": "The 12 main characters plus Michael wounded (Act 3), at their real relative heights.",
+   "lookFor": [
+    "Does the style hold across all of them?",
+    "Heights and builds: Corrigan's bulk, Brancato small, Whitcombe tall and thin, Grayson forgettable?"
+   ]
+  },
+  {
+   "id": "cast-lineup-minor",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Lineup: minor cast",
+   "src": "samples/cast/lineup-minor.jpg",
+   "full": "samples/cast/lineup-minor.jpg",
+   "about": "The 11 minor characters, including the alley junkie from the Prologue, at their real relative heights.",
+   "lookFor": [
+    "Any character that breaks the style or doesn't match the bible?"
+   ]
+  },
+  {
+   "id": "cast-proportions",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Proportion check: same eye height",
+   "src": "samples/cast/lineup-eyelevel.jpg",
+   "full": "samples/cast/lineup-eyelevel.jpg",
+   "about": "Every character scaled so the distance from eyes to floor is identical (yellow line), so head size, torso and leg length can be compared directly. After this check, Natalia, Corrigan, Sol, Hartley, Stefan, Inéz, Kate and Zofia were regenerated with one shared rule: about 7.5 heads tall, the same head-to-body ratio and leg length as Matt, with heavier or older builds shown only by width, posture and clothes.",
+   "lookFor": [
+    "Does anyone still look out of proportion next to the others?"
+   ]
+  },
+  {
+   "id": "cast-lineup-bathhouse",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Bathhouse and shower: Matt, Pete, Julian",
+   "src": "samples/cast/lineup-bathhouse.jpg",
+   "full": "samples/cast/lineup-bathhouse.jpg",
+   "about": "Each man in street clothes, in a bath towel, in white 1930s boxer shorts and, for Matt and Julian, unclothed in the prison shower with both hands covering the groin. Pete's clothed design was redone to match his older face. His shower version was refused three times by the image model, and all back views were refused.",
+   "lookFor": [
+    "Same man in both versions?",
+    "Builds: Matt a drinker, Pete gangly, Julian slim and elegant?"
+   ]
+  },
+  {
+   "id": "cast-matt-towel",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long (bathhouse)",
+   "src": "samples/cast/matt-towel.jpg",
+   "about": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+   "lookFor": [
+    "Right for the character and the scene?"
+   ]
+  },
+  {
+   "id": "cast-pete-towel",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Pete Duckerton (bathhouse)",
+   "src": "samples/cast/pete-towel.jpg",
+   "about": "The same man as the second reference image, Pete Duckerton, about 35: the same boyish face and eager grin, dark brown untidy hair (the same dark hair colour as his sideburns in the second reference), now visible without his hat, clearly a man of 35 with faint lines round the eyes and a day's stubble, not younger; skinny and gangly, narrow shoulders, an ordinary unathletic body with almost no muscle definition, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+   "lookFor": [
+    "Right for the character and the scene?"
+   ]
+  },
+  {
+   "id": "cast-julian-towel",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Julian Moss (bathhouse)",
+   "src": "samples/cast/julian-towel.jpg",
+   "about": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers, in the steam room of a 1930 New York bathhouse: wearing only a plain white bath towel wrapped securely around his waist, reaching to just above the knees, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+   "lookFor": [
+    "Right for the character and the scene?"
+   ]
+  },
+  {
+   "id": "cast-matt-boxers",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long (underwear)",
+   "src": "samples/cast/matt-boxers.jpg",
+   "about": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+   "lookFor": [
+    "Same man as his towel version?"
+   ]
+  },
+  {
+   "id": "cast-pete-boxers",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Pete Duckerton (underwear)",
+   "src": "samples/cast/pete-boxers.jpg",
+   "about": "The same man as the second reference image, Pete Duckerton, about 35: the same boyish face and eager grin, dark brown untidy hair (the same dark hair colour as his sideburns in the second reference), now visible without his hat, clearly a man of 35 with faint lines round the eyes and a day's stubble, not younger; skinny and gangly, narrow shoulders, an ordinary unathletic body with almost no muscle definition, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+   "lookFor": [
+    "Same man as his towel version?"
+   ]
+  },
+  {
+   "id": "cast-julian-boxers",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Julian Moss (underwear)",
+   "src": "samples/cast/julian-boxers.jpg",
+   "about": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers, in a 1930 New York bathhouse changing room: wearing only plain white cotton 1930s boxer shorts, loose and full-cut, with a button front and a wide waistband, reaching to mid-thigh, bare chest and arms, barefoot, no hat, relaxed natural standing pose, a non-sexual, matter-of-fact character design. Natural, untrimmed body hair as men had in 1930, nobody shaved or waxed: clearly visible chest hair across the chest and down the middle of the stomach to the navel, and hair on the forearms.",
+   "lookFor": [
+    "Same man as his towel version?"
+   ]
+  },
+  {
+   "id": "cast-matt-shower-front",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long (shower, front, covered)",
+   "src": "samples/cast/matt-shower-front.jpg",
+   "about": "The same man as the second reference image, Matt Long, 37: the same face, two-day stubble and tired eyes, short dark hair with a slight wave, now visible without his hat; tall, lean and slightly stooped, an ordinary unathletic 1930s body with very little muscle definition, a little soft at the middle from drink,, in a 1930s prison shower: a non-explicit, non-sexual front three-quarter view of the unclothed figure standing upright, both hands held together low in front of his groin so that it is completely covered and nothing intimate is visible, wary expression, barefoot. Natural, untrimmed body hair as men had in 1930: chest hair, hair on the forearms and legs.",
+   "lookFor": [
+    "Usable for the shower scene?"
+   ]
+  },
+  {
+   "id": "cast-julian-shower-front",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Julian Moss (shower, front, covered)",
+   "src": "samples/cast/julian-shower-front.jpg",
+   "about": "The same man as the second reference image, Julian Moss, about 30: the same face, guarded half smile, pencil moustache and neatly pomaded short hair; slim and elegant but not a gym body, natural modest muscle tone, a pianist's long fingers,, in a 1930s prison shower: a non-explicit, non-sexual front three-quarter view of the unclothed figure standing upright, both hands held together low in front of his groin so that it is completely covered and nothing intimate is visible, wary expression, barefoot. Natural, untrimmed body hair as men had in 1930: chest hair, hair on the forearms and legs.",
+   "lookFor": [
+    "Usable for the shower scene?"
+   ]
+  },
+  {
+   "id": "cast-matt",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long",
+   "src": "samples/cast/matt.jpg",
+   "about": "Matt Long, 37, private investigator and ex-NYPD detective. Tall, lean, a little stooped with tiredness. Rumpled grey single-breasted three-piece suit, white shirt, loosened dark tie, a fedora with a dented crown, two-day stubble, tired sharp eyes, square jaw. Hands relaxed at his sides.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-matt-turnaround",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt: turnaround of every state",
+   "src": "samples/cast/lineup-matt-turnaround.jpg",
+   "full": "samples/cast/lineup-matt-turnaround.jpg",
+   "about": "Front, strict side profile (facing right) and back view for each of Matt's states: clothed, bath towel, boxer shorts. The covered shower state has only the front view; Google's image model refused the unclothed side and back views.",
+   "lookFor": [
+    "Same man from every angle?",
+    "Are the side views true profiles for walk sprites in Ludo.ai?"
+   ]
+  },
+  {
+   "id": "cast-matt-side",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long (side view)",
+   "src": "samples/cast/matt-side.jpg",
+   "about": "The same man as the second reference image, Matt Long, 37, wearing his usual clothes exactly as in the second reference image (rumpled grey three-piece suit, loosened tie, dented fedora). Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible.",
+   "lookFor": [
+    "Consistent with his front view?"
+   ]
+  },
+  {
+   "id": "cast-matt-back",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long (back view)",
+   "src": "samples/cast/matt-back.jpg",
+   "about": "The same man as the second reference image, Matt Long, 37, wearing his usual clothes exactly as in the second reference image (rumpled grey three-piece suit, loosened tie, dented fedora). Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible).",
+   "lookFor": [
+    "Consistent with his front view?"
+   ]
+  },
+  {
+   "id": "cast-matt-towel-side",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long (bathhouse) (side view)",
+   "src": "samples/cast/matt-towel-side.jpg",
+   "about": "The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible.",
+   "lookFor": [
+    "Consistent with his front view?"
+   ]
+  },
+  {
+   "id": "cast-matt-towel-back",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long (bathhouse) (back view)",
+   "src": "samples/cast/matt-towel-back.jpg",
+   "about": "The same man as the second reference image, Matt Long, 37, wearing only the white bath towel round his waist exactly as in the second reference image, barefoot, no hat. Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible).",
+   "lookFor": [
+    "Consistent with his front view?"
+   ]
+  },
+  {
+   "id": "cast-matt-boxers-side",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long (underwear) (side view)",
+   "src": "samples/cast/matt-boxers-side.jpg",
+   "about": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a strict 90-degree side profile facing the right edge of the picture, standing upright, arms relaxed at his sides, only one eye visible.",
+   "lookFor": [
+    "Consistent with his front view?"
+   ]
+  },
+  {
+   "id": "cast-matt-boxers-back",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Matt Long (underwear) (back view)",
+   "src": "samples/cast/matt-boxers-back.jpg",
+   "about": "The same man as the second reference image, Matt Long, 37, wearing only the white 1930s button-front boxer shorts exactly as in the second reference image, barefoot, no hat. Pose: a back view: standing upright with his back to the viewer, arms relaxed at his sides, head facing away (the back of his head and hat brim, if any, visible).",
+   "lookFor": [
+    "Consistent with his front view?"
+   ]
+  },
+  {
+   "id": "cast-pete",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Pete Duckerton",
+   "src": "samples/cast/pete.jpg",
+   "about": "Pete Duckerton, 35, crime reporter. The same man as the third reference image: his face, dark brown untidy hair and build, clearly a man of 35 with faint lines round the eyes and a day's stubble, an eager grin, slim and gangly. Dressed exactly as in the second reference image: fedora pushed back on his head with a press card tucked in the hatband, rumpled striped suit, long knitted scarf hanging untied round his neck, a rolled-up newspaper in one hand, the other hand in his trouser pocket.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-kate",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Kate Duckerton",
+   "src": "samples/cast/kate.jpg",
+   "about": "Kate Duckerton, about 33, accountant. Neat dark bob, round wire-rimmed spectacles, composed and precise, slightly shorter than average. A tailored belted wool coat over a plain calf-length dress, sensible low-heeled shoes, holding a cloth-bound ledger against her chest with both hands.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-natalia",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Natalia Long (née Kowalska)",
+   "src": "samples/cast/natalia.jpg",
+   "about": "Natalia Long, about 34, Polish immigrant who works in a Greenpoint bakery. Strong features, sturdy build, hair pinned up under a modest small felt Sunday hat. Plain long-sleeved working dress with a white apron, flour dusted on her sleeves and forearms, arms folded, a blunt steady look.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-inez",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Inéz Venta",
+   "src": "samples/cast/inez.jpg",
+   "about": "Inéz Venta, about 28, glamorous society girl whose family has secretly lost everything. Slim and poised. Platinum-blonde finger-waved hair, dark eyes, the only colour on her is deep red lipstick (#B3141F). A long fitted coat with a big fur collar, the coat visibly mended once too often at a cuff, a small clutch bag in one gloved hand, elegant heeled shoes.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-michael",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Capt. Dr. Michael Harlan",
+   "src": "samples/cast/michael.jpg",
+   "about": "Captain Dr. Michael Harlan, 36, US Army Medical Corps surgeon decorated in France. Square-jawed, upright military bearing, short neat hair, clean-shaven. 1930 US Army officer's service uniform: olive-drab wool tunic with four pockets and Sam Browne belt, matching trousers, polished shoes, a medical corps collar badge, campaign ribbons; service cap held under one arm.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-michael-wounded",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Michael Harlan (wounded, Act 3)",
+   "src": "samples/cast/michael-wounded.jpg",
+   "about": "The same Captain Dr. Michael Harlan, 36, square-jawed, now gaunt and feverish after being stabbed: unshaven, hollow cheeks, damp hair, wearing a borrowed loose white undershirt and trousers with braces, a bandage around his ribs showing under the shirt, one hand pressed to his side, barefoot, standing unsteadily.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-julian",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Julian Moss",
+   "src": "samples/cast/julian.jpg",
+   "about": "Julian Moss, about 30, Black jazz pianist at a Village speakeasy. Slim and elegant, long fingers, a guarded half smile, neatly pomaded short hair, pencil moustache. A sharp double-breasted three-piece suit, silk pocket square, two-tone shoes, one hand resting in his trouser pocket.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-corrigan",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Lt. Frank Corrigan",
+   "src": "samples/cast/corrigan.jpg",
+   "about": "Lieutenant Frank Corrigan, about 50, NYPD vice-squad detective. Heavyset and broad, red-faced (rendered in grey), thick neck, fatherly smile that doesn't reach the eyes. An immaculate long dark double-breasted overcoat, homburg hat, gloves, a rosary with a small crucifix looped over the fingers of one hand.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-brancato",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Salvatore \"Sal\" Brancato",
+   "src": "samples/cast/brancato.jpg",
+   "about": "Salvatore 'Sal' Brancato, about 50, bootlegger and owner of a haulage company and social clubs. Small and elegant, noticeably shorter than average, calm and still, slicked-back greying hair, thin moustache. An expensive tailored dark three-piece suit, a pale silk tie, a white carnation in the lapel, grey spats over polished shoes, a slim cigar between two fingers.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-whitcombe",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Arthur Whitcombe",
+   "src": "samples/cast/whitcombe.jpg",
+   "about": "Arthur Whitcombe, about 60, vice-president of a pharmaceutical company and philanthropist. Tall, thin, distinguished, silver hair neatly parted, pince-nez glasses on a cord. A conservative dark three-piece suit with a watch chain, a small charity pin on his lapel, a walking stick with a silver handle.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-grayson",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Harold Grayson",
+   "src": "samples/cast/grayson.jpg",
+   "about": "Harold Grayson, about 55, Washington government official. Deliberately forgettable: average height, average build, thinning grey hair, a bland unremarkable face, round steel spectacles. A plain grey three-piece suit, plain tie, a grey overcoat over one arm and a leather briefcase in the other hand.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-leewing",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Lee Wing",
+   "src": "samples/cast/leewing.jpg",
+   "about": "Lee Wing, about 60, Chinese-American owner of a tea house in Chinatown. Slight, older man, calm watchful eyes, short grey hair, wire glasses pushed up on his forehead. A buttoned knitted cardigan over a collarless shirt, loose dark trousers, cloth slippers, hands clasped in front of him.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-sol",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Sol Abramowitz",
+   "src": "samples/cast/sol.jpg",
+   "about": "Sol Abramowitz, about 65, Jewish pawnbroker on the Bowery. Stooped, bald on top with a fringe of white hair, bushy eyebrows, a jeweller's loupe on a cord, a knitted waistcoat over a shirt with sleeve garters, dark trousers, a pencil behind his ear, wary expression.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-junkie",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Alley junkie (Prologue)",
+   "src": "samples/cast/junkie.jpg",
+   "about": "A thin, jittery young man in his twenties who sleeps in a Bowery alley. Hollow cheeks, unshaven, hair uncombed, a too-big threadbare overcoat with the collar turned up, fingerless gloves, a flat cap, worn-out shoes, shoulders hunched, hands tucked under his arms against the cold.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-ruiz",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Pvt. Eddie Ruiz",
+   "src": "samples/cast/ruiz.jpg",
+   "about": "Private Eddie Ruiz, about 22, Puerto Rican army orderly at the Governors Island hospital. Friendly open face, short dark hair, slim. A white hospital orderly's jacket buttoned to the collar over army olive-drab trousers, garrison cap, carrying a folded towel over one arm.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-gibbs",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Walter Gibbs",
+   "src": "samples/cast/gibbs.jpg",
+   "about": "Walter Gibbs, about 35, a wounded First World War veteran in withdrawal. Gaunt, sweating, haunted eyes, close-cropped hair, a scar on one cheek. Hospital-issue striped pyjamas with a grey wool army blanket clutched around his shoulders, bare feet, trembling hands.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-lulu",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "\"Lulu\"",
+   "src": "samples/cast/lulu.jpg",
+   "about": "'Lulu', about 40, the bartender at The Velvet Door speakeasy, a queer man with a theatrical flair. Tall, theatrical, pencil-thin moustache, hair slicked into a wave. A white shirt with sleeve garters, a satin waistcoat, a bow tie, a bar towel over one shoulder, polishing a cocktail glass. Show the whole figure, head to shoes, at the same size as the reference figure.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-hartley",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Mr. Hartley",
+   "src": "samples/cast/hartley.jpg",
+   "about": "Mr. Hartley, about 55, newspaper editor. Paunchy, balding, harried, an unlit cigar clamped in his mouth. A rumpled white shirt with rolled-up sleeves and a translucent celluloid newspaperman's eyeshade visor on a band around his forehead, pale grey, his eyes clearly visible beneath it, braces, a loosened tie, trousers, a sheaf of proof pages in one fist.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-zofia",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Zofia Venta",
+   "src": "samples/cast/zofia.jpg",
+   "about": "Zofia Venta, about 55, Inéz's Polish mother, from a once-wealthy family. Faded elegance, grey hair in a bun, a pearl necklace, a dark old-fashioned dress with lace at the collar, a knitted shawl around her shoulders, a rosary in one hand.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-stefan",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Stefan",
+   "src": "samples/cast/stefan.jpg",
+   "about": "Stefan, about 38, a Polish butcher in Greenpoint and Natalia's fiancé. Big, solid, decent, wary. Short fair hair, broad face, thick forearms. A white butcher's coat with a long apron over it, his Sunday cap in his hands.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-nicky",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Nicky \"Two Dimes\"",
+   "src": "samples/cast/nicky.jpg",
+   "about": "Nicky 'Two Dimes', about 30, a bookie who works for the mob. Wiry and flashy, sly grin, toothpick in his mouth. A loud checked suit, a two-tone fedora tilted to one side, a flashy tie, spats, a silver dime balanced on the thumb of one raised hand, ready to flip it.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-hale",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Mrs. Hale",
+   "src": "samples/cast/hale.jpg",
+   "about": "Mrs. Hale, about 60, a Black landlady who runs a Harlem rooming house. Dignified, sturdy, kind but firm. Grey hair in a neat bun, a plain dark dress with a white collar, a cardigan, an apron, reading glasses on a chain, a ring of keys in one hand.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "cast-dooley",
+   "milestone": "cast",
+   "kind": "image",
+   "title": "Sgt. Dooley",
+   "src": "samples/cast/dooley.jpg",
+   "about": "Sergeant Dooley, about 40, Corrigan's heavy. Very large and broad-shouldered, flat-nosed, small eyes, heavy jaw. A 1930 NYPD sergeant's uniform: long dark wool tunic with brass buttons and sergeant's chevrons, a peaked police cap, a nightstick hanging from the belt, big hands.",
+   "lookFor": [
+    "Right for the character? Face, age, build, clothes, 1930 period."
+   ]
+  },
+  {
+   "id": "room-office-day",
+   "milestone": "rooms",
+   "kind": "image",
+   "title": "Matt's office, morning (P1)",
+   "src": "samples/rooms/office-day.jpg",
+   "full": "samples/rooms/office-day-scale.jpg",
+   "about": "Matt Long's private detective office above a Chinatown tea house on Doyers Street: a wide, deep, lived-in room seen straight on from the front, about 7 metres wide, with a large open area of bare, worn wooden floor across the whole foreground and middle where a man can walk freely from left to right; nothing stands in that open floor. All furniture is pushed back against the walls: against the back wall in the centre a big battered wooden desk with a telephone, overflowing ashtray, green-shaded desk lamp, whiskey bottle and glass, papers and files, a worn leather chair behind it, and a tall bookcase of case files beside it. Back wall on the left: the half-glazed office entrance door with a plain frosted-glass panel (no lettering), a coat stand with a trench coat beside it. Right wall: a tall window with venetian blinds looking out over the crooked street, a cast-iron radiator beneath it. Left wall: a large cork evidence board with pinned photographs, notes and string, a dented filing cabinet, a sagging leather couch where he sometimes sleeps, a hat on a hook. Dark wood wainscoting below faded patterned wallpaper, a stained ceiling with a lamp hanging on a cord, framed old police commendations, an old radio on a side table, stacks of newspapers. A cramped, shabby, masculine 1930 private eye's office, not clinical. An envelope (an eviction notice) lies on the floor just inside the door. Open 'Reference at full size' to see Matt standing in it at game scale.",
+   "lookFor": [
+    "Right room for the scene?",
+    "Does Matt fit the furniture and doors?"
+   ]
+  },
+  {
+   "id": "room-office-night",
+   "milestone": "rooms",
+   "kind": "image",
+   "title": "Matt's office, night, rain (P5)",
+   "src": "samples/rooms/office-night.jpg",
+   "full": "samples/rooms/office-night-scale.jpg",
+   "about": "Exactly the same office as described: frosted-glass door on the back wall, coat stand, venetian-blind window on the right with rain running down the glass, scarred desk centre-left with telephone, ashtray, lamp switched on, whiskey bottle, swivel chair, cork evidence board and filing cabinet on the left wall, folding screen and cot in a back corner, radiator under the window, bare floorboards. Open 'Reference at full size' to see Matt standing in it at game scale.",
+   "lookFor": [
+    "Right room for the scene?",
+    "Does Matt fit the furniture and doors?"
+   ]
+  },
+  {
+   "id": "room-pete-kate-flat",
+   "milestone": "rooms",
+   "kind": "image",
+   "title": "Pete & Kate's flat (P2)",
+   "src": "samples/rooms/pete-kate-flat.jpg",
+   "full": "samples/rooms/pete-kate-flat-scale.jpg",
+   "about": "A small, warm, cluttered tenement flat next door to Matt's office, shared by a reporter and his sister, an accountant. Left: a kitchen corner with a gas stove, a percolator coffee pot, a sink and a window. Centre: a round kitchen table with three mismatched chairs, coffee cups, a newspaper spread open. Right: a writing desk with a black typewriter, piles of newspapers and clippings on one side (his), neat bookshelves with ledgers and labelled boxes on the other (hers). A thin shared wall with framed photographs. Rag rug on worn floorboards. A front door on the back wall. Open 'Reference at full size' to see Matt standing in it at game scale.",
+   "lookFor": [
+    "Right room for the scene?",
+    "Does Matt fit the furniture and doors?"
+   ]
+  },
+  {
+   "id": "room-doyers-street",
+   "milestone": "rooms",
+   "kind": "image",
+   "title": "Doyers Street (hub)",
+   "src": "samples/rooms/doyers-street.jpg",
+   "full": "samples/rooms/doyers-street-scale.jpg",
+   "about": "Doyers Street in New York's Chinatown, the crooked little street nicknamed the Bloody Angle: narrow, curving sharply in the middle distance, lined with three- and four-storey brick tenements with fire escapes, laundry lines strung overhead, paper lanterns, shop signs in Chinese characters (rendered as painted shapes, no legible text), a tea house entrance at street level on the right with a doorway to the stairs up to a private detective's office above it, a dark alley mouth on the left. Wet cobblestones and a narrow sidewalk across the foreground where characters walk, snow slush in the gutters, a steaming grate, a gas street lamp. Open 'Reference at full size' to see Matt standing in it at game scale.",
+   "lookFor": [
+    "Right room for the scene?",
+    "Does Matt fit the furniture and doors?"
+   ]
+  },
+  {
+   "id": "room-tea-house",
+   "milestone": "rooms",
+   "kind": "image",
+   "title": "Lee Wing's tea house (P4)",
+   "src": "samples/rooms/tea-house.jpg",
+   "full": "samples/rooms/tea-house-scale.jpg",
+   "about": "A small Chinatown tea house in 1930: dark lacquered wooden counter on the right with an abacus, tea tins and a brass bell; shelves of tea canisters behind it; a few small round tables with stools on the left; a bead curtain on the back wall leading to a back room; a doorway beside it to a laundry room with hanging garments visible; paper lanterns, calligraphy scrolls (painted shapes, no legible text), a front window. Worn tiled floor across the foreground. Open 'Reference at full size' to see Matt standing in it at game scale.",
+   "lookFor": [
+    "Right room for the scene?",
+    "Does Matt fit the furniture and doors?"
+   ]
+  },
+  {
+   "id": "room-pawnshop",
+   "milestone": "rooms",
+   "kind": "image",
+   "title": "Bowery pawnshop (P3)",
+   "src": "samples/rooms/pawnshop.jpg",
+   "full": "samples/rooms/pawnshop-scale.jpg",
+   "about": "A cramped Bowery pawnshop, 1930: a long wooden counter across the middle-right with a brass cage grille on top and a ticket ledger, shelves and cages behind it crammed with other people's lives: pocket watches, musical instruments, radios, typewriters, suitcases, a saxophone, coats on hangers, a mannequin; three brass balls hanging outside the barred front window on the left; a back door behind the counter. Dusty floorboards across the foreground. Open 'Reference at full size' to see Matt standing in it at game scale.",
+   "lookFor": [
+    "Right room for the scene?",
+    "Does Matt fit the furniture and doors?"
+   ]
+  },
+  {
+   "id": "room-alley",
+   "milestone": "rooms",
+   "kind": "image",
+   "title": "Alley behind the pawnshop (P3)",
+   "src": "samples/rooms/alley.jpg",
+   "full": "samples/rooms/alley-scale.jpg",
+   "about": "A narrow Bowery back alley in 1930 between tall brick walls: the pawnshop's back door on the right with a wooden step, fire escapes above, overflowing ash cans and wooden crates, a torn awning, laundry high overhead, a heap of rags and newspapers against the left wall where a homeless man sleeps (the man himself is not shown), puddles on the cobbles across the foreground, the alley opening to a busier street in the far background. Open 'Reference at full size' to see Matt standing in it at game scale.",
+   "lookFor": [
+    "Right room for the scene?",
+    "Does Matt fit the furniture and doors?"
+   ]
+  },
+  {
+   "id": "m0-rig-v2",
+   "milestone": "m0",
+   "kind": "rig",
+   "title": "Matt as a cut-out puppet (v8, walk matched to Muybridge)",
+   "rig": "samples/m0/rig2/rig.json",
+   "about": "Skinned mesh with a motion system. The walk is now tuned against Eadweard Muybridge's 1887 photographs of a man walking (Animal Locomotion, plate 1): steps of about 0.41 x his height, the front heel landing well ahead of the hip, a push-off up on the toes of about 58°, the swing foot trailing high behind before it comes through, a forward lean of about 6° with the gaze slightly down, and fuller elbow bend on the forward arm. Footprints are placed in advance and legs are solved hip-to-ankle, so the planted foot cannot slide and the body never moves backwards. Idle, Gesture and Reach keep the feet planted; switching animations blends.",
+   "lookFor": [
+    "Walk: does it read as a man walking now? Compare with the Muybridge samples.",
+    "Pace: one stride every 1.15 s. Slower and wearier for Matt?",
+    "Known: side view only; the far leg is a darker copy of the near one."
+   ],
+   "mesh": "samples/m0/rig2/mesh.json"
+  },
+  {
+   "id": "m0-walk-ref",
+   "milestone": "m0",
+   "kind": "image",
+   "title": "Walk vs Muybridge: 12 frames",
+   "src": "samples/m0/walk-vs-muybridge.jpg",
+   "about": "Top: Eadweard Muybridge, Animal Locomotion plate 1 (1887), a man walking, 12 consecutive frames covering just under one stride (public domain; Wellcome Collection). Bottom: Matt rendered at the same moments of his stride.",
+   "credit": "https://wellcomecollection.org/works/bgd7pfcz",
+   "lookFor": [
+    "Leg spread at contact (frames 3 and 10), the trailing back foot after push-off (4-5), the passing pose (7).",
+    "Muybridge's walker is unclothed and barefoot; Matt's jacket and shoes change the silhouette, not the mechanics."
+   ]
+  },
+  {
+   "id": "m0-walk-keys",
+   "milestone": "m0",
+   "kind": "image",
+   "title": "Walk vs Muybridge: key poses",
+   "src": "samples/m0/walk-keyposes.jpg",
+   "about": "The four key poses of a walk, Muybridge left and Matt right in each pair: contact (frame 3), push-off (5), passing (7), contact on the other leg (10).",
+   "lookFor": [
+    "Do Matt's legs, lean and arms match the photograph in each pair?"
+   ]
+  },
+  {
+   "id": "m0-proportions",
+   "milestone": "m0",
+   "kind": "image",
+   "title": "Matt's proportions and joints",
+   "src": "samples/m0/matt-proportions.jpg",
+   "about": "Blue lines: where each joint sits on an average adult man, as a fraction of height from the floor (Drillis & Contini). Yellow ticks: head heights; Matt is 7.3 heads tall (crown hidden under the hat, worked out from eyes and chin). Red dots: the rig's joints. Before this check the shoulder was 56 px and the elbow 50 px too low (about 2.5% of his height), the ankle 46 px too high and the knee 15 px low; all now sit on the standard lines, and the neck pivot moved from the front of the collar to the middle of the neck.",
+   "lookFor": [
+    "Do the dots sit where you'd expect the joints under the suit?",
+    "Is 7.3 heads the right build for Matt, or should he be leaner and taller?"
+   ]
+  },
+  {
+   "id": "m0-rig-pieces",
+   "milestone": "m0",
+   "kind": "image",
+   "title": "Matt's puppet pieces",
+   "src": "samples/m0/matt-rig-pieces.jpg",
+   "about": "Every piece of the puppet on its own: head, torso with shoulder socket and natural hem, near upper arm, forearm and elbow patch, far upper arm and forearm (palm side), thigh, shin with shoe, knee patch. Patches are soft-edged discs that sit over the joints. The far leg reuses the near leg, darkened.",
+   "lookFor": [
+    "Any leftover background, clothing on the head, or ragged edges?"
+   ]
+  },
+  {
+   "id": "m0-poses",
+   "milestone": "m0",
+   "kind": "image",
+   "title": "Matt: reference and three poses",
+   "src": "samples/m0/matt-poses.jpg",
+   "full": "samples/m0/matt-reference.jpg",
+   "about": "Left: the first reference (Gemini added an overcoat). Then three poses generated with that reference attached: side profile, walking, talking.",
+   "lookFor": [
+    "Is this Matt? Face, build, age, the dented fedora.",
+    "Overcoat as his outdoor look, or suit only?",
+    "Painted look and lighting: right for the game?"
+   ]
+  },
+  {
+   "id": "m0-parts",
+   "milestone": "m0",
+   "kind": "image",
+   "title": "Parts sheet for the puppet",
+   "src": "samples/m0/matt-parts-sheet.jpg",
+   "about": "One generation asked for every body part separately. Head and armless torso came out exactly right; arms and legs were a mix of whole limbs and halves.",
+   "lookFor": [
+    "Nothing to approve here yet; this shows where the puppet pieces come from."
+   ]
+  },
+  {
+   "id": "m0-voice",
+   "milestone": "m0",
+   "kind": "audio",
+   "title": "Matt's voice: first test",
+   "line": "Love letter from the landlord. He always writes when the money's late.",
+   "tracks": [
+    {
+     "label": "Take 1",
+     "src": "samples/m0/matt-voice-take1.mp3"
+    },
+    {
+     "label": "Take 2",
+     "src": "samples/m0/matt-voice-take2.mp3"
+    }
+   ],
+   "about": "ElevenLabs library voice \"Obsidian\", direction: dry, tired. Not cast yet: the casting sheet in M5 will offer three to four candidates per character.",
+   "lookFor": [
+    "Is the age and grain right for Matt?",
+    "Too theatrical, or dry enough?"
+   ]
+  },
+  {
+   "id": "m0-music",
+   "milestone": "m0",
+   "kind": "audio",
+   "title": "Period music: King Oliver, \"Tears\"",
+   "tracks": [
+    {
+     "label": "45-second clip",
+     "src": "samples/m0/tears-clip.mp3"
+    }
+   ],
+   "about": "King Oliver's Creole Jazz Band, recorded October 1923, with Louis Armstrong on second cornet. Public domain in the US. From the George Blood 78rpm transfers at the Internet Archive.",
+   "credit": "https://archive.org/details/78_tears_king-olivers-jazz-band-king-oliver-louis-armstrong-honore-dutray-johnny-dodd_gbia0190842a",
+   "lookFor": [
+    "Is the surface noise of a real 78 welcome, or should we clean recordings up?",
+    "Right energy for Doyers Street?"
+   ]
+  }
+ ]
 }
