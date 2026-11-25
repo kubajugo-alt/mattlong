@@ -38,6 +38,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       </select>
     </label>
     <label><input type="checkbox" id="ambient" checked> Ambient</label>
+    <label><input type="checkbox" id="parallax" checked> Parallax</label>
     <label><input type="checkbox" id="showHot"> Hotspots</label>
     <label><input type="checkbox" id="showWalk"> Walkable floor</label>
     <label><input type="checkbox" id="showBase"> Object baselines</label>
@@ -144,7 +145,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   cv.addEventListener('pointermove', (ev) => { if (!S) return; const [x, y] = toScene(ev); hover = hotAt(x, y); cv.style.cursor = hover ? 'pointer' : 'crosshair'; });
   cv.addEventListener('pointerleave', () => { hover = null; });
   // ---- input
-  function toScene(ev) { const r = cv.getBoundingClientRect(); return [(ev.clientX - r.left) / r.width * S.sc.size[0], (ev.clientY - r.top) / r.height * S.sc.size[1]]; }
+  function toScene(ev) { const r = cv.getBoundingClientRect(); const px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height;
+    return [(px - PX.off[0]) / PX.k, (py - PX.off[1]) / PX.k]; }
   cv.addEventListener('click', (ev) => {
     if (!S) return;
     const [x, y] = toScene(ev);
@@ -214,7 +216,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       // heat shimmer above the radiator: rows of the painting nudged sideways by a pixel or two
       if (room.startsWith('office')) { const [rx0, rx1, ry0, ry1] = AMB.radiator, X0 = rx0 * W, X1 = rx1 * W, Y0 = ry0 * H, Y1 = ry1 * H;
       for (let y = Y0; y < Y1; y += 8) { const off = Math.sin(ambT * 3 + y * 0.09) * 1.6 * (1 - (y - Y0) / (Y1 - Y0));
-        ctx.drawImage(S.bg, X0, y, X1 - X0, 8, X0 + off, y, X1 - X0, 8); } }
+        const kb = S.bgNow.width / W; ctx.drawImage(S.bgNow, X0 * kb, y * kb, (X1 - X0) * kb, 8 * kb, X0 + off, y, X1 - X0, 8); } }
     } else {
       // neon: steady, with an occasional stutter
       if (neonHold > 0) neonHold -= dt; else if (Math.random() < dt * 0.25) neonHold = 0.15 + Math.random() * 0.5;
@@ -259,17 +261,17 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const gy = CARS.ground * H, L = CARS.area[0] * W, R = CARS.area[1] * W;
     ctx.save(); ctx.beginPath(); ctx.rect(L, gy - CARS.h * 2, R - L, CARS.h * 2 + 6); ctx.clip();
     for (let i = CARS.list.length - 1; i >= 0; i--) {
-      const k = CARS.list[i]; k.x += k.dir * k.v * dt;
+      const k = CARS.list[i]; k.x += k.dir * k.v * dt; const pxs = par(gy);
       if ((k.dir > 0 && k.x > k.end) || (k.dir < 0 && k.x < k.end)) { CARS.list.splice(i, 1); continue; }
       ctx.save(); ctx.globalAlpha = 0.35; ctx.filter = 'blur(3px)'; ctx.fillStyle = '#000';
-      ctx.beginPath(); ctx.ellipse(k.x + k.w / 2, gy - 2, k.w * 0.46, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      ctx.save(); ctx.translate(k.x + k.w / 2, gy); ctx.scale(k.dir * k.c.face, 1);
+      ctx.beginPath(); ctx.ellipse(k.x + pxs + k.w / 2, gy - 2, k.w * 0.46, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      ctx.save(); ctx.translate(k.x + pxs + k.w / 2, gy); ctx.scale(k.dir * k.c.face, 1);
       ctx.filter = 'brightness(0.82) contrast(0.9)';          // a little haze at that distance
       ctx.drawImage(k.c.i, -k.w / 2, -CARS.h, k.w, CARS.h); ctx.restore();
     }
     ctx.restore();
     // the far street lamp (painted, x 1164-1178) stands in front of the cross street: repaint its pole over the cars
-    ctx.drawImage(S.bg, 1163, gy - CARS.h * 2, 17, CARS.h * 2 + 8, 1163, gy - CARS.h * 2, 17, CARS.h * 2 + 8);
+    { const lx = 1163 + parAt(1171, gy - 60); const kb = S.bgNow.width / W; ctx.drawImage(S.bgNow, lx * kb, (gy - CARS.h * 2) * kb, 17 * kb, (CARS.h * 2 + 8) * kb, lx, gy - CARS.h * 2, 17, CARS.h * 2 + 8); }
     const lamp = S.occ.find(o => o.name === 'lamp-post'); if (lamp) drawOcc(lamp, performance.now());   // the near lamp post stays in front
   }
   // per-room ambient life (scene pixels): steam, lamp flicker, lantern glow, snow, mist
@@ -304,23 +306,25 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.save();
     for (const e of A.steam || []) {
       if (Math.random() < dt * e.rate) steamP.push({ e, x: e.x + (Math.random() - 0.5) * e.sx, y: e.y, t: 0, s: 0.6 + Math.random() * 0.8, room });
+      e.px = parAt(e.x, e.y);
     }
     for (let i = steamP.length - 1; i >= 0; i--) { const p = steamP[i]; if (p.room !== room) { steamP.splice(i, 1); continue; }
       p.t += dt; const e = p.e; if (p.t > e.life) { steamP.splice(i, 1); continue; }
       const k = p.t / e.life, rise = p.t * e.rise * (1 + p.s * 0.3), sway = Math.sin(p.t * 0.9 + p.s * 7) * e.drift * (0.4 + k);
       const r = e.size * (0.6 + k * 2.2) * p.s; ctx.globalAlpha = e.a * Math.min(1, p.t * 1.5) * (1 - k) * (1 - k * 0.3);
-      ctx.drawImage(puff(), p.x + sway + k * e.drift * 2 - r, p.y - rise - r, r * 2, r * 2); }
+      ctx.drawImage(puff(), p.x + (e.px || 0) + sway + k * e.drift * 2 - r, p.y - rise - r, r * 2, r * 2); }
     ctx.globalAlpha = 1;
     // lamps that are on: a slow drift, rolling flame for gas and lanterns, rare sags and stutters for bulbs.
     // Brighter -> light added round the lamp and over what it lights; dimmer -> that area darkens with it.
     for (const L of A.lamps || []) {
-      const lv = lampLevel(L, ambT), d = lv - 1;
+      const lv = lampLevel(L, ambT), d = lv - 1; ctx.save(); ctx.translate(parAt(L.x, L.y), 0);
       for (const [rad, k] of [[L.core, 1], [L.reach, 0.55]]) {
         const g = ctx.createRadialGradient(L.x, L.y, 0, L.x, L.y, rad);
         if (d > 0) { g.addColorStop(0, 'rgba(255,250,240,1)'); g.addColorStop(1, 'rgba(255,250,240,0)'); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = Math.min(1, d * L.a * k * 6); }
         else { g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(0.55, 'rgba(0,0,0,0.6)'); g.addColorStop(1, 'rgba(0,0,0,0)'); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = Math.min(1, -d * L.a * k * 5); }
         ctx.fillStyle = g; ctx.fillRect(L.x - rad, L.y - rad, rad * 2, rad * 2);
       }
+      ctx.restore();
     }
     ctx.globalCompositeOperation = 'source-over';
     // low mist drifting through the alley
@@ -377,6 +381,71 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // ---- frame
   let last = performance.now();
   const sil = document.createElement('canvas'), sx = sil.getContext('2d');
+  // ---- parallax: the camera drifts with Matt; everything shifts sideways by its disparity (1 at the bottom
+  // of the frame, 0 at the horizon). The painting is displaced per pixel on the GPU using a depth map built
+  // from the scene: floor by perspective, furniture and characters by where they stand, walls by the floor
+  // line in their column.
+  const PX = { cam: 0, K: 22, Z: 1.018, gl: null, ok: true, off: [0, 0], k: 1 };
+  const dispY = (y) => { const W = S.sc.size[0], H = S.sc.size[1], hz = S.sc.horizon * H; return Math.max(0, Math.min(1, (y - hz) / (H - hz))); };
+  const par = (y) => -PX.cam * PX.K * dispY(y);
+  const parAt = (x, y) => { const D = S.depth; if (!D) return par(y); const i = Math.max(0, Math.min(D.w - 1, Math.floor(x / 4))), j = Math.max(0, Math.min(D.h - 1, Math.floor(y / 4)));
+    return -PX.cam * PX.K * D.a[j * D.w + i] / 255; };
+  function buildDepth(sc) {
+    const W = sc.sc.size[0], H = sc.sc.size[1], w = Math.ceil(W / 4), h = Math.ceil(H / 4), hz = sc.sc.horizon * H;
+    const dY = (y) => Math.max(0, Math.min(1, (y - hz) / (H - hz)));
+    const a = new Float32Array(w * h), F = sc.floor, top = new Int32Array(w).fill(-1);
+    for (let x = 0; x < w; x++) for (let y = 0; y < h; y++) { const fx = Math.min(F.w - 1, Math.floor(x * F.w / w)), fy = Math.min(F.h - 1, Math.floor(y * F.h / h)); if (F.m[fy * F.w + fx]) { top[x] = y; break; } }
+    let lastTop = -1; for (let x = 0; x < w; x++) { if (top[x] >= 0) lastTop = top[x]; else top[x] = lastTop; }
+    for (let x = w - 1; x >= 0; x--) { if (top[x] >= 0) lastTop = top[x]; else top[x] = lastTop >= 0 ? lastTop : Math.round(h * 0.7); }
+    for (let x = 0; x < w; x++) for (let y = 0; y < h; y++) a[y * w + x] = y < top[x] ? dY(top[x] * 4) : dY(y * 4);
+    // furniture and characters, far to near, at the disparity of where they stand
+    const objs = [...sc.occ].sort((p, q) => p.baseline - q.baseline), c = document.createElement('canvas'), x = c.getContext('2d', { willReadFrequently: true });
+    for (const o of objs) {
+      const ow = o.bbox[2] - o.bbox[0], oh = o.bbox[3] - o.bbox[1], cw2 = Math.max(1, Math.ceil(ow / 4)), ch2 = Math.max(1, Math.ceil(oh / 4));
+      c.width = cw2; c.height = ch2; x.clearRect(0, 0, cw2, ch2); x.drawImage(o.img, 0, 0, ow, oh, 0, 0, cw2, ch2);
+      const d = x.getImageData(0, 0, cw2, ch2).data, x0 = Math.floor(o.bbox[0] / 4), y0 = Math.floor(o.bbox[1] / 4);
+      for (let j = 0; j < ch2; j++) for (let i = 0; i < cw2; i++) { if (d[(j * cw2 + i) * 4 + 3] < 128) continue;
+        const X = x0 + i, Y = y0 + j; if (X < 0 || Y < 0 || X >= w || Y >= h) continue;
+        let b = o.baseline; if (o.baseline_cols) { const bi = Math.round(i * 4 / o.baseline_step); const v = o.baseline_cols[Math.max(0, Math.min(o.baseline_cols.length - 1, bi))]; if (v != null) b = v; }
+        a[Y * w + X] = dY(b); }
+    }
+    // soften the steps between depths a little
+    const b2 = new Float32Array(a.length);
+    for (let pass = 0; pass < 2; pass++) { const src = pass ? b2.slice() : a; const dst = pass ? a : b2;
+      for (let y = 0; y < h; y++) for (let X = 0; X < w; X++) { let s2 = 0, n = 0; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const yy = y + dy, xx = X + dx; if (yy >= 0 && yy < h && xx >= 0 && xx < w) { s2 += src[yy * w + xx]; n++; } } dst[y * w + X] = s2 / n; } }
+    const u8 = new Uint8Array(w * h); for (let i = 0; i < u8.length; i++) u8[i] = Math.round(a[i] * 255);
+    return { w, h, a: u8 };
+  }
+  function glBG(cw, ch) {
+    if (!PX.ok) return null;
+    let G = PX.gl;
+    if (!G) {
+      const c = document.createElement('canvas'), gl = c.getContext('webgl', { premultipliedAlpha: false, preserveDrawingBuffer: true });
+      if (!gl) { PX.ok = false; return null; }
+      const sh = (t, src) => { const o = gl.createShader(t); gl.shaderSource(o, src); gl.compileShader(o); return o; };
+      const pr = gl.createProgram();
+      gl.attachShader(pr, sh(gl.VERTEX_SHADER, 'attribute vec2 p; varying vec2 uv; void main(){ uv = vec2(p.x*0.5+0.5, 0.5-p.y*0.5); gl_Position = vec4(p,0.,1.); }'));
+      gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, 'precision mediump float; varying vec2 uv; uniform sampler2D bg, dep; uniform float s;' +
+        'void main(){ float d = texture2D(dep, uv).r; d = texture2D(dep, uv - vec2(s*d, 0.)).r; d = texture2D(dep, uv - vec2(s*d, 0.)).r; d = texture2D(dep, uv - vec2(s*d, 0.)).r;' +
+        ' gl_FragColor = texture2D(bg, uv - vec2(s*d, 0.)); }'));
+      gl.linkProgram(pr); gl.useProgram(pr);
+      const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+      const tex = () => { const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t); for (const [k2, v] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_2D, k2, v); return t; };
+      G = PX.gl = { c, gl, pr, tBG: tex(), tD: tex(), scene: null };
+      gl.uniform1i(gl.getUniformLocation(pr, 'bg'), 0); gl.uniform1i(gl.getUniformLocation(pr, 'dep'), 1); G.uS = gl.getUniformLocation(pr, 's');
+    }
+    const gl = G.gl;
+    if (G.c.width !== cw || G.c.height !== ch) { G.c.width = cw; G.c.height = ch; gl.viewport(0, 0, cw, ch); }
+    if (G.scene !== S) {
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, G.tBG); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, S.bg);
+      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, G.tD); gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, S.depth.w, S.depth.h, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, S.depth.a); G.scene = S;
+    }
+    gl.uniform1f(G.uS, -PX.cam * PX.K / S.sc.size[0]);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    return G.c;
+  }
   function tick(now) {
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
     const W = S.sc.size[0], H = S.sc.size[1];
@@ -400,8 +469,14 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const dpr = Math.min(2, window.devicePixelRatio || 1), cw = Math.round(cv.clientWidth * dpr), ch = Math.round(cv.clientHeight * dpr);
     if (cv.width !== cw || cv.height !== ch) { cv.width = cw; cv.height = ch; }
     const k = cw / W;
-    ctx.setTransform(k, 0, 0, k, 0, 0);
-    ctx.drawImage(S.bg, 0, 0, W, H);
+    // camera: drifts toward Matt; a small zoom keeps the shifted edges out of view
+    const camT = document.getElementById('parallax').checked ? (M.x / W - 0.5) * 2 : 0;
+    PX.cam += (camT - PX.cam) * Math.min(1, dt * 1.4);
+    if (!S.depth) S.depth = buildDepth(S);
+    const Z = PX.Z, ox = -(Z - 1) * cw / 2, oy = -(Z - 1) * ch / 2; PX.k = k * Z; PX.off = [ox, oy];
+    ctx.setTransform(k * Z, 0, 0, k * Z, ox, oy);
+    S.bgNow = glBG(cw, ch) || S.bg;
+    ctx.drawImage(S.bgNow, 0, 0, W, H);
     const amb = document.getElementById('ambient').checked;
     if (amb) ambientUnder(dt, W, H); else lightFactor = 1;
 
@@ -416,7 +491,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     sil.width = sp.fw; sil.height = sp.fh;
     sx.clearRect(0, 0, sp.fw, sp.fh); sx.drawImage(img, fi * sp.fw, 0, sp.fw, sp.fh, 0, 0, sp.fw, sp.fh);
     sx.globalCompositeOperation = 'source-in'; sx.fillStyle = '#000'; sx.fillRect(0, 0, sp.fw, sp.fh); sx.globalCompositeOperation = 'source-over';
-    ctx.save();
+    ctx.save(); ctx.translate(par(M.y), 0);
     ctx.globalCompositeOperation = 'source-over';
     ctx.save();
     for (const p of shadowParams()) for (const pass of [{ a: 0.55, b: 0.25 }, { a: 0.6, b: 1.6 }]) {
@@ -435,7 +510,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
         x.drawImage(o.img, 0, 0, w, ph, 0, 0, w, ph); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height); o.sil = c; }
       for (const p of shadowParams(ax, ay, ph)) for (const pass of [{ a: 0.55, b: 0.25 }, { a: 0.6, b: 1.6 }]) {
         ctx.save(); ctx.globalAlpha = Math.min(0.85, p.a * pass.a * 1.6); ctx.filter = 'blur(' + Math.max(0.5, p.blur * pass.b * k).toFixed(1) + 'px)';
-        ctx.transform(1, 0, -p.vx / ph, -p.vy / ph, ax, ay);
+        ctx.translate(par(ay), 0); ctx.transform(1, 0, -p.vx / ph, -p.vy / ph, ax, ay);
         ctx.drawImage(o.sil, o.bbox[0] - ax, -ph, w, ph); ctx.restore(); }
     }
     // keep shadows only on the floor: redraw the non-floor background over them
@@ -456,7 +531,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     // seated characters are sprites, not part of the painting: draw the ones behind Matt first
     for (const o of behindProps) drawOcc(o, now);
     // Matt
-    ctx.save(); ctx.translate(M.x, M.y); ctx.scale(fx, 1);
+    ctx.save(); ctx.translate(M.x + par(M.y), M.y); ctx.scale(fx, 1);
     ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
     if (!M.moving) {                                                     // standing still: face, breathing and head sway
       let src = img, sx0 = fi * sp.fw;
@@ -595,6 +670,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
   // furniture and props; animated props (idle loops) pick the frame for the current time from their sheet
   function drawOcc(o, now) {
+    ctx.save(); ctx.translate(par(o.baseline), 0); drawOcc0(o, now); ctx.restore();
+  }
+  function drawOcc0(o, now) {
     const w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1];
     if (o.anim) {
       // mostly still on the first frame; now and then play the idle loop once through
@@ -617,21 +695,18 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // redraw everything that is not floor over the shadow layer, so shadows never fall on walls or furniture
   const fcache = {};
   function maskShadow() {
-    const key = room;
-    if (!fcache[key]) {
-      const W = S.sc.size[0], H = S.sc.size[1], c = document.createElement('canvas'); c.width = W / 4; c.height = H / 4;
-      const x = c.getContext('2d'); x.drawImage(S.bg, 0, 0, c.width, c.height);
-      const id = x.getImageData(0, 0, c.width, c.height), d = id.data, f = S.floor;
-      for (let p = 0; p < f.m.length; p++) if (f.m[p]) d[p * 4 + 3] = 0;
-      x.putImageData(id, 0, 0);
-      const full = document.createElement('canvas'); full.width = W / 2; full.height = H / 2; const fx = full.getContext('2d');
-      fx.drawImage(S.bg, 0, 0, full.width, full.height); fx.globalCompositeOperation = 'destination-in';
-      const m2 = document.createElement('canvas'); m2.width = c.width; m2.height = c.height; const mx = m2.getContext('2d');
-      const md = mx.createImageData(c.width, c.height); for (let p = 0; p < f.m.length; p++) md.data[p * 4 + 3] = f.m[p] ? 0 : 255; mx.putImageData(md, 0, 0);
-      fx.drawImage(m2, 0, 0, full.width, full.height);
-      fcache[key] = full;
+    const key = room, W = S.sc.size[0], H = S.sc.size[1];
+    if (!fcache[key]) {                       // alpha mask of everything that is not floor
+      const f = S.floor, m2 = document.createElement('canvas'); m2.width = f.w; m2.height = f.h; const mx = m2.getContext('2d');
+      const md = mx.createImageData(f.w, f.h); for (let p = 0; p < f.m.length; p++) md.data[p * 4 + 3] = f.m[p] ? 0 : 255; mx.putImageData(md, 0, 0);
+      const t = document.createElement('canvas'); t.width = W / 2; t.height = H / 2;
+      fcache[key] = { m2, t };
     }
-    ctx.drawImage(fcache[key], 0, 0, S.sc.size[0], S.sc.size[1]);
+    const { m2, t } = fcache[key], x = t.getContext('2d');
+    x.globalCompositeOperation = 'copy';
+    x.drawImage(S.bgNow, 0, 0, t.width, t.height);
+    x.globalCompositeOperation = 'destination-in'; x.drawImage(m2, 0, 0, t.width, t.height); x.globalCompositeOperation = 'source-over';
+    ctx.drawImage(t, 0, 0, W, H);
   }
   const tcache = new Map();
   function tint(mask) {
