@@ -256,8 +256,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       const c = CARS.imgs[Math.floor(Math.random() * CARS.imgs.length)], dir = Math.random() < 0.5 ? 1 : -1;
       const w = c.i.width * CARS.h / c.i.height, x0 = CARS.area[0] * W - w - 40, x1 = CARS.area[1] * W + 40;
       CARS.list.push({ c, dir, w, x: dir > 0 ? x0 : x1, end: dir > 0 ? x1 : x0, v: 300 + Math.random() * 120 });
-      shot('car-pass', 0.32, 0, 0.95 + Math.random() * 0.1).then(h => { if (h && h.p) { const t = AU.ac.currentTime; h.p.pan.setValueAtTime(-0.7 * dir, t); h.p.pan.linearRampToValueAtTime(0.7 * dir, t + 6); }
-        if (h) { const t = AU.ac.currentTime; h.g.gain.setValueAtTime(0.32, t + 5); h.g.gain.linearRampToValueAtTime(0, t + 8); h.src.stop(t + 8.2); } });
+      const car = CARS.list[CARS.list.length - 1];
+      shot('car-pass', 0.55, [car.x + w / 2, CARS.ground * H], 0.95 + Math.random() * 0.1).then(h => { if (!h) return; car.snd = h; const t = AU.ac.currentTime;
+        h.src.stop(t + 9); });
       CARS.next = 7 + Math.random() * 13;
     }
     if (!CARS.list.length) return;
@@ -265,7 +266,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.save(); ctx.beginPath(); ctx.rect(L, gy - CARS.h * 2, R - L, CARS.h * 2 + 6); ctx.clip();
     for (let i = CARS.list.length - 1; i >= 0; i--) {
       const k = CARS.list[i]; k.x += k.dir * k.v * dt; const pxs = par(gy);
-      if ((k.dir > 0 && k.x > k.end) || (k.dir < 0 && k.x < k.end)) { CARS.list.splice(i, 1); continue; }
+      if (k.snd && AU.ac) steer(k.snd, spatial([k.x + k.w / 2, gy]));
+      if ((k.dir > 0 && k.x > k.end) || (k.dir < 0 && k.x < k.end)) { if (k.snd) { const t = AU.ac.currentTime; k.snd.g.gain.setTargetAtTime(0, t, 0.8); } CARS.list.splice(i, 1); continue; }
       ctx.save(); ctx.globalAlpha = 0.35; ctx.filter = 'blur(3px)'; ctx.fillStyle = '#000';
       ctx.beginPath(); ctx.ellipse(k.x + pxs + k.w / 2, gy - 2, k.w * 0.46, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
       ctx.save(); ctx.translate(k.x + pxs + k.w / 2, gy); ctx.scale(k.dir * k.c.face, 1);
@@ -386,15 +388,21 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   const sil = document.createElement('canvas'), sx = sil.getContext('2d');
   // ---- sound (ElevenLabs effects): a looping bed per room, footsteps on the walk cycle, occasional one-shots,
   // doors on exits, engines with the passing cars. Starts on the first click (browsers need a gesture).
+  // positions are floor points in scene pixels (where the source stands): the sound is heard from Matt, so its
+  // loudness, muffling, stereo place and reverb follow his distance from it in metres
   const SND = {
-    'office-day':    { beds: [['bed-office-day', 0.9]], floor: 'wood', shots: [['radiator', 30, 70, 0.45], ['floor-creak', 40, 90, 0.35]] },
-    'office-night':  { beds: [['bed-rain', 0.9], ['bed-neon', 0.35]], floor: 'wood', shots: [['thunder', 40, 100, 0.5], ['floor-creak', 50, 100, 0.3]] },
-    corridor:        { beds: [['bed-corridor', 0.9]], floor: 'wood', shots: [['floor-creak', 25, 60, 0.45], ['typewriter', 30, 70, 0.3]] },
-    'pete-kate-flat':{ beds: [['bed-flat', 0.9]], floor: 'wood', shots: [['teacup', 18, 45, 0.5], ['typewriter', 40, 90, 0.4]] },
-    'doyers-street': { beds: [['bed-street', 1.0]], floor: 'cobble', shots: [['car-horn', 30, 80, 0.35]] },
-    'tea-house':     { beds: [['bed-tea', 0.9]], floor: 'tile', shots: [['teacup', 15, 40, 0.45]] },
-    pawnshop:        { beds: [['bed-pawn', 0.9]], floor: 'wood', shots: [['clock-chime', 25, 60, 0.45]] },
-    alley:           { beds: [['bed-alley', 1.0]], floor: 'cobble', shots: [['bin-lid', 25, 60, 0.4]] },
+    'office-day':    { room: [0.45, 0.20], beds: [['bed-office-day', 0.9, [2284, 1343]]], floor: 'wood',
+                       shots: [['radiator', 30, 70, 0.6, [2284, 1343]], ['floor-creak', 40, 90, 0.4, 'near']] },
+    'office-night':  { room: [0.45, 0.20], beds: [['bed-rain', 0.9, [2394, 1229]], ['bed-neon', 0.4, [2394, 1229]]], floor: 'wood',
+                       shots: [['thunder', 40, 100, 0.5, null], ['floor-creak', 50, 100, 0.35, 'near']] },
+    corridor:        { room: [0.95, 0.32], beds: [['bed-corridor', 0.9, [578, 1290]]], floor: 'wood',
+                       shots: [['floor-creak', 25, 60, 0.5, 'near'], ['typewriter', 30, 70, 0.45, [578, 1290]]] },
+    'pete-kate-flat':{ room: [0.40, 0.18], beds: [['bed-flat', 0.9, [275, 1500]]], floor: 'wood',
+                       shots: [['teacup', 18, 45, 0.6, [1070, 1273]], ['typewriter', 40, 90, 0.5, [1900, 1530]]] },
+    'doyers-street': { room: [1.3, 0.14], beds: [['bed-street', 1.0, null]], floor: 'cobble', shots: [['car-horn', 30, 80, 0.45, [1050, 880]]] },
+    'tea-house':     { room: [0.70, 0.22], beds: [['bed-tea', 0.9, [2100, 1250]]], floor: 'tile', shots: [['teacup', 15, 40, 0.6, [2300, 1300]]] },
+    pawnshop:        { room: [0.55, 0.16], beds: [['bed-pawn', 0.9, [900, 1046]]], floor: 'wood', shots: [['clock-chime', 25, 60, 0.6, [900, 1046]]] },
+    alley:           { room: [1.1, 0.30], beds: [['bed-alley', 1.0, null]], floor: 'cobble', shots: [['bin-lid', 25, 60, 0.55, [1650, 1264]]] },
   };
   const AU = { ac: null, master: null, buf: {}, beds: [], next: {}, roomOn: null, lastPhase: 0 };
   const soundOn = () => document.getElementById('sound').checked;
@@ -409,23 +417,51 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (!AU.buf[name]) AU.buf[name] = fetch('sfx/' + name + '.mp3').then(r => r.arrayBuffer()).then(a => AU.ac.decodeAudioData(a)).catch(() => null);
     return AU.buf[name];
   }
-  async function shot(name, vol = 1, pan = 0, rate = 1) {
-    if (!AU.ac) return null; const b = await sbuf(name); if (!b) return null;
-    const src = AU.ac.createBufferSource(), g = AU.ac.createGain(), p = AU.ac.createStereoPanner ? AU.ac.createStereoPanner() : null;
-    src.buffer = b; src.playbackRate.value = rate; g.gain.value = vol; src.connect(g);
-    if (p) { p.pan.value = Math.max(-1, Math.min(1, pan)); g.connect(p); p.connect(AU.master); } else g.connect(AU.master);
-    src.start(); return { src, g, p };
+  // ---- spatial audio: metres on the floor from the room's camera model
+  function floorM(x, y) { const f = S.sc.camera.f_px, hz = S.sc.horizon * S.sc.size[1], Z = f * S.sc.eye_m / Math.max(4, y - hz); return [(x - S.sc.size[0] / 2) * Z / f, Z]; }
+  function spatial(pos) {                    // -> { g: 0..1, lp: Hz, pan: -1..1, wet: 0..1 } heard from Matt
+    const R = SND[room] || {}, [revT, wet0] = R.room || [0.5, 0.2];
+    if (!pos) return { g: 1, lp: 16000, pan: 0, wet: wet0 };
+    const [ax, az] = floorM(M.x, M.y), [bx, bz] = floorM(pos[0], pos[1]), d = Math.hypot(bx - ax, bz - az);
+    const ref = 1.2, g = Math.max(0.1, Math.min(1, ref / (ref + 0.9 * Math.max(0, d - ref))));
+    const lp = Math.max(900, 17000 * Math.exp(-d / (revT > 1 ? 9 : 5.5)));     // farther = duller (more so indoors)
+    const pan = Math.max(-0.85, Math.min(0.85, (bx - ax) / Math.max(1.5, d)));
+    return { g, lp, pan, wet: Math.min(0.7, wet0 + 0.05 * d), d };
   }
-  // a bed loops by overlapping copies with 2.5 s crossfades (no gap from mp3 padding)
-  function bedLoop(name, vol, token) {
+  function makeIR(T) {                       // a small room / hall / street reverb: decaying noise, darker over time
+    const ac = AU.ac, n = Math.floor(ac.sampleRate * T), b = ac.createBuffer(2, n, ac.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = b.getChannelData(c); let lp = 0;
+      for (let i = 0; i < n; i++) { const t = i / n, k = 0.35 + 0.6 * t; lp = lp * k + (Math.random() * 2 - 1) * (1 - k); d[i] = lp * Math.pow(1 - t, 3) * (i < ac.sampleRate * 0.012 ? i / (ac.sampleRate * 0.012) : 1); } }
+    return b;
+  }
+  function chain(gain0, sp) {               // source -> gain -> low-pass -> pan -> dry + reverb send
+    const ac = AU.ac, g = ac.createGain(), f = ac.createBiquadFilter(), p = ac.createStereoPanner ? ac.createStereoPanner() : ac.createGain(), dry = ac.createGain(), wet = ac.createGain();
+    f.type = 'lowpass'; f.frequency.value = sp.lp; g.gain.value = gain0 * sp.g; if (p.pan) p.pan.value = sp.pan;
+    dry.gain.value = 1 - sp.wet * 0.5; wet.gain.value = sp.wet;
+    g.connect(f); f.connect(p); p.connect(dry); p.connect(wet); dry.connect(AU.master); wet.connect(AU.rev || AU.master);
+    return { g, f, p, dry, wet, base: gain0 };
+  }
+  function steer(c, sp, floorMin = 0) {     // glide a running sound to new distance settings
+    const t = AU.ac.currentTime;
+    c.g.gain.setTargetAtTime(c.base * Math.max(floorMin, sp.g), t, 0.15); c.f.frequency.setTargetAtTime(sp.lp, t, 0.15);
+    if (c.p.pan) c.p.pan.setTargetAtTime(sp.pan, t, 0.15); c.wet.gain.setTargetAtTime(sp.wet, t, 0.3); c.dry.gain.setTargetAtTime(1 - sp.wet * 0.5, t, 0.3);
+  }
+  async function shot(name, vol = 1, pos = null, rate = 1) {
+    if (!AU.ac) return null; const b = await sbuf(name); if (!b) return null;
+    const src = AU.ac.createBufferSource(); src.buffer = b; src.playbackRate.value = rate;
+    const c = chain(vol, spatial(pos)); src.connect(c.g); src.start(); c.src = src; return c;
+  }
+  // a bed loops by overlapping copies with 2.5 s crossfades (no gap from mp3 padding); positioned beds follow Matt
+  function bedLoop(name, vol, pos, token) {
     sbuf(name).then(b => {
       if (!b || AU.roomOn !== token) return;
+      const bed = { pos, c: chain(1, spatial(pos)), token, srcs: [] }; bed.c.base = 1; AU.beds.push(bed);
       const run = () => {
         if (AU.roomOn !== token) return;
-        const t = AU.ac.currentTime, src = AU.ac.createBufferSource(), g = AU.ac.createGain(), X = 2.5, d = b.duration;
-        src.buffer = b; src.connect(g); g.connect(AU.master);
-        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + X); g.gain.setValueAtTime(vol, t + d - X); g.gain.linearRampToValueAtTime(0, t + d);
-        src.start(t); AU.beds.push({ src, g, token });
+        const t = AU.ac.currentTime, src = AU.ac.createBufferSource(), x = AU.ac.createGain(), X = 2.5, d = b.duration;
+        src.buffer = b; src.connect(x); x.connect(bed.c.g);
+        x.gain.setValueAtTime(0, t); x.gain.linearRampToValueAtTime(vol, t + X); x.gain.setValueAtTime(vol, t + d - X); x.gain.linearRampToValueAtTime(0, t + d);
+        src.start(t); src.stop(t + d + 0.05); bed.srcs.push(src);
         setTimeout(run, (d - X) * 1000);
       };
       run();
@@ -434,23 +470,30 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   function roomSound(id) {
     if (!AU.ac) return;
     const t = AU.ac.currentTime;
-    for (const b of AU.beds) { b.g.gain.cancelScheduledValues(t); b.g.gain.setValueAtTime(b.g.gain.value, t); b.g.gain.linearRampToValueAtTime(0, t + 1.2); b.src.stop(t + 1.3); }
+    for (const b of AU.beds) { const g = b.c.g.gain; g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0, t + 1.2); for (const s2 of b.srcs) try { s2.stop(t + 1.3); } catch (e) {} }
     AU.beds = []; AU.roomOn = id + ':' + Math.random(); AU.next = {};
-    for (const [n, v] of (SND[id] || {}).beds || []) bedLoop(n, v, AU.roomOn);
+    // the room's reverb
+    const [T] = (SND[id] || {}).room || [0.5];
+    if (AU.rev) { const old = AU.rev; setTimeout(() => old.disconnect(), 3000); }
+    AU.rev = AU.ac.createConvolver(); AU.rev.buffer = makeIR(T); AU.rev.connect(AU.master);
+    for (const [n, v, pos] of (SND[id] || {}).beds || []) bedLoop(n, v, pos, AU.roomOn);
   }
   function soundTick(now) {
     if (!AU.ac) return;
     if (!AU.roomOn || !AU.roomOn.startsWith(room + ':')) roomSound(room);
     const R = SND[room] || {}, t = now / 1000, W = S.sc.size[0];
-    for (const [n, lo, hi, v] of R.shots || []) {
+    for (const [n, lo, hi, v, pos] of R.shots || []) {
       if (AU.next[n] === undefined) AU.next[n] = t + lo * (0.3 + Math.random() * 0.7);
-      if (t > AU.next[n]) { shot(n, v, (Math.random() - 0.5) * 0.8, 0.95 + Math.random() * 0.1); AU.next[n] = t + lo + Math.random() * (hi - lo); }
+      if (t > AU.next[n]) { const at = pos === 'near' ? [M.x + (Math.random() - 0.5) * 500, M.y + (Math.random() - 0.5) * 120] : pos;
+        shot(n, v, at, 0.95 + Math.random() * 0.1); AU.next[n] = t + lo + Math.random() * (hi - lo); }
     }
+    for (const b of AU.beds) if (b.pos) steer(b.c, spatial(b.pos), 0.3);      // beds never fade below 30 %
     // footsteps: two per walk cycle, louder near the camera, panned with Matt
     if (M.moving && R.floor) {
       const ph = M.phase, crossed = (AU.lastPhase < 0.5 && ph >= 0.5) || ph < AU.lastPhase;
       if (crossed) { const near = Math.min(1, heightAt(M.y) / (S.sc.size[1] * 0.55));
-        shot('steps-' + R.floor + '-' + (1 + Math.floor(Math.random() * 10)), 0.35 + 0.65 * near, (M.x / W - 0.5) * 1.2, 0.93 + Math.random() * 0.14); }
+        shot('steps-' + R.floor + '-' + (1 + Math.floor(Math.random() * 10)), 0.35 + 0.65 * near, null, 0.93 + Math.random() * 0.14)
+          .then(c => { if (c && c.p.pan) c.p.pan.value = (M.x / W - 0.5) * 1.2; }); }
     }
     AU.lastPhase = M.phase;
   }
@@ -458,7 +501,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // of the frame, 0 at the horizon). The painting is displaced per pixel on the GPU using a depth map built
   // from the scene: floor by perspective, furniture and characters by where they stand, walls by the floor
   // line in their column.
-  const PX = { cam: 0, K: 22, Z: 1.018, gl: null, ok: true, off: [0, 0], k: 1 };
+  const PX = { cam: 0, K: 16, Z: 1.014, gl: null, ok: true, off: [0, 0], k: 1 };
   const dispY = (y) => { const W = S.sc.size[0], H = S.sc.size[1], hz = S.sc.horizon * H; return Math.max(0, Math.min(1, (y - hz) / (H - hz))); };
   const par = (y) => -PX.cam * PX.K * dispY(y);
   const parAt = (x, y) => { const D = S.depth; if (!D) return par(y); const i = Math.max(0, Math.min(D.w - 1, Math.floor(x / 4))), j = Math.max(0, Math.min(D.h - 1, Math.floor(y / 4)));
@@ -470,7 +513,14 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     for (let x = 0; x < w; x++) for (let y = 0; y < h; y++) { const fx = Math.min(F.w - 1, Math.floor(x * F.w / w)), fy = Math.min(F.h - 1, Math.floor(y * F.h / h)); if (F.m[fy * F.w + fx]) { top[x] = y; break; } }
     let lastTop = -1; for (let x = 0; x < w; x++) { if (top[x] >= 0) lastTop = top[x]; else top[x] = lastTop; }
     for (let x = w - 1; x >= 0; x--) { if (top[x] >= 0) lastTop = top[x]; else top[x] = lastTop >= 0 ? lastTop : Math.round(h * 0.7); }
-    for (let x = 0; x < w; x++) for (let y = 0; y < h; y++) a[y * w + x] = y < top[x] ? dY(top[x] * 4) : dY(y * 4);
+    // walls: the line where floor meets wall is jagged (furniture hides the floor), so take the furthest floor
+    // seen in a wide window (a median of the highest points), then smooth: the back wall moves as one plane and
+    // the side walls recede evenly, instead of strips shifting by different amounts
+    const wallT = new Float32Array(w), win = Math.max(8, Math.round(w * 0.08));
+    for (let x = 0; x < w; x++) { const v = []; for (let k = -win; k <= win; k++) { const xx = x + k; if (xx >= 0 && xx < w) v.push(top[xx]); }
+      v.sort((p2, q) => p2 - q); wallT[x] = v[Math.floor(v.length * 0.25)]; }
+    for (let pass = 0; pass < 3; pass++) { const c2 = wallT.slice(); for (let x = 0; x < w; x++) { let s2 = 0, n = 0; for (let k = -win; k <= win; k++) { const xx = x + k; if (xx >= 0 && xx < w) { s2 += c2[xx]; n++; } } wallT[x] = s2 / n; } }
+    for (let x = 0; x < w; x++) for (let y = 0; y < h; y++) a[y * w + x] = y < wallT[x] ? dY(wallT[x] * 4) : dY(y * 4);
     // furniture and characters, far to near, at the disparity of where they stand
     const objs = [...sc.occ].sort((p, q) => p.baseline - q.baseline), c = document.createElement('canvas'), x = c.getContext('2d', { willReadFrequently: true });
     for (const o of objs) {
@@ -482,10 +532,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
         let b = o.baseline; if (o.baseline_cols) { const bi = Math.round(i * 4 / o.baseline_step); const v = o.baseline_cols[Math.max(0, Math.min(o.baseline_cols.length - 1, bi))]; if (v != null) b = v; }
         a[Y * w + X] = dY(b); }
     }
-    // soften the steps between depths a little
-    const b2 = new Float32Array(a.length);
-    for (let pass = 0; pass < 2; pass++) { const src = pass ? b2.slice() : a; const dst = pass ? a : b2;
-      for (let y = 0; y < h; y++) for (let X = 0; X < w; X++) { let s2 = 0, n = 0; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const yy = y + dy, xx = X + dx; if (yy >= 0 && yy < h && xx >= 0 && xx < w) { s2 += src[yy * w + xx]; n++; } } dst[y * w + X] = s2 / n; } }
+    // near objects keep crisp edges: grow the nearer depth one cell sideways (no smoothing across edges)
+    const b2 = a.slice();
+    for (let y = 0; y < h; y++) for (let X = 0; X < w; X++) { let m = a[y * w + X]; if (X > 0) m = Math.max(m, a[y * w + X - 1]); if (X < w - 1) m = Math.max(m, a[y * w + X + 1]); b2[y * w + X] = m; }
+    a.set(b2);
     const u8 = new Uint8Array(w * h); for (let i = 0; i < u8.length; i++) u8[i] = Math.round(a[i] * 255);
     return { w, h, a: u8 };
   }
@@ -534,8 +584,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
         if (M.exiting) { let to = M.exiting.to; if (to === 'office-day' && room === 'doyers-street') to = 'office-day'; if (to === 'map') to = MAP_NEXT[room];
           if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room;
             const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || '';
-            if (/pawnshop-door|front-door/.test(exn) && (room === 'doyers-street' || room === 'pawnshop')) shot('shop-bell', 0.6);
-            else if (/door|stairwell|apartment/.test(exn)) shot('door', 0.6);
+            if (/pawnshop-door|front-door/.test(exn) && (room === 'doyers-street' || room === 'pawnshop')) shot('shop-bell', 0.6, [M.x, M.y]);
+            else if (/door|stairwell|apartment/.test(exn)) shot('door', 0.6, [M.x, M.y]);
             M.exiting = null; enter(to, from); }
           else { status.textContent = (NAMES[M.exiting.to] || M.exiting.to) + ' is not drawn yet'; M.exiting = null; } } }
     }
