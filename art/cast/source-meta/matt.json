@@ -1,20 +1,20 @@
 {
   "model": "gemini-3-pro-image",
-  "prompt": "Painted character illustration for a point-and-click adventure, in exactly the style of the attached reference image: the same 1940s film-noir painted look, the same brush texture and level of detail, strictly black-and-white greyscale with no colour at all, hard single key light from the upper left, deep blacks and crisp highlights, a crisp readable silhouette, slightly elongated stylised proportions. Full figure from the top of the head (or hat) to the soles of the shoes, standing in a relaxed three-quarter view facing the left of the frame like the reference, both arms and hands visible, feet flat on the ground, the whole figure filling about 88% of the image height with a small margin all round. Plain flat pure chroma-key green background (#00FF00) everywhere, no floor, no cast shadow, no props unless described, no text, no border. This is the same man as in the reference image, Matt Long, with the same face; he is not wearing the overcoat this time. New York, winter 1930. Character: Matt Long, 37, private investigator and ex-NYPD detective. Tall, lean, a little stooped with tiredness. Rumpled grey single-breasted three-piece suit, white shirt, loosened dark tie, a fedora with a dented crown, two-day stubble, tired sharp eyes, square jaw. Hands relaxed at his sides.",
+  "prompt": "Edit the attached image: replace the man's suit jacket (the outer layer) with a 1930s trench coat worn open and unbuttoned: knee-length, double-breasted with buttons, wide lapels and a turned-up collar, shoulder epaulettes, cuff straps, a belt hanging loose at the waist, a little rumpled. Under it keep his grey waistcoat, white shirt and loosened dark tie, and his grey suit trousers and shoes. Keep exactly the same man, face, stubble, dented fedora, pose, size and position, the same painted film-noir style, strictly black-and-white greyscale, and the flat pure green background.",
   "refs": [
-    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/cast/style_ref.png"
+    "/tmp/claude-0/-home-user-SV/0f7a7501-1f63-5427-950d-2107e85f38a7/scratchpad/cast/matt_suit_v1.png"
   ],
   "aspect": "2:3",
   "size": "2K",
-  "created": "2026-11-25T02:27:53.190Z",
+  "created": "2026-11-25T08:56:55.760Z",
   "usage": {
-    "promptTokenCount": 563,
-    "candidatesTokenCount": 1333,
-    "totalTokenCount": 2151,
+    "promptTokenCount": 403,
+    "candidatesTokenCount": 1281,
+    "totalTokenCount": 1915,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 305
+        "tokenCount": 145
       },
       {
         "modality": "IMAGE",
@@ -27,7 +27,7 @@
         "tokenCount": 1120
       }
     ],
-    "thoughtsTokenCount": 255,
+    "thoughtsTokenCount": 231,
     "serviceTier": "standard"
   }
 }
