@@ -12,7 +12,7 @@ No actions yet. Listed left to right; positions in scene pixels (2752x1536).
 | 6 | `fire-escapes` | fire escapes | 238, 0, 1679, 787 |
 | 7 | `door-handle` | door handle | 383, 861, 411, 924 |
 | 8 | `wooden-box` | wooden box | 422, 929, 540, 1131 |
-| 9 | `newsboy` | newspaper boy | 434, 768, 570, 1077 |
+| 9 | `newsboy` | newspaper boy | 427, 731, 579, 1077 |
 | 10 | `far-shop-signs` | shop signs | 525, 439, 1408, 776 |
 | 11 | `paper-lanterns` | paper lanterns | 594, 87, 1621, 821 |
 | 12 | `far-crates` | crates | 610, 898, 692, 1019 |

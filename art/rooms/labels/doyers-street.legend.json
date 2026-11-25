@@ -126,14 +126,14 @@
   {
    "name": "newsboy",
    "file": "art/cast/final/newsboy.png",
-   "x": 433,
-   "y": 767,
-   "scale": 0.1334,
+   "x": 425,
+   "y": 729,
+   "scale": 0.1494,
    "depth_m": 0.3,
    "behind": [
     "box-left"
    ],
-   "note": "Background newspaper boy calling the headline from the recessed shop doorway past the open apartment door (where the junkie stood), the bin in front of him; 1.50 m at the same depth."
+   "note": "Background newspaper boy calling the headline from the recessed shop doorway past the open apartment door (where the junkie stood), the bin in front of him; 1.50 m at the same depth. Enlarged 12% on review."
   }
  ]
 }
