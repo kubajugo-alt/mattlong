@@ -109,6 +109,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   const load = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
   const maskOf = async (src) => { const i = await load(src); const c = document.createElement('canvas'); c.width = i.width; c.height = i.height; const x = c.getContext('2d'); x.drawImage(i, 0, 0); const d = x.getImageData(0, 0, i.width, i.height).data; const m = new Uint8Array(i.width * i.height); for (let k = 0; k < m.length; k++) m[k] = d[k * 4] > 128 ? 1 : 0; return { w: i.width, h: i.height, m, img: c }; };
 
+  // ---- bridge for the game layer (game.js): hooks it can set, functions it can call
+  const ENGINE = window.ENGINE = { hooks: {} };
   const scenes = {}; let S = null, mode = 'day', room = 'office-day', sprites = null, spriteImgs = {};
   const NAMES = { corridor: 'the corridor', 'office-day': "Matt's office", 'office-night': "Matt's office", 'pete-kate-flat': "Pete & Kate's flat", 'doyers-street': 'Doyers Street',
                   'tea-house': "Lee Wing's tea house", pawnshop: 'the pawnshop', alley: 'the alley', map: 'the city map', 'tea-house-back': 'the back room', laundry: 'the laundry' };
@@ -142,11 +144,12 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const p = back ? nearestWalkable(back.stand[0], back.stand[1]) : nearestWalkable(W * 0.5, H * 0.9);
     [M.x, M.y] = p || [W * 0.5, H * 0.9]; M.path = []; M.moving = false; M.exiting = null; M.dir = 'front'; hover = null;
     status.textContent = 'Click the floor'; switching = false;
+    if (ENGINE.hooks.entered) ENGINE.hooks.entered(id, from);
   }
   fetch('sprites/matt.json').then(r => r.json()).then(async (sp) => {
     sprites = sp;
     for (const k of Object.keys(sp)) { spriteImgs[k] = await load(sp[k].file); if (sp[k].face) sp[k].faceImg = await load('sprites/matt-' + k + '-face.webp'); }
-    await enter('office-day');
+    if (!ENGINE.hooks.boot) await enter('office-day'); else await ENGINE.hooks.boot();
     requestAnimationFrame(tick);
   }).catch(() => { status.textContent = 'Scene could not be loaded'; });
   roomSel.addEventListener('change', () => enter(roomSel.value));
@@ -193,8 +196,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 
   // ---- story state the scene shows: Kate leaves for work in P2 (her table set swaps for the empty-chair version)
   const STORY = { kateGone: false };
-  const gone = (o) => o.name === 'kate-at-table' ? STORY.kateGone : o.name === 'table-set-empty' ? !STORY.kateGone : !!o.hidden;
-  const hotGone = (h) => STORY.kateGone && (h.id === 'kate' || h.id === 'petes-cigarettes');
+  const gone = (o) => o.name === 'kate-at-table' ? STORY.kateGone : o.name === 'table-set-empty' ? !STORY.kateGone
+    : (STORY.hidden && STORY.hidden.has(o.name)) ? true : !!o.hidden;
+  const hotGone = (h) => (STORY.kateGone && (h.id === 'kate' || h.id === 'petes-cigarettes')) || !!(STORY.hiddenHot && STORY.hiddenHot.has(room + ':' + h.id));
   // ---- hotspots: smallest object under the pointer wins
   const hitCtx = document.createElement('canvas').getContext('2d');
   function hotAt(x, y) { let best = null; for (const h of S.hot) { if (hotGone(h)) continue; if (x < h.bbox[0] || x > h.bbox[2] || y < h.bbox[1] || y > h.bbox[3]) continue;
@@ -208,7 +212,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   cv.addEventListener('click', (ev) => {
     if (!S) return;
     const [x, y] = toScene(ev);
-    M.exiting = null;
+    if (ENGINE.hooks.click && ENGINE.hooks.click(x, y, ev)) return;
+    M.exiting = null; M.onArrive = null;
     let target;
     const ex = Object.entries(S.sc.exits).find(([, e]) => x > e.bbox[0] && x < e.bbox[2] && y > e.bbox[1] && y < e.bbox[3]);
     if (ex) { target = nearestWalkable(ex[1].stand[0], ex[1].stand[1]); M.exiting = ex[1]; }
@@ -669,6 +674,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       // advance the cycle by distance walked: one 36-frame cycle = 2 steps = 1.5 m
       M.phase = (M.phase + step / pxPerM(M.y) / 1.5) % 1; M.moving = true;
       if (!M.path.length) { M.moving = false; status.textContent = 'Click the floor';
+        if (M.onArrive) { const f = M.onArrive; M.onArrive = null; f(); }
+        if (M.exiting && ENGINE.hooks.exit) { const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || ''; if (ENGINE.hooks.exit(room, exn, M.exiting)) M.exiting = null; }
         if (M.exiting) { let to = M.exiting.to; if (to === 'office-day' && room === 'doyers-street') to = 'office-day'; if (to === 'map') to = MAP_NEXT[room];
           if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room;
             const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || '';
@@ -914,6 +921,22 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { setInv(false); $('dlg').classList.remove('open'); $('card').classList.remove('open'); }
     if (e.key === 'i' || e.key === 'I') setInv(!inv.classList.contains('open')); if (e.key === 'Tab') { e.preventDefault(); bTorch.click(); } });
   document.querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', () => say(b.dataset.say)));
+  // play a voice file; `who` gets lip sync from `cuesUrl` (null for Matt's voice-over: mouth shut). Resolves when it ends.
+  async function sayFile(who, src, cuesUrl) {
+    if (TALK.audio) TALK.audio.pause();
+    let cues = []; if (cuesUrl) { try { cues = (await (await fetch(cuesUrl)).json()).mouthCues; } catch (e) {} }
+    const a = new Audio(src); TALK.who = cuesUrl ? who : null; TALK.audio = a; TALK.cues = cues;
+    if (AU.master) { try { const s2 = AU.ac.createMediaElementSource(a); s2.connect(AU.master); } catch (e) {} }
+    return new Promise(res => { a.onended = () => { if (TALK.audio === a) { TALK.who = null; TALK.audio = null; } res(true); };
+      a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
+  }
+  function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
+  Object.assign(ENGINE, { enter, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+    room: () => room, scene: () => S, busyRoom: () => switching,
+    walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
+      M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },
+    anim(name) { const o = S && S.occ.find(o2 => o2.name === name); if (o && o.anim) o.playAt = performance.now(); },
+    exitAt(x, y) { return Object.entries(S.sc.exits).find(([, e]) => x > e.bbox[0] && x < e.bbox[2] && y > e.bbox[1] && y < e.bbox[3]) || null; } });
   function mouthOf(id) {
     if (TALK.who !== id || !TALK.audio) return 'X';
     const t = TALK.audio.currentTime; for (const c of TALK.cues) if (t >= c.start && t < c.end) return c.value; return 'X';
