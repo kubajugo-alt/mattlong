@@ -4,3 +4,4 @@ dist/
 *.key
 .gemini_key
 site/
+site-artifact/

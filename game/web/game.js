@@ -26,7 +26,7 @@
     'case-harlan': ['Case: Capt. Michael Harlan', 'Army Medical Corps surgeon, Governors Island. Missing nine days, since Armistice Day. Army says “on leave”; police wrote “lovers’ quarrel”. Client: Miss Inéz Venta, $50 retainer. His key: West 84th Street.'],
     'lead-apartment': ['Case: Capt. Michael Harlan', 'He never takes leave, and the Army is not worried. Somebody is lying, or has been told to. Start where he lived.'],
   };
-  let story, lines = {}, paths = new Set(), busy = false, skip = null, pendingActs = [];
+  let story, lines = {}, paths = new Set(), busy = false, skip = null, pendingActs = [], CUES = {};
   const G = { inv: ['flask'], journal: [], notebook: false, seenFlat: false, selected: null };
   const STORY = E.STORY; STORY.hidden = new Set(['inez-seated']); STORY.hiddenHot = new Set();
 
@@ -142,7 +142,7 @@
     let done;
     const skipP = new Promise(r => { skip = r; });
     if (id) { const v = lines.__man[id];
-      done = E.sayFile(who, 'voice/' + v.file, v.cues ? 'voice/' + v.cues : null).then(() => sleep(250)); }
+      done = E.sayFile(who, 'voice/' + v.file, v.cues ? (CUES[id] || null) : null).then(() => sleep(250)); }
     else done = sleep(1200 + text.length * 45);
     await Promise.race([done, skipP]); skip = null; E.stopTalk();
   }
@@ -237,7 +237,8 @@
 
   // ---------------------------------------------------------------- boot: title screen, then the story
   E.hooks.boot = async () => {
-    const [js, man, ps] = await Promise.all([fetch('prologue.json').then(r => r.text()), fetch('voice/lines.json').then(r => r.json()), fetch('paths.json').then(r => r.json())]);
+    const [js, man, ps, cues] = await Promise.all([fetch('prologue.json').then(r => r.text()), fetch('voice/lines.json').then(r => r.json()), fetch('paths.json').then(r => r.json()), fetch('voice/cues.json').then(r => r.json())]);
+    CUES = cues;
     story = new inkjs.Story(js); story.BindExternalFunction('act', (c) => { pendingActs.push(c); }, false);
     lines = { __man: man }; for (const [id, v] of Object.entries(man)) lines[v.speaker + '|' + v.text] = id;
     paths = new Set(ps);

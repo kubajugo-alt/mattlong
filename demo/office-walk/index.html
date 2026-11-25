@@ -924,7 +924,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // play a voice file; `who` gets lip sync from `cuesUrl` (null for Matt's voice-over: mouth shut). Resolves when it ends.
   async function sayFile(who, src, cuesUrl) {
     if (TALK.audio) TALK.audio.pause();
-    let cues = []; if (cuesUrl) { try { cues = (await (await fetch(cuesUrl)).json()).mouthCues; } catch (e) {} }
+    let cues = []; if (Array.isArray(cuesUrl)) cues = cuesUrl; else if (cuesUrl) { try { cues = (await (await fetch(cuesUrl)).json()).mouthCues; } catch (e) {} }
     const a = new Audio(src); TALK.who = cuesUrl ? who : null; TALK.audio = a; TALK.cues = cues;
     if (AU.master) { try { const s2 = AU.ac.createMediaElementSource(a); s2.connect(AU.master); } catch (e) {} }
     return new Promise(res => { a.onended = () => { if (TALK.audio === a) { TALK.who = null; TALK.audio = null; } res(true); };

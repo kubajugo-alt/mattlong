@@ -20,9 +20,14 @@ for f in ['game.js', 'game.css']:
 shutil.copy(os.path.join(NM, 'inkjs/dist/ink.js'), os.path.join(SITE, 'ink.js'))
 # voice track
 os.makedirs(os.path.join(SITE, 'voice'))
+cues = {}
 for f in os.listdir(os.path.join(ROOT, 'voices/prologue')):
-    if f.endswith(('.mp3', '.json')) and not f.startswith('qa'):
-        shutil.copy(os.path.join(ROOT, 'voices/prologue', f), os.path.join(SITE, 'voice', f))
+    src = os.path.join(ROOT, 'voices/prologue', f)
+    if f.endswith('.mp3') or f == 'lines.json':
+        shutil.copy(src, os.path.join(SITE, 'voice', f))
+    elif f.endswith('.json') and not f.startswith('qa'):
+        cues[f[:-5]] = json.load(open(src))['mouthCues']          # every line's mouth cues in one file
+json.dump(cues, open(os.path.join(SITE, 'voice', 'cues.json'), 'w'), separators=(',', ':'))
 # compile the script
 ink = os.path.join(ROOT, 'game/ink/prologue.ink')
 js = """const { Compiler } = require('inkjs/compiler/Compiler'); const fs = require('fs'); const errs = [];
@@ -52,3 +57,15 @@ open(os.path.join(SITE, '_headers'), 'w').write('/*\n  Cache-Control: public, ma
 open(os.path.join(SITE, 'netlify.toml'), 'w').write('[build]\n  publish = "."\n  command = ""\n')
 size = sum(os.path.getsize(os.path.join(d, f)) for d, _, fs in os.walk(SITE) for f in fs)
 print('site/ built:', len(paths), 'script entry points,', round(size / 1e6, 1), 'MB')
+
+# a variant for a claude.ai page: the page gets its document wrapper from the host, and no Netlify files
+ART = os.path.join(ROOT, 'site-artifact')
+if os.path.exists(ART):
+    shutil.rmtree(ART)
+shutil.copytree(SITE, ART, ignore=shutil.ignore_patterns('netlify.toml', '_headers'))
+page = open(os.path.join(ART, 'index.html'), encoding='utf-8').read()
+for tag in ['<!doctype html>\n', '<html lang="en">\n', '<head>\n', '<meta charset="utf-8">\n', '</head>\n', '<body>\n', '</body>\n', '</html>\n']:
+    page = page.replace(tag, '', 1)
+page = re.sub(r'<meta name="viewport"[^>]*>\n', '', page, count=1)
+open(os.path.join(ART, 'index.html'), 'w', encoding='utf-8').write(page)
+print('site-artifact/:', sum(len(fs) for _, _, fs in os.walk(ART)), 'files')
