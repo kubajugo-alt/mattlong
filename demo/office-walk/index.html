@@ -275,16 +275,30 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // per-room ambient life (scene pixels): steam, lamp flicker, lantern glow, snow, mist
   const ROOM_AMB = {
     'doyers-street': { steam: [{ x: 1500, y: 1250, sx: 110, rate: 7, rise: 60, life: 6, size: 44, a: 0.17, drift: 16 }],
-                       flicker: [{ x: 1171, y: 700, r: 40, a: 0.10 }], snow: 26 },
+                       lamps: [{ x: 1543, y: 385, core: 45, reach: 380, kind: 'gas', a: 0.5 }, { x: 1171, y: 692, core: 22, reach: 150, kind: 'gas', a: 0.4 }], snow: 26 },
     'tea-house': { steam: [{ x: 2520, y: 800, sx: 12, rate: 3, rise: 30, life: 4, size: 16, a: 0.16, drift: 6 }],
-                   glow: [{ x: 1700, y: 120, r: 160, a: 0.05 }, { x: 2160, y: 60, r: 200, a: 0.05 }, { x: 660, y: 120, r: 110, a: 0.05 }, { x: 830, y: 230, r: 110, a: 0.05 }], motes: true },
+                   lamps: [{ x: 480, y: 120, core: 70, reach: 330, kind: 'lantern', a: 0.4 }, { x: 745, y: 280, core: 55, reach: 280, kind: 'lantern', a: 0.4 },
+                           { x: 1980, y: 180, core: 70, reach: 380, kind: 'lantern', a: 0.4 }, { x: 2280, y: 40, core: 90, reach: 420, kind: 'lantern', a: 0.4 },
+                           { x: 1724, y: 420, core: 20, reach: 160, kind: 'bulb', a: 0.4 }], motes: true },
     'pete-kate-flat': { steam: [{ x: 352, y: 672, sx: 8, rate: 2.4, rise: 26, life: 4, size: 15, a: 0.15, drift: 5 }], motes: true },
-    pawnshop: { flicker: [{ x: 1818, y: 205, r: 120, a: 0.08 }], motes: true },
-    corridor: { flicker: [{ x: 1376, y: 215, r: 110, a: 0.09 }], motes: true },
+    pawnshop: { lamps: [{ x: 1818, y: 210, core: 55, reach: 650, kind: 'bulb', a: 0.55 }], motes: true },
+    corridor: { lamps: [{ x: 1376, y: 228, core: 45, reach: 700, kind: 'bulb', a: 0.55 }], motes: true },
     alley: { snow: 18, mist: true },
-    'office-day': { motes: true }, 'office-night': { motes: true },
+    'office-day': { motes: true }, 'office-night': { lamps: [{ x: 2000, y: 815, core: 60, reach: 600, kind: 'bulb', a: 0.6 }], motes: true },
   };
   const steamP = [], flakes = [];
+  // smooth value noise for lamp drift
+  const vn = (t) => { const i = Math.floor(t), f = t - i, h = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }; const u = f * f * (3 - 2 * f); return h(i) * (1 - u) + h(i + 1) * u - 0.5; };
+  function lampLevel(L, t) {
+    if (L.seed === undefined) { L.seed = Math.random() * 100; L.evAt = t + 4 + Math.random() * 14; L.evLen = 0; }
+    let v = 1 + 0.035 * vn(t * 0.6 + L.seed) + 0.015 * vn(t * 2.7 + L.seed * 2);
+    if (L.kind !== 'bulb') return v + 0.05 * vn(t * 5.5 + L.seed * 3) + 0.025 * vn(t * 11 + L.seed);          // flame / candle
+    if (t > L.evAt + L.evLen) { L.evAt = t + 6 + Math.random() * 22; L.evLen = 0.12 + Math.random() * 0.6; L.evDeep = 0.12 + Math.random() * 0.25; }
+    if (t >= L.evAt && t < L.evAt + L.evLen) {                // a sag, or a stutter of quick dips
+      const p = (t - L.evAt) / L.evLen; v -= L.evDeep * Math.sin(p * Math.PI) * (0.55 + 0.45 * (Math.sin(t * 47 + L.seed) > 0.2 ? 1 : 0.2));
+    }
+    return v;
+  }
   function roomAmbient(dt, W, H) {
     const A = ROOM_AMB[room]; if (!A) return;
     ctx.save();
@@ -297,15 +311,17 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       const r = e.size * (0.6 + k * 2.2) * p.s; ctx.globalAlpha = e.a * Math.min(1, p.t * 1.5) * (1 - k) * (1 - k * 0.3);
       ctx.drawImage(puff(), p.x + sway + k * e.drift * 2 - r, p.y - rise - r, r * 2, r * 2); }
     ctx.globalAlpha = 1;
-    // a bulb or lamp that is not quite steady: a faint warm-white pulse with the odd quick dip
-    for (const f of A.flicker || []) { const v = 0.5 + 0.5 * Math.sin(ambT * 7.3 + f.x) * Math.sin(ambT * 2.1);
-      const dip = Math.sin(ambT * 0.37 + f.y) > 0.985 ? 0.4 : 1;
-      const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = f.a * (0.4 + 0.6 * v) * dip; ctx.fillStyle = g; ctx.fillRect(f.x - f.r, f.y - f.r, f.r * 2, f.r * 2); }
-    // paper lanterns breathing very slowly
-    for (const gl of A.glow || []) { const v = 0.5 + 0.5 * Math.sin(ambT * 0.8 + gl.x * 0.01);
-      const g = ctx.createRadialGradient(gl.x, gl.y, 0, gl.x, gl.y, gl.r); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = gl.a * v; ctx.fillStyle = g; ctx.fillRect(gl.x - gl.r, gl.y - gl.r, gl.r * 2, gl.r * 2); }
+    // lamps that are on: a slow drift, rolling flame for gas and lanterns, rare sags and stutters for bulbs.
+    // Brighter -> light added round the lamp and over what it lights; dimmer -> that area darkens with it.
+    for (const L of A.lamps || []) {
+      const lv = lampLevel(L, ambT), d = lv - 1;
+      for (const [rad, k] of [[L.core, 1], [L.reach, 0.55]]) {
+        const g = ctx.createRadialGradient(L.x, L.y, 0, L.x, L.y, rad);
+        if (d > 0) { g.addColorStop(0, 'rgba(255,250,240,1)'); g.addColorStop(1, 'rgba(255,250,240,0)'); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = Math.min(1, d * L.a * k * 6); }
+        else { g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(0.55, 'rgba(0,0,0,0.6)'); g.addColorStop(1, 'rgba(0,0,0,0)'); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = Math.min(1, -d * L.a * k * 5); }
+        ctx.fillStyle = g; ctx.fillRect(L.x - rad, L.y - rad, rad * 2, rad * 2);
+      }
+    }
     ctx.globalCompositeOperation = 'source-over';
     // low mist drifting through the alley
     if (A.mist) { for (let i = 0; i < 4; i++) { const x = ((ambT * (8 + i * 3) + i * 700) % (W + 800)) - 400, y = H * (0.62 + i * 0.07);
