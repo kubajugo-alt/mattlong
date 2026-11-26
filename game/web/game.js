@@ -129,9 +129,10 @@
       case 'anim': { const [who, a] = arg.split(':');
         if (who === 'inez' && a === 'walk_in') STORY.hidden.delete('inez-seated');
         if (who === 'inez' && a === 'walk_out') STORY.hidden.add('inez-seated');
-        if (who === 'kate' && a === 'stand') break;
         if (who === 'matt') { if (E.act) E.act(a, G.lastHot ? G.lastHot[0] : null); break; }    // his actions run alongside the lines
-        const occ = { kate: 'kate-at-table', junkie: 'junkie', inez: 'inez-seated' }[who]; if (occ && a !== 'walk_out') E.anim(occ); break; }
+        const occ = { kate: 'kate-at-table', junkie: 'junkie', inez: 'inez-seated', sol: 'sol', lee: 'lee-wing', newsboy: 'newsboy' }[who];
+        if (who === 'kate' && a === 'stand') { await E.anim(occ, 'leave'); break; }          // she gets up and goes; the empty table follows
+        if (occ && a !== 'walk_out') E.anim(occ, a); break; }
       case 'journal': if (!G.journal.includes(arg)) G.journal.push(arg); if (G.notebook) flash(bNote); break;
       case 'unlock': if (arg === 'notebook') { G.notebook = true; bNote.hidden = false; flash(bNote); } break;
       case 'card': await showCard(arg); break;

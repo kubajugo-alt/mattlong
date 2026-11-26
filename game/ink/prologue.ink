@@ -623,6 +623,7 @@ NEWSBOY: Paper, mister? Two cents!
 * [Two cents. Here.]
     ~ cents -= 2
     ~ has_paper = true
+    ~ act("anim:newsboy:sell")
     ~ act("sfx:paper")
     ~ act("give:clarion")
     MATT: Two cents. Don't spend it all on candy.
@@ -830,6 +831,7 @@ SOL: Four-four-one-seven. A book, cloth, one. Sixty cents, the loan and the inte
 MATT: Sixty cents. That's lunch.
 SOL: So skip lunch. You look like a man who's had practice.
 ~ has_book = true
+~ act("anim:sol:book")
 ~ act("give:account-book")
 ~ act("sfx:till")
 VO: Sixty cents lighter, I had Lee Wing's book. It was heavier than it looked. Most books with names in are.
@@ -956,6 +958,7 @@ JUNKIE: We're square, pal. Go away.
 === lee_return ===
 ~ has_book = false
 ~ book_returned = true
+~ act("anim:lee:book")
 ~ act("take:account-book")
 MATT: One account book. Thirty years of names, sixty cents of interest. I didn't read it.
 LEE: No. You don't read Chinese.
@@ -1170,7 +1173,7 @@ VO: His door key. West Eighty-Fourth Street. A key to a door nobody's answered i
 VO: Prohibition. The law of the land, and the land's the only thing that stays dry.
 -> DONE
 = cigarettes
-~ act("anim:matt:smoke")
+~ act("anim:matt:match")
 ~ act("sfx:match-strike")
 VO: I struck a match and looked at the pack. Then I shook the match out. Those weren't cigarettes. They were currency.
 -> DONE
