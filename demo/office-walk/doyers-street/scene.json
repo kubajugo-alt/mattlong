@@ -1393,5 +1393,26 @@
    ],
    "edge": true
   }
+ },
+ "doors": {
+  "pawnshop-door": {
+   "leaf": [
+    1410,
+    775,
+    1478,
+    1015
+   ],
+   "hinge": "right",
+   "beyond": {
+    "room": "pawnshop",
+    "crop": [
+     900,
+     300,
+     1300,
+     1250
+    ],
+    "tone": 0.5
+   }
+  }
  }
 }

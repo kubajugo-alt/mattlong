@@ -28,7 +28,7 @@ const SEQ = [
   for (const q of SEQ) {
     const p = await b.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1.5 });
     await p.addInitScript(() => { const rn = performance.now.bind(performance), rr = window.requestAnimationFrame.bind(window); let virt = false, vt = 0, qq = [];
-      const st = window.setTimeout.bind(window);
+      const st = window.setTimeout.bind(window); window.__realST = st;
       performance.now = () => virt ? vt : rn(); window.requestAnimationFrame = (cb) => { if (virt) { qq.push(cb); return 0; } return rr((t) => cb(virt ? vt : t)); };
       window.setTimeout = (f, ms, ...a) => virt ? (window.__timers.push({ at: vt + (ms || 0), f, a }), 0) : st(f, ms, ...a); window.__timers = [];
       window.__virt = () => { vt = rn(); virt = true; };
@@ -41,7 +41,7 @@ const SEQ = [
     await p.evaluate((code) => { window.__virt(); for (let i = 0; i < 3; i++) window.__adv(16); (new Function('return (async()=>{' + code + '})()'))(); }, q.run);
     const frames = []; let gone = 0;
     for (let k = 0; k < 260 && gone < 6; k++) {
-      await p.evaluate(() => window.__adv(1000 / 12)); await p.evaluate(() => new Promise(r => setTimeout(r, 0)));
+      await p.evaluate(() => window.__adv(1000 / 12)); await p.evaluate(() => new Promise(r => window.__realST(r, 0)));
       const ph = await p.evaluate(() => window.__ph); const f = q.key + '-' + String(k).padStart(3, '0') + '.jpg';
       await p.screenshot({ path: OUT + '/' + f, type: 'jpeg', quality: 72, clip: q.clip }); frames.push({ f, ph }); if (ph === 'gone') gone++;
     }
