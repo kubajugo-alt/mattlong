@@ -242,6 +242,9 @@
     story = new inkjs.Story(js); story.BindExternalFunction('act', (c) => { pendingActs.push(c); }, false);
     lines = { __man: man }; for (const [id, v] of Object.entries(man)) lines[v.speaker + '|' + v.text] = id;
     paths = new Set(ps);
+    // only hotspots the script has lines for are live; every other mapped hotspot stays in the data, switched off
+    const liveIds = new Set(ps.filter(q => q.includes('__') && q.includes('.')).map(q => q.split('.')[0]).filter(k => !/__default$/.test(k)));
+    E.STORY.live = (room, id) => liveIds.has(PFX[room] + '__' + id.replace(/-/g, '_'));
     const saved = loadSave();
     await E.enter(saved ? saved.room : 'office-day');
     // title

@@ -200,7 +200,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   const STORY = { kateGone: false };
   const gone = (o) => o.name === 'kate-at-table' ? STORY.kateGone : o.name === 'table-set-empty' ? !STORY.kateGone
     : (STORY.hidden && STORY.hidden.has(o.name)) ? true : !!o.hidden;
-  const hotGone = (h) => (STORY.kateGone && (h.id === 'kate' || h.id === 'petes-cigarettes')) || !!(STORY.hiddenHot && STORY.hiddenHot.has(room + ':' + h.id));
+  // STORY.live (set by the game) says which mapped hotspots are in play; the rest stay mapped but inert
+  const hotGone = (h) => (STORY.kateGone && (h.id === 'kate' || h.id === 'petes-cigarettes')) || !!(STORY.hiddenHot && STORY.hiddenHot.has(room + ':' + h.id))
+    || (STORY.live ? !STORY.live(room, h.id) : false);
   // ---- hotspots: smallest object under the pointer wins
   const hitCtx = document.createElement('canvas').getContext('2d');
   function hotAt(x, y) { let best = null; for (const h of S.hot) { if (hotGone(h)) continue; if (x < h.bbox[0] || x > h.bbox[2] || y < h.bbox[1] || y > h.bbox[3]) continue;
