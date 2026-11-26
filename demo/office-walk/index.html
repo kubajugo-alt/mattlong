@@ -144,8 +144,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     room = id; S = scenes[id]; mode = id === 'office-night' ? 'night' : 'day'; roomSel.value = id;
     // fetch this room's walk cycles and one-shots now, in the background, so a scripted exit never waits for a sheet
     // (a person hidden from their seat while their walk was still downloading vanished for a moment)
-    const R = id; for (const a of Object.values(S.sc.actors || {})) for (const m of Object.values(a.sheets)) if (!m.img && !m.loading) m.loading = load(R + '/' + m.file).then(i => { m.img = i; });
-    for (const o of S.occ) for (const m of Object.values(o.acts || {})) if (!m.img && !m.loading) m.loading = load(R + '/' + m.file).then(i => { m.img = i; });
+    const R = id; for (const a of Object.values(S.sc.actors || {})) for (const m of Object.values(a.sheets)) if (!m.img && !m.loading) m.loading = load(R + '/' + m.file).then(i => (m.img = i));
+    for (const o of S.occ) for (const m of Object.values(o.acts || {})) if (!m.img && !m.loading) m.loading = load(R + '/' + m.file).then(i => (m.img = i));
     const W = S.sc.size[0], H = S.sc.size[1];
     // arrive at the exit that leads back where Matt came from, else front and centre
     const back = from && Object.values(S.sc.exits).find(e => e.to === from || (from.startsWith('office') && (e.to || '').startsWith('office')) || (e.to === 'map' && MAP_NEXT[id] === from));
