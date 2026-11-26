@@ -2818,7 +2818,19 @@
     1155,
     1153
    ],
-   "baseline_step": 8
+   "baseline_step": 8,
+   "hidden": true
+  },
+  {
+   "name": "tea-women",
+   "bbox": [
+    397,
+    675,
+    911,
+    1195
+   ],
+   "baseline": 1194,
+   "prop": true
   },
   {
    "name": "counter",

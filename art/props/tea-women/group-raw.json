@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "From the reference image, take only the group in the middle: the two young Chinese women seated on their stools, the round pedestal table between them with the small teapot and cups, and the third stool behind the table. Exactly the same women, clothes, poses, table and stools, the same greyscale hand-painted film-noir style and the same soft light from the left. Show the whole group from heads to the feet of the stools, nothing cut off, centred, filling about 85% of the frame, on a completely flat pure chroma green (#00FF00) background: no wall, no floor, no window, no shadow.",
+  "refs": [
+    "art/props/tea-women/scene-edit.png"
+  ],
+  "aspect": "4:3",
+  "size": "2K",
+  "created": "2026-11-26T12:33:44.913Z",
+  "usage": {
+    "promptTokenCount": 393,
+    "candidatesTokenCount": 1301,
+    "totalTokenCount": 1895,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 135
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 201,
+    "serviceTier": "standard"
+  }
+}

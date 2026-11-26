@@ -13,8 +13,8 @@
     'doyers-street:tea-house-doors': 'doyers__tea_house_doors.use', 'doyers-street:far-end': 'doyers__far_street_lamp.look', 'alley:far-end': 'doyers__far_street_lamp.look',
     'alley:back-door': 'alley__back_door.use', 'pawnshop:front-door': 'pawn__front_door.use', 'tea-house:bead-curtain': 'tea__default.use',
     'tea-house:laundry': 'tea__default.use', 'office-night:door': 'office__default.use' };
-  const PEOPLE = { pete: 'pete', kate: 'kate', 'lee-wing': 'lee', sol: 'sol', junkie: 'junkie', 'inez-seated': 'inez', newsboy: 'newsboy' };
-  const NAME = { VO: '', MATT: 'Matt', PETE: 'Pete', KATE: 'Kate', LEE: 'Lee Wing', SOL: 'Sol', JUNKIE: 'The kid', INEZ: 'Inéz', NEWSBOY: 'Newsboy', OPERATOR: 'Operator' };
+  const PEOPLE = { pete: 'pete', kate: 'kate', 'lee-wing': 'lee', sol: 'sol', junkie: 'junkie', 'inez-seated': 'inez', newsboy: 'newsboy', 'tea-women': 'women' };
+  const NAME = { VO: '', MATT: 'Matt', PETE: 'Pete', KATE: 'Kate', LEE: 'Lee Wing', SOL: 'Sol', JUNKIE: 'The kid', INEZ: 'Inéz', NEWSBOY: 'Newsboy', OPERATOR: 'Operator', MEI: 'Mei', LAN: 'Lan' };
   const ITEMS = { 'eviction-notice': 'Eviction notice', flask: 'Hip flask', cigarettes: "Pete's cigarettes", 'pawn-ticket': 'Pawn ticket 4417',
     'account-book': "Lee Wing's account book", money: 'Fifty dollars', 'coffee-cup': "Kate's spare cup", change: 'Loose change', clarion: 'The Evening Clarion', 'michael-photo': 'Photo of Michael', key: "Michael's door key" };
   const JOURNAL = {

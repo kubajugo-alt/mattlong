@@ -2301,5 +2301,96 @@
   "voice_id": "bRlp5mUWs01wX4H4oW4X",
   "file": "sol-7948785698.mp3",
   "cues": "sol-7948785698.json"
+ },
+ "vo-63e52dee9f": {
+  "speaker": "VO",
+  "text": "Two young women at the window table. In Chinatown, that's practically a crowd.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-63e52dee9f.mp3",
+  "cues": null
+ },
+ "vo-290d34cdc7": {
+  "speaker": "VO",
+  "text": "The exclusion laws let the men in to work the laundries and the kitchens, and kept the wives on the other side of the Pacific. Six men here for every woman, maybe more.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-290d34cdc7.mp3",
+  "cues": null
+ },
+ "vo-86991352f1": {
+  "speaker": "VO",
+  "text": "This June, Congress let in the wives of citizens who'd married before 'twenty-four. Lee called it the first good news since the Exclusion Act.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-86991352f1.mp3",
+  "cues": null
+ },
+ "matt-41a3ef2efb": {
+  "speaker": "MATT",
+  "text": "Afternoon, ladies.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "matt-41a3ef2efb.mp3",
+  "cues": "matt-41a3ef2efb.json"
+ },
+ "mei-1f20dc643b": {
+  "speaker": "MEI",
+  "text": "唔好意思，我哋唔識講英文。",
+  "voice_id": "eVQGYWLFAYLvlBbvSyCs",
+  "file": "mei-1f20dc643b.mp3",
+  "cues": null
+ },
+ "lan-3e146cbe51": {
+  "speaker": "LAN",
+  "text": "佢想點呀？",
+  "voice_id": "El018FmI047NtSsCfyrY",
+  "file": "lan-3e146cbe51.mp3",
+  "cues": null
+ },
+ "lan-d13d8e864c": {
+  "speaker": "LAN",
+  "text": "先生，你搵李老闆呀？佢喺櫃檯嗰度。",
+  "voice_id": "El018FmI047NtSsCfyrY",
+  "file": "lan-d13d8e864c.mp3",
+  "cues": null
+ },
+ "mei-aaebbdb56f": {
+  "speaker": "MEI",
+  "text": "呢個鬼佬又嚟喇。",
+  "voice_id": "eVQGYWLFAYLvlBbvSyCs",
+  "file": "mei-aaebbdb56f.mp3",
+  "cues": null
+ },
+ "lan-82af3bceb2": {
+  "speaker": "LAN",
+  "text": "細聲啲啦！",
+  "voice_id": "El018FmI047NtSsCfyrY",
+  "file": "lan-82af3bceb2.mp3",
+  "cues": null
+ },
+ "lan-6a8da17a35": {
+  "speaker": "LAN",
+  "text": "飲杯茶先啦，先生。外面好凍呀。",
+  "voice_id": "El018FmI047NtSsCfyrY",
+  "file": "lan-6a8da17a35.mp3",
+  "cues": null
+ },
+ "vo-da93353d9f": {
+  "speaker": "VO",
+  "text": "Cantonese. I knew three words of it, and two of them were dishes.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-da93353d9f.mp3",
+  "cues": null
+ },
+ "vo-bab85e7123": {
+  "speaker": "VO",
+  "text": "I smiled like a man who'd understood. I hadn't.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-bab85e7123.mp3",
+  "cues": null
+ },
+ "vo-132c153334": {
+  "speaker": "VO",
+  "text": "Whatever it was, Lee would know. Lee always knows.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-132c153334.mp3",
+  "cues": null
  }
 }

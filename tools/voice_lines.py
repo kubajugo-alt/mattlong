@@ -19,9 +19,10 @@ cast = json.load(open('voices/cast.json'))['voices']
 VOICE = {'VO': 'matt', 'MATT': 'matt', 'PETE': 'pete', 'KATE': 'kate', 'INEZ': 'inez', 'LEE': 'lee', 'SOL': 'sol', 'JUNKIE': 'junkie'}
 NEWSBOY = 'loY1uopAz31XyhAEhNSa'      # VALF, used for the street calls
 OPERATOR = 'MftN0gvsFPPOYnV3DU0Y'     # Celeste (vintage Transatlantic), heard down the telephone line
+EXTRA = {'MEI': 'eVQGYWLFAYLvlBbvSyCs', 'LAN': 'El018FmI047NtSsCfyrY'}   # the two women in the tea house: Lotus J, Nina Yu (native Cantonese)
 DIRECTION = {                         # eleven_v4 audio tags: one or two words each (long directions made it repeat phrases)
     'VO': '[quietly]', 'MATT': '[dryly]', 'PETE': '[cheerfully]', 'KATE': '[crisply]', 'INEZ': '[softly]',
-    'LEE': '[calmly]', 'SOL': '[wearily]', 'JUNKIE': '[nervously]', 'NEWSBOY': '[shouting]', 'OPERATOR': '[politely]',
+    'LEE': '[calmly]', 'SOL': '[wearily]', 'JUNKIE': '[nervously]', 'NEWSBOY': '[shouting]', 'OPERATOR': '[politely]', 'MEI': '[softly]', 'LAN': '[softly]',
 }
 
 
@@ -34,7 +35,7 @@ def lines_of(path):
         s = s[2:] if s.startswith('- ') else s                  # a line of a {cycle: / {stopping: block
         parts = s[2:-1].split('|') if s.startswith('{~') and s.endswith('}') else [s]
         for p in parts:
-            m = re.match(r'([A-Z]+):\s*(.+)$', p.strip())
+            m = re.match(r'([A-Z]+):\s*(.+)$', p.strip().lstrip('- ').strip())
             if m and m.group(1) in DIRECTION:
                 text = m.group(2).strip()
                 if re.fullmatch(r'[.\s…]*', text):       # a silent beat ("KATE: ...") is not voiced
@@ -52,7 +53,7 @@ def line_id(sp, text):
 
 
 def voice_of(sp):
-    return NEWSBOY if sp == 'NEWSBOY' else OPERATOR if sp == 'OPERATOR' else cast[VOICE[sp]]['voice_id']
+    return NEWSBOY if sp == 'NEWSBOY' else OPERATOR if sp == 'OPERATOR' else EXTRA[sp] if sp in EXTRA else cast[VOICE[sp]]['voice_id']
 
 
 LINE_DIR = json.load(open('voices/directions.json')) if os.path.exists('voices/directions.json') else {}   # a short direction per line, where written
@@ -102,7 +103,7 @@ def work(item):
             err = e
     else:
         return i, f'FAILED {err}'
-    if sp not in ('VO', 'OPERATOR'):  # voice-over is in Matt's head, the operator is down a wire: no lip sync
+    if sp not in ('VO', 'OPERATOR', 'MEI', 'LAN'):  # voice-over is in Matt's head, the operator is down a wire, the women have no face rig: no lip sync
         lipsync(sp, t, mp3, os.path.join(OUT, i + '.json'))
     return i, 'ok'
 
@@ -114,6 +115,6 @@ with cf.ThreadPoolExecutor(4) as ex:
 for sp, t in L:
     i = line_id(sp, t)
     if os.path.exists(os.path.join(OUT, i + '.mp3')):
-        man[i] = {'speaker': sp, 'text': t, 'voice_id': voice_of(sp), 'file': i + '.mp3', 'cues': (i + '.json') if sp not in ('VO', 'OPERATOR') else None}
+        man[i] = {'speaker': sp, 'text': t, 'voice_id': voice_of(sp), 'file': i + '.mp3', 'cues': (i + '.json') if sp not in ('VO', 'OPERATOR', 'MEI', 'LAN') else None}
 json.dump(man, open(man_p, 'w'), indent=1, ensure_ascii=False)
 print('voiced', sum(1 for sp, t in L if os.path.exists(os.path.join(OUT, line_id(sp, t) + '.mp3'))), 'of', len(L))

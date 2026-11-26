@@ -654,6 +654,31 @@ VO: Somebody's long johns, frozen stiff. It's going to be that kind of winter.
 VO: Lee's things stay where Lee puts them.
 -> DONE
 
+=== tea__tea_women ===
+// Two young women at the window table. They speak Cantonese (Taishanese, most likely: nearly everyone in 1930
+// Chinatown came from Guangdong); Matt doesn't, so their lines are captioned in Chinese only.
+= look
+VO: Two young women at the window table. In Chinatown, that's practically a crowd.
+VO: The exclusion laws let the men in to work the laundries and the kitchens, and kept the wives on the other side of the Pacific. Six men here for every woman, maybe more.
+VO: This June, Congress let in the wives of citizens who'd married before 'twenty-four. Lee called it the first good news since the Exclusion Act.
+-> DONE
+= talk
+MATT: Afternoon, ladies.
+{shuffle:
+- MEI: 唔好意思，我哋唔識講英文。
+  LAN: 佢想點呀？
+- LAN: 先生，你搵李老闆呀？佢喺櫃檯嗰度。
+- MEI: 呢個鬼佬又嚟喇。
+  LAN: 細聲啲啦！
+- LAN: 飲杯茶先啦，先生。外面好凍呀。
+}
+{once:
+- VO: Cantonese. I knew three words of it, and two of them were dishes.
+- VO: I smiled like a man who'd understood. I hadn't.
+- VO: Whatever it was, Lee would know. Lee always knows.
+}
+-> DONE
+
 === tea__lee_wing ===
 = notice
 {~LEE: Ah Ming, cha! ... Mr. Long.|LEE: Mr. Long. Close the door, you are letting the winter in.}
