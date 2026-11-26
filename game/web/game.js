@@ -127,8 +127,7 @@
       case 'pigeons': E.pigeonsFly(); break;
       case 'sfx': if (arg !== 'rain') E.shot(arg, arg === 'radio_dance_band' ? 0.5 : 0.7, [E.M.x, E.M.y]); break;   // rain: the night office's own rain bed
       case 'anim': { const [who, a] = arg.split(':');
-        if (who === 'inez' && a === 'walk_in') STORY.hidden.delete('inez-seated');
-        if (who === 'inez' && a === 'walk_out') STORY.hidden.add('inez-seated');
+        if (who === 'inez') { await inez(a); break; }
         if (who === 'matt') { if (E.act) E.act(a, G.lastHot ? G.lastHot[0] : null); break; }    // his actions run alongside the lines
         const occ = { kate: 'kate-at-table', junkie: 'junkie', inez: 'inez-seated', sol: 'sol', lee: 'lee-wing', newsboy: 'newsboy' }[who];
         if (who === 'kate' && a === 'stand') { await E.anim(occ, 'leave'); break; }          // she gets up and goes; the empty table follows
@@ -139,6 +138,20 @@
       case 'card': await showCard(arg); break;
       case 'board': break;     // the board's pins are drawn by openBoard
     }
+  }
+  // Inez: in from the door to the sofa (walk, then sits), and back out; the lines run while she walks. Without the
+  // sheets (an older build) she just appears and goes.
+  let inezWalk = null;
+  async function inez(a) {
+    const sc = E.scene().sc, A = sc.actors && sc.actors.inez;
+    if (!A) { if (a === 'walk_in') STORY.hidden.delete('inez-seated'); if (a === 'walk_out') STORY.hidden.add('inez-seated'); return; }
+    if (a === 'walk_in') {
+      if (Math.hypot(E.M.x - A.door[0], E.M.y - A.door[1]) < 500 || Math.hypot(E.M.x - A.stand[0], E.M.y - A.stand[1]) < 300) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.stand[0]));   // out of her way
+      inezWalk = E.actorWalk('inez', 'front', A.door, A.stand, 'in');
+    }
+    if (a === 'sit') { if (inezWalk) await inezWalk; inezWalk = null; STORY.hidden.delete('inez-seated'); await E.anim('inez-seated', 'sit'); }
+    if (a === 'stand') await E.anim('inez-seated', 'sit', true);
+    if (a === 'walk_out') { STORY.hidden.add('inez-seated'); await E.actorWalk('inez', 'back', A.stand, A.door, 'out'); }
   }
   const flash = (el) => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); };
 

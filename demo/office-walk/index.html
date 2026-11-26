@@ -170,6 +170,30 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     M.dir = a.dir; if (a.dir === 'side' && tx != null) M.flip = tx < M.x;
     return new Promise(res => { M.act = { sp, img: actImgs[name], t0: performance.now(), done: res }; });
   }
+  // ---- people who walk across a room on cue (Inez into the office): a Ludo walk cycle moved along a straight line,
+  // sized by depth like Matt (`hm`: their height in Matt's), drawn in front of or behind him by their feet; they fade
+  // in or out at a door. Scene json `actors`: {name: {hm, speed (m/s), sheets: {key: {file, frames, cols, fps, fw, fh,
+  // feet_x, feet_y, fig_h}}}}
+  const ACT = [];
+  async function actorWalk(name, sheet, from, to, fade) {
+    const a = S.sc.actors && S.sc.actors[name]; if (!a) return;
+    const m = a.sheets[sheet]; if (!m.img) m.img = await load(room + '/' + m.file);
+    const len = Math.hypot(to[0] - from[0], to[1] - from[1]) / pxPerM((from[1] + to[1]) / 2);
+    return new Promise(res => ACT.push({ a, m, from, to, t0: performance.now(), dur: len / (a.speed || 1.1) * 1000, fade, flip: m.flip, done: res, room }));
+  }
+  function drawActors(now, frontPass) {
+    for (let i = ACT.length - 1; i >= 0; i--) { const r = ACT[i]; if (r.room !== room) { ACT.splice(i, 1); r.done(); continue; }
+      const u = Math.min(1, (now - r.t0) / r.dur); if (u >= 1 && !r.ended) { r.ended = true; r.done(); }
+      if (u >= 1) { ACT.splice(i, 1); continue; }
+      const x = r.from[0] + (r.to[0] - r.from[0]) * u, y = r.from[1] + (r.to[1] - r.from[1]) * u;
+      if ((y > M.y) !== frontPass) continue;
+      const m = r.m, f = Math.floor((now - r.t0) / 1000 * m.fps) % m.frames, sc = heightAt(y) * r.a.hm / m.fig_h;
+      let al = 1; if (r.fade === 'in') al = Math.min(1, u / 0.18); if (r.fade === 'out') al = Math.min(1, (1 - u) / 0.18);
+      ctx.save(); ctx.globalAlpha = al; ctx.filter = 'brightness(' + lightFactor.toFixed(3) + ')';
+      ctx.translate(x + par(y), y); if (r.flip) ctx.scale(-1, 1);
+      ctx.drawImage(m.img, (f % m.cols) * m.fw, Math.floor(f / m.cols) * m.fh, m.fw, m.fh, -m.feet_x * sc, -m.feet_y * sc, m.fw * sc, m.fh * sc);
+      ctx.restore(); }
+  }
   // Matt's frames: one row, or a grid when sprites.json gives `cols`
   const frameXY = (sp, fi) => { const c = sp.cols || sp.frames; return [(fi % c) * sp.fw, Math.floor(fi / c) * sp.fh]; };
   // ---- depth
@@ -1130,6 +1154,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     }
     // seated characters are sprites, not part of the painting: draw the ones behind Matt first
     for (const o of behindProps) drawOcc(o, now);
+    drawActors(now, false);
     animalsTick(dt); drawAnimals(false);
     // Matt
     ctx.save(); ctx.translate(M.x + par(M.y), M.y); ctx.scale(fx, 1);
@@ -1144,6 +1169,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     else { const [gx, gy] = frameXY(sp, fi); ctx.drawImage(img, gx, gy, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh); }
     ctx.restore(); ctx.filter = 'none';
     for (const o of front) drawOcc(o, now);
+    drawActors(now, true);
     drawAnimals(true);
 
     if (amb) { breathe(dt, W, H); ambientOver(dt, W, H); }
@@ -1316,17 +1342,17 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), actorWalk, walking: () => ACT.length > 0, acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },
     // a named one-shot from the occupant's `acts` (Ludo sheets packed at its bbox size) if it has one, else its idle
     // once through; resolves when it ends
-    async anim(name, a) { const o = S && S.occ.find(o2 => o2.name === name); if (!o) return;
+    async anim(name, a, rev) { const o = S && S.occ.find(o2 => o2.name === name); if (!o) return;
       const m = a && o.acts && o.acts[a];
       if (!m) { if (o.anim) o.playAt = performance.now(); return; }
       if (!m.img) m.img = await load(room + '/' + m.file);
-      return new Promise(res => { if (o.one && !o.one.told) o.one.done(); o.one = { m, t0: performance.now(), done: res }; }); },
+      return new Promise(res => { if (o.one && !o.one.told) o.one.done(); o.one = { m, t0: performance.now(), done: res, rev: !!rev }; }); },
     exitAt(x, y) { return Object.entries(S.sc.exits).find(([, e]) => x > e.bbox[0] && x < e.bbox[2] && y > e.bbox[1] && y < e.bbox[3]) || null; } });
   function mouthOf(id) {
     if (TALK.who !== id || !TALK.audio) return 'X';
@@ -1358,7 +1384,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
   function drawOcc0(o, now) {
     const w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1];
-    if (o.one) { const { m } = o.one, t = (now - o.one.t0) / 1000, f = Math.min(m.frames - 1, Math.floor(t * m.fps));
+    if (o.one) { const { m } = o.one, t = (now - o.one.t0) / 1000, f0 = Math.min(m.frames - 1, Math.floor(t * m.fps)), f = o.one.rev ? m.frames - 1 - f0 : f0;
       // a one-shot may need more room than the resting frame (standing up, holding something out): `pad` [l,t,r,b] in
       // scene px around the bbox; `hold` s on the last frame before the idle comes back
       if (t >= m.frames / m.fps && !o.one.told) { o.one.told = true; o.one.done(); }       // the script goes on; the hold is drawn under it
