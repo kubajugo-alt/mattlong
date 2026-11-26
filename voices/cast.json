@@ -1,12 +1,12 @@
 {
  "model": "eleven_v4",
- "note": "Leads chosen 25 Nov 2026 (round 1), supporting parts (round 2); Matt, Inez and Lee recast for expression on 26 Nov 2026 (round 3: acting voices instead of narration voices).",
+ "note": "Leads chosen 25 Nov 2026 (round 1), supporting parts (round 2); Matt, Inez and Lee recast for expression on 26 Nov 2026 (round 3: acting voices instead of narration voices). Matt recast again on 26 Nov 2026 (round 4: deep, serious, manly yet expressive).",
  "voices": {
   "matt": {
-   "name": "Chxpo - Bloody & Grimy",
-   "voice_id": "dag0x2dW9i5XIWwJ5KlD",
-   "direction": "textured, quiet intensity; wry, self-mocking; narrates the whole game",
-   "was": "Robert R5WgLZ1iq28vajcXtks0"
+   "name": "Rafe",
+   "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+   "direction": "deep, serious, masculine; wry and expressive underneath; narrates the whole game",
+   "was": "Chxpo dag0x2dW9i5XIWwJ5KlD (before that Robert R5WgLZ1iq28vajcXtks0)"
   },
   "pete": {
    "name": "Jordan - Warm & Gritty",
