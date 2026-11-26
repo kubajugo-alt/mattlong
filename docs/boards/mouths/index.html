@@ -1,0 +1,256 @@
+<title>Mouth Review Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a casting-room light table — character strip on top, the talking face on the left, every mouth shape on a contact sheet to the right */
+:root {
+  --bg: #e9e6e1; --panel: #f6f4f0; --ink: #1d1c1b; --muted: #6b6762; --line: #cfcac2;
+  --stage: #2a2826; --accent: #a3261f; --ok: #2f6b45; --fixbg: #f6dcd8; --okbg: #dcebe1;
+  --display: "Big Shoulders Display", "Arial Narrow", sans-serif; --body: "Jost", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #161514; --panel: #201f1d; --ink: #ece8e2; --muted: #a29d95; --line: #3a3733;
+  --stage: #0f0e0d; --accent: #e0574c; --ok: #6cc28e; --fixbg: #3e211e; --okbg: #1d3526; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #161514; --panel: #201f1d; --ink: #ece8e2; --muted: #a29d95; --line: #3a3733;
+  --stage: #0f0e0d; --accent: #e0574c; --ok: #6cc28e; --fixbg: #3e211e; --okbg: #1d3526; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.45 var(--body); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 48px }
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 18px }
+header { display: grid; gap: 6px }
+h1 { font: 800 clamp(30px, 5vw, 46px)/1 var(--display); letter-spacing: .02em; text-transform: uppercase; margin: 0; text-wrap: balance }
+.lede { color: var(--muted); max-width: 70ch; margin: 0 }
+.chars { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 6px 12px; font: 500 14px var(--body); cursor: pointer; display: inline-flex; gap: 8px; align-items: center }
+.chip[aria-current="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+.chip .n { font: 500 11px var(--mono); padding: 1px 6px; border-radius: 999px; background: var(--fixbg); color: var(--accent) }
+.chip .n.ok { background: var(--okbg); color: var(--ok) }
+.chip:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.tools { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; font-size: 14px; color: var(--muted) }
+.tools label { display: inline-flex; gap: 8px; align-items: center }
+.main { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 18px; align-items: start }
+@media (max-width: 860px) { .main { grid-template-columns: minmax(0, 1fr) } }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 12px; min-width: 0 }
+.panel h2 { font: 600 22px/1 var(--display); letter-spacing: .04em; text-transform: uppercase; margin: 0 }
+.stage { background: var(--stage); border-radius: 8px; display: grid; place-items: center; padding: 10px; position: relative }
+.stage canvas { max-width: 100%; height: auto; display: block }
+.now { position: absolute; top: 8px; right: 10px; font: 800 40px/1 var(--display); color: #f2eee8; opacity: .9 }
+.now small { display: block; font: 500 11px var(--mono); opacity: .7; text-align: right }
+.line { display: grid; gap: 6px }
+.line button.play { justify-self: start }
+.line q { color: var(--muted); font-size: 14px }
+.tl { display: flex; height: 22px; border-radius: 4px; overflow: hidden; cursor: pointer; border: 1px solid var(--line) }
+.tl span { font: 500 10px/22px var(--mono); text-align: center; color: #fff; overflow: hidden; min-width: 0 }
+.tl span.on { outline: 2px solid var(--ink); outline-offset: -2px }
+button { font: 500 14px var(--body); border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 6px; padding: 6px 12px; cursor: pointer }
+button.play { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+.sheet { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px }
+.tile { border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: grid; gap: 8px; background: var(--bg); min-width: 0 }
+.tile.fix { border-color: var(--accent); background: var(--fixbg) }
+.tile.ok { border-color: var(--ok); background: var(--okbg) }
+.tile .cv { background: var(--stage); border-radius: 6px; display: grid; place-items: center; padding: 6px; cursor: pointer }
+.tile canvas { max-width: 100%; height: auto; display: block }
+.tile header { display: flex; gap: 8px; align-items: baseline }
+.tile .k { font: 800 28px/1 var(--display) }
+.tile .what { font-size: 13px; color: var(--muted) }
+.verdict { display: flex; gap: 6px }
+.verdict button { flex: 1; padding: 5px 6px; font-size: 13px }
+.verdict button.okb[aria-pressed="true"] { background: var(--ok); color: #fff; border-color: var(--ok) }
+.verdict button.fixb[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent) }
+textarea { width: 100%; min-height: 54px; resize: vertical; font: 400 13px/1.4 var(--body); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; background: var(--panel); color: var(--ink) }
+.status { font: 500 12px var(--mono); color: var(--muted) }
+.legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 4px 18px; font-size: 13px; color: var(--muted) }
+.legend b { color: var(--ink); font: 600 14px var(--mono); margin-right: 6px }
+.sec { font: 600 16px/1 var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 4px 0 0 }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Usta — przegląd</h1>
+    <p class="lede">Zbliżenia nakładek z ustami, dokładnie tak, jak składa je gra: kształt wklejony w twarz, przycięty do sylwetki. Puść kwestię, żeby zobaczyć twarz w ruchu, albo kliknij kształt, żeby go zatrzymać na dużym podglądzie. Przy każdym kształcie zaznacz „OK” albo „Popraw” i dopisz, co nie gra. Uwagi zapisują się od razu i trafiają do mnie.</p>
+    <p class="status" id="dbstatus">Łączę z zapisem uwag…</p>
+  </header>
+
+  <nav class="chars" id="chars" aria-label="Postacie"></nav>
+
+  <div class="tools">
+    <label for="zoom">Powiększenie <input type="range" id="zoom" min="2" max="7" step="0.5" value="4"> <span id="zoomv">4×</span></label>
+    <label for="outline"><input type="checkbox" id="outline"> Pokaż ramkę łatki</label>
+    <label for="pixels"><input type="checkbox" id="pixels"> Ostre piksele</label>
+    <label for="rate">Tempo <select id="rate"><option value="1">1×</option><option value="0.5">0,5×</option><option value="0.25">0,25×</option></select></label>
+  </div>
+
+  <div class="main">
+    <section class="panel" aria-label="Podgląd na żywo">
+      <h2 id="who">—</h2>
+      <div class="stage"><canvas id="live"></canvas><div class="now" id="now">X<small>spoczynek</small></div></div>
+      <div id="lines" class="line"></div>
+      <p class="sec">Uwagi ogólne do postaci</p>
+      <textarea id="general" placeholder="Np. usta za jasne względem twarzy, łatka za szeroka, kształt D za mocno otwarty…"></textarea>
+      <p class="sec">Legenda kształtów</p>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="panel" aria-label="Kształty">
+      <h2>Kształty ust</h2>
+      <div class="sheet" id="mouths"></div>
+      <h2>Mrugnięcie</h2>
+      <div class="sheet" id="blinks"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+const SHAPES = {
+  X: ['spoczynek', 'usta zamknięte, rozluźnione — między słowami'],
+  A: ['zamknięte', 'P, B, M — wargi złączone'],
+  B: ['lekko rozchylone', 'K, S, T, I — zęby razem'],
+  C: ['otwarte', 'E, Æ — jak w „bed”, „cat”'],
+  D: ['szeroko otwarte', 'A — jak w „father”'],
+  E: ['lekko zaokrąglone', 'O, ER — jak w „off”, „bird”'],
+  F: ['dzióbek', 'U, OW, W — jak w „you”, „show”'],
+  G: ['zęby na wardze', 'F, V'],
+  H: ['język w górze', 'L — jak w „let”']
+};
+const BLINKS = { open: 'oczy otwarte', half: 'półmrugnięcie', closed: 'zamknięte' };
+const CUE_COL = { X: '#7b756d', A: '#5b4a8a', B: '#3d6f8f', C: '#3f8a6a', D: '#a3261f', E: '#a0692a', F: '#7a3f7a', G: '#556b2f', H: '#2f5f6b' };
+const $ = (id) => document.getElementById(id);
+const load = (src) => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
+
+let FACES = [], cur = null, imgs = {}, notes = {}, db = null, audio = null, playing = null, hold = null;
+const opt = { zoom: 4, outline: false, pixels: false, rate: 1 };
+
+// compose a face as the game does: the crop, then the mouth patch and the eyes patch on top, only where the figure is
+function compose(f, crop, mouth, eyes) {
+  const [x0, y0, x1, y1] = f[crop], w = x1 - x0, h = y1 - y0, I = imgs[f.key];
+  const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d');
+  x.drawImage(I[crop], 0, 0); x.globalCompositeOperation = 'source-atop';
+  const F = f.face, mi = F.shapes.indexOf(mouth);
+  if (mi >= 0 && F.mouth) { const [mx, my, mw, mh] = F.mouth; x.drawImage(I.sheet, mi * mw, F.rows[0], mw, mh, mx - x0, my - y0, mw, mh); }
+  const ei = eyes ? F.blink.indexOf(eyes) : -1;
+  if (ei >= 0 && F.eyes) { const [ex, ey, ew, eh] = F.eyes; x.drawImage(I.sheet, ei * ew, F.rows[F.mouth ? 1 : 0], ew, eh, ex - x0, ey - y0, ew, eh); }
+  return c;
+}
+function paint(cv, f, crop, mouth, eyes, rect) {
+  const src = compose(f, crop, mouth, eyes), z = opt.zoom;
+  cv.width = Math.round(src.width * z); cv.height = Math.round(src.height * z);
+  const x = cv.getContext('2d'); x.imageSmoothingEnabled = !opt.pixels; x.imageSmoothingQuality = 'high';
+  x.drawImage(src, 0, 0, cv.width, cv.height);
+  if (opt.outline && rect) { const [rx, ry, rw, rh] = rect, [x0, y0] = f[crop];
+    x.strokeStyle = 'rgba(224,87,76,.9)'; x.lineWidth = 1.5; x.setLineDash([5, 4]); x.strokeRect((rx - x0) * z, (ry - y0) * z, rw * z, rh * z); }
+}
+
+// ---------- the review store (db): one document per character and shape
+const key = (k, s) => k + '__' + s;
+function setStatus(t) { $('dbstatus').textContent = t; }
+async function initDb() {
+  const timer = setTimeout(() => setStatus('Zapis uwag nie odpowiada — możesz przeglądać, ale uwagi się nie zapiszą.'), 10000);
+  try { db = window.claude ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (!db) { clearTimeout(timer); setStatus('Zapis uwag niedostępny w tym widoku (zaloguj się na claude.ai, żeby zapisywać).'); return; }
+  db.collection('review').onSnapshot((snap) => {
+    clearTimeout(timer); notes = {}; for (const d of snap.docs) notes[d.id] = d.data();
+    setStatus('Uwagi zapisują się automatycznie. Zapisanych ocen: ' + Object.values(notes).filter(n => n.status).length + '.'); renderChips(); syncTiles();
+  }, (e) => { clearTimeout(timer); setStatus('Nie udało się wczytać uwag (' + (e.code || 'błąd') + ').'); });
+}
+async function save(k, s, patch) {
+  const id = key(k, s), next = Object.assign({ char: k, shape: s, status: '', note: '' }, notes[id] || {}, patch, { at: new Date().toISOString() });
+  notes[id] = next; renderChips(); syncTiles();
+  if (!db) return;
+  try { await db.collection('review').doc(id).set(next); } catch (e) { setStatus('Nie zapisano (' + (e.code || 'błąd') + '). Spróbuj jeszcze raz.'); }
+}
+
+// ---------- page
+function renderChips() {
+  const nav = $('chars'); nav.textContent = '';
+  for (const f of FACES) {
+    const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.setAttribute('aria-current', String(cur && cur.key === f.key));
+    b.append(f.label); const mine = Object.values(notes).filter(n => n.char === f.key);
+    const fix = mine.filter(n => n.status === 'fix').length, ok = mine.filter(n => n.status === 'ok').length;
+    if (fix || ok) { const n = document.createElement('span'); n.className = 'n' + (fix ? '' : ' ok'); n.textContent = fix ? fix + ' do poprawy' : ok + ' OK'; b.append(n); }
+    b.onclick = () => { location.hash = f.key; };
+    nav.append(b);
+  }
+}
+function tile(f, s, kind) {
+  const t = document.createElement('article'); t.className = 'tile'; t.dataset.shape = s;
+  const h = document.createElement('header'); const k = document.createElement('span'); k.className = 'k'; k.textContent = kind === 'blink' ? '' : s;
+  const w = document.createElement('span'); w.className = 'what'; w.textContent = kind === 'blink' ? BLINKS[s] : SHAPES[s][0] + ' · ' + SHAPES[s][1];
+  h.append(k, w);
+  const box = document.createElement('div'); box.className = 'cv'; box.title = 'Pokaż na dużym podglądzie'; const cv = document.createElement('canvas'); box.append(cv);
+  box.onclick = () => { hold = kind === 'blink' ? { m: 'X', e: s === 'open' ? null : s } : { m: s, e: null }; stop(); drawLive(); };
+  t.append(h, box);
+  if (!(kind === 'blink' && s === 'open')) {
+    const v = document.createElement('div'); v.className = 'verdict';
+    const ok = document.createElement('button'); ok.type = 'button'; ok.className = 'okb'; ok.textContent = 'OK';
+    const fx = document.createElement('button'); fx.type = 'button'; fx.className = 'fixb'; fx.textContent = 'Popraw';
+    ok.onclick = () => save(f.key, s, { status: (notes[key(f.key, s)] || {}).status === 'ok' ? '' : 'ok' });
+    fx.onclick = () => save(f.key, s, { status: (notes[key(f.key, s)] || {}).status === 'fix' ? '' : 'fix' });
+    v.append(ok, fx);
+    const ta = document.createElement('textarea'); ta.id = 'note-' + f.key + '-' + s; ta.placeholder = 'Co poprawić?';
+    ta.onchange = () => save(f.key, s, { note: ta.value.trim(), status: ta.value.trim() && !(notes[key(f.key, s)] || {}).status ? 'fix' : (notes[key(f.key, s)] || {}).status || '' });
+    t.append(v, ta);
+  }
+  const draw = () => kind === 'blink' ? paint(cv, f, 'close', 'X', s === 'open' ? null : s, f.face.eyes) : paint(cv, f, 'close', s, null, f.face.mouth);
+  t._draw = draw; draw(); return t;
+}
+function syncTiles() {
+  if (!cur) return;
+  for (const t of document.querySelectorAll('.tile')) {
+    const n = notes[key(cur.key, t.dataset.shape)] || {};
+    t.classList.toggle('fix', n.status === 'fix'); t.classList.toggle('ok', n.status === 'ok');
+    const ok = t.querySelector('.okb'), fx = t.querySelector('.fixb'), ta = t.querySelector('textarea');
+    if (ok) ok.setAttribute('aria-pressed', String(n.status === 'ok')); if (fx) fx.setAttribute('aria-pressed', String(n.status === 'fix'));
+    if (ta && document.activeElement !== ta) ta.value = n.note || '';
+  }
+  const g = notes[key(cur.key, 'general')] || {}; if (document.activeElement !== $('general')) $('general').value = g.note || '';
+}
+function show(f) {
+  cur = f; hold = null; stop(); $('who').textContent = f.label; renderChips();
+  const m = $('mouths'); m.textContent = ''; for (const s of ['X', ...f.face.shapes]) m.append(tile(f, s, 'mouth'));
+  const b = $('blinks'); b.textContent = ''; for (const s of ['open', ...f.face.blink]) b.append(tile(f, s, 'blink'));
+  const L = $('lines'); L.textContent = '';
+  f.lines.forEach((ln, i) => {
+    const d = document.createElement('div'); d.className = 'line';
+    const p = document.createElement('button'); p.type = 'button'; p.className = 'play'; p.textContent = '▶ Kwestia ' + (i + 1);
+    p.onclick = () => play(ln, d);
+    const q = document.createElement('q'); q.textContent = ln.text;
+    const tl = document.createElement('div'); tl.className = 'tl'; const end = ln.cues[ln.cues.length - 1].end;
+    for (const c of ln.cues) { const s = document.createElement('span'); s.style.flex = String(c.end - c.start); s.style.background = CUE_COL[c.value] || '#777'; s.textContent = c.end - c.start > end / 40 ? c.value : ''; s.title = c.value + ' ' + c.start.toFixed(2) + '–' + c.end.toFixed(2) + ' s'; tl.append(s); }
+    tl.onclick = (e) => { const r = tl.getBoundingClientRect(), t = (e.clientX - r.left) / r.width * end; const c = ln.cues.find(c => t >= c.start && t < c.end); if (c) { stop(); hold = { m: c.value, e: null }; drawLive(); markCue(tl, ln, t); } };
+    d.append(p, q, tl); L.append(d);
+  });
+  syncTiles(); drawLive();
+}
+function markCue(tl, ln, t) { ln.cues.forEach((c, i) => tl.children[i].classList.toggle('on', t >= c.start && t < c.end)); }
+function drawLive() {
+  if (!cur) return; let m = 'X', e = null, t = null;
+  if (playing && audio) { t = audio.currentTime; const c = playing.ln.cues.find(c => t >= c.start && t < c.end); m = c ? c.value : 'X'; markCue(playing.el.querySelector('.tl'), playing.ln, t); }
+  else if (hold) { m = hold.m; e = hold.e; }
+  paint($('live'), cur, 'head', m, e, opt.outline ? cur.face.mouth : null);
+  $('now').firstChild.textContent = m; $('now').querySelector('small').textContent = SHAPES[m] ? SHAPES[m][0] : '';
+}
+function stop() { if (audio) { audio.pause(); audio = null; } playing = null; }
+function play(ln, el) {
+  stop(); hold = null; audio = new Audio('f/' + ln.id + '.mp3'); audio.playbackRate = opt.rate; audio.preservesPitch = true;
+  playing = { ln, el }; audio.onended = () => { playing = null; audio = null; drawLive(); };
+  audio.play().catch(() => { playing = null; setStatus('Przeglądarka nie puściła dźwięku — kliknij jeszcze raz.'); });
+  const loop = () => { drawLive(); if (playing) requestAnimationFrame(loop); }; requestAnimationFrame(loop);
+}
+function redraw() { for (const t of document.querySelectorAll('.tile')) t._draw(); drawLive(); }
+
+$('zoom').oninput = (e) => { opt.zoom = +e.target.value; $('zoomv').textContent = String(opt.zoom).replace('.', ',') + '×'; redraw(); };
+$('outline').onchange = (e) => { opt.outline = e.target.checked; redraw(); };
+$('pixels').onchange = (e) => { opt.pixels = e.target.checked; redraw(); };
+$('rate').onchange = (e) => { opt.rate = +e.target.value; if (audio) audio.playbackRate = opt.rate; };
+$('general').onchange = (e) => { if (cur) save(cur.key, 'general', { note: e.target.value.trim(), status: '' }); };
+for (const [k, v] of Object.entries(SHAPES)) { const d = document.createElement('div'); const b = document.createElement('b'); b.textContent = k; d.append(b, v[0] + ' — ' + v[1]); $('legend').append(d); }
+
+function route() { const f = FACES.find(f => f.key === location.hash.slice(1)) || FACES[0]; if (f && f !== cur) show(f); }
+(async () => {
+  FACES = await fetch('f/faces.json').then(r => r.json());
+  await Promise.all(FACES.map(async f => { imgs[f.key] = { close: await load('f/' + f.key + '-close.png'), head: await load('f/' + f.key + '-head.png'), sheet: await load('f/' + f.key + '-sheet.png') }; }));
+  window.addEventListener('hashchange', route); route();
+  initDb();
+})();
+</script>
