@@ -155,7 +155,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (S.sc.doors && from) { let en = back && Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === back);
       if (!(en && S.sc.doors[en])) { en = Object.keys(S.sc.doors).find(k2 => S.sc.doors[k2].from === from);       // a door that isn't an exit (the pawnshop's back door)
         const sd = en && S.sc.doors[en].stand; if (sd) { const p2 = nearestWalkable(sd[0], sd[1]); if (p2) [M.x, M.y] = p2; } }
-      if (en && S.sc.doors[en]) { const st = doorState(en); st.a = 1; st.t = 0; st.v = 1 / 0.7; st.delay = 0.45; } }
+      if (en && S.sc.doors[en]) { const st = doorState(en); st.a = 1; st.t = 0; st.v = 1 / 0.7; st.delay = 0.9;
+        const stand = [M.x, M.y]; [M.x, M.y] = doorInfo(S.sc.doors[en]).inside; M.path = [stand]; M.passing = false; } }
     status.textContent = 'Click the floor'; switching = false;
     if (ENGINE.hooks.entered) ENGINE.hooks.entered(id, from);
   }
@@ -200,6 +201,20 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     for (let i = 0; i < d.data.length; i += 4) { const l = (d.data[i] + d.data[i + 1] + d.data[i + 2]) / 3; d.data[i + 3] = Math.max(0, Math.min(255, (l - t) * 4)); }
     x.putImageData(d, 0, 0); return FRONT[key] = c;
   }
+  // a door's sill (the floor line of its doorway), and a point just behind it in the room beyond
+  function doorInfo(D) { if (D._i) return D._i; const q = quadOf(D.leaf), xs = q.map(p => p[0]), a = q[3], b = q[2];
+    const sillAt = (x) => a[1] + (b[1] - a[1]) * Math.max(0, Math.min(1, (x - a[0]) / ((b[0] - a[0]) || 1)));   // the sill runs bl..br (slanted on a side wall)
+    const mx = (a[0] + b[0]) / 2;
+    return D._i = { q, bx0: Math.min(...xs), bx1: Math.max(...xs), sillAt, inside: [mx, sillAt(mx) - 12] }; }
+  // whoever stands on or behind a door's sill is in its doorway: drawn between the room beyond and the leaf, inside
+  // the doorway's outline, so the door reveals them as it opens and hides them as it closes (nobody fades)
+  function doorAt(x, y) {
+    if (!S.sc.doors) return null;
+    for (const [name, D] of Object.entries(S.sc.doors)) { const I = doorInfo(D);
+      const sl = I.sillAt(x); if (y <= sl + 2 && y > sl - 300 && x >= I.bx0 - 10 && x <= I.bx1 + 10) return name; }
+    return null;
+  }
+  let DOOR_FIGS = {};
   function drawDoors(dt, W, H) {
     if (!S.sc.doors) return;
     for (const [name, D] of Object.entries(S.sc.doors)) {
@@ -218,7 +233,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
         const bi = BEYOND[key]; if (bi && bi !== 'loading') { const [cx0, cy0, cx1, cy1] = B.crop, kb = bi.width / 2752;
           ctx.globalAlpha = B.tone || 0.5; ctx.drawImage(bi, cx0 * kb, cy0 * kb, (cx1 - cx0) * kb, (cy1 - cy0) * kb, bx0, by0, bx1 - bx0, by1 - by0); ctx.globalAlpha = 1; } }
       const g = ctx.createLinearGradient(bx0, 0, bx1, 0); g.addColorStop(0, 'rgba(0,0,0,0.35)'); g.addColorStop(0.5, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.35)');
-      ctx.fillStyle = g; ctx.fillRect(bx0, by0, bx1 - bx0, by1 - by0); ctx.restore();
+      ctx.fillStyle = g; ctx.fillRect(bx0, by0, bx1 - bx0, by1 - by0);
+      for (const fig of DOOR_FIGS[name] || []) fig();                  // whoever is in the doorway, inside its outline
+      ctx.restore();
       // the leaf, in vertical slices from the hinge: narrower by cos, the free edge smaller toward the eye line
       const rec = (y) => hor + (y - hor) * (1 - 0.2 * sn);
       const fx = hT[0] + (fT[0] - hT[0]) * c, fTy = rec(fT[1]), fBy = rec(fB[1]);
@@ -262,39 +279,45 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     // walking into or out of the picture is mostly depth, which the floor's px-per-metre at one height can't measure: the
     // scene gives the time (`secs`), else a guess from the distance
     const len = Math.hypot(to[0] - from[0], (to[1] - from[1]) * 3) / pxPerM((from[1] + to[1]) / 2);
-    return new Promise(res => ACT.push({ a, m, from, to, t0: performance.now(), dur: (secs || len / (a.speed || 1.1)) * 1000, fade, flip: m.flip, done: res, room, fadeIn: opt.fadeIn || 0, ease: opt.ease || 0 }));
+    return new Promise(res => ACT.push({ a, m, from, to, t0: performance.now(), dur: (secs || len / (a.speed || 1.1)) * 1000, fade, flip: m.flip, done: res, room, fadeIn: opt.fadeIn || 0, ease: opt.ease || 0, stay: !!opt.stay, name }));
   }
   // where an actor is now and which frame shows: shared by the shadow pass and the figure pass
   function actorAt(r, now) {
     const u = Math.min(1, (now - r.t0) / r.dur), q = r.ease;
     const v = q ? (u < q ? u * u / (2 * q) : u - q / 2) / (1 - q / 2) : u;      // eased start: from standing to walking pace
     const x = r.from[0] + (r.to[0] - r.from[0]) * v, y = r.from[1] + (r.to[1] - r.from[1]) * v;
-    const m = r.m, f = Math.floor((now - r.t0) / 1000 * m.fps) % m.frames, h = heightAt(y) * r.a.hm, sc = h / m.fig_h;
+    const m = r.m, f = u >= 1 && r.stay ? 0 : Math.floor((now - r.t0) / 1000 * m.fps) % m.frames, h = heightAt(y) * r.a.hm, sc = h / m.fig_h;   // waiting behind a door: still
     let al = 1; if (r.fade === 'in') al = Math.min(1, u / 0.18); if (r.fade === 'out') al = Math.min(1, (1 - u) / 0.18);
     if (r.fadeIn) al *= Math.min(1, (now - r.t0) / 1000 / r.fadeIn);
     return { u, x, y, f, h, sc, al };
   }
   // their shadows from the room's lights, like Matt's and the seated people's (drawn before the floor mask)
   function actorShadows(now, k) {
-    for (const r of ACT) { if (r.room !== room) continue; const p = actorAt(r, now); if (r.ended && p.u >= 1 && !ACT.includes(r)) continue; const m = r.m;
+    for (const r of ACT) { if (r.room !== room || r.inDoor) continue; const p = actorAt(r, now); const m = r.m;
       if (!r.sil) { r.sil = document.createElement('canvas'); r.sil.width = m.fw; r.sil.height = m.fh; }
       const sx = r.sil.getContext('2d'); sx.globalCompositeOperation = 'source-over'; sx.clearRect(0, 0, m.fw, m.fh);
       sx.drawImage(m.img, (p.f % m.cols) * m.fw, Math.floor(p.f / m.cols) * m.fh, m.fw, m.fh, 0, 0, m.fw, m.fh);
       sx.globalCompositeOperation = 'source-in'; sx.fillStyle = '#000'; sx.fillRect(0, 0, m.fw, m.fh);
       for (const s of shadowParams(p.x, p.y, p.h)) shadowCast(r.sil, 0, 0, m.fw, m.fh, -m.feet_x * p.sc, -m.feet_y * p.sc, m.fw * p.sc, m.fh * p.sc, s, r.flip ? -1 : 1, p.x, p.y, p.h, par(p.y), p.al); }
   }
+  function drawActor(r, now) {
+    const { x, y, f, sc, al } = actorAt(r, now), m = r.m;
+    ctx.save(); ctx.globalAlpha = al;
+    ctx.translate(x + par(y), y); if (r.flip) ctx.scale(-1, 1);
+    ctx.drawImage(lit('act:' + r.m.file, m.img, (f % m.cols) * m.fw, Math.floor(f / m.cols) * m.fh, m.fw, m.fh, r.a.light === false ? 1 : lightFactor), -m.feet_x * sc, -m.feet_y * sc, m.fw * sc, m.fh * sc);
+    ctx.restore();
+  }
+  function actorsTick(now) {                    // arrivals and departures, once a frame before anything is drawn
+    for (let i = ACT.length - 1; i >= 0; i--) { const r = ACT[i]; if (r.room !== room) { ACT.splice(i, 1); if (!r.ended) r.done(); continue; }
+      const u = Math.min(1, (now - r.t0) / r.dur);
+      if (r.ended && !r.stay) { ACT.splice(i, 1); continue; }         // gone the frame after it arrived
+      if (u >= 1 && !r.ended) { r.ended = true; r.done(); }           // arrived: drawn here once more while the next walk starts
+      r.inDoor = doorAt(...(() => { const p = actorAt(r, now); return [p.x, p.y]; })()); }
+  }
   function drawActors(now, frontPass) {
     drawGhosts(now, frontPass);
-    for (let i = ACT.length - 1; i >= 0; i--) { const r = ACT[i]; if (r.room !== room) { ACT.splice(i, 1); r.done(); continue; }
-      const u = Math.min(1, (now - r.t0) / r.dur);
-      if (r.ended) { ACT.splice(i, 1); continue; }                    // gone the frame after it arrived
-      if (u >= 1) { r.ended = true; r.done(); }                       // arrived: drawn here once more while the next walk starts
-      const { x, y, f, sc, al } = actorAt(r, now), m = r.m;
-      if ((y > M.y) !== frontPass) continue;
-      ctx.save(); ctx.globalAlpha = al;
-      ctx.translate(x + par(y), y); if (r.flip) ctx.scale(-1, 1);
-      ctx.drawImage(lit('act:' + r.m.file, m.img, (f % m.cols) * m.fw, Math.floor(f / m.cols) * m.fh, m.fw, m.fh, r.a.light === false ? 1 : lightFactor), -m.feet_x * sc, -m.feet_y * sc, m.fw * sc, m.fh * sc);
-      ctx.restore(); }
+    for (const r of ACT) { if (r.room !== room || r.inDoor) continue;
+      const { y } = actorAt(r, now); if ((y > M.y) !== frontPass) continue; drawActor(r, now); }
   }
   // Matt's frames: one row, or a grid when sprites.json gives `cols`
   const frameXY = (sp, fi) => { const c = sp.cols || sp.frames; return [(fi % c) * sp.fw, Math.floor(fi / c) * sp.fh]; };
@@ -402,7 +425,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   });
   // walk to a point, or through an exit when the point is on one
   function plainWalk(x, y) {
-    M.exiting = null; M.onArrive = null;
+    M.exiting = null; M.onArrive = null; M.passing = false;
     let target;
     const ex = Object.entries(S.sc.exits).find(([, e]) => x > e.bbox[0] && x < e.bbox[2] && y > e.bbox[1] && y < e.bbox[3]);
     if (ex) { target = nearestWalkable(ex[1].stand[0], ex[1].stand[1]); M.exiting = ex[1]; }
@@ -1228,8 +1251,11 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       M.phase = (M.phase + step / pxPerM(M.y) / 1.5) % 1; M.moving = true;
       if (!M.path.length) { M.moving = false; status.textContent = 'Click the floor';
         if (M.onArrive) { const f = M.onArrive; M.onArrive = null; f(); }
-        if (M.exiting && ENGINE.hooks.exit) { const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || ''; if (ENGINE.hooks.exit(room, exn, M.exiting)) { M.exiting = null; doorSet(exn, false, 0.5); } }
-        if (M.exiting) { let to = M.exiting.to; if (to === 'office-day' && room === 'doyers-street') to = 'office-day'; if (to === 'map') to = MAP_NEXT[room];
+        if (M.exiting && ENGINE.hooks.exit && !M.passing) { const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || ''; if (ENGINE.hooks.exit(room, exn, M.exiting)) { M.exiting = null; doorSet(exn, false, 0.5); } }
+        if (M.exiting && !M.passing && S.sc.doors) { const en = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting);
+          if (en && S.sc.doors[en]) { M.passing = true; doorSet(en, true, 0.3); M.path = [doorInfo(S.sc.doors[en]).inside]; } }   // through the doorway first
+        if (M.exiting && M.passing && M.path.length) { /* still crossing the sill */ }
+        else if (M.exiting) { M.passing = false; let to = M.exiting.to; if (to === 'office-day' && room === 'doyers-street') to = 'office-day'; if (to === 'map') to = MAP_NEXT[room];
           if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room;
             const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || '';
             if (/pawnshop-door|front-door/.test(exn) && (room === 'doyers-street' || room === 'pawnshop')) shot('shop-bell', 0.6, [M.x, M.y]);
@@ -1255,7 +1281,6 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.drawImage(S.bgNow, 0, 0, W, H);
     const amb = document.getElementById('ambient').checked;
     if (amb) ambientUnder(dt, W, H); else lightFactor = 1;
-    drawDoors(dt, W, H);
 
     // sprite frame
     let sp = sprites[M.dir], img = spriteImgs[M.dir];
@@ -1267,12 +1292,30 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const feetY = (sp.feet_per_frame ? sp.feet_per_frame[fi] : sp.feet_y);   // this frame's planted foot
     const fx = M.flip ? -1 : 1;
 
+    // Matt, as a function: drawn in the room, or in a doorway between the room beyond and the door's leaf
+    const drawMatt = () => {
+      ctx.save(); ctx.translate(M.x + par(M.y), M.y); ctx.scale(fx, 1);
+      const mb = M.light * lightFactor;                                   // his light, applied without a canvas filter
+      if (!M.moving) {                                                   // standing still: face, breathing and head sway
+        let src = img, [sx0, sy0] = frameXY(sp, fi);
+        if (sp.face) { src = faceCompose('matt-' + M.dir, img, sx0, sy0, sp.fw, sp.fh, sp.face, sp.faceImg, mouthOf('matt'), eyesOf('matt', now)); sx0 = 0; sy0 = 0; }
+        if (document.getElementById('ambient').checked && !M.act) { src = warpFrame('matt-' + M.dir, src, sx0, sy0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7); sx0 = 0; sy0 = 0; }
+        ctx.drawImage(lit('matt', src, sx0, sy0, sp.fw, sp.fh, mb), -sp.feet_x * sc, -feetY * sc, dw, dh);
+      }
+      else { const [gx, gy] = frameXY(sp, fi); ctx.drawImage(lit('matt', img, gx, gy, sp.fw, sp.fh, mb), -sp.feet_x * sc, -feetY * sc, dw, dh); }
+      ctx.restore();
+    };
+    actorsTick(now);
+    const mattDoor = doorAt(M.x, M.y); DOOR_FIGS = {};
+    if (mattDoor) (DOOR_FIGS[mattDoor] = DOOR_FIGS[mattDoor] || []).push(drawMatt);
+    for (const r of ACT) if (r.room === room && r.inDoor) (DOOR_FIGS[r.inDoor] = DOOR_FIGS[r.inDoor] || []).push(() => drawActor(r, now));
+    drawDoors(dt, W, H);
     // shadows: silhouette projected on the floor, clipped to bare floor
     sil.width = sp.fw; sil.height = sp.fh;
     const [gx, gy] = frameXY(sp, fi); sx.clearRect(0, 0, sp.fw, sp.fh); sx.drawImage(img, gx, gy, sp.fw, sp.fh, 0, 0, sp.fw, sp.fh);
     sx.globalCompositeOperation = 'source-in'; sx.fillStyle = '#000'; sx.fillRect(0, 0, sp.fw, sp.fh); sx.globalCompositeOperation = 'source-over';
     shadowBegin();
-    for (const p of shadowParams()) shadowCast(sil, 0, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh, p, fx, M.x, M.y, h, par(M.y));
+    if (!mattDoor) for (const p of shadowParams()) shadowCast(sil, 0, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh, p, fx, M.x, M.y, h, par(M.y));
     // seated characters and their furniture cast shadows from the same lights as Matt
     for (const o of S.occ) if (o.prop && !gone(o) && !o.floor && !o.no_shadow) {
       const w = o.bbox[2] - o.bbox[0], ph = o.bbox[3] - o.bbox[1], ax = (o.bbox[0] + o.bbox[2]) / 2, ay = o.baseline;
@@ -1302,16 +1345,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     drawActors(now, false);
     animalsTick(dt); drawAnimals(false);
     // Matt
-    ctx.save(); ctx.translate(M.x + par(M.y), M.y); ctx.scale(fx, 1);
-    const mb = M.light * lightFactor;                                     // his light, applied without a canvas filter
-    if (!M.moving) {                                                     // standing still: face, breathing and head sway
-      let src = img, [sx0, sy0] = frameXY(sp, fi);
-      if (sp.face) { src = faceCompose('matt-' + M.dir, img, sx0, sy0, sp.fw, sp.fh, sp.face, sp.faceImg, mouthOf('matt'), eyesOf('matt', now)); sx0 = 0; sy0 = 0; }
-      if (document.getElementById('ambient').checked && !M.act) { src = warpFrame('matt-' + M.dir, src, sx0, sy0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7); sx0 = 0; sy0 = 0; }
-      ctx.drawImage(lit('matt', src, sx0, sy0, sp.fw, sp.fh, mb), -sp.feet_x * sc, -feetY * sc, dw, dh);
-    }
-    else { const [gx, gy] = frameXY(sp, fi); ctx.drawImage(lit('matt', img, gx, gy, sp.fw, sp.fh, mb), -sp.feet_x * sc, -feetY * sc, dw, dh); }
-    ctx.restore();
+    if (!mattDoor) drawMatt();
     for (const o of front) drawOcc(o, now);
     drawActors(now, true);
     drawAnimals(true);
@@ -1486,9 +1520,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), actorWalk, ghost, door: (n, open, secs, delay) => doorSet(n, open, secs, delay), walking: () => ACT.length > 0, acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), actorWalk, ghost, door: (n, open, secs, delay) => doorSet(n, open, secs, delay), doorInside: (n) => S.sc.doors && S.sc.doors[n] ? doorInfo(S.sc.doors[n]).inside : null, actorClear: (n) => { for (let i = ACT.length - 1; i >= 0; i--) if (ACT[i].name === n) ACT.splice(i, 1); }, walking: () => ACT.length > 0, acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
-    walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
+    walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.passing = false; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },
     // a named one-shot from the occupant's `acts` (Ludo sheets packed at its bbox size) if it has one, else its idle
     // once through; resolves when it ends
