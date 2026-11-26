@@ -1018,7 +1018,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { enter, plainWalk, radio, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { enter, plainWalk, radio, figureH: (y) => heightAt(y), face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },

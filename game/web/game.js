@@ -205,7 +205,33 @@
     verbs.querySelector('[data-v=look]').setAttribute('aria-label', 'Look at ' + h.name);
     pick = { h, x, y }; verbs.hidden = false;
   }
+  // Talking to someone, Matt stands beside them, turned to face them, never in front of them: try spots left and
+  // right at their depth, keep the one where his figure covers the least of theirs, then the nearest to him.
+  function talkSpot(h) {
+    const sz = E.scene().sc.size, cx = (h.bbox[0] + h.bbox[2]) / 2, feet = Math.min(h.bbox[3], sz[1] - 10);
+    const area = (h.bbox[2] - h.bbox[0]) * (h.bbox[3] - h.bbox[1]); let best = null;
+    for (const side of [-1, 1]) for (const k of [0.55, 0.8, 1.1, 1.5, 2]) for (const dy of [-30, 0, 40, 120, 220, 320]) {   // deeper rows: people behind counters
+      const H0 = E.figureH(feet + dy), want = side < 0 ? h.bbox[0] - k * 0.32 * H0 : h.bbox[2] + k * 0.32 * H0;
+      const t = E.nearestWalkable(want, feet + dy); if (!t) continue;
+      const H = E.figureH(t[1]), half = 0.17 * H;                   // his figure: about a third as wide as he is tall
+      let cover = 0;
+      if (t[1] > feet - 15) {                                      // in front of them: he could hide them
+        const ox = Math.max(0, Math.min(t[0] + half, h.bbox[2]) - Math.max(t[0] - half, h.bbox[0]));
+        const oy = Math.max(0, Math.min(t[1], h.bbox[3]) - Math.max(t[1] - H, h.bbox[1]));
+        cover = ox * oy / area;
+      }
+      const off = Math.abs(t[0] - want) + Math.abs(t[1] - (feet + dy));     // pushed far from where we asked: a wall, a counter
+      const score = cover * 10 + off / 400 + Math.max(0, dy) / 2500 + Math.hypot(t[0] - E.M.x, t[1] - E.M.y) / 4000 + Math.abs(t[0] - cx) / 3000;
+      if (!best || score < best.score) best = { t, score };
+    }
+    return best ? best.t : [cx, Math.min(h.bbox[3] + 30, sz[1] - 10)];
+  }
   function goDo(h, path) {
+    if (PEOPLE[h.id]) {
+      const [x, y] = talkSpot(h), cx = (h.bbox[0] + h.bbox[2]) / 2;
+      E.walkTo(x, y, () => { E.face(cx); run(path); });
+      return;
+    }
     const tx = (h.bbox[0] + h.bbox[2]) / 2, ty = Math.min(h.bbox[3] + 30, E.scene().sc.size[1] - 10);
     E.walkTo(tx, ty, () => { if (path === 'BOARD') openBoard(); else run(path); });
   }
