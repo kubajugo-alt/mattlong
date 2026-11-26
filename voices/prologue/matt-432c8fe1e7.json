@@ -1,13 +1,12 @@
 {
   "metadata": {
     "soundFile": "/home/user/mattlong/voices/prologue/matt-432c8fe1e7.wav",
-    "duration": 1.20
+    "duration": 1.12
   },
   "mouthCues": [
-    { "start": 0.00, "end": 0.09, "value": "X" },
-    { "start": 0.09, "end": 0.18, "value": "B" },
-    { "start": 0.18, "end": 0.67, "value": "F" },
-    { "start": 0.67, "end": 0.95, "value": "B" },
-    { "start": 0.95, "end": 1.20, "value": "X" }
+    { "start": 0.00, "end": 0.08, "value": "X" },
+    { "start": 0.08, "end": 0.72, "value": "F" },
+    { "start": 0.72, "end": 0.93, "value": "B" },
+    { "start": 0.93, "end": 1.12, "value": "X" }
   ]
 }

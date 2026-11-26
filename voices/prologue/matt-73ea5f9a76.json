@@ -1,18 +1,16 @@
 {
   "metadata": {
     "soundFile": "/home/user/mattlong/voices/prologue/matt-73ea5f9a76.wav",
-    "duration": 1.60
+    "duration": 1.44
   },
   "mouthCues": [
-    { "start": 0.00, "end": 0.22, "value": "X" },
-    { "start": 0.22, "end": 0.28, "value": "D" },
-    { "start": 0.28, "end": 0.40, "value": "B" },
-    { "start": 0.40, "end": 0.48, "value": "A" },
-    { "start": 0.48, "end": 0.61, "value": "B" },
-    { "start": 0.61, "end": 0.75, "value": "C" },
-    { "start": 0.75, "end": 0.89, "value": "B" },
-    { "start": 0.89, "end": 1.17, "value": "C" },
-    { "start": 1.17, "end": 1.38, "value": "B" },
-    { "start": 1.38, "end": 1.60, "value": "X" }
+    { "start": 0.00, "end": 0.15, "value": "X" },
+    { "start": 0.15, "end": 0.24, "value": "D" },
+    { "start": 0.24, "end": 0.31, "value": "B" },
+    { "start": 0.31, "end": 0.39, "value": "A" },
+    { "start": 0.39, "end": 0.78, "value": "B" },
+    { "start": 0.78, "end": 0.99, "value": "C" },
+    { "start": 0.99, "end": 1.13, "value": "B" },
+    { "start": 1.13, "end": 1.44, "value": "X" }
   ]
 }

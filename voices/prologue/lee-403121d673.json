@@ -1,27 +1,27 @@
 {
   "metadata": {
     "soundFile": "/home/user/mattlong/voices/prologue/lee-403121d673.wav",
-    "duration": 3.36
+    "duration": 3.28
   },
   "mouthCues": [
-    { "start": 0.00, "end": 0.15, "value": "X" },
-    { "start": 0.15, "end": 0.25, "value": "C" },
-    { "start": 0.25, "end": 0.53, "value": "E" },
-    { "start": 0.53, "end": 0.67, "value": "F" },
-    { "start": 0.67, "end": 1.09, "value": "B" },
-    { "start": 1.09, "end": 1.23, "value": "C" },
-    { "start": 1.23, "end": 1.30, "value": "E" },
-    { "start": 1.30, "end": 1.38, "value": "A" },
-    { "start": 1.38, "end": 1.47, "value": "D" },
-    { "start": 1.47, "end": 1.61, "value": "B" },
-    { "start": 1.61, "end": 1.89, "value": "C" },
-    { "start": 1.89, "end": 2.38, "value": "B" },
-    { "start": 2.38, "end": 2.52, "value": "E" },
-    { "start": 2.52, "end": 2.59, "value": "C" },
-    { "start": 2.59, "end": 2.67, "value": "A" },
-    { "start": 2.67, "end": 2.87, "value": "C" },
-    { "start": 2.87, "end": 3.08, "value": "E" },
-    { "start": 3.08, "end": 3.22, "value": "B" },
-    { "start": 3.22, "end": 3.36, "value": "X" }
+    { "start": 0.00, "end": 0.07, "value": "X" },
+    { "start": 0.07, "end": 0.24, "value": "C" },
+    { "start": 0.24, "end": 0.45, "value": "E" },
+    { "start": 0.45, "end": 0.52, "value": "F" },
+    { "start": 0.52, "end": 1.01, "value": "B" },
+    { "start": 1.01, "end": 1.15, "value": "C" },
+    { "start": 1.15, "end": 1.22, "value": "E" },
+    { "start": 1.22, "end": 1.30, "value": "A" },
+    { "start": 1.30, "end": 1.35, "value": "C" },
+    { "start": 1.35, "end": 1.53, "value": "B" },
+    { "start": 1.53, "end": 1.74, "value": "C" },
+    { "start": 1.74, "end": 2.29, "value": "B" },
+    { "start": 2.29, "end": 2.39, "value": "D" },
+    { "start": 2.39, "end": 2.46, "value": "C" },
+    { "start": 2.46, "end": 2.54, "value": "A" },
+    { "start": 2.54, "end": 2.77, "value": "C" },
+    { "start": 2.77, "end": 2.98, "value": "E" },
+    { "start": 2.98, "end": 3.12, "value": "B" },
+    { "start": 3.12, "end": 3.28, "value": "X" }
   ]
 }
