@@ -576,6 +576,44 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     AU.rev = AU.ac.createConvolver(); AU.rev.buffer = makeIR(T); AU.rev.connect(AU.master);
     for (const [n, v, pos] of (SND[id] || {}).beds || []) bedLoop(n, v, pos, AU.roomOn);
   }
+  // ---- the office radio: WMCA's evening, bulletins and records (radio/radio.json), played from the set on the side
+  // table and looped. It keeps its place when Matt leaves the office and picks up again when he's back; it ducks
+  // under anybody talking.
+  const RADIO = { on: false, i: 0, t: 0, list: null, a: null, src: null, c: null, room: null, duck: 1 };
+  const radioHere = () => room === 'office-day' || room === 'office-night';
+  const radioPos = () => { const h = S && S.hot.find(h2 => h2.id === 'radio'); return h ? [(h.bbox[0] + h.bbox[2]) / 2, h.bbox[3]] : null; };
+  async function radioPlay() {
+    if (!RADIO.list) { try { RADIO.list = (await (await fetch('radio/radio.json')).json()).playlist; } catch (e) { return; } }
+    if (!RADIO.on || !radioHere() || !AU.ac) return;
+    if (!RADIO.a) {
+      const a = new Audio(); RADIO.a = a; RADIO.src = AU.ac.createMediaElementSource(a);
+      a.onended = () => { RADIO.i = (RADIO.i + 1) % RADIO.list.length; RADIO.t = 0; radioPlay(); };
+    }
+    if (RADIO.room !== room) {        // a fresh chain for this room (its own reverb)
+      try { RADIO.src.disconnect(); } catch (e) {}
+      RADIO.c = chain(0.8, spatial(radioPos())); RADIO.src.connect(RADIO.c.g); RADIO.room = room;
+    }
+    const want = 'radio/' + RADIO.list[RADIO.i].file;
+    if (!RADIO.a.src.endsWith(want)) { RADIO.a.src = want; RADIO.a.currentTime = RADIO.t || 0; }
+    RADIO.a.play().catch(() => {});
+  }
+  function radioPause() { if (RADIO.a && !RADIO.a.paused) { RADIO.t = RADIO.a.currentTime; RADIO.a.pause(); } }
+  function radioTick() {
+    if (!RADIO.on) return;
+    if (!radioHere()) { radioPause(); return; }
+    if (RADIO.a && RADIO.a.paused && RADIO.room === room) return void radioPlay();
+    if (!RADIO.a || RADIO.room !== room) return void radioPlay();
+    const talking = !!TALK.who || (STORY.talking && STORY.talking());
+    RADIO.c.base = 0.8 * (talking ? 0.3 : 1);
+    steer(RADIO.c, spatial(radioPos()));
+  }
+  function radio(on) {
+    if (on === undefined) on = !RADIO.on;
+    RADIO.on = on; if (on) radioPlay(); else radioPause();
+    shot('switch', 0.6, radioPos());
+    return on;
+  }
+
   function soundTick(now) {
     if (!AU.ac) return;
     if (!AU.roomOn || !AU.roomOn.startsWith(room + ':')) roomSound(room);
@@ -585,6 +623,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       if (t > AU.next[n]) { shot(n, v, pos, 0.95 + Math.random() * 0.1, lpMax || 0); AU.next[n] = t + lo + Math.random() * (hi - lo); }
     }
     for (const b of AU.beds) if (b.pos) steer(b.c, spatial(b.pos), 0.3);      // beds never fade below 30 %
+    radioTick();
     // footsteps on the frames where a heel actually meets the floor in the walk strip (three per 36-frame loop,
     // read from the sprite: sprites/matt.json "steps"), louder near the camera, panned with Matt
     const spS = sprites[M.dir] || {}, stepsAt = spS.steps || [0, 18], nF = spS.frames || 36;
@@ -940,7 +979,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { enter, plainWalk, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { enter, plainWalk, radio, radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },

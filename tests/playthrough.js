@@ -51,6 +51,7 @@ const URL = process.argv[2] || 'http://localhost:8765/';
   log('P2'); s = await exit('flat-door'); expect(s.room === 'pete-kate-flat', 'in the flat');
   await hot('pete', ['Anything', 'Spare', 'See you']); log('    heard_book', await p.evaluate(() => GAME.story.variablesState.heard_book));
   s = await hot('kate', ['About', "It's for", 'Think of it']); expect(s.inv.includes("Pete's cigarettes"), 'got the cigarettes');
+  log('    kate_gone', await p.evaluate(() => GAME.story.variablesState.kate_gone), errs);
   await hot('pete', ['A place', 'See you']);
   s = await exit('door'); s = await exit('stairs'); expect(s.room === 'doyers-street', 'on Doyers Street');
   log('P3'); s = await exit('tea-house-doors'); expect(s.room === 'tea-house', 'in the tea house');

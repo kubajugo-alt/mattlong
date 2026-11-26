@@ -1958,5 +1958,33 @@
   "heard": "Quietly, Mr. Long.",
   "ratio": 1.0,
   "extra_words": 0
+ },
+ "vo-a7cbca739f": {
+  "file": "vo-a7cbca739f.mp3",
+  "mtime": 1795680389.9681067,
+  "heard": "Off. The bad news can wait. It always does.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-20949fef46": {
+  "file": "vo-20949fef46.mp3",
+  "mtime": 1795680381.8900044,
+  "heard": "Quiet. The city can tell me the rest tomorrow.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-c08cba422f": {
+  "file": "vo-c08cba422f.mp3",
+  "mtime": 1795680382.7818887,
+  "heard": "WMCA from the roof of the Hotel McAlpin, the news and records older than my debts.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-0849a6928d": {
+  "file": "vo-0849a6928d.mp3",
+  "mtime": 1795680381.8878646,
+  "heard": "The radio company that doesn't ask for a retainer.",
+  "ratio": 1.0,
+  "extra_words": 0
  }
 }

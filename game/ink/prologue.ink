@@ -32,6 +32,7 @@ VAR case_taken = false         // P5 done
 VAR told_lee_where = false     // small, untracked choice in P4
 VAR has_cup = false          // Matt took the spare cup off Kate's table (coffee needs a cup)
 VAR had_coffee = false
+VAR radio_on = false         // the office radio is playing
 VAR mask = 0                   // The Mask: +1 honest, -1 guarded (bible: feeds 3.1, 3.2, the epilogue)
 
 EXTERNAL act(command)   // engine actions: "give:cigarettes", "go:corridor", ... (see ENGINE CONTRACT)
@@ -123,8 +124,20 @@ VO: The blinds cut the morning into strips. It's easier to take that way.
 VO: The radio. Dance bands in the morning, bad news by night.
 -> DONE
 = use
-~ act("sfx:radio_dance_band")
-VO: A dance band, playing like nobody had told them about the bread lines either.
+// the radio really plays: WMCA's bulletins and records (game/radio/broadcast.json), from the set, until switched off
+{radio_on:
+    ~ radio_on = false
+    ~ act("radio:off")
+    {~VO: Off. The bad news can wait. It always does.|VO: Quiet. The city can tell me the rest tomorrow.}
+- else:
+    ~ radio_on = true
+    ~ act("radio:on")
+    {once:
+    - VO: WMCA, from the roof of the Hotel McAlpin. The news, and records older than my debts.
+    - VO: A dance band, playing like nobody had told them about the bread lines either.
+    - VO: The radio. Company that doesn't ask for a retainer.
+    }
+}
 -> DONE
 
 === office__evidence_board ===

@@ -1951,5 +1951,33 @@
   "voice_id": "4tRn1lSkEn13EVTuqb0g",
   "file": "inez-81d0a6b79c.mp3",
   "cues": "inez-81d0a6b79c.json"
+ },
+ "vo-a7cbca739f": {
+  "speaker": "VO",
+  "text": "Off. The bad news can wait. It always does.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-a7cbca739f.mp3",
+  "cues": null
+ },
+ "vo-20949fef46": {
+  "speaker": "VO",
+  "text": "Quiet. The city can tell me the rest tomorrow.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-20949fef46.mp3",
+  "cues": null
+ },
+ "vo-c08cba422f": {
+  "speaker": "VO",
+  "text": "WMCA, from the roof of the Hotel McAlpin. The news, and records older than my debts.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-c08cba422f.mp3",
+  "cues": null
+ },
+ "vo-0849a6928d": {
+  "speaker": "VO",
+  "text": "The radio. Company that doesn't ask for a retainer.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-0849a6928d.mp3",
+  "cues": null
  }
 }

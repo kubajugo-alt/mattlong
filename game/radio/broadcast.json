@@ -1,0 +1,183 @@
+{
+ "note": "The office radio: one evening of WMCA, New York, Thursday 20 November 1930. Bulletins are written from the real news of that week (no story later than the date); records are US recordings from 1925 or earlier, public domain, from the Internet Archive (Library of Congress National Jukebox and 78rpm transfers; see each record's source). The radio plays the list in order and loops. tools/build_radio.py voices the announcer and gives everything the old-radio sound.",
+ "station": "WMCA",
+ "announcer": {
+  "name": "Andrew - Fifties Announcer",
+  "voice_id": "p0Gik0TBCfzjohLCb7Mr"
+ },
+ "program": [
+  {
+   "say": "This is WMCA, atop the Hotel McAlpin, Broadway at Thirty-Fourth Street, New York. The time is nine o'clock. Here is the news.",
+   "tag": "[formal]"
+  },
+  {
+   "say": "The first snow of the season fell on the city this morning, and the Weather Bureau promises colder tonight. The Department of Sanitation has called out emergency shovel crews, and it reports more men applying for the work than it has shovels to hand them.",
+   "tag": "[formal]"
+  },
+  {
+   "say": "There is no new trace tonight of Justice Joseph Force Crater of the State Supreme Court, missing since the sixth of August, when he stepped into a taxicab on West Forty-Fifth Street and was not seen again. The grand jury inquiry continues to hear witnesses. A reward of five thousand dollars stands for information.",
+   "tag": "[serious]"
+  },
+  {
+   "say": "And now, a record: King Oliver's Creole Jazz Band, with young Louis Armstrong on the second cornet, in Dipper Mouth Blues.",
+   "tag": "[warm]",
+   "then": "dippermouth"
+  },
+  {
+   "say": "At the Seabury inquiry into the city's magistrates' courts, witnesses told this week of vice-squad officers who arrested innocent women on false charges, and of bondsmen and lawyers who divided the bail money. Judge Samuel Seabury says the inquiry has only begun.",
+   "tag": "[serious]"
+  },
+  {
+   "say": "From the Victor catalogue, Paul Whiteman and his Orchestra, and a song for our town: Manhattan.",
+   "tag": "[warm]",
+   "then": "manhattan"
+  },
+  {
+   "say": "The Emergency Employment Committee, under Mr. Seward Prosser, asks every New Yorker with a job to give one day's pay for those without one. On the corners of the city, six thousand men now sell apples at five cents apiece.",
+   "tag": "[formal]"
+  },
+  {
+   "say": "Here are Bessie Smith, the Empress of the Blues, and Louis Armstrong, in the St. Louis Blues.",
+   "tag": "[warm]",
+   "then": "st-louis"
+  },
+  {
+   "say": "Jack Diamond, known as Legs, shot five times last month in his room at the Hotel Monticello, remains under police guard at the Polyclinic Hospital. His doctors say he will recover. The police say they are not surprised.",
+   "tag": "[dry]"
+  },
+  {
+   "say": "Bix Beiderbecke and the Wolverine Orchestra, in Riverboat Shuffle.",
+   "tag": "[warm]",
+   "then": "riverboat"
+  },
+  {
+   "say": "Governor Franklin D. Roosevelt, re-elected this month by the largest plurality in the history of the state, returned to Albany today. On Governors Island, the Army garrison marked Armistice Day on the eleventh with two minutes' silence and a salute of guns.",
+   "tag": "[formal]"
+  },
+  {
+   "say": "Paul Whiteman and his Ambassador Orchestra, in Whispering.",
+   "tag": "[warm]",
+   "then": "whispering"
+  },
+  {
+   "say": "In sports, the Army football team leaves West Point next week for Chicago, where it meets Notre Dame at Soldier Field on the twenty-ninth. Coach Rockne's men have not lost a game this season.",
+   "tag": "[upbeat]"
+  },
+  {
+   "say": "The Original Memphis Five, in Tin Roof Blues.",
+   "tag": "[warm]",
+   "then": "tin-roof"
+  },
+  {
+   "say": "Stocks drifted lower on the Exchange today in light trading. Federal prohibition agents report the padlocking of a dozen speakeasies on West Fifty-Second Street. Several of them, the agents believe, will open again by Saturday.",
+   "tag": "[dry]"
+  },
+  {
+   "say": "And to dance by: Arthur Gibbs and His Gang, in the Charleston.",
+   "tag": "[upbeat]",
+   "then": "charleston"
+  },
+  {
+   "say": "The Police Department reminds citizens that the Missing Persons Bureau, at Centre Street, receives hundreds of reports every month, and that most of the missing come home on their own.",
+   "tag": "[serious]"
+  },
+  {
+   "say": "Ted Lewis and his Jazz Band, in Runnin' Wild.",
+   "tag": "[upbeat]",
+   "then": "runnin-wild"
+  },
+  {
+   "say": "That is the news. And to close the hour, the record that started it all: the Original Dixieland Jass Band, in Tiger Rag.",
+   "tag": "[warm]",
+   "then": "tiger-rag"
+  }
+ ],
+ "records": {
+  "dippermouth": {
+   "file": "dippermouth.mp3",
+   "title": "Dipper Mouth Blues",
+   "artist": "King Oliver's Creole Jazz Band",
+   "year": 1923,
+   "source": "https://archive.org/details/1923-USA-Archives-1923-00-00-King-Olivers-Creole-Jazz-Band-Dipper-Mouth-Blues",
+   "source_file": "1923 (USA) Archives 1923 00 00 King Oliver's Creole Jazz Band - Dipper Mouth Blues.mp3",
+   "status": "US sound recording published before 1926: public domain in the US (Music Modernization Act)"
+  },
+  "manhattan": {
+   "file": "manhattan.mp3",
+   "title": "Manhattan",
+   "artist": "Paul Whiteman and His Orchestra",
+   "year": 1925,
+   "source": "https://archive.org/details/1925-USA-Archives-1925-09-01-Paul-Whiteman-Orch-Manhattan",
+   "source_file": "1925 (USA) Archives 1925 09 01 Paul Whiteman Orch - Manhattan.mp3",
+   "status": "US sound recording published before 1926: public domain in the US (Music Modernization Act)"
+  },
+  "st-louis": {
+   "file": "st-louis.mp3",
+   "title": "The St. Louis Blues",
+   "artist": "Bessie Smith and Louis Armstrong",
+   "year": 1925,
+   "source": "https://archive.org/details/JV-1426-1925-QmbmBn5Ba1cfLVumJWCYAqTypcHu2Wmx9Tr7RMSfRNBRC8.mp3",
+   "source_file": "JV-1426-1925-QmbmBn5Ba1cfLVumJWCYAqTypcHu2Wmx9Tr7RMSfRNBRC8.mp3",
+   "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "status": "US sound recording published before 1926: public domain in the US (Music Modernization Act)"
+  },
+  "riverboat": {
+   "file": "riverboat.flac",
+   "title": "Riverboat Shuffle",
+   "artist": "Bix Beiderbecke and the Wolverine Orchestra",
+   "year": 1924,
+   "source": "https://archive.org/details/78_riverbeat-shuffle_wolverine-orchestra-carmichael_gbia0009181a",
+   "source_file": "Riverbeat Shuffle - Wolverine Orchestra - Carmichael.flac",
+   "status": "US sound recording published before 1926: public domain in the US (Music Modernization Act)"
+  },
+  "whispering": {
+   "file": "whispering.mp3",
+   "title": "Whispering",
+   "artist": "Paul Whiteman and His Ambassador Orchestra",
+   "year": 1920,
+   "source": "https://archive.org/details/Whispering_137",
+   "source_file": "Whispering.mp3",
+   "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+   "status": "US sound recording published before 1926: public domain in the US (Music Modernization Act)"
+  },
+  "tin-roof": {
+   "file": "tin-roof.mp3",
+   "title": "Tin Roof Blues",
+   "artist": "The Original Memphis Five",
+   "year": 1923,
+   "source": "https://archive.org/details/loc-jukebox-68232-tin-roof-blues",
+   "source_file": "jukebox-68232_tin-roof-blues.mp3",
+   "license": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "status": "US sound recording published before 1926: public domain in the US (Music Modernization Act)"
+  },
+  "charleston": {
+   "file": "charleston.mp3",
+   "title": "Charleston",
+   "artist": "Arthur Gibbs and His Gang",
+   "year": 1923,
+   "source": "https://archive.org/details/1923-USA-Archives-1923-10-10-Arthur-Gibbs-Gang-The-Charleston",
+   "source_file": "1923 (USA) Archives 1923 10 10 Arthur Gibbs Gang - The Charleston.mp3",
+   "status": "US sound recording published before 1926: public domain in the US (Music Modernization Act)"
+  },
+  "runnin-wild": {
+   "file": "runnin-wild.mp3",
+   "title": "Runnin' Wild",
+   "artist": "Ted Lewis Jazz Band",
+   "year": 1922,
+   "source": "https://archive.org/details/loc-jukebox-669563-runnin-wild",
+   "source_file": "jukebox-669563_runnin-wild.mp3",
+   "license": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "status": "US sound recording published before 1926: public domain in the US (Music Modernization Act)"
+  },
+  "tiger-rag": {
+   "file": "tiger-rag.mp3",
+   "title": "Tiger Rag",
+   "artist": "Original Dixieland Jass Band",
+   "year": 1918,
+   "source": "https://archive.org/details/loc-jukebox-28588-tiger-rag",
+   "source_file": "jukebox-28588_tiger-rag.mp3",
+   "license": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "status": "US sound recording published before 1926: public domain in the US (Music Modernization Act)"
+  }
+ }
+}

@@ -27,8 +27,8 @@
     'lead-apartment': ['Case: Capt. Michael Harlan', 'He never takes leave, and the Army is not worried. Somebody is lying, or has been told to. Start where he lived.'],
   };
   let story, lines = {}, paths = new Set(), busy = false, skip = null, pendingActs = [], CUES = {};
-  const G = { inv: ['flask'], journal: [], notebook: false, seenFlat: false, selected: null };
-  const STORY = E.STORY; STORY.hidden = new Set(['inez-seated']); STORY.hiddenHot = new Set();
+  const G = { inv: ['flask'], journal: [], notebook: true, seenFlat: false, selected: null };
+  const STORY = E.STORY; STORY.talking = () => busy; STORY.hidden = new Set(['inez-seated']); STORY.hiddenHot = new Set();
 
   // ---------------------------------------------------------------- UI
   const hud = document.querySelector('.hud');
@@ -44,7 +44,7 @@
   const menu = mk('div', 'gmenu'); menu.hidden = true; hud.append(menu);
   const replaceBtn = (id) => { const o = $(id); const n = o.cloneNode(true); o.replaceWith(n); return n; };
   const bNote = replaceBtn('bNote'), bMap = replaceBtn('bMap'), bMenu = replaceBtn('bMenu');
-  bNote.hidden = true;
+  bNote.hidden = false;      // the notebook is on screen from the start; entries arrive as the story gives them
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
   function showCaption(sp, text) { cap.innerHTML = ''; if (NAME[sp]) { const b = mk('b'); b.textContent = NAME[sp]; cap.append(b); }
@@ -119,6 +119,7 @@
       case 'hide': if (arg === 'kate-at-table') STORY.kateGone = true; else { STORY.hidden.add(arg); STORY.hiddenHot.add(E.room() + ':' + arg); } break;
       case 'go': await fadeTo(() => E.enter(arg, E.room())); break;
       case 'scene': if (E.room() !== arg) await fadeTo(() => E.enter(arg, null)); break;
+      case 'radio': E.radio(arg === 'on'); break;
       case 'sfx': if (arg !== 'rain') E.shot(arg, arg === 'radio_dance_band' ? 0.5 : 0.7, [E.M.x, E.M.y]); break;   // rain: the night office's own rain bed
       case 'anim': { const [who, a] = arg.split(':');
         if (who === 'inez' && a === 'walk_in') STORY.hidden.delete('inez-seated');
@@ -253,7 +254,7 @@
   // ---------------------------------------------------------------- save
   const KEY = 'mattlong-prologue-save-v1';
   function save() { try { localStorage.setItem(KEY, JSON.stringify({ ink: story.state.ToJson(), G: { ...G, selected: null }, room: E.room(),
-    kateGone: STORY.kateGone, hidden: [...STORY.hidden], hiddenHot: [...STORY.hiddenHot] })); } catch (e) {} }
+    kateGone: STORY.kateGone, hidden: [...STORY.hidden], hiddenHot: [...STORY.hiddenHot], radio: E.radioState() })); } catch (e) {} }
   function loadSave() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
   function clearSave() { try { localStorage.removeItem(KEY); } catch (e) {} }
 
@@ -280,8 +281,8 @@
     card.classList.remove('open', 'title');
     window.dispatchEvent(new Event('pointerdown'));      // wake the audio
     if (choice === 'cont') {
-      story.state.LoadJson(saved.ink); Object.assign(G, saved.G); STORY.kateGone = saved.kateGone; STORY.hidden = new Set(saved.hidden); STORY.hiddenHot = new Set(saved.hiddenHot);
-      bNote.hidden = !G.notebook; renderInv();
+      story.state.LoadJson(saved.ink); Object.assign(G, saved.G); STORY.kateGone = saved.kateGone; STORY.hidden = new Set(saved.hidden); STORY.hiddenHot = new Set(saved.hiddenHot); if (saved.radio) E.radioSet(saved.radio);
+      G.notebook = true; bNote.hidden = false; renderInv();
     } else {
       clearSave(); if (E.room() !== 'office-day') await E.enter('office-day'); renderInv(); run('prologue_start');
     }

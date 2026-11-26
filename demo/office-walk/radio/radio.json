@@ -1,0 +1,163 @@
+{
+ "station": "WMCA",
+ "playlist": [
+  {
+   "kind": "say",
+   "file": "say-b9487a2d4b.mp3",
+   "text": "This is WMCA, atop the Hotel McAlpin, Broadway at Thirty-Fourth Street, New York. The time is nine o'clock. Here is the news."
+  },
+  {
+   "kind": "say",
+   "file": "say-c02e58ceaf.mp3",
+   "text": "The first snow of the season fell on the city this morning, and the Weather Bureau promises colder tonight. The Department of Sanitation has called out emergency shovel crews, and it reports more men applying for the work than it has shovels to hand them."
+  },
+  {
+   "kind": "say",
+   "file": "say-ac61bfcae5.mp3",
+   "text": "There is no new trace tonight of Justice Joseph Force Crater of the State Supreme Court, missing since the sixth of August, when he stepped into a taxicab on West Forty-Fifth Street and was not seen again. The grand jury inquiry continues to hear witnesses. A reward of five thousand dollars stands for information."
+  },
+  {
+   "kind": "say",
+   "file": "say-712be318e2.mp3",
+   "text": "And now, a record: King Oliver's Creole Jazz Band, with young Louis Armstrong on the second cornet, in Dipper Mouth Blues."
+  },
+  {
+   "kind": "record",
+   "file": "rec-dippermouth.mp3",
+   "title": "Dipper Mouth Blues",
+   "artist": "King Oliver's Creole Jazz Band",
+   "year": 1923
+  },
+  {
+   "kind": "say",
+   "file": "say-dc1311c284.mp3",
+   "text": "At the Seabury inquiry into the city's magistrates' courts, witnesses told this week of vice-squad officers who arrested innocent women on false charges, and of bondsmen and lawyers who divided the bail money. Judge Samuel Seabury says the inquiry has only begun."
+  },
+  {
+   "kind": "say",
+   "file": "say-af6ee13005.mp3",
+   "text": "From the Victor catalogue, Paul Whiteman and his Orchestra, and a song for our town: Manhattan."
+  },
+  {
+   "kind": "record",
+   "file": "rec-manhattan.mp3",
+   "title": "Manhattan",
+   "artist": "Paul Whiteman and His Orchestra",
+   "year": 1925
+  },
+  {
+   "kind": "say",
+   "file": "say-bf323db411.mp3",
+   "text": "The Emergency Employment Committee, under Mr. Seward Prosser, asks every New Yorker with a job to give one day's pay for those without one. On the corners of the city, six thousand men now sell apples at five cents apiece."
+  },
+  {
+   "kind": "say",
+   "file": "say-2c34f8f98b.mp3",
+   "text": "Here are Bessie Smith, the Empress of the Blues, and Louis Armstrong, in the St. Louis Blues."
+  },
+  {
+   "kind": "record",
+   "file": "rec-st-louis.mp3",
+   "title": "The St. Louis Blues",
+   "artist": "Bessie Smith and Louis Armstrong",
+   "year": 1925
+  },
+  {
+   "kind": "say",
+   "file": "say-54449988d7.mp3",
+   "text": "Jack Diamond, known as Legs, shot five times last month in his room at the Hotel Monticello, remains under police guard at the Polyclinic Hospital. His doctors say he will recover. The police say they are not surprised."
+  },
+  {
+   "kind": "say",
+   "file": "say-8ae3bc4879.mp3",
+   "text": "Bix Beiderbecke and the Wolverine Orchestra, in Riverboat Shuffle."
+  },
+  {
+   "kind": "record",
+   "file": "rec-riverboat.mp3",
+   "title": "Riverboat Shuffle",
+   "artist": "Bix Beiderbecke and the Wolverine Orchestra",
+   "year": 1924
+  },
+  {
+   "kind": "say",
+   "file": "say-69080e60a5.mp3",
+   "text": "Governor Franklin D. Roosevelt, re-elected this month by the largest plurality in the history of the state, returned to Albany today. On Governors Island, the Army garrison marked Armistice Day on the eleventh with two minutes' silence and a salute of guns."
+  },
+  {
+   "kind": "say",
+   "file": "say-a631f0b5f2.mp3",
+   "text": "Paul Whiteman and his Ambassador Orchestra, in Whispering."
+  },
+  {
+   "kind": "record",
+   "file": "rec-whispering.mp3",
+   "title": "Whispering",
+   "artist": "Paul Whiteman and His Ambassador Orchestra",
+   "year": 1920
+  },
+  {
+   "kind": "say",
+   "file": "say-e66e1eb04e.mp3",
+   "text": "In sports, the Army football team leaves West Point next week for Chicago, where it meets Notre Dame at Soldier Field on the twenty-ninth. Coach Rockne's men have not lost a game this season."
+  },
+  {
+   "kind": "say",
+   "file": "say-9192cc5ae3.mp3",
+   "text": "The Original Memphis Five, in Tin Roof Blues."
+  },
+  {
+   "kind": "record",
+   "file": "rec-tin-roof.mp3",
+   "title": "Tin Roof Blues",
+   "artist": "The Original Memphis Five",
+   "year": 1923
+  },
+  {
+   "kind": "say",
+   "file": "say-2bd7e082ed.mp3",
+   "text": "Stocks drifted lower on the Exchange today in light trading. Federal prohibition agents report the padlocking of a dozen speakeasies on West Fifty-Second Street. Several of them, the agents believe, will open again by Saturday."
+  },
+  {
+   "kind": "say",
+   "file": "say-a583b0831e.mp3",
+   "text": "And to dance by: Arthur Gibbs and His Gang, in the Charleston."
+  },
+  {
+   "kind": "record",
+   "file": "rec-charleston.mp3",
+   "title": "Charleston",
+   "artist": "Arthur Gibbs and His Gang",
+   "year": 1923
+  },
+  {
+   "kind": "say",
+   "file": "say-78c5bc5776.mp3",
+   "text": "The Police Department reminds citizens that the Missing Persons Bureau, at Centre Street, receives hundreds of reports every month, and that most of the missing come home on their own."
+  },
+  {
+   "kind": "say",
+   "file": "say-ee4f35ef94.mp3",
+   "text": "Ted Lewis and his Jazz Band, in Runnin' Wild."
+  },
+  {
+   "kind": "record",
+   "file": "rec-runnin-wild.mp3",
+   "title": "Runnin' Wild",
+   "artist": "Ted Lewis Jazz Band",
+   "year": 1922
+  },
+  {
+   "kind": "say",
+   "file": "say-89a1471a61.mp3",
+   "text": "That is the news. And to close the hour, the record that started it all: the Original Dixieland Jass Band, in Tiger Rag."
+  },
+  {
+   "kind": "record",
+   "file": "rec-tiger-rag.mp3",
+   "title": "Tiger Rag",
+   "artist": "Original Dixieland Jass Band",
+   "year": 1918
+  }
+ ]
+}
