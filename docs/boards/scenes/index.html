@@ -5,15 +5,15 @@
 /* Layout: an editing bench — the player and its timeline on top, the strip of every frame below */
 :root {
   --bg: #e9e6e1; --panel: #f6f4f0; --ink: #1d1c1b; --muted: #6b6762; --line: #cfcac2; --stage: #2a2826; --accent: #a3261f;
-  --p-stand: #7a5c2e; --p-side: #2f5f7a; --p-back: #4f6b35; --p-gone: #6b6762; --p-door: #7a3f5c; --p-walkin: #2f5f7a; --p-sit: #7a5c2e; --p-seated: #5b4a8a; --p-walkout: #4f6b35; --p-enter: #2f6b6b; --notebg: #f6dcd8;
+  --p-stand: #7a5c2e; --p-side: #2f5f7a; --p-back: #4f6b35; --p-gone: #6b6762; --p-door: #7a3f5c; --p-walkin: #2f5f7a; --p-sit: #7a5c2e; --p-seated: #5b4a8a; --p-walkout: #4f6b35; --p-enter: #2f6b6b; --p-kate: #2f5f7a; --notebg: #f6dcd8;
   --display: "Big Shoulders Display", "Arial Narrow", sans-serif; --body: "Jost", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #161514; --panel: #201f1d; --ink: #ece8e2; --muted: #a29d95; --line: #3a3733; --stage: #0f0e0d; --accent: #e0574c;
-  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --notebg: #3e211e; color-scheme: dark } }
+  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --p-kate: #6aa6c8; --notebg: #3e211e; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #161514; --panel: #201f1d; --ink: #ece8e2; --muted: #a29d95; --line: #3a3733; --stage: #0f0e0d; --accent: #e0574c;
-  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --notebg: #3e211e; color-scheme: dark }
+  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --p-kate: #6aa6c8; --notebg: #3e211e; color-scheme: dark }
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font: 400 15px/1.45 var(--body); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 48px }
 .wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 18px }
@@ -92,11 +92,12 @@ textarea { width: 100%; min-height: 70px; resize: vertical; font: 400 14px/1.4 v
 
 <script>
 const PH = {
+  kate: ['Wstaje i wychodzi', 'wstawanie, chód bokiem, chód tyłem przez drzwi w głąb korytarza'],
   stand: ['Wstaje', 'arkusz wstawania (Ludo), ostatnia klatka trzymana do przejęcia'],
   side: ['Idzie bokiem', 'przenikanie z ostatniej klatki wstawania, potem cykl chodu z boku z rozpędzaniem'],
   back: ['Idzie tyłem do drzwi', 'cykl chodu od tyłu; drzwi otwierają się, gdy do nich podchodzi'],
   door: ['Drzwi się zamykają', 'skrzydło wraca na zawias'],
-  walkin: ['Wchodzi', 'drzwi otwarte, cykl chodu przodem, wyłania się z korytarza'],
+  walkin: ['Wchodzi, obraca się, siada', 'zza prawej krawędzi drzwi, przodem; obrót do sofy; siadanie'],
   sit: ['Siada', 'arkusz siadania (Ludo)'], seated: ['Siedzi', 'animacja spoczynkowa'],
   walkout: ['Wychodzi', 'cykl chodu od tyłu; drzwi otwarte na jej drodze'],
   enter: ['Wejście do pokoju', 'zmiana pokoju; drzwi za Mattem są otwarte i się zamykają'],
