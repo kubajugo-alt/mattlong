@@ -4736,5 +4736,26 @@
    "secs_in": 3.6,
    "secs_out": 3.2
   }
+ },
+ "doors": {
+  "door": {
+   "leaf": [
+    931,
+    473,
+    1186,
+    1071
+   ],
+   "hinge": "left",
+   "beyond": {
+    "room": "corridor",
+    "crop": [
+     1150,
+     250,
+     1677,
+     1536
+    ],
+    "tone": 0.3
+   }
+  }
  }
 }

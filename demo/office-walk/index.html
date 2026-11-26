@@ -151,6 +151,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const back = from && Object.values(S.sc.exits).find(e => e.to === from || (from.startsWith('office') && (e.to || '').startsWith('office')) || (e.to === 'map' && MAP_NEXT[id] === from));
     const p = back ? nearestWalkable(back.stand[0], back.stand[1]) : nearestWalkable(W * 0.5, H * 0.9);
     [M.x, M.y] = p || [W * 0.5, H * 0.9]; M.path = []; M.moving = false; M.exiting = null; M.dir = 'front'; hover = null;
+    for (const k of Object.keys(DOORS)) if (k.startsWith(id + ':')) { DOORS[k].a = 0; DOORS[k].t = 0; }
+    if (back && S.sc.doors) { const en = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === back);
+      if (en && S.sc.doors[en]) { const st = doorState(en); st.a = 1; st.t = 0; st.v = 1 / 0.7; st.delay = 0.45; } }
     status.textContent = 'Click the floor'; switching = false;
     if (ENGINE.hooks.entered) ENGINE.hooks.entered(id, from);
   }
@@ -176,24 +179,82 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     M.dir = a.dir; if (a.dir === 'side' && tx != null) M.flip = tx < M.x;
     return new Promise(res => { M.act = { sp, img: actImgs[name], t0: performance.now(), done: res }; });
   }
+  // ---- doors that open: the closed leaf is cut from the painting (scene json `doors`: {exit: {leaf: [x0,y0,x1,y1],
+  // hinge: 'left'|'right', beyond: {room, crop: [x0,y0,x1,y1], tone}}}); open, it swings away from us on its hinge (narrower,
+  // its free edge smaller toward the eye line, darker as it turns from the light) and the doorway shows a dimmed piece
+  // of the room beyond, from that room's own painting. Nobody appears in, or vanishes from, a shut door.
+  const DOORS = {}, BEYOND = {};
+  function doorState(name) { const k = room + ':' + name; return DOORS[k] || (DOORS[k] = { a: 0, t: 0, v: 2, delay: 0 }); }
+  function doorSet(name, open, secs = 0.6, delay = 0) { if (!S.sc.doors || !S.sc.doors[name]) return; const st = doorState(name); st.t = open ? 1 : 0; st.v = 1 / secs; st.delay = delay; }
+  function drawDoors(dt, W, H) {
+    if (!S.sc.doors) return;
+    for (const [name, D] of Object.entries(S.sc.doors)) {
+      const st = doorState(name);
+      if (st.delay > 0) st.delay -= dt; else if (st.a !== st.t) st.a = st.t > st.a ? Math.min(st.t, st.a + dt * st.v) : Math.max(st.t, st.a - dt * st.v);
+      if (st.a <= 0.002) continue;
+      const e = st.a * st.a * (3 - 2 * st.a), th = e * 1.35, c = Math.cos(th), sn = Math.sin(th);   // up to ~77 degrees
+      const [x0, y0, x1, y1] = D.leaf, w = x1 - x0, hor = S.sc.horizon * H, left = D.hinge !== 'right';
+      // the doorway: the room beyond, dimmed
+      ctx.save(); ctx.beginPath(); ctx.rect(x0, y0, w, y1 - y0); ctx.clip(); ctx.fillStyle = '#0d0c0b'; ctx.fillRect(x0, y0, w, y1 - y0);
+      const B = D.beyond; if (B) { const key = B.room;
+        if (!BEYOND[key]) { BEYOND[key] = 'loading'; load(B.room + '/bg.webp').then(i => { BEYOND[key] = i; }); }
+        const bi = BEYOND[key]; if (bi && bi !== 'loading') { const [cx0, cy0, cx1, cy1] = B.crop, kb = bi.width / 2752;
+          ctx.globalAlpha = B.tone || 0.5; ctx.drawImage(bi, cx0 * kb, cy0 * kb, (cx1 - cx0) * kb, (cy1 - cy0) * kb, x0, y0, w, y1 - y0); ctx.globalAlpha = 1; } }
+      const g = ctx.createLinearGradient(x0, 0, x1, 0); g.addColorStop(0, 'rgba(0,0,0,0.35)'); g.addColorStop(0.5, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.35)');
+      ctx.fillStyle = g; ctx.fillRect(x0, y0, w, y1 - y0); ctx.restore();
+      // the leaf, in vertical slices: narrower by cos, the free edge smaller (receding toward the eye line)
+      const N = 28, kb = S.bgNow.width / W, src = S.bgNow, quad = [];
+      for (let i = 0; i < N; i++) {
+        const u0 = i / N, u1 = (i + 1) / N, su = left ? u0 : 1 - u1;               // u from the hinge
+        const sc0 = 1 - 0.2 * sn * u0, sc1 = 1 - 0.2 * sn * u1, scm = (sc0 + sc1) / 2;
+        const dx0 = left ? x0 + u0 * w * c : x1 - u1 * w * c, dw = w * c / N;
+        const top = hor + (y0 - hor) * scm, bot = hor + (y1 - hor) * scm;
+        ctx.drawImage(src, (x0 + su * w) * kb, y0 * kb, (w / N) * kb, (y1 - y0) * kb, dx0, top, dw + 0.8, bot - top);
+      }
+      const fx = left ? x0 + w * c : x1 - w * c, fs = 1 - 0.2 * sn, hx = left ? x0 : x1;
+      ctx.beginPath(); ctx.moveTo(hx, y0); ctx.lineTo(fx, hor + (y0 - hor) * fs); ctx.lineTo(fx, hor + (y1 - hor) * fs); ctx.lineTo(hx, y1); ctx.closePath();
+      ctx.fillStyle = 'rgba(0,0,0,' + (0.42 * sn).toFixed(3) + ')'; ctx.fill();
+      // its edge, catching a little light
+      ctx.strokeStyle = 'rgba(120,115,108,' + (0.5 * sn).toFixed(3) + ')'; ctx.lineWidth = 3 * sn; ctx.beginPath();
+      ctx.moveTo(fx, hor + (y0 - hor) * fs); ctx.lineTo(fx, hor + (y1 - hor) * fs); ctx.stroke();
+    }
+  }
   // ---- people who walk across a room on cue (Inez into the office): a Ludo walk cycle moved along a straight line,
   // sized by depth like Matt (`hm`: their height in Matt's), drawn in front of or behind him by their feet; they fade
   // in or out at a door. Scene json `actors`: {name: {hm, speed (m/s), sheets: {key: {file, frames, cols, fps, fw, fh,
   // feet_x, feet_y, fig_h}}}}
   const ACT = [];
-  async function actorWalk(name, sheet, from, to, fade, secs) {
+  // a seated person's last frame, faded out over `secs` while their walk fades in on the same spot (a cross-dissolve
+  // from the stand-up sheet to the walk cycle, so the turn from three-quarter to profile isn't a cut)
+  const GHOSTS = [];
+  function ghost(name, secs) {
+    const o = S.occ.find(o2 => o2.name === name), m = o && o.acts && Object.values(o.acts).find(m2 => m2.img && o.one && o.one.m === m2);
+    if (!m) return; GHOSTS.push({ o, m, f: m.frames - 1, t0: performance.now(), secs, room });
+  }
+  function drawGhosts(now, frontPass) {
+    for (let i = GHOSTS.length - 1; i >= 0; i--) { const g = GHOSTS[i], a = 1 - (now - g.t0) / 1000 / g.secs;
+      if (g.room !== room || a <= 0) { GHOSTS.splice(i, 1); continue; }
+      if ((g.o.baseline > M.y) !== frontPass) continue;
+      const o = g.o, m = g.m, w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1], [l, tp, r, b] = m.pad || [0, 0, 0, 0], fw = w + l + r, fh = h + tp + b;
+      ctx.save(); ctx.translate(par(o.baseline), 0); ctx.globalAlpha = a;
+      ctx.drawImage(m.img, (g.f % m.cols) * fw, Math.floor(g.f / m.cols) * fh, fw, fh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh); ctx.restore(); }
+  }
+  async function actorWalk(name, sheet, from, to, fade, secs, opt = {}) {
     const a = S.sc.actors && S.sc.actors[name]; if (!a) return;
     const m = a.sheets[sheet]; if (!m.img) m.img = await (m.loading || load(room + '/' + m.file));
     // walking into or out of the picture is mostly depth, which the floor's px-per-metre at one height can't measure: the
     // scene gives the time (`secs`), else a guess from the distance
     const len = Math.hypot(to[0] - from[0], (to[1] - from[1]) * 3) / pxPerM((from[1] + to[1]) / 2);
-    return new Promise(res => ACT.push({ a, m, from, to, t0: performance.now(), dur: (secs || len / (a.speed || 1.1)) * 1000, fade, flip: m.flip, done: res, room }));
+    return new Promise(res => ACT.push({ a, m, from, to, t0: performance.now(), dur: (secs || len / (a.speed || 1.1)) * 1000, fade, flip: m.flip, done: res, room, fadeIn: opt.fadeIn || 0, ease: opt.ease || 0 }));
   }
   // where an actor is now and which frame shows: shared by the shadow pass and the figure pass
   function actorAt(r, now) {
-    const u = Math.min(1, (now - r.t0) / r.dur), x = r.from[0] + (r.to[0] - r.from[0]) * u, y = r.from[1] + (r.to[1] - r.from[1]) * u;
+    const u = Math.min(1, (now - r.t0) / r.dur), q = r.ease;
+    const v = q ? (u < q ? u * u / (2 * q) : u - q / 2) / (1 - q / 2) : u;      // eased start: from standing to walking pace
+    const x = r.from[0] + (r.to[0] - r.from[0]) * v, y = r.from[1] + (r.to[1] - r.from[1]) * v;
     const m = r.m, f = Math.floor((now - r.t0) / 1000 * m.fps) % m.frames, h = heightAt(y) * r.a.hm, sc = h / m.fig_h;
     let al = 1; if (r.fade === 'in') al = Math.min(1, u / 0.18); if (r.fade === 'out') al = Math.min(1, (1 - u) / 0.18);
+    if (r.fadeIn) al *= Math.min(1, (now - r.t0) / 1000 / r.fadeIn);
     return { u, x, y, f, h, sc, al };
   }
   // their shadows from the room's lights, like Matt's and the seated people's (drawn before the floor mask)
@@ -206,6 +267,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       for (const s of shadowParams(p.x, p.y, p.h)) shadowCast(r.sil, 0, 0, m.fw, m.fh, -m.feet_x * p.sc, -m.feet_y * p.sc, m.fw * p.sc, m.fh * p.sc, s, r.flip ? -1 : 1, p.x, p.y, p.h, par(p.y), p.al); }
   }
   function drawActors(now, frontPass) {
+    drawGhosts(now, frontPass);
     for (let i = ACT.length - 1; i >= 0; i--) { const r = ACT[i]; if (r.room !== room) { ACT.splice(i, 1); r.done(); continue; }
       const u = Math.min(1, (now - r.t0) / r.dur);
       if (r.ended) { ACT.splice(i, 1); continue; }                    // gone the frame after it arrived
@@ -1137,6 +1199,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   function tick(now) {
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
     const W = S.sc.size[0], H = S.sc.size[1];
+    if (M.exiting && S.sc.doors) { const en = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting);       // he reaches for the door
+      if (en && S.sc.doors[en] && Math.hypot(M.x - M.exiting.stand[0], M.y - M.exiting.stand[1]) < H * 0.3) doorSet(en, true, 0.45); }
     // move: 1.3 m/s, scaled by depth
     if (M.path.length) {
       const [tx, ty] = M.path[0], dx = tx - M.x, dy = ty - M.y, d = Math.hypot(dx, dy);
@@ -1147,7 +1211,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       M.phase = (M.phase + step / pxPerM(M.y) / 1.5) % 1; M.moving = true;
       if (!M.path.length) { M.moving = false; status.textContent = 'Click the floor';
         if (M.onArrive) { const f = M.onArrive; M.onArrive = null; f(); }
-        if (M.exiting && ENGINE.hooks.exit) { const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || ''; if (ENGINE.hooks.exit(room, exn, M.exiting)) M.exiting = null; }
+        if (M.exiting && ENGINE.hooks.exit) { const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || ''; if (ENGINE.hooks.exit(room, exn, M.exiting)) { M.exiting = null; doorSet(exn, false, 0.5); } }
         if (M.exiting) { let to = M.exiting.to; if (to === 'office-day' && room === 'doyers-street') to = 'office-day'; if (to === 'map') to = MAP_NEXT[room];
           if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room;
             const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || '';
@@ -1174,6 +1238,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.drawImage(S.bgNow, 0, 0, W, H);
     const amb = document.getElementById('ambient').checked;
     if (amb) ambientUnder(dt, W, H); else lightFactor = 1;
+    drawDoors(dt, W, H);
 
     // sprite frame
     let sp = sprites[M.dir], img = spriteImgs[M.dir];
@@ -1404,7 +1469,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), actorWalk, walking: () => ACT.length > 0, acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), actorWalk, ghost, door: (n, open, secs, delay) => doorSet(n, open, secs, delay), walking: () => ACT.length > 0, acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },

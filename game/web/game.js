@@ -148,10 +148,15 @@
       return Math.hypot(E.M.x - p[0] - t * dx, E.M.y - p[1] - t * dy) < 170; };
     if (near(A.start, A.turn) || near(A.turn, A.door)) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.turn[0]));
     await E.anim(occ, 'leave');
-    const walk = E.actorWalk('kate', 'side', A.start, A.turn, null, A.secs_side);    // starts this frame (the sheet is loaded with the room)
+    // her last stand-up frame dissolves into the first steps of the walk on the same spot, and the walk starts from a
+    // standstill, so the turn from three-quarter to profile reads as a turn, not a cut
+    if (E.ghost) E.ghost(occ, A.blend || 0.5);
+    const walk = E.actorWalk('kate', 'side', A.start, A.turn, null, A.secs_side, { fadeIn: A.blend || 0.5, ease: 0.14 });   // starts this frame (sheet loaded with the room)
     STORY.kateGone = true;
     await walk;
+    if (E.door) E.door('door', true, 0.8);                                         // she opens the door as she reaches it
     await E.actorWalk('kate', 'back', A.turn, A.door, 'out', A.secs_back);
+    if (E.door) E.door('door', false, 0.9, 0.15);                                  // and pulls it shut behind her
   }
   // Inez: in from the door to the sofa (walk, then sits), and back out; the lines run while she walks. Without the
   // sheets (an older build) she just appears and goes.
@@ -162,11 +167,13 @@
     if (a === 'walk_in') {
       if (Math.hypot(E.M.x - A.door[0], E.M.y - A.door[1]) < 500 || Math.hypot(E.M.x - A.stand[0], E.M.y - A.stand[1]) < 300) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.stand[0]));   // out of her way
       // in at the door, across to the sofa and straight down onto it, while Matt looks her over
+      if (E.door) { E.door('door', true, 0.5); setTimeout(() => E.door('door', false, 0.9), 1700); }   // the door opens, she comes in, it swings to
       inezWalk = E.actorWalk('inez', 'front', A.door, A.stand, 'in', A.secs_in).then(() => { STORY.hidden.delete('inez-seated'); return E.anim('inez-seated', 'sit'); });
     }
     if (a === 'sit') { if (inezWalk) await inezWalk; inezWalk = null; }
     if (a === 'stand') await E.anim('inez-seated', 'sit', true);
-    if (a === 'walk_out') { STORY.hidden.add('inez-seated'); await E.actorWalk('inez', 'back', A.stand, A.door, 'out', A.secs_out); }
+    if (a === 'walk_out') { STORY.hidden.add('inez-seated'); if (E.door) E.door('door', true, 0.7, 1.2);
+      await E.actorWalk('inez', 'back', A.stand, A.door, 'out', A.secs_out); if (E.door) E.door('door', false, 0.9, 0.15); }
   }
   const flash = (el) => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); };
 
