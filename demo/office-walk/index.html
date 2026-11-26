@@ -217,6 +217,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (!S) return;
     const [x, y] = toScene(ev);
     if (ENGINE.hooks.click && ENGINE.hooks.click(x, y, ev)) return;
+    plainWalk(x, y);
+  });
+  // walk to a point, or through an exit when the point is on one
+  function plainWalk(x, y) {
     M.exiting = null; M.onArrive = null;
     let target;
     const ex = Object.entries(S.sc.exits).find(([, e]) => x > e.bbox[0] && x < e.bbox[2] && y > e.bbox[1] && y < e.bbox[3]);
@@ -225,7 +229,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (!target) return;
     M.path = findPath(M.x, M.y, target[0], target[1]);
     status.textContent = M.exiting ? 'Walking to ' + (NAMES[M.exiting.to] || M.exiting.to) : 'Walking';
-  });
+  }
 
   // ---- lights and shadows
   function shadowParams(px = M.x, py = M.y, h = heightAt(M.y)) {
@@ -935,7 +939,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { enter, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { enter, plainWalk, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },

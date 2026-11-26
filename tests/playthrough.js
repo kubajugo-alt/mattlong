@@ -32,6 +32,7 @@ const URL = process.argv[2] || 'http://localhost:8765/';
       for (let k = 0; k < 400; k++) { const x = h.bbox[0] + (h.bbox[2] - h.bbox[0]) * ((k * 0.618) % 1), y = h.bbox[1] + (h.bbox[3] - h.bbox[1]) * ((k * 0.382 + 0.5) % 1);
         const u = ENGINE.hotAt(x, y); if (u && u.id === id) { ENGINE.hooks.click(x, y); return true; } } return false; }, id);
     if (!ok) throw new Error('no hotspot ' + id);
+    if (await p.isVisible('.verbs')) await p.click('.verbs [data-v=use]');      // the verbs: take the hand
     const s = await settle(picks); log(' ', id, '->', s.room, '| inv:', s.inv.join(', ')); return s;
   }
   async function exit(name, picks) {
@@ -71,6 +72,7 @@ const URL = process.argv[2] || 'http://localhost:8765/';
   await p.evaluate(() => { const h = ENGINE.scene().hot.find(h => h.id === 'evidence-board');
     for (let k = 0; k < 400; k++) { const x = h.bbox[0] + (h.bbox[2] - h.bbox[0]) * ((k * 0.618) % 1), y = h.bbox[1] + (h.bbox[3] - h.bbox[1]) * ((k * 0.382 + 0.5) % 1);
       const u = ENGINE.hotAt(x, y); if (u && u.id === 'evidence-board') { ENGINE.hooks.click(x, y); return; } } });
+  await p.click('.verbs [data-v=use]');
   await p.waitForSelector('.board:not([hidden]) .pin', { timeout: 15000 }); await p.screenshot({ path: (process.env.SHOTS || require('os').tmpdir()) + '/board.png' });
   await p.click('.board .pin:nth-child(3)'); await p.click('.board .pin:nth-child(4)');
   s = await settle(); expect(s.card, 'To be continued card');

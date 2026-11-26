@@ -185,29 +185,51 @@
   }
 
   // ---------------------------------------------------------------- input
-  let longPress = null, suppressClick = false;
+  // Click a hotspot: the eye (look) and the hand (use / talk) open beside it and the player picks one.
+  // Clicking anywhere else walks there (or through an exit). With an item from the briefcase in hand,
+  // a click uses it on the hotspot straight away.
   const cv = $('c');
-  E.hooks.click = (x, y) => {
-    if (suppressClick) { suppressClick = false; return true; }
-    if (busy) { if (skip) skip(); return true; }
-    note.hidden = true;
-    const h = E.hotAt(x, y), ex = E.exitAt(x, y);
-    // something the script has lines for wins; otherwise an exit (doors, street ends) or a plain walk
-    const path = h ? knotFor(h.id, 'use') : null;
-    const scripted = path && !/__default\.use$/.test(path) && path !== 'item__default.use';
-    if (!scripted && (ex || !h)) { if (G.selected) select(null); return false; }
+  const verbs = document.createElement('div'); verbs.className = 'verbs'; verbs.hidden = true;
+  verbs.innerHTML = '<button type="button" data-v="look" aria-label="Look"><img alt="" src="ui/verb-eye.webp"></button>'
+    + '<button type="button" data-v="use" aria-label="Use"><img alt="" src="ui/verb-hand.webp"></button>';
+  document.querySelector('.hud').append(verbs);
+  let pick = null;                        // {h, x, y} the hotspot the verbs are open for, and the click point
+  function closeVerbs() { verbs.hidden = true; pick = null; }
+  function openVerbs(h, x, y, ev) {
+    const st = document.querySelector('.stage').getBoundingClientRect(), sz = E.scene().sc.size;
+    const fx = ev ? (ev.clientX - st.left) / st.width : x / sz[0], fy = ev ? (ev.clientY - st.top) / st.height : y / sz[1];
+    verbs.style.left = Math.min(94, Math.max(6, fx * 100)) + '%'; verbs.style.top = (fy * 100) + '%';
+    verbs.classList.toggle('below', fy < 0.2);     // near the top edge, open below the pointer
+    verbs.querySelector('[data-v=use]').setAttribute('aria-label', PEOPLE[h.id] ? 'Talk to ' + h.name : 'Use ' + h.name);
+    verbs.querySelector('[data-v=look]').setAttribute('aria-label', 'Look at ' + h.name);
+    pick = { h, x, y }; verbs.hidden = false;
+  }
+  function goDo(h, path) {
     const tx = (h.bbox[0] + h.bbox[2]) / 2, ty = Math.min(h.bbox[3] + 30, E.scene().sc.size[1] - 10);
     E.walkTo(tx, ty, () => { if (path === 'BOARD') openBoard(); else run(path); });
-    return true;
-  };
-  function look(ev) {
-    if (busy) return; const [x, y] = E.toScene(ev); const h = E.hotAt(x, y);
-    if (G.selected) { select(null); return; }
-    if (h) run(knotFor(h.id, 'look'));
   }
-  cv.addEventListener('contextmenu', (ev) => { ev.preventDefault(); look(ev); });
-  cv.addEventListener('pointerdown', (ev) => { if (ev.pointerType !== 'mouse') { clearTimeout(longPress); longPress = setTimeout(() => { suppressClick = true; look(ev); }, 550); } });
-  ['pointerup', 'pointercancel', 'pointermove'].forEach(t => cv.addEventListener(t, (ev) => { if (t !== 'pointermove' || Math.abs(ev.movementX) + Math.abs(ev.movementY) > 6) clearTimeout(longPress); }));
+  verbs.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button'); if (!b || !pick) return;
+    ev.stopPropagation();
+    const { h, x, y } = pick; closeVerbs();
+    if (b.dataset.v === 'look') { run(knotFor(h.id, 'look')); return; }
+    const path = knotFor(h.id, 'use');
+    const scripted = !/__default\.use$/.test(path) && path !== 'item__default.use';
+    if (!scripted && E.exitAt(x, y)) { E.plainWalk(x, y); return; }      // a door with nothing to say: just go through
+    goDo(h, path);
+  });
+  E.hooks.click = (x, y, ev) => {
+    if (busy) { if (skip) skip(); return true; }
+    note.hidden = true;
+    if (!verbs.hidden) { closeVerbs(); return true; }          // a click away from the verbs just closes them
+    const h = E.hotAt(x, y);
+    if (h && G.selected) { goDo(h, knotFor(h.id, 'use')); return true; }
+    if (h) { openVerbs(h, x, y, ev); return true; }
+    if (G.selected) select(null);
+    return false;
+  };
+  cv.addEventListener('contextmenu', (ev) => ev.preventDefault());
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !verbs.hidden) closeVerbs(); });
   E.hooks.exit = (room, exn) => {
     const k = EXIT_KNOT[room + ':' + exn]; if (!k) return false;
     run(k); return true;
@@ -252,7 +274,7 @@
     box.innerHTML = '<h2>Matt Long</h2><p>The Bloody Angle</p><small>Prologue · Rent Day</small>';
     const bNew = mk('button', 'cardbtn', saved ? 'Start again' : 'Begin'); box.append(bNew);
     let bCont = null; if (saved) { bCont = mk('button', 'cardbtn', 'Continue'); box.append(bCont); }
-    const tip = mk('small', 'how', 'Click to walk and use · right-click (or press and hold) to look · the fedora opens the briefcase'); box.append(tip);
+    const tip = mk('small', 'how', 'Click something to look at it or use it · click anywhere else to walk · the fedora opens the briefcase'); box.append(tip);
     card.append(box); card.classList.add('open', 'title');
     const choice = await new Promise(r => { bNew.onclick = (e) => { e.stopPropagation(); r('new'); }; if (bCont) bCont.onclick = (e) => { e.stopPropagation(); r('cont'); }; });
     card.classList.remove('open', 'title');

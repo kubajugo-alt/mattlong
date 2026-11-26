@@ -87,3 +87,14 @@ body.busy canvas { cursor: default; }
 @media (orientation: portrait) and (max-width: 700px) {
   .rotate { display: grid; position: fixed; inset: 0; place-items: center; background: #050506; color: #ece9e2; z-index: 50; padding: 24px; text-align: center; font: 500 16px/1.5 "Jost", sans-serif; }
 }
+
+/* verbs: the eye and the hand open beside the clicked hotspot */
+.verbs { position: absolute; z-index: 3; display: flex; gap: .6cqw; transform: translate(-50%, calc(-100% - 1.2cqw)); pointer-events: auto;
+  animation: verbsIn .14s ease-out; }
+.verbs.below { transform: translate(-50%, 1.6cqw); }
+.verbs button { width: max(46px, 5.6cqw); height: max(46px, 5.6cqw); padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer;
+  filter: drop-shadow(0 .3cqw .6cqw rgba(0,0,0,.85)); transition: transform .1s; }
+.verbs button img { width: 100%; height: 100%; display: block; }
+.verbs button:hover, .verbs button:focus-visible { transform: scale(1.12); outline: none; }
+@keyframes verbsIn { from { opacity: 0; scale: .8; } }
+@media (prefers-reduced-motion: reduce) { .verbs { animation: none; } }

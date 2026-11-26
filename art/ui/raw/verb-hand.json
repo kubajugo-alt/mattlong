@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "prompt": "Make a matching companion to the reference image (the eye medallion): exactly the same round medallion — the same pale grey disc, the same thin double Art Deco ring with small diamonds at top, bottom, left and right, the same size, position, engraving style and lighting, strict greyscale. Inside the disc, instead of the eye: a man's right hand seen from the side, reaching in from the lower left towards the right, thumb and fingers apart in a natural relaxed grip as if about to pick up a small object. Anatomically correct, five well-formed fingers joined naturally to the palm, a shirt cuff at the wrist. The same fine engraved, softly painted style, clear ink linework. On a completely flat pure chroma green (#00FF00) background, nothing else. Game interface verb icon meaning USE / TAKE, readable at 48 pixels.",
+  "refs": [
+    "art/ui/raw/verb-eye.png"
+  ],
+  "aspect": "1:1",
+  "size": "2K",
+  "created": "2026-11-26T07:30:20.404Z",
+  "usage": {
+    "promptTokenCount": 438,
+    "candidatesTokenCount": 2084,
+    "totalTokenCount": 2522,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 180
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1680
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. A single human eye, wide open and watchful, drawn as a classic engraved emblem: upper and lower eyelids, lashes, a glossy iris and a catch-light, with a thin elegant Art Deco ring around it like a 1930 detective agency sign (the all-seeing private eye). Only this one emblem, centred, filling about 70% of the frame, flat front view, on a completely flat pure chroma green (#00FF00) background with nothing else. It is a game interface verb icon meaning LOOK: bold clear silhouette, readable at 48 pixels, light tones on the emblem so it reads on a dark scene.",
+  "refs": [
+    "art/rooms/final/office-day.png"
+  ],
+  "aspect": "1:1",
+  "size": "2K",
+  "created": "2026-11-26T07:27:37.571Z",
+  "usage": {
+    "promptTokenCount": 451,
+    "candidatesTokenCount": 1325,
+    "totalTokenCount": 2015,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 193
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 239,
+    "serviceTier": "standard"
+  }
+}
