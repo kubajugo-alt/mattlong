@@ -5,3 +5,4 @@ dist/
 .gemini_key
 site/
 site-artifact/
+__pycache__/
