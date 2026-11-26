@@ -199,10 +199,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       const sx = r.sil.getContext('2d'); sx.globalCompositeOperation = 'source-over'; sx.clearRect(0, 0, m.fw, m.fh);
       sx.drawImage(m.img, (p.f % m.cols) * m.fw, Math.floor(p.f / m.cols) * m.fh, m.fw, m.fh, 0, 0, m.fw, m.fh);
       sx.globalCompositeOperation = 'source-in'; sx.fillStyle = '#000'; sx.fillRect(0, 0, m.fw, m.fh);
-      for (const s of shadowParams(p.x, p.y, p.h)) for (const pass of SHADOW_PASSES) {
-        ctx.save(); ctx.globalAlpha = Math.min(0.45, s.a * pass.a * 0.85) * p.al; ctx.filter = 'blur(' + Math.max(0.5, s.blur * pass.b * k).toFixed(1) + 'px)';
-        ctx.translate(par(p.y), 0); ctx.transform(r.flip ? -1 : 1, 0, -s.vx / p.h, -s.vy / p.h, p.x, p.y);
-        ctx.drawImage(r.sil, -m.feet_x * p.sc, -m.feet_y * p.sc, m.fw * p.sc, m.fh * p.sc); ctx.restore(); } }
+      for (const s of shadowParams(p.x, p.y, p.h)) shadowCast(r.sil, 0, 0, m.fw, m.fh, -m.feet_x * p.sc, -m.feet_y * p.sc, m.fw * p.sc, m.fh * p.sc, s, r.flip ? -1 : 1, p.x, p.y, p.h, par(p.y), p.al); }
   }
   function drawActors(now, frontPass) {
     for (let i = ACT.length - 1; i >= 0; i--) { const r = ACT[i]; if (r.room !== room) { ACT.splice(i, 1); r.done(); continue; }
@@ -210,9 +207,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       if (u >= 1) { ACT.splice(i, 1); continue; }
       const { x, y, f, sc, al } = actorAt(r, now), m = r.m;
       if ((y > M.y) !== frontPass) continue;
-      ctx.save(); ctx.globalAlpha = al; ctx.filter = r.a.light === false ? 'none' : 'brightness(' + lightFactor.toFixed(3) + ')';
+      ctx.save(); ctx.globalAlpha = al;
       ctx.translate(x + par(y), y); if (r.flip) ctx.scale(-1, 1);
-      ctx.drawImage(m.img, (f % m.cols) * m.fw, Math.floor(f / m.cols) * m.fh, m.fw, m.fh, -m.feet_x * sc, -m.feet_y * sc, m.fw * sc, m.fh * sc);
+      ctx.drawImage(lit('act:' + r.m.file, m.img, (f % m.cols) * m.fw, Math.floor(f / m.cols) * m.fh, m.fw, m.fh, r.a.light === false ? 1 : lightFactor), -m.feet_x * sc, -m.feet_y * sc, m.fw * sc, m.fh * sc);
       ctx.restore(); }
   }
   // Matt's frames: one row, or a grid when sprites.json gives `cols`
@@ -334,6 +331,39 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // ---- lights and shadows
   // cast shadows as soft as the painted ones: a light core and a wide, dissolved spread
   const SHADOW_PASSES = [{ a: 0.45, b: 0.6 }, { a: 0.55, b: 2.6 }];
+  // Shadows are drawn without any filter into two small buffers (the tight pass at 1/4 of the scene, the soft one at
+  // 1/10), each buffer is blurred once at its own small size, then laid over the floor in one draw. Blurring every
+  // silhouette at full size, per light and per pass, was most of the frame time.
+  const SHB = SHADOW_PASSES.map((pass, i) => ({ pass, s: i ? 0.1 : 0.25, c: document.createElement('canvas'), t: document.createElement('canvas'), blur: 0, n: 0 }));
+  function shadowBegin() {
+    const W = S.sc.size[0], H = S.sc.size[1];
+    for (const B of SHB) { const w = Math.ceil(W * B.s), h = Math.ceil(H * B.s);
+      if (B.c.width !== w || B.c.height !== h) { B.c.width = B.t.width = w; B.c.height = B.t.height = h; }
+      const x = B.c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, w, h); B.blur = 0; B.n = 0; }
+  }
+  // one silhouette for one light: the same projection as before (origin at the feet, (0,-h) to the shadow tip)
+  function shadowCast(src, sx, sy, sw, sh, dx, dy, dw, dh, L, fx, ox, oy, h, parx, alpha = 1) {
+    for (const B of SHB) { const x = B.c.getContext('2d');
+      x.setTransform(B.s, 0, 0, B.s, 0, 0); x.translate(parx, 0); x.transform(fx, 0, -L.vx / h, -L.vy / h, ox, oy);
+      x.globalAlpha = Math.min(0.45, L.a * B.pass.a * 0.85) * alpha;
+      x.drawImage(src, sx, sy, sw, sh, dx, dy, dw, dh); B.blur += L.blur * B.pass.b; B.n++; }
+  }
+  const FM = {};
+  function floorMask() {                       // white where the floor is bare, per room (S.floor at its own scale)
+    if (FM[room]) return FM[room];
+    const f = S.floor, c = document.createElement('canvas'); c.width = f.w; c.height = f.h; const x = c.getContext('2d');
+    const d = x.createImageData(f.w, f.h); for (let p = 0; p < f.m.length; p++) { d.data[p * 4] = d.data[p * 4 + 1] = d.data[p * 4 + 2] = 255; d.data[p * 4 + 3] = f.m[p] ? 255 : 0; }
+    x.putImageData(d, 0, 0); return FM[room] = c;
+  }
+  function shadowEnd() {
+    const W = S.sc.size[0], H = S.sc.size[1];
+    for (const B of SHB) { if (!B.n) continue;
+      const t = B.t.getContext('2d'); t.globalCompositeOperation = 'copy'; t.filter = 'blur(' + Math.max(0.4, B.blur / B.n * B.s).toFixed(2) + 'px)';
+      t.drawImage(B.c, 0, 0); t.filter = 'none';
+      t.globalCompositeOperation = 'destination-in'; t.drawImage(floorMask(), 0, 0, B.t.width, B.t.height);   // shadows lie on bare floor only
+      t.globalCompositeOperation = 'source-over';
+      ctx.drawImage(B.t, 0, 0, B.t.width, B.t.height, 0, 0, W, H); }
+  }
   function shadowParams(px = M.x, py = M.y, h = heightAt(M.y)) {
     const W = S.sc.size[0], H = S.sc.size[1], out = [];
     for (const L of S.sc.lights) {
@@ -469,8 +499,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
         w = heightAt(y) * a.wm / 1.85; h = w * meta.fh / meta.fw; fi = Math.floor(st.t * a.fps) % 36; flip = r.dir; }
       const sortY = a.sort || y; if ((sortY > M.y) !== front) continue;
       const sx = (fi % 6) * meta.fw, sy = Math.floor(fi / 6) * meta.fh;
-      ctx.save(); ctx.translate(x + par(y), y); ctx.scale(flip, 1); ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
-      ctx.drawImage(img, sx, sy, meta.fw, meta.fh, -w / 2, -h, w, h); ctx.restore();
+      ctx.save(); ctx.translate(x + par(y), y); ctx.scale(flip, 1);
+      ctx.drawImage(lit('an:' + a.id, img, sx, sy, meta.fw, meta.fh, M.light * lightFactor), -w / 2, -h, w, h); ctx.restore();
     }
   }
   function streetHaze(W, H) {
@@ -502,11 +532,11 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       const k = CARS.list[i]; k.x += k.dir * k.v * dt; const pxs = par(gy);
       if (k.snd && AU.ac) steer(k.snd, spatial([k.x + k.w / 2, gy]));
       if ((k.dir > 0 && k.x > k.end) || (k.dir < 0 && k.x < k.end)) { if (k.snd) { const t = AU.ac.currentTime; k.snd.g.gain.setTargetAtTime(0, t, 0.8); } CARS.list.splice(i, 1); continue; }
-      ctx.save(); ctx.globalAlpha = 0.35; ctx.filter = 'blur(3px)'; ctx.fillStyle = '#000';
-      ctx.beginPath(); ctx.ellipse(k.x + pxs + k.w / 2, gy - 2, k.w * 0.46, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      ctx.save(); ctx.translate(k.x + pxs + k.w / 2, gy - 2); ctx.scale(k.w * 0.5, 7);           // soft shadow: a radial fade, no filter
+      const sg = ctx.createRadialGradient(0, 0, 0, 0, 0, 1); sg.addColorStop(0, 'rgba(0,0,0,0.35)'); sg.addColorStop(0.75, 'rgba(0,0,0,0.22)'); sg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI * 2); ctx.fill(); ctx.restore();
       ctx.save(); ctx.translate(k.x + pxs + k.w / 2, gy); ctx.scale(k.dir * k.c.face, 1);
-      ctx.filter = 'brightness(0.95) contrast(0.62) blur(0.6px)';   // distance: low contrast, softened
-      ctx.drawImage(k.c.i, -k.w / 2, -CARS.h, k.w, CARS.h); ctx.restore();
+      ctx.drawImage(distant(k.c.i), -k.w / 2, -CARS.h, k.w, CARS.h); ctx.restore();       // distance: low contrast, graded once
     }
     ctx.restore();
     // the far street lamp (painted, x 1164-1178) stands in front of the cross street: repaint its pole over the cars
@@ -743,8 +773,27 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       if ((k.dir > 0 && k.x > k.end) || (k.dir < 0 && k.x < k.end)) { WALKERS.list.splice(i, 1); continue; }
       const fi = Math.floor(k.ph / 7.5 * 12) % 36, sx = (fi % 6) * k.img.fw, sy = Math.floor(fi / 6) * k.img.fh;   // 12 frames a second
       ctx.save(); ctx.translate(k.x + par(k.y), k.y); ctx.scale(k.dir, 1);
-      ctx.filter = 'brightness(0.95) contrast(0.6) blur(0.6px)'; ctx.drawImage(k.img, sx, sy, k.img.fw, k.img.fh, -k.w / 2, -k.h, k.w, k.h); ctx.restore(); }
+      ctx.drawImage(distant(k.img), sx, sy, k.img.fw, k.img.fh, -k.w / 2, -k.h, k.w, k.h); ctx.restore(); }
     ctx.restore();
+  }
+  // a sprite frame at a brightness, without a canvas filter (filters force an extra pass per draw): the frame is copied
+  // to a small canvas and darkened (black on top) or brightened (added to itself), keeping its own alpha
+  const LIT = new Map();
+  function lit(key, src, sx, sy, sw, sh, b) {
+    let c = LIT.get(key); if (!c) { c = document.createElement('canvas'); LIT.set(key, c); }
+    if (c.width !== sw || c.height !== sh) { c.width = sw; c.height = sh; }
+    const x = c.getContext('2d'); x.globalCompositeOperation = 'copy'; x.globalAlpha = 1; x.drawImage(src, sx, sy, sw, sh, 0, 0, sw, sh);
+    if (b < 0.995) { x.globalCompositeOperation = 'source-atop'; x.globalAlpha = Math.min(1, 1 - b); x.fillStyle = '#000'; x.fillRect(0, 0, sw, sh); }
+    else if (b > 1.005) { x.globalCompositeOperation = 'lighter'; x.globalAlpha = Math.min(1, b - 1); x.drawImage(src, sx, sy, sw, sh, 0, 0, sw, sh);
+      x.globalCompositeOperation = 'destination-in'; x.globalAlpha = 1; x.drawImage(src, sx, sy, sw, sh, 0, 0, sw, sh); }
+    x.globalCompositeOperation = 'source-over'; x.globalAlpha = 1; return c;
+  }
+  // the far street's figures and cars, graded for distance (lower contrast, a touch darker) once per image, not per frame
+  const DIST = new WeakMap();
+  function distant(img) {
+    let c = DIST.get(img); if (c) return c;
+    c = document.createElement('canvas'); c.width = img.width; c.height = img.height; const x = c.getContext('2d');
+    x.filter = 'brightness(0.95) contrast(0.6) blur(0.6px)'; x.drawImage(img, 0, 0); DIST.set(img, c); return c;
   }
   function ambientOver(dt, W, H) {          // dust in the light, in front of everything
     roomAmbient(dt, W, H);
@@ -1135,31 +1184,18 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     sil.width = sp.fw; sil.height = sp.fh;
     const [gx, gy] = frameXY(sp, fi); sx.clearRect(0, 0, sp.fw, sp.fh); sx.drawImage(img, gx, gy, sp.fw, sp.fh, 0, 0, sp.fw, sp.fh);
     sx.globalCompositeOperation = 'source-in'; sx.fillStyle = '#000'; sx.fillRect(0, 0, sp.fw, sp.fh); sx.globalCompositeOperation = 'source-over';
-    ctx.save(); ctx.translate(par(M.y), 0);
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.save();
-    for (const p of shadowParams()) for (const pass of SHADOW_PASSES) {
-      ctx.save();
-      ctx.globalAlpha = Math.min(0.45, p.a * pass.a * 0.85); ctx.filter = 'blur(' + Math.max(0.5, p.blur * pass.b * k).toFixed(1) + 'px)';
-      // local frame: origin at the feet, sprite y up; (0,-h) maps to the shadow tip (vx, vy)
-      ctx.transform(fx, 0, -p.vx / h, -p.vy / h, M.x, M.y);
-      ctx.drawImage(sil, -sp.feet_x * sc, -feetY * sc, dw, dh);
-      ctx.restore();
-    }
-    ctx.restore(); ctx.restore();
+    shadowBegin();
+    for (const p of shadowParams()) shadowCast(sil, 0, 0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh, p, fx, M.x, M.y, h, par(M.y));
     // seated characters and their furniture cast shadows from the same lights as Matt
     for (const o of S.occ) if (o.prop && !gone(o) && !o.floor && !o.no_shadow) {
       const w = o.bbox[2] - o.bbox[0], ph = o.bbox[3] - o.bbox[1], ax = (o.bbox[0] + o.bbox[2]) / 2, ay = o.baseline;
       if (!o.sil) { const c = document.createElement('canvas'); c.width = w; c.height = ph; const x = c.getContext('2d');
         x.drawImage(o.img, 0, 0, w, ph, 0, 0, w, ph); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height); o.sil = c; }
-      for (const p of shadowParams(ax, ay, ph)) for (const pass of SHADOW_PASSES) {
-        ctx.save(); ctx.globalAlpha = Math.min(0.45, p.a * pass.a * 0.85); ctx.filter = 'blur(' + Math.max(0.5, p.blur * pass.b * k).toFixed(1) + 'px)';
-        ctx.translate(par(ay), 0); ctx.transform(1, 0, -p.vx / ph, -p.vy / ph, ax, ay);
-        ctx.drawImage(o.sil, o.bbox[0] - ax, -ph, w, ph); ctx.restore(); }
+      for (const p of shadowParams(ax, ay, ph)) shadowCast(o.sil, 0, 0, w, ph, o.bbox[0] - ax, -ph, w, ph, p, 1, ax, ay, ph, par(ay));
     }
     // keep shadows only on the floor: redraw the non-floor background over them
     actorShadows(now, k);
-    maskShadow();
+    shadowEnd();                                                     // (maskShadow, the old way: repaint the walls over the shadows)
     if (document.getElementById('ambient').checked) windowSnow(dt, W, H);   // after the mask (it repaints the walls and windows)
     if (room === 'doyers-street') { streetWalkers(dt, W, H); streetTraffic(dt, W, H); streetHaze(W, H); }   // after the shadow mask: the far street is not floor
 
@@ -1180,16 +1216,15 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     animalsTick(dt); drawAnimals(false);
     // Matt
     ctx.save(); ctx.translate(M.x + par(M.y), M.y); ctx.scale(fx, 1);
-    ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
+    const mb = M.light * lightFactor;                                     // his light, applied without a canvas filter
     if (!M.moving) {                                                     // standing still: face, breathing and head sway
       let src = img, [sx0, sy0] = frameXY(sp, fi);
       if (sp.face) { src = faceCompose('matt-' + M.dir, img, sx0, sy0, sp.fw, sp.fh, sp.face, sp.faceImg, mouthOf('matt'), eyesOf('matt', now)); sx0 = 0; sy0 = 0; }
-      if (document.getElementById('ambient').checked && !M.act)
-        ctx.drawImage(warpFrame('matt-' + M.dir, src, sx0, sy0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7), -sp.feet_x * sc, -feetY * sc, dw, dh);
-      else ctx.drawImage(src, sx0, sy0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
+      if (document.getElementById('ambient').checked && !M.act) { src = warpFrame('matt-' + M.dir, src, sx0, sy0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7); sx0 = 0; sy0 = 0; }
+      ctx.drawImage(lit('matt', src, sx0, sy0, sp.fw, sp.fh, mb), -sp.feet_x * sc, -feetY * sc, dw, dh);
     }
-    else { const [gx, gy] = frameXY(sp, fi); ctx.drawImage(img, gx, gy, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh); }
-    ctx.restore(); ctx.filter = 'none';
+    else { const [gx, gy] = frameXY(sp, fi); ctx.drawImage(lit('matt', img, gx, gy, sp.fw, sp.fh, mb), -sp.feet_x * sc, -feetY * sc, dw, dh); }
+    ctx.restore();
     for (const o of front) drawOcc(o, now);
     drawActors(now, true);
     drawAnimals(true);
