@@ -4338,6 +4338,20 @@
      0,
      37
     ]
+   },
+   "acts": {
+    "sit": {
+     "file": "occ/inez-seated-sit.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 8.91,
+     "pad": [
+      40,
+      277,
+      94,
+      0
+     ]
+    }
    }
   },
   {
@@ -4677,6 +4691,50 @@
     1056,
     1150
    ]
+  }
+ },
+ "actors": {
+  "inez": {
+   "hm": 0.93,
+   "speed": 1.0,
+   "door": [
+    1056,
+    1092
+   ],
+   "stand": [
+    790,
+    1333
+   ],
+   "clear": [
+    1480,
+    1330
+   ],
+   "sheets": {
+    "front": {
+     "file": "actors/inez-walk-front.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 7.93,
+     "fw": 198,
+     "fh": 533,
+     "feet_x": 123.1,
+     "feet_y": 519.2,
+     "fig_h": 492.0
+    },
+    "back": {
+     "file": "actors/inez-walk-back.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 7.85,
+     "fw": 213,
+     "fh": 522,
+     "feet_x": 83.5,
+     "feet_y": 515.3,
+     "fig_h": 499.3
+    }
+   },
+   "secs_in": 3.6,
+   "secs_out": 3.2
   }
  }
 }

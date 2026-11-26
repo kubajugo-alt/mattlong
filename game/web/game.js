@@ -147,11 +147,12 @@
     if (!A) { if (a === 'walk_in') STORY.hidden.delete('inez-seated'); if (a === 'walk_out') STORY.hidden.add('inez-seated'); return; }
     if (a === 'walk_in') {
       if (Math.hypot(E.M.x - A.door[0], E.M.y - A.door[1]) < 500 || Math.hypot(E.M.x - A.stand[0], E.M.y - A.stand[1]) < 300) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.stand[0]));   // out of her way
-      inezWalk = E.actorWalk('inez', 'front', A.door, A.stand, 'in');
+      // in at the door, across to the sofa and straight down onto it, while Matt looks her over
+      inezWalk = E.actorWalk('inez', 'front', A.door, A.stand, 'in', A.secs_in).then(() => { STORY.hidden.delete('inez-seated'); return E.anim('inez-seated', 'sit'); });
     }
-    if (a === 'sit') { if (inezWalk) await inezWalk; inezWalk = null; STORY.hidden.delete('inez-seated'); await E.anim('inez-seated', 'sit'); }
+    if (a === 'sit') { if (inezWalk) await inezWalk; inezWalk = null; }
     if (a === 'stand') await E.anim('inez-seated', 'sit', true);
-    if (a === 'walk_out') { STORY.hidden.add('inez-seated'); await E.actorWalk('inez', 'back', A.stand, A.door, 'out'); }
+    if (a === 'walk_out') { STORY.hidden.add('inez-seated'); await E.actorWalk('inez', 'back', A.stand, A.door, 'out', A.secs_out); }
   }
   const flash = (el) => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); };
 
