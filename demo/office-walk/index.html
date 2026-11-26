@@ -191,7 +191,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       if ((y > M.y) !== frontPass) continue;
       const m = r.m, f = Math.floor((now - r.t0) / 1000 * m.fps) % m.frames, sc = heightAt(y) * r.a.hm / m.fig_h;
       let al = 1; if (r.fade === 'in') al = Math.min(1, u / 0.18); if (r.fade === 'out') al = Math.min(1, (1 - u) / 0.18);
-      ctx.save(); ctx.globalAlpha = al; ctx.filter = 'brightness(' + lightFactor.toFixed(3) + ')';
+      ctx.save(); ctx.globalAlpha = al; ctx.filter = r.a.light === false ? 'none' : 'brightness(' + lightFactor.toFixed(3) + ')';
       ctx.translate(x + par(y), y); if (r.flip) ctx.scale(-1, 1);
       ctx.drawImage(m.img, (f % m.cols) * m.fw, Math.floor(f / m.cols) * m.fh, m.fw, m.fh, -m.feet_x * sc, -m.feet_y * sc, m.fw * sc, m.fh * sc);
       ctx.restore(); }

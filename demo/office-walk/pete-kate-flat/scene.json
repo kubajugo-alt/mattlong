@@ -4923,7 +4923,7 @@
    "acts": {
     "leave": {
      "file": "occ/kate-at-table-leave.webp",
-     "frames": 36,
+     "frames": 16,
      "cols": 6,
      "fps": 9.19,
      "pad": [
@@ -4931,10 +4931,6 @@
       365,
       266,
       0
-     ],
-     "fade": [
-      26,
-      31
      ]
     }
    }
@@ -5373,6 +5369,54 @@
     1590,
     1085
    ]
+  }
+ },
+ "actors": {
+  "kate": {
+   "hm": 0.9,
+   "light": false,
+   "start": [
+    870,
+    1288
+   ],
+   "turn": [
+    1575,
+    1292
+   ],
+   "door": [
+    1662,
+    975
+   ],
+   "clear": [
+    520,
+    1420
+   ],
+   "secs_side": 3.4,
+   "secs_back": 2.6,
+   "sheets": {
+    "side": {
+     "file": "actors/kate-walk-side.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 7.78,
+     "fw": 498,
+     "fh": 906,
+     "feet_x": 258.4,
+     "feet_y": 892.0,
+     "fig_h": 881.5
+    },
+    "back": {
+     "file": "actors/kate-walk-back.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 8.15,
+     "fw": 466,
+     "fh": 926,
+     "feet_x": 212.2,
+     "feet_y": 907.0,
+     "fig_h": 894.5
+    }
+   }
   }
  }
 }

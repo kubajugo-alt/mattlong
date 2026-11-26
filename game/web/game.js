@@ -130,7 +130,7 @@
         if (who === 'inez') { await inez(a); break; }
         if (who === 'matt') { if (E.act) E.act(a, G.lastHot ? G.lastHot[0] : null); break; }    // his actions run alongside the lines
         const occ = { kate: 'kate-at-table', junkie: 'junkie', inez: 'inez-seated', sol: 'sol', lee: 'lee-wing', newsboy: 'newsboy' }[who];
-        if (who === 'kate' && a === 'stand') { await E.anim(occ, 'leave'); break; }          // she gets up and goes; the empty table follows
+        if (who === 'kate' && a === 'stand') { await kateLeaves(occ); break; }          // she gets up and goes; the empty table follows
         if (who === 'sol' && a === 'book') { await E.anim(occ, a); break; }      // he holds it out (and holds it, `hold`) while Matt takes it
         if (occ && a !== 'walk_out') E.anim(occ, a); break; }
       case 'journal': if (!G.journal.includes(arg)) G.journal.push(arg); if (G.notebook) flash(bNote); break;
@@ -138,6 +138,19 @@
       case 'card': await showCard(arg); break;
       case 'board': break;     // the board's pins are drawn by openBoard
     }
+  }
+  // Kate: gets up from the table (the sheet, up to her first step), then walks along the front of the table and away
+  // to the door as an actor; Matt steps aside if he's on her way
+  async function kateLeaves(occ) {
+    const sc = E.scene().sc, A = sc.actors && sc.actors.kate;
+    if (!A) { await E.anim(occ, 'leave'); return; }
+    const near = (p, q) => { const dx = q[0] - p[0], dy = q[1] - p[1], t = Math.max(0, Math.min(1, ((E.M.x - p[0]) * dx + (E.M.y - p[1]) * dy) / (dx * dx + dy * dy)));
+      return Math.hypot(E.M.x - p[0] - t * dx, E.M.y - p[1] - t * dy) < 170; };
+    if (near(A.start, A.turn) || near(A.turn, A.door)) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.turn[0]));
+    await E.anim(occ, 'leave');
+    STORY.kateGone = true;
+    await E.actorWalk('kate', 'side', A.start, A.turn, null, A.secs_side);
+    await E.actorWalk('kate', 'back', A.turn, A.door, 'out', A.secs_back);
   }
   // Inez: in from the door to the sofa (walk, then sits), and back out; the lines run while she walks. Without the
   // sheets (an older build) she just appears and goes.
