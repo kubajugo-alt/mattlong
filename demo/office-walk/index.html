@@ -142,6 +142,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     try { if (!scenes[id]) scenes[id] = await loadScene(id); }
     catch (e) { status.textContent = 'Could not load ' + (NAMES[id] || id); switching = false; return; }
     room = id; S = scenes[id]; mode = id === 'office-night' ? 'night' : 'day'; roomSel.value = id;
+    // fetch this room's walk cycles and one-shots now, in the background, so a scripted exit never waits for a sheet
+    // (a person hidden from their seat while their walk was still downloading vanished for a moment)
+    const R = id; for (const a of Object.values(S.sc.actors || {})) for (const m of Object.values(a.sheets)) if (!m.img && !m.loading) m.loading = load(R + '/' + m.file).then(i => { m.img = i; });
+    for (const o of S.occ) for (const m of Object.values(o.acts || {})) if (!m.img && !m.loading) m.loading = load(R + '/' + m.file).then(i => { m.img = i; });
     const W = S.sc.size[0], H = S.sc.size[1];
     // arrive at the exit that leads back where Matt came from, else front and centre
     const back = from && Object.values(S.sc.exits).find(e => e.to === from || (from.startsWith('office') && (e.to || '').startsWith('office')) || (e.to === 'map' && MAP_NEXT[id] === from));
@@ -179,7 +183,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   const ACT = [];
   async function actorWalk(name, sheet, from, to, fade, secs) {
     const a = S.sc.actors && S.sc.actors[name]; if (!a) return;
-    const m = a.sheets[sheet]; if (!m.img) m.img = await load(room + '/' + m.file);
+    const m = a.sheets[sheet]; if (!m.img) m.img = await (m.loading || load(room + '/' + m.file));
     // walking into or out of the picture is mostly depth, which the floor's px-per-metre at one height can't measure: the
     // scene gives the time (`secs`), else a guess from the distance
     const len = Math.hypot(to[0] - from[0], (to[1] - from[1]) * 3) / pxPerM((from[1] + to[1]) / 2);
@@ -194,7 +198,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
   // their shadows from the room's lights, like Matt's and the seated people's (drawn before the floor mask)
   function actorShadows(now, k) {
-    for (const r of ACT) { if (r.room !== room) continue; const p = actorAt(r, now); if (p.u >= 1) continue; const m = r.m;
+    for (const r of ACT) { if (r.room !== room) continue; const p = actorAt(r, now); if (r.ended && p.u >= 1 && !ACT.includes(r)) continue; const m = r.m;
       if (!r.sil) { r.sil = document.createElement('canvas'); r.sil.width = m.fw; r.sil.height = m.fh; }
       const sx = r.sil.getContext('2d'); sx.globalCompositeOperation = 'source-over'; sx.clearRect(0, 0, m.fw, m.fh);
       sx.drawImage(m.img, (p.f % m.cols) * m.fw, Math.floor(p.f / m.cols) * m.fh, m.fw, m.fh, 0, 0, m.fw, m.fh);
@@ -203,8 +207,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
   function drawActors(now, frontPass) {
     for (let i = ACT.length - 1; i >= 0; i--) { const r = ACT[i]; if (r.room !== room) { ACT.splice(i, 1); r.done(); continue; }
-      const u = Math.min(1, (now - r.t0) / r.dur); if (u >= 1 && !r.ended) { r.ended = true; r.done(); }
-      if (u >= 1) { ACT.splice(i, 1); continue; }
+      const u = Math.min(1, (now - r.t0) / r.dur);
+      if (r.ended) { ACT.splice(i, 1); continue; }                    // gone the frame after it arrived
+      if (u >= 1) { r.ended = true; r.done(); }                       // arrived: drawn here once more while the next walk starts
       const { x, y, f, sc, al } = actorAt(r, now), m = r.m;
       if ((y > M.y) !== frontPass) continue;
       ctx.save(); ctx.globalAlpha = al;
@@ -1408,7 +1413,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     async anim(name, a, rev) { const o = S && S.occ.find(o2 => o2.name === name); if (!o) return;
       const m = a && o.acts && o.acts[a];
       if (!m) { if (o.anim) o.playAt = performance.now(); return; }
-      if (!m.img) m.img = await load(room + '/' + m.file);
+      if (!m.img) m.img = await (m.loading || load(room + '/' + m.file));
       return new Promise(res => { if (o.one && !o.one.told) o.one.done(); o.one = { m, t0: performance.now(), done: res, rev: !!rev }; }); },
     exitAt(x, y) { return Object.entries(S.sc.exits).find(([, e]) => x > e.bbox[0] && x < e.bbox[2] && y > e.bbox[1] && y < e.bbox[3]) || null; } });
   function mouthOf(id) {
@@ -1445,7 +1450,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       // a one-shot may need more room than the resting frame (standing up, holding something out): `pad` [l,t,r,b] in
       // scene px around the bbox; `hold` s on the last frame before the idle comes back
       if (t >= m.frames / m.fps && !o.one.told) { o.one.told = true; o.one.done(); }       // the script goes on; the hold is drawn under it
-      if (t < m.frames / m.fps + (m.hold || 0)) { const [l, tp, r, b] = m.pad || [0, 0, 0, 0], fw = w + l + r, fh = h + tp + b;
+      // the frame on which it ends still shows its last frame: whatever follows (the script hiding them, a walk) takes over
+      // on the next frame, so there is never a frame of the seated idle in between, nor of nothing
+      if (t < m.frames / m.fps + (m.hold || 0) || !o.one.last) { if (t >= m.frames / m.fps + (m.hold || 0)) o.one.last = true;
+        const [l, tp, r, b] = m.pad || [0, 0, 0, 0], fw = w + l + r, fh = h + tp + b;
         if (m.fade && t * m.fps > m.fade[0]) { const z = m.frames - 1;       // walking out of her frame: the last frame (her table, empty) under her, fading
           ctx.drawImage(m.img, (z % m.cols) * fw, Math.floor(z / m.cols) * fh, fw, fh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh);
           ctx.globalAlpha = Math.max(0, 1 - (t * m.fps - m.fade[0]) / (m.fade[1] - m.fade[0])); }

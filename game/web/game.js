@@ -148,8 +148,9 @@
       return Math.hypot(E.M.x - p[0] - t * dx, E.M.y - p[1] - t * dy) < 170; };
     if (near(A.start, A.turn) || near(A.turn, A.door)) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.turn[0]));
     await E.anim(occ, 'leave');
+    const walk = E.actorWalk('kate', 'side', A.start, A.turn, null, A.secs_side);    // starts this frame (the sheet is loaded with the room)
     STORY.kateGone = true;
-    await E.actorWalk('kate', 'side', A.start, A.turn, null, A.secs_side);
+    await walk;
     await E.actorWalk('kate', 'back', A.turn, A.door, 'out', A.secs_back);
   }
   // Inez: in from the door to the sofa (walk, then sits), and back out; the lines run while she walks. Without the
