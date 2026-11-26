@@ -76,7 +76,7 @@ textarea { width: 100%; min-height: 54px; resize: vertical; font: 400 13px/1.4 v
   <nav class="chars" id="chars" aria-label="Postacie"></nav>
 
   <div class="tools">
-    <label for="zoom">Powiększenie <input type="range" id="zoom" min="2" max="7" step="0.5" value="4"> <span id="zoomv">4×</span></label>
+    <label for="zoom">Powiększenie <input type="range" id="zoom" min="2" max="12" step="0.5" value="4"> <span id="zoomv">4×</span></label>
     <label for="outline"><input type="checkbox" id="outline"> Pokaż ramkę łatki</label>
     <label for="pixels"><input type="checkbox" id="pixels"> Ostre piksele</label>
     <label for="rate">Tempo <select id="rate"><option value="1">1×</option><option value="0.5">0,5×</option><option value="0.25">0,25×</option></select></label>
@@ -207,6 +207,7 @@ function syncTiles() {
 }
 function show(f) {
   cur = f; hold = null; stop(); $('who').textContent = f.label; renderChips();
+  const small = (f.close[2] - f.close[0]) < 90; if (small && opt.zoom < 8) { opt.zoom = 9; $('zoom').value = 9; $('zoomv').textContent = '9×'; } else if (!small && opt.zoom > 7) { opt.zoom = 4; $('zoom').value = 4; $('zoomv').textContent = '4×'; }
   const m = $('mouths'); m.textContent = ''; for (const s of ['X', ...f.face.shapes]) m.append(tile(f, s, 'mouth'));
   const b = $('blinks'); b.textContent = ''; for (const s of ['open', ...f.face.blink]) b.append(tile(f, s, 'blink'));
   const L = $('lines'); L.textContent = '';
