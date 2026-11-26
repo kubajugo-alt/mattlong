@@ -183,14 +183,31 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const len = Math.hypot(to[0] - from[0], (to[1] - from[1]) * 3) / pxPerM((from[1] + to[1]) / 2);
     return new Promise(res => ACT.push({ a, m, from, to, t0: performance.now(), dur: (secs || len / (a.speed || 1.1)) * 1000, fade, flip: m.flip, done: res, room }));
   }
+  // where an actor is now and which frame shows: shared by the shadow pass and the figure pass
+  function actorAt(r, now) {
+    const u = Math.min(1, (now - r.t0) / r.dur), x = r.from[0] + (r.to[0] - r.from[0]) * u, y = r.from[1] + (r.to[1] - r.from[1]) * u;
+    const m = r.m, f = Math.floor((now - r.t0) / 1000 * m.fps) % m.frames, h = heightAt(y) * r.a.hm, sc = h / m.fig_h;
+    let al = 1; if (r.fade === 'in') al = Math.min(1, u / 0.18); if (r.fade === 'out') al = Math.min(1, (1 - u) / 0.18);
+    return { u, x, y, f, h, sc, al };
+  }
+  // their shadows from the room's lights, like Matt's and the seated people's (drawn before the floor mask)
+  function actorShadows(now, k) {
+    for (const r of ACT) { if (r.room !== room) continue; const p = actorAt(r, now); if (p.u >= 1) continue; const m = r.m;
+      if (!r.sil) { r.sil = document.createElement('canvas'); r.sil.width = m.fw; r.sil.height = m.fh; }
+      const sx = r.sil.getContext('2d'); sx.globalCompositeOperation = 'source-over'; sx.clearRect(0, 0, m.fw, m.fh);
+      sx.drawImage(m.img, (p.f % m.cols) * m.fw, Math.floor(p.f / m.cols) * m.fh, m.fw, m.fh, 0, 0, m.fw, m.fh);
+      sx.globalCompositeOperation = 'source-in'; sx.fillStyle = '#000'; sx.fillRect(0, 0, m.fw, m.fh);
+      for (const s of shadowParams(p.x, p.y, p.h)) for (const pass of SHADOW_PASSES) {
+        ctx.save(); ctx.globalAlpha = Math.min(0.45, s.a * pass.a * 0.85) * p.al; ctx.filter = 'blur(' + Math.max(0.5, s.blur * pass.b * k).toFixed(1) + 'px)';
+        ctx.translate(par(p.y), 0); ctx.transform(r.flip ? -1 : 1, 0, -s.vx / p.h, -s.vy / p.h, p.x, p.y);
+        ctx.drawImage(r.sil, -m.feet_x * p.sc, -m.feet_y * p.sc, m.fw * p.sc, m.fh * p.sc); ctx.restore(); } }
+  }
   function drawActors(now, frontPass) {
     for (let i = ACT.length - 1; i >= 0; i--) { const r = ACT[i]; if (r.room !== room) { ACT.splice(i, 1); r.done(); continue; }
       const u = Math.min(1, (now - r.t0) / r.dur); if (u >= 1 && !r.ended) { r.ended = true; r.done(); }
       if (u >= 1) { ACT.splice(i, 1); continue; }
-      const x = r.from[0] + (r.to[0] - r.from[0]) * u, y = r.from[1] + (r.to[1] - r.from[1]) * u;
+      const { x, y, f, sc, al } = actorAt(r, now), m = r.m;
       if ((y > M.y) !== frontPass) continue;
-      const m = r.m, f = Math.floor((now - r.t0) / 1000 * m.fps) % m.frames, sc = heightAt(y) * r.a.hm / m.fig_h;
-      let al = 1; if (r.fade === 'in') al = Math.min(1, u / 0.18); if (r.fade === 'out') al = Math.min(1, (1 - u) / 0.18);
       ctx.save(); ctx.globalAlpha = al; ctx.filter = r.a.light === false ? 'none' : 'brightness(' + lightFactor.toFixed(3) + ')';
       ctx.translate(x + par(y), y); if (r.flip) ctx.scale(-1, 1);
       ctx.drawImage(m.img, (f % m.cols) * m.fw, Math.floor(f / m.cols) * m.fh, m.fw, m.fh, -m.feet_x * sc, -m.feet_y * sc, m.fw * sc, m.fh * sc);
@@ -1139,6 +1156,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
         ctx.drawImage(o.sil, o.bbox[0] - ax, -ph, w, ph); ctx.restore(); }
     }
     // keep shadows only on the floor: redraw the non-floor background over them
+    actorShadows(now, k);
     maskShadow();
     if (document.getElementById('ambient').checked) windowSnow(dt, W, H);   // after the mask (it repaints the walls and windows)
     if (room === 'doyers-street') { streetWalkers(dt, W, H); streetTraffic(dt, W, H); streetHaze(W, H); }   // after the shadow mask: the far street is not floor
