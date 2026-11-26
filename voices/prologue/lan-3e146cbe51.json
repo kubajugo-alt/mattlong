@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "soundFile": "/tmp/lan-3e146cbe51.wav",
+    "duration": 1.52
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.23, "value": "C" },
+    { "start": 0.23, "end": 0.37, "value": "B" },
+    { "start": 0.37, "end": 0.44, "value": "C" },
+    { "start": 0.44, "end": 1.28, "value": "B" },
+    { "start": 1.28, "end": 1.52, "value": "X" }
+  ]
+}

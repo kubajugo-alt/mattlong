@@ -2335,42 +2335,42 @@
   "text": "唔好意思，我哋唔識講英文。",
   "voice_id": "eVQGYWLFAYLvlBbvSyCs",
   "file": "mei-1f20dc643b.mp3",
-  "cues": null
+  "cues": "mei-1f20dc643b.json"
  },
  "lan-3e146cbe51": {
   "speaker": "LAN",
   "text": "佢想點呀？",
   "voice_id": "El018FmI047NtSsCfyrY",
   "file": "lan-3e146cbe51.mp3",
-  "cues": null
+  "cues": "lan-3e146cbe51.json"
  },
  "lan-d13d8e864c": {
   "speaker": "LAN",
   "text": "先生，你搵李老闆呀？佢喺櫃檯嗰度。",
   "voice_id": "El018FmI047NtSsCfyrY",
   "file": "lan-d13d8e864c.mp3",
-  "cues": null
+  "cues": "lan-d13d8e864c.json"
  },
  "mei-aaebbdb56f": {
   "speaker": "MEI",
   "text": "呢個鬼佬又嚟喇。",
   "voice_id": "eVQGYWLFAYLvlBbvSyCs",
   "file": "mei-aaebbdb56f.mp3",
-  "cues": null
+  "cues": "mei-aaebbdb56f.json"
  },
  "lan-82af3bceb2": {
   "speaker": "LAN",
   "text": "細聲啲啦！",
   "voice_id": "El018FmI047NtSsCfyrY",
   "file": "lan-82af3bceb2.mp3",
-  "cues": null
+  "cues": "lan-82af3bceb2.json"
  },
  "lan-6a8da17a35": {
   "speaker": "LAN",
   "text": "飲杯茶先啦，先生。外面好凍呀。",
   "voice_id": "El018FmI047NtSsCfyrY",
   "file": "lan-6a8da17a35.mp3",
-  "cues": null
+  "cues": "lan-6a8da17a35.json"
  },
  "vo-da93353d9f": {
   "speaker": "VO",
@@ -2420,5 +2420,33 @@
   "voice_id": "CHO1EPlL4NlQL7EeyvYb",
   "file": "vo-2cd8f4dec4.mp3",
   "cues": null
+ },
+ "mei-0398257dad": {
+  "speaker": "MEI",
+  "text": "你睇，又係嗰個鬼佬。",
+  "voice_id": "eVQGYWLFAYLvlBbvSyCs",
+  "file": "mei-0398257dad.mp3",
+  "cues": "mei-0398257dad.json"
+ },
+ "lan-719d99d72b": {
+  "speaker": "LAN",
+  "text": "唔好望住佢啦。",
+  "voice_id": "El018FmI047NtSsCfyrY",
+  "file": "lan-719d99d72b.mp3",
+  "cues": "lan-719d99d72b.json"
+ },
+ "lan-9f989ee153": {
+  "speaker": "LAN",
+  "text": "佢係咪嚟搵李老闆㗎？",
+  "voice_id": "El018FmI047NtSsCfyrY",
+  "file": "lan-9f989ee153.mp3",
+  "cues": "lan-9f989ee153.json"
+ },
+ "mei-1bee027c79": {
+  "speaker": "MEI",
+  "text": "噓，細聲啲。",
+  "voice_id": "eVQGYWLFAYLvlBbvSyCs",
+  "file": "mei-1bee027c79.mp3",
+  "cues": "mei-1bee027c79.json"
  }
 }

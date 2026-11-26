@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "soundFile": "/tmp/lan-6a8da17a35.wav",
+    "duration": 3.68
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.12, "value": "B" },
+    { "start": 0.12, "end": 0.19, "value": "C" },
+    { "start": 0.19, "end": 0.40, "value": "B" },
+    { "start": 0.40, "end": 0.54, "value": "C" },
+    { "start": 0.54, "end": 0.82, "value": "B" },
+    { "start": 0.82, "end": 1.13, "value": "A" },
+    { "start": 1.13, "end": 1.44, "value": "B" },
+    { "start": 1.44, "end": 1.57, "value": "A" },
+    { "start": 1.57, "end": 1.75, "value": "B" },
+    { "start": 1.75, "end": 2.10, "value": "C" },
+    { "start": 2.10, "end": 2.22, "value": "X" },
+    { "start": 2.22, "end": 2.50, "value": "B" },
+    { "start": 2.50, "end": 2.71, "value": "E" },
+    { "start": 2.71, "end": 2.78, "value": "C" },
+    { "start": 2.78, "end": 2.85, "value": "B" },
+    { "start": 2.85, "end": 2.92, "value": "E" },
+    { "start": 2.92, "end": 3.20, "value": "F" },
+    { "start": 3.20, "end": 3.34, "value": "B" },
+    { "start": 3.34, "end": 3.55, "value": "C" },
+    { "start": 3.55, "end": 3.68, "value": "X" }
+  ]
+}

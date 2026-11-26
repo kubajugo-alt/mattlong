@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "soundFile": "/tmp/lan-9f989ee153.wav",
+    "duration": 2.24
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.06, "value": "X" },
+    { "start": 0.06, "end": 0.33, "value": "F" },
+    { "start": 0.33, "end": 0.40, "value": "B" },
+    { "start": 0.40, "end": 0.48, "value": "A" },
+    { "start": 0.48, "end": 0.54, "value": "C" },
+    { "start": 0.54, "end": 1.09, "value": "B" },
+    { "start": 1.09, "end": 1.16, "value": "F" },
+    { "start": 1.16, "end": 1.27, "value": "A" },
+    { "start": 1.27, "end": 1.51, "value": "B" },
+    { "start": 1.51, "end": 2.00, "value": "A" },
+    { "start": 2.00, "end": 2.24, "value": "X" }
+  ]
+}

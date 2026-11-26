@@ -103,7 +103,7 @@ def work(item):
             err = e
     else:
         return i, f'FAILED {err}'
-    if sp not in ('VO', 'OPERATOR', 'MEI', 'LAN'):  # voice-over is in Matt's head, the operator is down a wire, the women have no face rig: no lip sync
+    if sp not in ('VO', 'OPERATOR'):  # voice-over is in Matt's head, the operator is down a wire: no lip sync
         lipsync(sp, t, mp3, os.path.join(OUT, i + '.json'))
     return i, 'ok'
 
@@ -115,6 +115,6 @@ with cf.ThreadPoolExecutor(4) as ex:
 for sp, t in L:
     i = line_id(sp, t)
     if os.path.exists(os.path.join(OUT, i + '.mp3')):
-        man[i] = {'speaker': sp, 'text': t, 'voice_id': voice_of(sp), 'file': i + '.mp3', 'cues': (i + '.json') if sp not in ('VO', 'OPERATOR', 'MEI', 'LAN') else None}
+        man[i] = {'speaker': sp, 'text': t, 'voice_id': voice_of(sp), 'file': i + '.mp3', 'cues': (i + '.json') if sp not in ('VO', 'OPERATOR') else None}
 json.dump(man, open(man_p, 'w'), indent=1, ensure_ascii=False)
 print('voiced', sum(1 for sp, t in L if os.path.exists(os.path.join(OUT, line_id(sp, t) + '.mp3'))), 'of', len(L))

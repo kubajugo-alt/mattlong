@@ -669,6 +669,15 @@ VO: Lee's things stay where Lee puts them.
 === tea__tea_women ===
 // Two young women at the window table. They speak Cantonese (Taishanese, most likely: nearly everyone in 1930
 // Chinatown came from Guangdong); Matt doesn't, so their lines are captioned in Chinese only.
+= notice
+// they see him come over and say so, to each other
+{shuffle:
+- MEI: 你睇，又係嗰個鬼佬。
+  LAN: 唔好望住佢啦。
+- LAN: 佢係咪嚟搵李老闆㗎？
+  MEI: 噓，細聲啲。
+}
+-> DONE
 = look
 VO: Two young women at the window table. In Chinatown, that's practically a crowd.
 VO: The exclusion laws let the men in to work the laundries and the kitchens, and kept the wives on the other side of the Pacific. Six men here for every woman, maybe more.

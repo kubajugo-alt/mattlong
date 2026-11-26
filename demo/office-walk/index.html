@@ -121,7 +121,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const sc = await (await fetch(base + 'scene.json')).json();
     const [bg, walk, floor] = await Promise.all([load(base + 'bg.webp'), maskOf(base + sc.walk.file), maskOf(base + sc.floor.file)]);
     const occ = await Promise.all(sc.objects.map(async o => ({ ...o, phase: Math.random() * 36, img: await load(base + 'occ/' + o.name + '.webp'),
-      faceImg: o.face ? await load(base + 'occ/' + o.name + '-face.webp') : null })));
+      faceImg: o.face ? await load(base + 'occ/' + o.name + '-face.webp') : null,
+      // several people in one sprite (the women at the tea-house table): one rig each, `who` names the speaker
+      faces: o.faces ? await Promise.all(o.faces.map(async f => Object.assign({}, f, { img: await load(base + 'occ/' + o.name + '-face-' + f.who + '.webp') }))) : null })));
     let hj = { hotspots: [] }; try { const r = await fetch(base + 'hotspots.json'); if (r.ok) hj = await r.json(); } catch (e) {}
     const toPath = (pl) => { const p = new Path2D(); pl.forEach(([x, y], i) => i ? p.lineTo(x, y) : p.moveTo(x, y)); p.closePath(); return p; };
     // polygons: what a click hits (forgiving); outline: the object's traced silhouette, drawn by the torch
@@ -1420,12 +1422,13 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       let f = 0; const t = (now - o.playAt) / 1000 * o.anim.fps;
       if (t >= 0) { f = Math.floor(t); if (f >= o.anim.frames) { f = 0; const g = (CUES[o.name] || {}).gap || [6, 16]; o.playAt = now + (g[0] + Math.random() * (g[1] - g[0])) * 1000; } }
       const c = o.anim.cols;
-      const talking = TALK.who && SPEAKER[o.name] === TALK.who;
+      const talking = TALK.who && (SPEAKER[o.name] === TALK.who || (o.faces && o.faces.some(f => f.who === TALK.who)));
       if (talking) { f = 0; o.playAt = Math.max(o.playAt, now + 3000); }          // hold still while speaking
       cueTick(o, f, now);
       if (f === 0) {
         let src = o.img;
         if (o.face) src = faceCompose(o.name, o.img, 0, 0, w, h, o.face, o.faceImg, mouthOf(SPEAKER[o.name]), eyesOf(o.name, now));
+        if (o.faces) for (const fc of o.faces) src = faceCompose(o.name + ':' + fc.who, src, 0, 0, w, h, fc, fc.img, mouthOf(fc.who), eyesOf(o.name + ':' + fc.who, now));
         if (o.seed === undefined) o.seed = Math.random() * 6.28;
         if (RIGS[o.name] && document.getElementById('ambient').checked)
           ctx.drawImage(warpFrame(o.name, src, 0, 0, w, h, RIGS[o.name], now / 1000, o.seed), o.bbox[0], o.bbox[1], w, h);
