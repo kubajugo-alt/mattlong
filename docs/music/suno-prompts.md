@@ -21,3 +21,10 @@ Notes
   no busy solos).
 - If Suno adds vocals anyway, add `no singing, no humming` to the style line.
 - Public-domain recordings (King Oliver, etc.) stay the plan for the title and act cards; these fill the rooms.
+
+## In the game (26 Nov 2026)
+Delivered tracks are in art/music/suno/. Each room's track is picked by its title (game/music/rooms.json):
+office day *The Desk lamp*, office night *Rain on the 78*, corridor *Stairwell Jazz*, flat *Morning-After Swing*,
+Doyers Street *Watchful Chinatown*, tea house *Tea House Melody*, pawnshop *Pawnshop Ticking*, alley *Damp Alley Dusk*.
+Kept for later: The Last Office Hour, Watchful Shadows, Morning After Blues, After-Hours Chinatown,
+Steam-and-Lantern Intimacy, Pawnshop Clock. In the office the music is silent while the radio plays.

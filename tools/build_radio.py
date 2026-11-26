@@ -45,7 +45,7 @@ def radio(src, dst, music=False):
            'sine=f=60:sample_rate=44100,volume=0.004[h];'
            '[n][h]amix=inputs=2:duration=shortest,highpass=f=150,lowpass=f=5000[bed];'
            '[s][bed]amix=inputs=2:duration=first:normalize=0,afade=t=in:d=0.15[o]')
-    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', src, '-filter_complex', flt, '-map', '[o]', '-ac', '1', '-ar', '22050', '-b:a', '48k', dst], check=True)
+    subprocess.run(['ffmpeg', '-nostdin', '-v', 'error', '-y', '-i', src, '-filter_complex', flt, '-map', '[o]', '-ac', '1', '-ar', '22050', '-b:a', '48k', dst], check=True)
 
 
 playlist = []

@@ -18,6 +18,18 @@ shutil.copytree(os.path.join(ROOT, 'demo/office-walk'), SITE, ignore=shutil.igno
 for f in ['game.js', 'game.css']:
     shutil.copy(os.path.join(ROOT, 'game/web', f), SITE)
 shutil.copy(os.path.join(NM, 'inkjs/dist/ink.js'), os.path.join(SITE, 'ink.js'))
+# footsteps: each floor's ten steps packed into one file, one second apiece (the engine slices them; keeps the
+# page under its file limit)
+for floor in ('wood', 'tile', 'cobble'):
+    parts = [os.path.join(SITE, 'sfx', f'steps-{floor}-{k}.mp3') for k in range(1, 11)]
+    if all(os.path.exists(p) for p in parts):
+        inputs = sum((['-i', p] for p in parts), [])
+        pads = ''.join(f'[{k}:a]aformat=sample_rates=44100:channel_layouts=mono,apad=whole_dur=1,atrim=0:1[a{k}];' for k in range(10))
+        subprocess.run(['ffmpeg', '-nostdin', '-v', 'error', '-y', *inputs, '-filter_complex', pads + ''.join(f'[a{k}]' for k in range(10)) + 'concat=n=10:v=0:a=1[o]',
+                        '-map', '[o]', '-ar', '44100', '-ac', '1', '-c:a', 'pcm_s16le', os.path.join(SITE, 'sfx', f'steps-{floor}.wav')], check=True)
+        subprocess.run(['ffmpeg', '-nostdin', '-v', 'error', '-y', '-i', os.path.join(SITE, 'sfx', f'steps-{floor}.wav'), '-b:a', '96k', os.path.join(SITE, 'sfx', f'steps-{floor}.mp3')], check=True)
+        os.remove(os.path.join(SITE, 'sfx', f'steps-{floor}.wav'))
+        for p in parts: os.remove(p)
 # voice track
 os.makedirs(os.path.join(SITE, 'voice'))
 cues = {}

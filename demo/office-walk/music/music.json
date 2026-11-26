@@ -1,0 +1,13 @@
+{
+ "volume": 0.32,
+ "rooms": {
+  "office-day": "the-desk-lamp.mp3",
+  "office-night": "rain-on-the-78.mp3",
+  "corridor": "stairwell-jazz.mp3",
+  "pete-kate-flat": "morning-after-swing.mp3",
+  "doyers-street": "watchful-chinatown.mp3",
+  "tea-house": "tea-house-melody.mp3",
+  "pawnshop": "pawnshop-ticking.mp3",
+  "alley": "damp-alley-dusk.mp3"
+ }
+}

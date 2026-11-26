@@ -1,0 +1,15 @@
+{
+ "note": "Room music (Suno, from the briefs in docs/music/suno-prompts.md; masters in art/music/suno/). One track per room, looped, under everything else. tools/build_music.py trims, levels and encodes them into demo/office-walk/music/. In the office the radio wins: while it plays, the music is silent.",
+ "volume": 0.32,
+ "rooms": {
+  "office-day": "The Desk lamp",
+  "office-night": "Rain on the 78",
+  "corridor": "Stairwell Jazz",
+  "pete-kate-flat": "Morning-After Swing",
+  "doyers-street": "Watchful Chinatown",
+  "tea-house": "Tea House Melody",
+  "pawnshop": "Pawnshop Ticking",
+  "alley": "Damp Alley Dusk"
+ },
+ "spare": ["The Last Office Hour", "Watchful Shadows", "Morning After Blues", "After-Hours Chinatown", "Steam-and-Lantern Intimacy", "Pawnshop Clock"]
+}

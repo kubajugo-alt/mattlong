@@ -511,8 +511,19 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   window.addEventListener('pointerdown', audioStart);
   document.getElementById('sound').addEventListener('change', () => { if (AU.master) AU.master.gain.setTargetAtTime(soundOn() ? 1 : 0, AU.ac.currentTime, 0.2); });
   function sbuf(name) {
-    if (!AU.buf[name]) AU.buf[name] = fetch('sfx/' + name + '.mp3').then(r => r.arrayBuffer()).then(a => AU.ac.decodeAudioData(a)).catch(() => null);
+    if (!AU.buf[name]) {
+      const m = /^(steps-[a-z]+)-(\d+)$/.exec(name);
+      // footsteps: the built site packs each floor's ten steps into one file, one second apiece (steps-<floor>.mp3)
+      AU.buf[name] = m ? sbufPacked(m[1], +m[2]).catch(() => sbufFile(name)) : sbufFile(name);
+    }
     return AU.buf[name];
+  }
+  const sbufFile = (name) => fetch('sfx/' + name + '.mp3').then(r => r.arrayBuffer()).then(a => AU.ac.decodeAudioData(a)).catch(() => null);
+  async function sbufPacked(pack, k) {
+    if (!AU.buf[pack]) AU.buf[pack] = fetch('sfx/' + pack + '.mp3').then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); }).then(a => AU.ac.decodeAudioData(a));
+    const b = await AU.buf[pack], sr = b.sampleRate, n = sr, out = AU.ac.createBuffer(b.numberOfChannels, n, sr);
+    for (let c = 0; c < b.numberOfChannels; c++) out.getChannelData(c).set(b.getChannelData(c).subarray((k - 1) * n, k * n));
+    return out;
   }
   // ---- spatial audio: metres on the floor from the room's camera model
   function floorM(x, y) { const f = S.sc.camera.f_px, hz = S.sc.horizon * S.sc.size[1], Z = f * S.sc.eye_m / Math.max(4, y - hz); return [(x - S.sc.size[0] / 2) * Z / f, Z]; }
@@ -614,6 +625,34 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     return on;
   }
 
+  // ---- room music (music/music.json: one looped track per room), crossfaded between rooms, a little lower
+  // under dialogue, and silent in the office while the radio plays
+  const MUSIC = { cfg: null, cur: null, bufs: {}, room: null };
+  function musicBuf(f) {
+    if (!MUSIC.bufs[f]) MUSIC.bufs[f] = fetch('music/' + f).then(r => r.arrayBuffer()).then(b => AU.ac.decodeAudioData(b)).catch(() => null);
+    return MUSIC.bufs[f];
+  }
+  async function musicFor(id) {
+    if (!AU.ac || MUSIC.room === id) return; MUSIC.room = id;
+    if (!MUSIC.cfg) { try { MUSIC.cfg = await (await fetch('music/music.json')).json(); } catch (e) { MUSIC.cfg = { rooms: {}, volume: 0 }; } }
+    const f = MUSIC.cfg.rooms[id];
+    if (MUSIC.cur && MUSIC.cur.file === f) return;
+    const old = MUSIC.cur; MUSIC.cur = null; const t = AU.ac.currentTime;
+    if (old) { const g = old.g.gain; g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(0, t + 1.5); try { old.src.stop(t + 1.6); } catch (e) {} }
+    if (!f) return;
+    const b = await musicBuf(f); if (!b || MUSIC.room !== id) return;
+    const src = AU.ac.createBufferSource(); src.buffer = b; src.loop = true;
+    const g = AU.ac.createGain(); g.gain.value = 0; src.connect(g); g.connect(AU.master); src.start();
+    MUSIC.cur = { file: f, src, g };
+  }
+  function musicTick() {
+    if (!MUSIC.cur) return;
+    const radioOn = RADIO.on && radioHere();
+    const talking = !!TALK.who || (STORY.talking && STORY.talking());
+    const v = radioOn ? 0 : (MUSIC.cfg.volume || 0.3) * (talking ? 0.6 : 1);
+    MUSIC.cur.g.gain.setTargetAtTime(v, AU.ac.currentTime, radioOn ? 0.25 : 0.8);
+  }
+
   function soundTick(now) {
     if (!AU.ac) return;
     if (!AU.roomOn || !AU.roomOn.startsWith(room + ':')) roomSound(room);
@@ -623,7 +662,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       if (t > AU.next[n]) { shot(n, v, pos, 0.95 + Math.random() * 0.1, lpMax || 0); AU.next[n] = t + lo + Math.random() * (hi - lo); }
     }
     for (const b of AU.beds) if (b.pos) steer(b.c, spatial(b.pos), 0.3);      // beds never fade below 30 %
-    radioTick();
+    radioTick(); musicFor(room); musicTick();
     // footsteps on the frames where a heel actually meets the floor in the walk strip (three per 36-frame loop,
     // read from the sprite: sprites/matt.json "steps"), louder near the camera, panned with Matt
     const spS = sprites[M.dir] || {}, stepsAt = spS.steps || [0, 18], nF = spS.frames || 36;
@@ -979,7 +1018,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { enter, plainWalk, radio, radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { enter, plainWalk, radio, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },
