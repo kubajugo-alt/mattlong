@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, soft light from the upper left, rich mid greys. A city pigeon standing on the pavement, seen from the side, facing left, head lowered as if about to peck. Only this one animal, whole body, centred, filling about 75% of the frame, on a completely flat pure chroma green (#00FF00) background with nothing else, no shadow on the ground.",
+  "refs": [
+    "art/rooms/final/doyers-street.png"
+  ],
+  "aspect": "1:1",
+  "size": "2K",
+  "created": "2026-11-26T12:56:06.254Z",
+  "usage": {
+    "promptTokenCount": 385,
+    "candidatesTokenCount": 1271,
+    "totalTokenCount": 1656,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 127
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

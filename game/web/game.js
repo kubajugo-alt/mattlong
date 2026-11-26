@@ -123,6 +123,7 @@
       case 'go': await fadeTo(() => E.enter(arg, E.room())); break;
       case 'scene': if (E.room() !== arg) await fadeTo(() => E.enter(arg, null)); break;
       case 'radio': E.radio(arg === 'on'); break;
+      case 'pigeons': E.pigeonsFly(); break;
       case 'sfx': if (arg !== 'rain') E.shot(arg, arg === 'radio_dance_band' ? 0.5 : 0.7, [E.M.x, E.M.y]); break;   // rain: the night office's own rain bed
       case 'anim': { const [who, a] = arg.split(':');
         if (who === 'inez' && a === 'walk_in') STORY.hidden.delete('inez-seated');

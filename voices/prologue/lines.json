@@ -2392,5 +2392,33 @@
   "voice_id": "CHO1EPlL4NlQL7EeyvYb",
   "file": "vo-132c153334.mp3",
   "cues": null
+ },
+ "vo-7185aad179": {
+  "speaker": "VO",
+  "text": "Pigeons. The only things on Doyers Street that eat regular.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-7185aad179.mp3",
+  "cues": null
+ },
+ "vo-f3cd2728a1": {
+  "speaker": "VO",
+  "text": "I've had the same effect on better company.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-f3cd2728a1.mp3",
+  "cues": null
+ },
+ "vo-2a4df4b3ac": {
+  "speaker": "VO",
+  "text": "The only tenant of the alley with a full stomach. Rats, probably. Or the rats' landlord.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-2a4df4b3ac.mp3",
+  "cues": null
+ },
+ "vo-2cd8f4dec4": {
+  "speaker": "VO",
+  "text": "It explained, in plain language, that we weren't friends.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-2cd8f4dec4.mp3",
+  "cues": null
  }
 }

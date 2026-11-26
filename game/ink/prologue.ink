@@ -639,6 +639,15 @@ NEWSBOY: Paper, mister? Two cents!
 VO: The far end opens onto the Bowery and the rest of the city. The rest of the city can wait until I can afford it.
 -> DONE
 
+=== doyers__pigeons ===
+= look
+VO: Pigeons. The only things on Doyers Street that eat regular.
+-> DONE
+= use
+~ act("pigeons")
+VO: I've had the same effect on better company.
+-> DONE
+
 === doyers__washing ===
 = look
 VO: Somebody's long johns, frozen stiff. It's going to be that kind of winter.
@@ -856,6 +865,15 @@ VO: Sol's back door. Locked from his side, usually. Not today.
     SOL: You, I'd lock the front door for. The back door, I nail shut. Next time, the front, like a human being!
     ~ back_way_once = true
 }
+-> DONE
+
+=== alley__cat ===
+= look
+VO: The only tenant of the alley with a full stomach. Rats, probably. Or the rats' landlord.
+-> DONE
+= use
+~ act("sfx:cat-hiss")
+VO: It explained, in plain language, that we weren't friends.
 -> DONE
 
 === alley__rag_heap ===

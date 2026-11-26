@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "In exactly the same painted greyscale style as the reference image (the cat on green): a large cockroach seen from the side and a little above, running to the right, legs and long antennae clear. Only this one animal, whole body, centred, filling about 70% of the frame width, on a completely flat pure chroma green (#00FF00) background exactly like the reference: no room, no floor, no wall, no shadow.",
+  "refs": [
+    "art/animals/raw/cat.png"
+  ],
+  "aspect": "16:9",
+  "size": "2K",
+  "created": "2026-11-26T12:57:10.678Z",
+  "usage": {
+    "promptTokenCount": 354,
+    "candidatesTokenCount": 1262,
+    "totalTokenCount": 1776,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 96
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 160,
+    "serviceTier": "standard"
+  }
+}

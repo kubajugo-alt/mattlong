@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, soft light from the upper left, rich mid greys. A scruffy thin alley cat with a torn ear, sitting upright, tail curled round its front paws, looking slightly to the left, seen from the side and a little above. Only this one animal, whole body, centred, filling about 75% of the frame, on a completely flat pure chroma green (#00FF00) background with nothing else, no shadow on the ground.",
+  "refs": [
+    "art/rooms/final/alley.png"
+  ],
+  "aspect": "1:1",
+  "size": "2K",
+  "created": "2026-11-26T12:56:03.569Z",
+  "usage": {
+    "promptTokenCount": 398,
+    "candidatesTokenCount": 1285,
+    "totalTokenCount": 1891,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 140
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 208,
+    "serviceTier": "standard"
+  }
+}

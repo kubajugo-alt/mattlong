@@ -2367,10 +2367,10 @@
  },
  "lan-82af3bceb2": {
   "file": "lan-82af3bceb2.mp3",
-  "mtime": 1795696542.9144776,
-  "heard": "Seis sentidos.",
+  "mtime": 1795696557.364488,
+  "heard": "[chuchote] C'est ça, tira.",
   "ratio": 0.0,
-  "extra_words": 2
+  "extra_words": 4
  },
  "lan-6a8da17a35": {
   "file": "lan-6a8da17a35.mp3",
@@ -2397,6 +2397,34 @@
   "file": "vo-132c153334.mp3",
   "mtime": 1795696544.716487,
   "heard": "Whatever it was, Lee would know. Lee always knows.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-7185aad179": {
+  "file": "vo-7185aad179.mp3",
+  "mtime": 1795698276.0946856,
+  "heard": "Pigeons, the only things on Doyer Street that eat regular.",
+  "ratio": 0.9,
+  "extra_words": 0
+ },
+ "vo-f3cd2728a1": {
+  "file": "vo-f3cd2728a1.mp3",
+  "mtime": 1795698275.6283672,
+  "heard": "I've had the same effect on better company.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-2a4df4b3ac": {
+  "file": "vo-2a4df4b3ac.mp3",
+  "mtime": 1795698276.644096,
+  "heard": "The only tenant of the alley with a full stomach. Rats, probably, or the rats' landlord.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-2cd8f4dec4": {
+  "file": "vo-2cd8f4dec4.mp3",
+  "mtime": 1795698275.920732,
+  "heard": "It explained in plain language that we weren't friends.",
   "ratio": 1.0,
   "extra_words": 0
  }

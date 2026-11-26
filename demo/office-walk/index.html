@@ -222,7 +222,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     : (o.with === 'kate' && STORY.kateGone) || (o.with === 'nokate' && !STORY.kateGone) ? true      // things on the table go with its version
     : (STORY.hidden && STORY.hidden.has(o.name)) ? true : !!o.hidden;
   // STORY.live (set by the game) says which mapped hotspots are in play; the rest stay mapped but inert
-  const hotGone = (h) => (STORY.kateGone && (h.id === 'kate' || h.id === 'petes-cigarettes')) || !!(STORY.hiddenHot && STORY.hiddenHot.has(room + ':' + h.id))
+  const hotGone = (h) => (h.id === 'pigeons' && AN.flown) || (STORY.kateGone && (h.id === 'kate' || h.id === 'petes-cigarettes')) || !!(STORY.hiddenHot && STORY.hiddenHot.has(room + ':' + h.id))
     || (STORY.live ? !STORY.live(room, h.id) : false);
   // ---- hotspots: smallest object under the pointer wins
   const hitCtx = document.createElement('canvas').getContext('2d');
@@ -362,6 +362,68 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
   // Doyers Street: now and then a car passes along the cross street at the far end, between the far buildings
   const CARS = { list: [], next: 4, imgs: null, area: [0.313, 0.437], ground: 0.61, h: 95 }; window.CARS = CARS;
+  // ---- animals (Ludo-animated, painted by Gemini): idlers hold their first frame and play now and then, runners
+  // cross the floor at their own speed; all sized by depth and sorted against Matt like everything else
+  const ANIMALS = {
+    alley: [{ id: 'cat', kind: 'idle', sheet: 'cat-idle', x: 1690, y: 958, h: 125, sort: 1265, fps: 8, gap: [6, 14], snd: ['cat-meow', 25, 70, 0.4] },
+            { id: 'rat', kind: 'run', sheet: 'rat-run', from: [780, 1110], to: [1650, 1175], wm: 0.32, speed: 560, fps: 30, every: [25, 60], snd: 'rat-squeak' }],
+    'doyers-street': [{ id: 'pigeon1', kind: 'idle', sheet: 'pigeon-idle', x: 1960, y: 1245, hm: 0.22, fps: 10, gap: [2, 6], flock: 'pigeons', snd: ['pigeon-coo', 20, 50, 0.35] },
+                      { id: 'pigeon2', kind: 'idle', sheet: 'pigeon-idle', x: 2110, y: 1262, hm: 0.22, fps: 10, gap: [3, 7], flock: 'pigeons', flip: true }],
+    corridor: [{ id: 'roach', kind: 'run', sheet: 'roach-run', from: [880, 1102], to: [1330, 1096], wm: 0.09, speed: 150, fps: 24, every: [30, 70], snd: 'roach-skitter' }],
+  };
+  const AN = { imgs: {}, meta: null, room: null, st: {}, flown: false };
+  fetch('sprites/animals.json').then(r => r.json()).then(m => { AN.meta = m; }).catch(() => {});
+  const anImg = (n) => AN.imgs[n] || (AN.imgs[n] = (() => { const i = new Image(); i.src = 'sprites/' + n + '.webp'; return i; })());
+  function animalsTick(dt) {
+    if (AN.room !== room) { AN.room = room; AN.st = {}; AN.flown = false; }
+    for (const a of ANIMALS[room] || []) {
+      const st = AN.st[a.id] || (AN.st[a.id] = { t: 0, play: -1, next: a.kind === 'run' ? a.every[0] * Math.random() : 1 + Math.random() * 4, x: a.x, y: a.y, fly: null });
+      st.t += dt;
+      if (a.kind === 'idle') {
+        if (st.fly) { st.fly.t += dt; st.x += st.fly.vx * dt; st.y += st.fly.vy * dt; continue; }
+        if (st.play < 0 && st.t > st.next) st.play = 0;
+        if (st.play >= 0) { st.play += dt * a.fps; if (st.play >= 36) { st.play = -1; st.t = 0; st.next = a.gap[0] + Math.random() * (a.gap[1] - a.gap[0]); } }
+        if (a.snd && Math.random() < dt / ((a.snd[1] + a.snd[2]) / 2) && !st.fly) shot(a.snd[0], a.snd[3], [a.x, a.y]);
+        // pigeons take off when Matt comes close
+        if (a.flock && !AN.flown && Math.hypot(M.x - a.x, (M.y - a.y) * 1.6) < heightAt(a.y) * 0.45) pigeonsFly();
+      } else {
+        if (!st.run) { if (st.t > st.next) { const rev = Math.random() < 0.5, A = rev ? a.to : a.from, B = rev ? a.from : a.to;
+            st.run = { A, B, k: 0, len: Math.hypot(B[0] - A[0], B[1] - A[1]), dir: B[0] > A[0] ? 1 : -1 }; if (a.snd) shot(a.snd, 0.45, A); } }
+        else { st.run.k += a.speed * dt / st.run.len; if (st.run.k >= 1) { st.run = null; st.t = 0; st.next = a.every[0] + Math.random() * (a.every[1] - a.every[0]); } }
+      }
+    }
+  }
+  function pigeonsFly() {
+    if (AN.flown) return; AN.flown = true; let first = true;
+    for (const a of ANIMALS[room] || []) if (a.flock) { const st = AN.st[a.id]; if (!st) continue;
+      st.fly = { t: 0, vx: -(260 + Math.random() * 120), vy: -(240 + Math.random() * 90) }; if (first) { shot('pigeon-flap', 0.7, [a.x, a.y]); first = false; } }
+  }
+  function drawAnimals(front) {
+    if (!AN.meta) return;
+    for (const a of ANIMALS[room] || []) {
+      const st = AN.st[a.id]; if (!st) continue; const meta = AN.meta[st.fly ? 'pigeon-fly' : a.sheet]; if (!meta) continue;
+      let x, y, fi, h, w, flip = a.flip ? -1 : 1, img = anImg(st.fly ? 'pigeon-fly' : a.sheet);
+      if (a.kind === 'idle') { x = st.x; y = st.y; const H = heightAt(a.y); h = a.h || H * a.hm / 1.85 * 1.0; w = h * meta.fw / meta.fh;
+        fi = st.fly ? Math.min(35, Math.floor(st.fly.t * 14)) : (st.play >= 0 ? Math.floor(st.play) : 0);
+        if (st.fly && (st.fly.t > 3 || y < -200)) continue; }
+      else { if (!st.run) continue; const r = st.run; x = r.A[0] + (r.B[0] - r.A[0]) * r.k; y = r.A[1] + (r.B[1] - r.A[1]) * r.k;
+        w = heightAt(y) * a.wm / 1.85; h = w * meta.fh / meta.fw; fi = Math.floor(st.t * a.fps) % 36; flip = r.dir; }
+      const sortY = a.sort || y; if ((sortY > M.y) !== front) continue;
+      const sx = (fi % 6) * meta.fw, sy = Math.floor(fi / 6) * meta.fh;
+      ctx.save(); ctx.translate(x + par(y), y); ctx.scale(flip, 1); ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
+      ctx.drawImage(img, sx, sy, meta.fw, meta.fh, -w / 2, -h, w, h); ctx.restore();
+    }
+  }
+  function streetHaze(W, H) {
+    const gy = CARS.ground * H, L = CARS.area[0] * W, R = CARS.area[1] * W;
+    // air between here and the cross street: a cold haze over the cars and the people, thicker with the snow
+    const fg = ctx.createLinearGradient(0, gy - CARS.h * 2.2, 0, gy + 8), k = 0.16 + 0.1 * ((SNOW_RATE[phaseNow()] || 1) - 0.7);
+      fg.addColorStop(0, `rgba(215,215,220,${k * 0.6})`); fg.addColorStop(0.7, `rgba(215,215,220,${k})`); fg.addColorStop(1, 'rgba(215,215,220,0)');
+      ctx.fillStyle = fg; ctx.fillRect(L - 10, gy - CARS.h * 2.2, R - L + 20, CARS.h * 2.2 + 8);
+    // the lamp poles in front of the cross street stay crisp: repaint them over the haze
+    { const lx = 1163 + parAt(1171, gy - 60); const kb = S.bgNow.width / W; ctx.drawImage(S.bgNow, lx * kb, (gy - CARS.h * 2) * kb, 17 * kb, (CARS.h * 2 + 8) * kb, lx, gy - CARS.h * 2, 17, CARS.h * 2 + 8); }
+    const lamp = S.occ.find(o => o.name === 'lamp-post'); if (lamp) drawOcc(lamp, performance.now());
+  }
   function streetTraffic(dt, W, H) {
     if (!CARS.imgs) { CARS.imgs = []; for (const [n, face] of [['car-sedan', -1], ['car-truck', 1]]) load('sprites/' + n + '.webp').then(i => CARS.imgs.push({ i, face })); }
     CARS.next -= dt;
@@ -384,7 +446,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       ctx.save(); ctx.globalAlpha = 0.35; ctx.filter = 'blur(3px)'; ctx.fillStyle = '#000';
       ctx.beginPath(); ctx.ellipse(k.x + pxs + k.w / 2, gy - 2, k.w * 0.46, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
       ctx.save(); ctx.translate(k.x + pxs + k.w / 2, gy); ctx.scale(k.dir * k.c.face, 1);
-      ctx.filter = 'brightness(0.82) contrast(0.9)';          // a little haze at that distance
+      ctx.filter = 'brightness(0.95) contrast(0.62) blur(0.6px)';   // distance: low contrast, softened
       ctx.drawImage(k.c.i, -k.w / 2, -CARS.h, k.w, CARS.h); ctx.restore();
     }
     ctx.restore();
@@ -460,49 +522,103 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // a grey afternoon after Lee, dusk once the book is back
   const phaseNow = () => (STORY.phase ? STORY.phase() : 'morning');
   const SNOW_RATE = { morning: 0.7, noon: 1, afternoon: 1.35, dusk: 1.1 };
-  const SNOW = { flakes: [], wind: 0 };
+  // Snow, made to read as snowfall rather than dots: irregular soft flakes (a few overlapping lobes, pre-drawn), three
+  // depths (a dense veil of fine far flakes, a middle layer, a few large out-of-focus ones near the camera), motion
+  // blur along each flake's path, its own sway and tumble under shared gusts, and light from the painting: white
+  // over dark ground, grey against a bright sky (as real snow reads), plus a faint haze down the street.
+  const SNOW = { flakes: [], sprites: null, t: 0 };
+  function flakeSprites() {
+    if (SNOW.sprites) return SNOW.sprites;
+    const make = (tone) => Array.from({ length: 6 }, (_, k) => {
+      const c = document.createElement('canvas'); c.width = c.height = 48; const x = c.getContext('2d');
+      const lobes = 2 + (k % 3);
+      for (let i = 0; i < lobes; i++) {
+        const ang = Math.random() * 6.28, d = i ? 3 + Math.random() * 6 : 0, r = 9 + Math.random() * 7;
+        const cx = 24 + Math.cos(ang) * d, cy = 24 + Math.sin(ang) * d, g = x.createRadialGradient(cx, cy, 0, cx, cy, r);
+        g.addColorStop(0, `rgba(${tone},${tone},${tone},${i ? 0.55 : 0.9})`); g.addColorStop(0.45, `rgba(${tone},${tone},${tone},${i ? 0.3 : 0.5})`); g.addColorStop(1, `rgba(${tone},${tone},${tone},0)`);
+        x.fillStyle = g; x.fillRect(0, 0, 48, 48);
+      }
+      return c;
+    });
+    return (SNOW.sprites = { light: make(250), dark: make(120) });
+  }
+  function newFlake(W, H, anywhere) {
+    const u = Math.random();
+    const z = u < 0.012 ? 0.95 + Math.random() * 0.05 : u < 0.3 ? 0.5 + Math.random() * 0.4 : Math.random() * 0.5;   // near / middle / far
+    const size = z >= 0.95 ? 34 + Math.random() * 34 : z >= 0.5 ? 8 + (z - 0.5) * 22 + Math.random() * 3 : 3.5 + z * 8 + Math.random() * 1.5;
+    return { x: Math.random() * (W + 200) - 100, y: anywhere ? Math.random() * H : -40 - Math.random() * 120, z, size,
+             v: 55 + 330 * Math.pow(z, 1.6) * (0.8 + Math.random() * 0.4), sw: 6 + 40 * z, sf: 0.25 + Math.random() * 0.9,
+             ph: Math.random() * 6.28, spr: Math.floor(Math.random() * 6), rot: Math.random() * 6.28, spin: (Math.random() - 0.5) * 2 };
+  }
+  const lumAt = (x, y, W, H) => { if (!S || !S.lum) return 0.4; const i = Math.max(0, Math.min(343, Math.floor(x / W * 344))), j = Math.max(0, Math.min(191, Math.floor(y / H * 192))); return S.lum[(j * 344 + i) * 4] / 255; };
+  function drawFlake(f, x, y, W, H, gust, alphaK) {
+    const sp = flakeSprites(), vx = gust * (20 + 140 * f.z) + Math.cos(SNOW.t * f.sf * 6.28 + f.ph) * f.sw * f.sf * 6.28 * 0.5;
+    const streak = Math.hypot(vx, f.v) / 45;                 // a 1/45 s exposure: near flakes smear into soft streaks
+    const lit = lumAt(x, y, W, H), dark = lit > 0.72 && f.z < 0.95;
+    let a = (f.z >= 0.95 ? 0.3 : f.z >= 0.5 ? 0.7 + 0.5 * (f.z - 0.5) : 0.45 + 0.6 * f.z) * alphaK;
+    if (dark) a *= 0.8; else a *= 0.85 + 0.3 * Math.min(1, (0.72 - lit) * 2.5 + 0.4);
+    ctx.globalAlpha = Math.min(1, a);
+    const w = f.size, h = f.size + streak, ang = Math.atan2(vx, f.v);
+    ctx.setTransform(PX.k, 0, 0, PX.k, PX.off[0], PX.off[1]); ctx.translate(x, y); ctx.rotate(-ang); ctx.rotate(f.z >= 0.95 ? 0 : f.rot * 0.15);
+    ctx.drawImage((dark ? sp.dark : sp.light)[f.spr], -w / 2, -h / 2, w, h);
+  }
   function snowfall(dt, W, H, base) {
-    const want = Math.round(base * 9 * (SNOW_RATE[phaseNow()] || 1));
-    while (SNOW.flakes.length < want) SNOW.flakes.push(newFlake(true));
+    const rate = SNOW_RATE[phaseNow()] || 1, want = Math.round(base * 36 * rate);
+    while (SNOW.flakes.length < want) SNOW.flakes.push(newFlake(W, H, true));
     if (SNOW.flakes.length > want) SNOW.flakes.length = want;
-    SNOW.wind = 0.5 * noise1(ambT / 6) + 0.25;
-    ctx.save(); ctx.fillStyle = '#f2f2f2';
+    SNOW.t += dt; const gust = 0.35 + 0.45 * noise1(SNOW.t / 5) + 0.2 * noise1(SNOW.t / 1.7 + 3);
+    ctx.save();
+    // the veil: falling snow thickens the air with distance (strongest round the horizon, down the street)
+    const hy = S.sc.horizon * H, gr = ctx.createLinearGradient(0, hy - H * 0.35, 0, hy + H * 0.25);
+    gr.addColorStop(0, 'rgba(235,235,238,0)'); gr.addColorStop(0.55, `rgba(235,235,238,${(0.07 * rate).toFixed(3)})`); gr.addColorStop(1, 'rgba(235,235,238,0)');
+    ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
     for (const f of SNOW.flakes) {
-      f.y += dt * f.v; f.x += dt * (SNOW.wind * 0.02 * f.z + 0.012 * Math.sin(ambT * f.w + f.ph)) ;
-      if (f.y > 1.02 || f.x > 1.05 || f.x < -0.05) Object.assign(f, newFlake(false));
-      const r = f.z < 0.85 ? 2.2 + 7 * f.z : 16 + 18 * (f.z - 0.85) / 0.15;
-      if (f.z >= 0.85) { ctx.globalAlpha = 0.38; ctx.filter = 'blur(' + (r * 0.35 * PX.k).toFixed(1) + 'px)'; }
-      else { ctx.globalAlpha = 0.45 + 0.45 * f.z; ctx.filter = f.z > 0.55 ? 'blur(' + (0.8 * PX.k).toFixed(1) + 'px)' : 'none'; }
-      ctx.beginPath(); ctx.arc(f.x * W, f.y * H, r, 0, 6.283); ctx.fill();
+      f.y += f.v * dt; f.rot += f.spin * dt;
+      f.x += (gust * (20 + 140 * f.z) + Math.cos(SNOW.t * f.sf * 6.28 + f.ph) * f.sw * f.sf * 6.28 * 0.5) * dt;
+      if (f.y > H + 60 || f.x > W + 120 || f.x < -120) Object.assign(f, newFlake(W, H, false));
+      drawFlake(f, f.x, f.y, W, H, gust, 1);
     }
     ctx.restore();
   }
-  function newFlake(anywhere) {
-    const z = Math.random() < 0.06 ? 0.85 + Math.random() * 0.15 : Math.pow(Math.random(), 1.6) * 0.85;
-    return { x: Math.random() * 1.1 - 0.05, y: anywhere ? Math.random() : -0.03 - Math.random() * 0.05, z, v: 0.025 + 0.09 * z, w: 0.6 + Math.random(), ph: Math.random() * 6 };
+  // snow seen through the windows from inside: faint specks, only on the glass. Each window gets a mask of its bright
+  // panes taken from the painting itself, so frames, mullions and the blind slats hide the snow and it shows only in
+  // the gaps, as it would through glass. Small, slow, light grey by day; it hints at the weather, no more.
+  const WIN_SNOW = { 'office-day': [[2205, 105, 2492, 885]], 'office-night': [[2205, 105, 2492, 885]], 'pete-kate-flat': ['window'],
+                     'tea-house': ['street-window'], corridor: ['end-window'], pawnshop: [[20, 40, 400, 1060]] };
+  const WINF = {};
+  function glassMask(key, bb) {
+    if (WINF['m' + key]) return WINF['m' + key];
+    const w = bb[2] - bb[0], h = bb[3] - bb[1], c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d');
+    const kb = S.bg.width / S.sc.size[0];
+    x.drawImage(S.bg, bb[0] * kb, bb[1] * kb, w * kb, h * kb, 0, 0, w, h);
+    const d = x.getImageData(0, 0, w, h), lo = mode === 'night' ? 0.25 : 0.62, hi = mode === 'night' ? 0.4 : 0.78;
+    for (let p = 0; p < w * h; p++) { const l = (d.data[p * 4] * 0.3 + d.data[p * 4 + 1] * 0.59 + d.data[p * 4 + 2] * 0.11) / 255;
+      d.data[p * 4 + 3] = 255 * Math.max(0, Math.min(1, (l - lo) / (hi - lo))); }
+    x.putImageData(d, 0, 0); return (WINF['m' + key] = c);
   }
-  // snow seen through the windows of the rooms indoors (clipped to the mapped window shapes)
-  const WIN_SNOW = { 'office-day': [[[2256, 690, 2462, 872], 0]], 'office-night': [[[2256, 690, 2462, 872], 0]], 'pete-kate-flat': [['window', 0]],
-                     'tea-house': [['street-window', 0]], corridor: [['end-window', 0]], pawnshop: [[[0, 40, 400, 1060], 0]] };
-  const winFlakes = Array.from({ length: 160 }, () => ({ x: Math.random(), y: Math.random(), z: Math.random(), ph: Math.random() * 6 }));
   function windowSnow(dt, W, H) {
     const list = WIN_SNOW[room]; if (!list || !S) return;
-    const rate = SNOW_RATE[phaseNow()] || 1;
-    ctx.save(); ctx.fillStyle = mode === 'night' ? '#f4f4f4' : '#6e6e72';     // against a bright sky, snow reads darker
-    for (const [id, topCut] of list) {
-      let bb, paths = null;
-      if (Array.isArray(id)) bb = id; else { const h = S.hot.find(q => q.id === id); if (!h) continue; bb = h.bbox; paths = h.paths; }
-      const y0 = bb[1] + (bb[3] - bb[1]) * topCut;
-      ctx.save(); ctx.beginPath(); ctx.rect(bb[0], y0, bb[2] - bb[0], bb[3] - y0); ctx.clip();
-      if (paths) { const pp = new Path2D(); paths.forEach(q => pp.addPath(q)); ctx.clip(pp); }
-      const n = Math.min(winFlakes.length, Math.round((bb[2] - bb[0]) * (bb[3] - y0) / 1400 * rate));
-      for (let i = 0; i < n; i++) { const f = winFlakes[i];
-        f.y += dt * (0.05 + 0.08 * f.z); f.x += dt * 0.01 * Math.sin(ambT * 0.8 + f.ph); if (f.y > 1) { f.y = 0; f.x = Math.random(); }
-        ctx.globalAlpha = (0.4 + 0.5 * f.z) * (mode === 'night' ? 0.8 : 0.9);
-        ctx.beginPath(); ctx.arc(bb[0] + f.x * (bb[2] - bb[0]), bb[1] + f.y * (bb[3] - bb[1]), 2 + 4.5 * f.z, 0, 6.283); ctx.fill(); }
-      ctx.restore();
+    const rate = SNOW_RATE[phaseNow()] || 1; SNOW.t += dt * 0.5;
+    const gust = 0.3 + 0.35 * noise1(SNOW.t / 5);
+    for (const id of list) {
+      let bb;
+      if (Array.isArray(id)) bb = id; else { const h = S.hot.find(q => q.id === id); if (!h) continue; bb = h.bbox; }
+      const key = room + ':' + bb.join(','), w = bb[2] - bb[0], h = bb[3] - bb[1];
+      const mask = glassMask(key, bb);
+      const lay = WINF['c' + key] || (WINF['c' + key] = document.createElement('canvas')); lay.width = w; lay.height = h;
+      const x = lay.getContext('2d'); let fl = WINF[key] || (WINF[key] = []);
+      const n = Math.round(w * h / 900 * rate);
+      while (fl.length < n) fl.push({ x: Math.random() * w, y: Math.random() * h, r: 0.9 + Math.random() * 1.4, v: 30 + Math.random() * 45, ph: Math.random() * 6.28, sf: 0.3 + Math.random() * 0.6 });
+      fl.length = n;
+      x.fillStyle = mode === 'night' ? 'rgba(240,240,240,1)' : 'rgba(120,120,126,1)';
+      for (const f of fl) {
+        f.y += f.v * dt; f.x += (gust * 18 + Math.cos(SNOW.t * f.sf * 6.28 + f.ph) * 6) * dt;
+        if (f.y > h + 4) { f.y = -4; f.x = Math.random() * w; } if (f.x > w + 4) f.x = -4;
+        x.globalAlpha = mode === 'night' ? 0.45 : 0.32; x.beginPath(); x.ellipse(f.x, f.y, f.r, f.r * 1.4, 0, 0, 6.283); x.fill();
+      }
+      x.globalAlpha = 1; x.globalCompositeOperation = 'destination-in'; x.drawImage(mask, 0, 0); x.globalCompositeOperation = 'source-over';
+      ctx.drawImage(lay, bb[0], bb[1]);
     }
-    ctx.restore();
   }
   // breath in the cold: Matt's, and the people standing outdoors
   const OUTDOOR = { 'doyers-street': 1, alley: 1 };
@@ -552,11 +668,12 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // people crossing the far end of Doyers Street (Gemini-painted, walking right; flipped to walk left)
   const WALKERS = { list: [], next: 3, imgs: null, h: 92 };
   function streetWalkers(dt, W, H) {
-    if (!WALKERS.imgs) { WALKERS.imgs = []; for (const n of ['laundryman', 'cop', 'woman']) load('sprites/walker-' + n + '.webp').then(i => WALKERS.imgs.push(i)); }
+    if (!WALKERS.imgs) { WALKERS.imgs = [];        // Ludo walk cycles: 6x6 sheets, 36 frames, walking in place (we move them)
+      for (const n of ['laundryman', 'cop', 'woman']) load('sprites/walker-' + n + '.webp').then(i => { i.fw = i.width / 6; i.fh = i.height / 6; WALKERS.imgs.push(i); }); }
     WALKERS.next -= dt;
     if (WALKERS.next <= 0 && WALKERS.imgs.length) {
       const img = WALKERS.imgs[Math.floor(Math.random() * WALKERS.imgs.length)], dir = Math.random() < 0.5 ? 1 : -1;
-      const h = WALKERS.h * (0.92 + Math.random() * 0.12), w = img.width * h / img.height, x0 = CARS.area[0] * W - w, x1 = CARS.area[1] * W + w;
+      const h = WALKERS.h * (0.92 + Math.random() * 0.12), w = img.fw * h / img.fh, x0 = CARS.area[0] * W - w, x1 = CARS.area[1] * W + w;
       WALKERS.list.push({ img, dir, h, w, x: dir > 0 ? x0 : x1, end: dir > 0 ? x1 : x0, v: 34 + Math.random() * 12, ph: Math.random() * 6, y: CARS.ground * H + 4 + Math.random() * 6 });
       WALKERS.next = 6 + Math.random() * 14;
     }
@@ -565,9 +682,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.save(); ctx.beginPath(); ctx.rect(L, gy - 200, R - L, 214); ctx.clip();
     for (let i = WALKERS.list.length - 1; i >= 0; i--) { const k = WALKERS.list[i]; k.x += k.dir * k.v * dt; k.ph += dt * 7.5;
       if ((k.dir > 0 && k.x > k.end) || (k.dir < 0 && k.x < k.end)) { WALKERS.list.splice(i, 1); continue; }
-      const bob = Math.abs(Math.sin(k.ph)) * k.h * 0.025, sway = Math.sin(k.ph) * 0.025;
-      ctx.save(); ctx.translate(k.x + par(k.y), k.y - bob); ctx.rotate(sway * k.dir); ctx.scale(k.dir, 1);
-      ctx.filter = 'brightness(0.8) contrast(0.88)'; ctx.drawImage(k.img, -k.w / 2, -k.h, k.w, k.h); ctx.restore(); }
+      const fi = Math.floor(k.ph / 7.5 * 12) % 36, sx = (fi % 6) * k.img.fw, sy = Math.floor(fi / 6) * k.img.fh;   // 12 frames a second
+      ctx.save(); ctx.translate(k.x + par(k.y), k.y); ctx.scale(k.dir, 1);
+      ctx.filter = 'brightness(0.95) contrast(0.6) blur(0.6px)'; ctx.drawImage(k.img, sx, sy, k.img.fw, k.img.fh, -k.w / 2, -k.h, k.w, k.h); ctx.restore(); }
     ctx.restore();
   }
   function ambientOver(dt, W, H) {          // dust in the light, in front of everything
@@ -981,7 +1098,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     // keep shadows only on the floor: redraw the non-floor background over them
     maskShadow();
     if (document.getElementById('ambient').checked) windowSnow(dt, W, H);   // after the mask (it repaints the walls and windows)
-    if (room === 'doyers-street') { streetWalkers(dt, W, H); streetTraffic(dt, W, H); }   // after the shadow mask: the far street is not floor
+    if (room === 'doyers-street') { streetWalkers(dt, W, H); streetTraffic(dt, W, H); streetHaze(W, H); }   // after the shadow mask: the far street is not floor
 
     // occlusion: objects whose baseline (at Matt's x) is below his feet are drawn after him
     // the object's front line at Matt's feet: per-column (sloped counters, legged furniture); beside the
@@ -996,6 +1113,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     }
     // seated characters are sprites, not part of the painting: draw the ones behind Matt first
     for (const o of behindProps) drawOcc(o, now);
+    animalsTick(dt); drawAnimals(false);
     // Matt
     ctx.save(); ctx.translate(M.x + par(M.y), M.y); ctx.scale(fx, 1);
     ctx.filter = 'brightness(' + (M.light * lightFactor).toFixed(3) + ')';
@@ -1009,6 +1127,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     else { const [gx, gy] = frameXY(sp, fi); ctx.drawImage(img, gx, gy, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh); }
     ctx.restore(); ctx.filter = 'none';
     for (const o of front) drawOcc(o, now);
+    drawAnimals(true);
 
     if (amb) { breathe(dt, W, H); ambientOver(dt, W, H); }
     dayLight(W, H);
@@ -1180,7 +1299,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },

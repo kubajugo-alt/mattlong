@@ -2830,7 +2830,12 @@
     1195
    ],
    "baseline": 1194,
-   "prop": true
+   "prop": true,
+   "anim": {
+    "frames": 36,
+    "cols": 6,
+    "fps": 7
+   }
   },
   {
    "name": "counter",
