@@ -173,13 +173,14 @@
       if (E.door) { E.door('door', true, 0.5); setTimeout(() => E.door('door', false, 0.9), 1700); }   // the door opens, she comes in, it swings to
       // she's behind the right side of the doorway (clear of the leaf) when it opens, walks in facing us, comes over
       // to the sofa, turns to it and sits
-      const behind = E.doorPoint ? E.doorPoint('door', 0.72, 40) : A.door, out = E.doorPoint ? E.doorPoint('door', 0.72, -110) : A.door;
-      const turn = (sc.objects.find(o => o.name === 'inez-seated') || {}).acts || {};
+      // a couple of steps straight in, facing us, then she veers off toward the sofa (the three-quarter walk, at the
+      // angle she sits from) and sits
+      const behind = E.doorPoint ? E.doorPoint('door', 0.72, 40) : A.door, out = E.doorPoint ? E.doorPoint('door', 0.72, -75) : A.door;
+      const toward = A.sheets.left ? 'left' : 'front';
       inezWalk = sleep(E.door ? 300 : 0)
-        .then(() => E.door ? E.actorWalk('inez', 'front', behind, out, null, 1.1) : null)
-        .then(() => E.actorWalk('inez', 'front', E.door ? out : A.door, A.stand, E.door ? null : 'in', A.secs_in * 0.8))
-        .then(() => { STORY.hidden.delete('inez-seated'); return turn.turn ? E.anim('inez-seated', 'turn') : null; })
-        .then(() => E.anim('inez-seated', 'sit'));
+        .then(() => E.door ? E.actorWalk('inez', 'front', behind, out, null, 0.9) : null)
+        .then(() => E.actorWalk('inez', toward, E.door ? out : A.door, A.stand, E.door ? null : 'in', A.secs_in * 0.85))
+        .then(() => { STORY.hidden.delete('inez-seated'); return E.anim('inez-seated', 'sit'); });
     }
     if (a === 'sit') { if (inezWalk) await inezWalk; inezWalk = null; }
     if (a === 'stand') await E.anim('inez-seated', 'sit', true);

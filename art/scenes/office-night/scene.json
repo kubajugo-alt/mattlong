@@ -4351,18 +4351,6 @@
       94,
       0
      ]
-    },
-    "turn": {
-     "file": "occ/inez-seated-turn.webp",
-     "frames": 25,
-     "cols": 5,
-     "fps": 22.22,
-     "pad": [
-      40,
-      277,
-      94,
-      0
-     ]
     }
    }
   },
@@ -4743,6 +4731,17 @@
      "feet_x": 83.5,
      "feet_y": 515.3,
      "fig_h": 499.3
+    },
+    "left": {
+     "file": "actors/inez-walk-left.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 7.93,
+     "fw": 198,
+     "fh": 533,
+     "feet_x": 123.1,
+     "feet_y": 519.2,
+     "fig_h": 492.0
     }
    },
    "secs_in": 3.6,
