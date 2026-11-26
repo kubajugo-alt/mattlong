@@ -2744,6 +2744,20 @@
      0,
      44
     ]
+   },
+   "acts": {
+    "book": {
+     "file": "occ/lee-wing-book.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 7.93,
+     "pad": [
+      179,
+      0,
+      0,
+      0
+     ]
+    }
    }
   },
   {

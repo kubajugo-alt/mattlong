@@ -1363,7 +1363,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       // scene px around the bbox; `hold` s on the last frame before the idle comes back
       if (t >= m.frames / m.fps && !o.one.told) { o.one.told = true; o.one.done(); }       // the script goes on; the hold is drawn under it
       if (t < m.frames / m.fps + (m.hold || 0)) { const [l, tp, r, b] = m.pad || [0, 0, 0, 0], fw = w + l + r, fh = h + tp + b;
-        ctx.drawImage(m.img, (f % m.cols) * fw, Math.floor(f / m.cols) * fh, fw, fh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh); return; }
+        if (m.fade && t * m.fps > m.fade[0]) { const z = m.frames - 1;       // walking out of her frame: the last frame (her table, empty) under her, fading
+          ctx.drawImage(m.img, (z % m.cols) * fw, Math.floor(z / m.cols) * fh, fw, fh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh);
+          ctx.globalAlpha = Math.max(0, 1 - (t * m.fps - m.fade[0]) / (m.fade[1] - m.fade[0])); }
+        ctx.drawImage(m.img, (f % m.cols) * fw, Math.floor(f / m.cols) * fh, fw, fh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh); ctx.globalAlpha = 1; return; }
       const d = o.one.told ? null : o.one.done; o.one = null; o.playAt = now + 4000; if (d) d(); }
     if (o.anim) {
       // mostly still on the first frame; now and then play the idle loop once through

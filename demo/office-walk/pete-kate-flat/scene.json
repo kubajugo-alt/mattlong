@@ -4919,6 +4919,24 @@
      0,
      31
     ]
+   },
+   "acts": {
+    "leave": {
+     "file": "occ/kate-at-table-leave.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 9.19,
+     "pad": [
+      22,
+      365,
+      266,
+      0
+     ],
+     "fade": [
+      26,
+      31
+     ]
+    }
    }
   },
   {

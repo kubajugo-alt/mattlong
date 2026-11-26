@@ -2357,6 +2357,21 @@
      0,
      42
     ]
+   },
+   "acts": {
+    "book": {
+     "file": "occ/sol-book.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 10.41,
+     "pad": [
+      167,
+      0,
+      167,
+      0
+     ],
+     "hold": 1.4
+    }
    }
   },
   {
