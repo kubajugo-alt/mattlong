@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/sol-c55033d019.wav",
+    "duration": 4.56
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.07, "value": "X" },
+    { "start": 0.07, "end": 0.27, "value": "B" },
+    { "start": 0.27, "end": 0.66, "value": "D" },
+    { "start": 0.66, "end": 0.80, "value": "C" },
+    { "start": 0.80, "end": 1.01, "value": "B" },
+    { "start": 1.01, "end": 1.15, "value": "C" },
+    { "start": 1.15, "end": 1.22, "value": "F" },
+    { "start": 1.22, "end": 1.36, "value": "B" },
+    { "start": 1.36, "end": 1.44, "value": "A" },
+    { "start": 1.44, "end": 1.75, "value": "C" },
+    { "start": 1.75, "end": 1.82, "value": "B" },
+    { "start": 1.82, "end": 2.31, "value": "E" },
+    { "start": 2.31, "end": 2.53, "value": "C" },
+    { "start": 2.53, "end": 2.70, "value": "B" },
+    { "start": 2.70, "end": 2.91, "value": "G" },
+    { "start": 2.91, "end": 2.98, "value": "B" },
+    { "start": 2.98, "end": 3.19, "value": "C" },
+    { "start": 3.19, "end": 3.40, "value": "B" },
+    { "start": 3.40, "end": 3.55, "value": "X" },
+    { "start": 3.55, "end": 3.68, "value": "B" },
+    { "start": 3.68, "end": 4.45, "value": "E" },
+    { "start": 4.45, "end": 4.56, "value": "X" }
+  ]
+}

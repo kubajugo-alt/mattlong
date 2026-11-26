@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. A Chinese laundryman in 1930 New York, padded cotton jacket, flat cap, carrying a large wrapped bundle of laundry on his shoulder. Full figure from head to feet, seen exactly from the side, walking to the right mid-stride, the whole figure centred and filling about 85% of the frame height, on a completely flat pure chroma green (#00FF00) background with nothing else, no shadow on the ground.",
+  "refs": [
+    "art/rooms/final/doyers-street.png"
+  ],
+  "aspect": "9:16",
+  "size": "2K",
+  "created": "2026-11-26T10:32:53.206Z",
+  "usage": {
+    "promptTokenCount": 410,
+    "candidatesTokenCount": 1300,
+    "totalTokenCount": 1920,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 152
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 210,
+    "serviceTier": "standard"
+  }
+}

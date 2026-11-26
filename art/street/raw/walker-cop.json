@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3-pro-image",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. A 1930 New York beat policeman in a long dark greatcoat with brass buttons and a peaked cap, swinging a nightstick on its strap. Full figure from head to feet, seen exactly from the side, walking to the right mid-stride, the whole figure centred and filling about 85% of the frame height, on a completely flat pure chroma green (#00FF00) background with nothing else, no shadow on the ground.",
+  "refs": [
+    "art/rooms/final/doyers-street.png"
+  ],
+  "aspect": "9:16",
+  "size": "2K",
+  "created": "2026-11-26T10:32:45.709Z",
+  "usage": {
+    "promptTokenCount": 411,
+    "candidatesTokenCount": 1304,
+    "totalTokenCount": 1891,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 153
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1120
+      }
+    ],
+    "thoughtsTokenCount": 176,
+    "serviceTier": "standard"
+  }
+}

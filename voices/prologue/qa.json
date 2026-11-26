@@ -1986,5 +1986,327 @@
   "heard": "The radio company that doesn't ask for a retainer.",
   "ratio": 1.0,
   "extra_words": 0
+ },
+ "operator-c8f4ae775d": {
+  "file": "operator-c8f4ae775d.mp3",
+  "mtime": 1795689921.8400934,
+  "heard": "Number, please?",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "matt-de2f67cea2": {
+  "file": "matt-de2f67cea2.mp3",
+  "mtime": 1795689916.3471863,
+  "heard": "Spring 7, 3100.",
+  "ratio": 0.25,
+  "extra_words": -2
+ },
+ "operator-920419ee68": {
+  "file": "operator-920419ee68.mp3",
+  "mtime": 1795689922.5000935,
+  "heard": "I'm sorry, sir. That line is suspended for non-payment. Kindly call at the business office on West Street.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-4350506a4d": {
+  "file": "vo-4350506a4d.mp3",
+  "mtime": 1795689918.5563562,
+  "heard": "Police headquarters, and I couldn't even get through to them. Same as when I worked there.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "pete-abd4ed5c13": {
+  "file": "pete-abd4ed5c13.mp3",
+  "mtime": 1795689919.9440932,
+  "heard": "There he is, the man himself.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "pete-e829407ed7": {
+  "file": "pete-e829407ed7.mp3",
+  "mtime": 1795689923.051347,
+  "heard": "Matt, sit down before you fall down.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "kate-dfceaf3ee2": {
+  "file": "kate-dfceaf3ee2.mp3",
+  "mtime": 1795689923.3770123,
+  "heard": "Morning, Matthew. Wipe your feet.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "kate-85cb6e768c": {
+  "file": "kate-85cb6e768c.mp3",
+  "mtime": 1795689925.6849155,
+  "heard": "Matthew, the coffee's for paying guests. You're neither.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "matt-b9eedb4e6a": {
+  "file": "matt-b9eedb4e6a.mp3",
+  "mtime": 1795689927.6411133,
+  "heard": "Got one, kid. Still reading the bad news.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "newsboy-dd9e19a4a6": {
+  "file": "newsboy-dd9e19a4a6.mp3",
+  "mtime": 1795689928.6543026,
+  "heard": "There's more tomorrow, mister.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "matt-44201d4bf8": {
+  "file": "matt-44201d4bf8.mp3",
+  "mtime": 1795689930.3338087,
+  "heard": "Two cents. Don't spend it all on candy.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "newsboy-99a302390a": {
+  "file": "newsboy-99a302390a.mp3",
+  "mtime": 1795689932.810812,
+  "heard": "Thanks, mister. Crater's still missing. Page one.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-2aa6acdee3": {
+  "file": "vo-2aa6acdee3.mp3",
+  "mtime": 1795689934.9040942,
+  "heard": "Forty-one cents. I was a man of property.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "lee-095d8fb3f9": {
+  "file": "lee-095d8fb3f9.mp3",
+  "mtime": 1795689935.895917,
+  "heard": "I mean, cha, Mr. Long.",
+  "ratio": 0.6,
+  "extra_words": 0
+ },
+ "lee-c88e566cc0": {
+  "file": "lee-c88e566cc0.mp3",
+  "mtime": 1795689937.990512,
+  "heard": "Mr. Long, close the door. You are letting the winter in.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "sol-989cdb8148": {
+  "file": "sol-989cdb8148.mp3",
+  "mtime": 1795689937.7629862,
+  "heard": "No. Buying or selling?",
+  "ratio": 0.75,
+  "extra_words": 0
+ },
+ "sol-0f9b2ce923": {
+  "file": "sol-0f9b2ce923.mp3",
+  "mtime": 1795689942.1390338,
+  "heard": "Mr. Long, again. A lucky day it isn't.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "sol-00efc896d9": {
+  "file": "sol-00efc896d9.mp3",
+  "mtime": 1795689945.1664634,
+  "heard": "I look like a tobacconist? I look like a man with a cold. Gezundheit. Keep your cigarettes.",
+  "ratio": 0.914,
+  "extra_words": -1
+ },
+ "sol-184663a0e8": {
+  "file": "sol-184663a0e8.mp3",
+  "mtime": 1795689947.499819,
+  "heard": "No. Everything in this shop has a ticket, mister. No ticket, no story. And believe me, I've heard all the stories.",
+  "ratio": 0.952,
+  "extra_words": 0
+ },
+ "junkie-066a443575": {
+  "file": "junkie-066a443575.mp3",
+  "mtime": 1795689946.5113924,
+  "heard": "Keep walking, mister. Nothing back here.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "junkie-080cbe8351": {
+  "file": "junkie-080cbe8351.mp3",
+  "mtime": 1795689952.9534953,
+  "heard": "You a cop? You walk like a cop.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-a144c73b42": {
+  "file": "vo-a144c73b42.mp3",
+  "mtime": 1795689956.60693,
+  "heard": "43 cents. Two weeks' rent is 8 dollars. I did the arithmetic so Kate wouldn't have to.",
+  "ratio": 0.857,
+  "extra_words": -1
+ },
+ "vo-01451adfe7": {
+  "file": "vo-01451adfe7.mp3",
+  "mtime": 1795689957.7788467,
+  "heard": "Forty-one cents. The Clarion got the other two.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-710456d351": {
+  "file": "vo-710456d351.mp3",
+  "mtime": 1795689959.5667782,
+  "heard": "Half past four, and dark already. November doesn't waste daylight on men like me.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-ee4848d841": {
+  "file": "vo-ee4848d841.mp3",
+  "mtime": 1795689960.7381372,
+  "heard": "Going on three. The light was already giving up.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-cdd9cc5b1e": {
+  "file": "vo-cdd9cc5b1e.mp3",
+  "mtime": 1795689961.234989,
+  "heard": "Noon, near enough. The snow hadn't decided whether to stay.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-246fceda02": {
+  "file": "vo-246fceda02.mp3",
+  "mtime": 1795689961.5000956,
+  "heard": "20 past 9:00. The rent was due at 9:00. I keep to a schedule, just not the landlord's.",
+  "ratio": 0.789,
+  "extra_words": 2
+ },
+ "vo-81789a7511": {
+  "file": "vo-81789a7511.mp3",
+  "mtime": 1795689962.590455,
+  "heard": "Forty-three cents, a flask, and a key to an office I don't pay for.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-db5e472f9d": {
+  "file": "vo-db5e472f9d.mp3",
+  "mtime": 1795689962.629021,
+  "heard": "41 cents, a flask, and today's bad news.",
+  "ratio": 0.824,
+  "extra_words": -1
+ },
+ "vo-4d86085278": {
+  "file": "vo-4d86085278.mp3",
+  "mtime": 1795689963.2232516,
+  "heard": "Prohibition, the law of the land, and the land's the only thing that stays dry.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-3e05befe18": {
+  "file": "vo-3e05befe18.mp3",
+  "mtime": 1795689965.0835671,
+  "heard": "I struck a match and looked at the pack. Then I shook the match out. Those weren't cigarettes, they were currency.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-6303af802b": {
+  "file": "vo-6303af802b.mp3",
+  "mtime": 1795689963.722016,
+  "heard": "I counted it again. It didn't grow.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-764f2770df": {
+  "file": "vo-764f2770df.mp3",
+  "mtime": 1795689964.7729483,
+  "heard": "Standing around never paid the rent, although it's never been asked to.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-dd2fbb22fe": {
+  "file": "vo-dd2fbb22fe.mp3",
+  "mtime": 1795689965.2809186,
+  "heard": "Somewhere, a clock was ticking. It was probably mine.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-becc6473dc": {
+  "file": "vo-becc6473dc.mp3",
+  "mtime": 1795689965.5721238,
+  "heard": "I tipped my hat back and waited for an idea. Ideas don't take tips.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-7c3305beed": {
+  "file": "vo-7c3305beed.mp3",
+  "mtime": 1795689965.983892,
+  "heard": "My feet were cold. The trail was colder.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "sol-0f4420d8d2": {
+  "file": "sol-0f4420d8d2.mp3",
+  "mtime": 1795692353.843992,
+  "heard": "Hey, hey. That's my storeroom, not a hallway. You want the alley, you go round like a mensch.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "sol-954823c805": {
+  "file": "sol-954823c805.mp3",
+  "mtime": 1795692353.8068902,
+  "heard": "Out the front, mister. Customers use the front. The back is for my stock and my rats.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "sol-c55033d019": {
+  "file": "sol-c55033d019.mp3",
+  "mtime": 1795692353.1400056,
+  "heard": "Ugh. Again with the back door? Front door.",
+  "ratio": 0.875,
+  "extra_words": 0
+ },
+ "vo-34e149b2e3": {
+  "file": "vo-34e149b2e3.mp3",
+  "mtime": 1795692353.672094,
+  "heard": "Saul's back door, locked from his side usually. Not today.",
+  "ratio": 0.9,
+  "extra_words": 0
+ },
+ "sol-af99b13892": {
+  "file": "sol-af99b13892.mp3",
+  "mtime": 1795692356.273367,
+  "heard": "Again, through the back, like a rat in a coat. Gunif. You want I should call a cop?",
+  "ratio": 0.944,
+  "extra_words": 0
+ },
+ "matt-81dfae1365": {
+  "file": "matt-81dfae1365.mp3",
+  "mtime": 1795692363.0740051,
+  "heard": "Saul, I was a cop.",
+  "ratio": 0.8,
+  "extra_words": 0
+ },
+ "sol-e5205fa0ad": {
+  "file": "sol-e5205fa0ad.mp3",
+  "mtime": 1795692365.0936525,
+  "heard": "So? There's a law an ex-cop can't be a thief?",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "sol-1f09b0269b": {
+  "file": "sol-1f09b0269b.mp3",
+  "mtime": 1795692369.1636431,
+  "heard": "Gewalt! Who comes in through the back? Thieves come in through the back. Out! Out of my storeroom.",
+  "ratio": 0.944,
+  "extra_words": 0
+ },
+ "matt-7364f94650": {
+  "file": "matt-7364f94650.mp3",
+  "mtime": 1795692369.076504,
+  "heard": "Easy, Soul. It's me.",
+  "ratio": 0.75,
+  "extra_words": 0
+ },
+ "sol-7948785698": {
+  "file": "sol-7948785698.mp3",
+  "mtime": 1795692372.3121734,
+  "heard": "You, I'd lock the front door for. The back door, I nail shut. Next time, the front, like a human being.",
+  "ratio": 1.0,
+  "extra_words": 0
  }
 }

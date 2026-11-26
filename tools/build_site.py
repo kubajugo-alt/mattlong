@@ -20,7 +20,7 @@ for f in ['game.js', 'game.css']:
 shutil.copy(os.path.join(NM, 'inkjs/dist/ink.js'), os.path.join(SITE, 'ink.js'))
 # footsteps: each floor's ten steps packed into one file, one second apiece (the engine slices them; keeps the
 # page under its file limit)
-for floor in ('wood', 'tile', 'cobble'):
+for floor in ('wood', 'tile', 'cobble', 'slush'):
     parts = [os.path.join(SITE, 'sfx', f'steps-{floor}-{k}.mp3') for k in range(1, 11)]
     if all(os.path.exists(p) for p in parts):
         inputs = sum((['-i', p] for p in parts), [])
@@ -40,6 +40,25 @@ for f in os.listdir(os.path.join(ROOT, 'voices/prologue')):
     elif f.endswith('.json') and not f.startswith('qa'):
         cues[f[:-5]] = json.load(open(src))['mouthCues']          # every line's mouth cues in one file
 json.dump(cues, open(os.path.join(SITE, 'voice', 'cues.json'), 'w'), separators=(',', ':'))
+# pack the voice lines: one file per speaker (split at 8 MB), the offsets in lines.json; a few files instead of
+# hundreds (the claude.ai page holds at most 511 files)
+man = json.load(open(os.path.join(SITE, 'voice', 'lines.json')))
+groups = {}
+for i, v in sorted(man.items()):
+    groups.setdefault(v['file'].split('-')[0], []).append(v)
+for spk, vs in groups.items():
+    n, out, size = 1, None, 0
+    for v in vs:
+        src = os.path.join(SITE, 'voice', v['file'])
+        if not os.path.exists(src):
+            continue
+        b = open(src, 'rb').read()
+        if out is None or size + len(b) > 8e6:
+            if out: out.close()
+            name = f'pack-{spk}-{n}.mp3'; n += 1; out = open(os.path.join(SITE, 'voice', name), 'wb'); size = 0
+        v['pack'], v['off'], v['len'] = name, size, len(b); out.write(b); size += len(b); os.remove(src)
+    if out: out.close()
+json.dump(man, open(os.path.join(SITE, 'voice', 'lines.json'), 'w'), ensure_ascii=False)
 # compile the script
 ink = os.path.join(ROOT, 'game/ink/prologue.ink')
 js = """const { Compiler } = require('inkjs/compiler/Compiler'); const fs = require('fs'); const errs = [];

@@ -32,6 +32,9 @@ VAR case_taken = false         // P5 done
 VAR told_lee_where = false     // small, untracked choice in P4
 VAR has_cup = false          // Matt took the spare cup off Kate's table (coffee needs a cup)
 VAR had_coffee = false
+VAR cents = 43               // Matt's loose change (the Clarion costs two cents)
+VAR has_paper = false
+VAR back_way_once = false     // Matt has come into Sol's through the back once already
 VAR radio_on = false         // the office radio is playing
 VAR mask = 0                   // The Mask: +1 honest, -1 guarded (bible: feeds 3.1, 3.2, the epilogue)
 
@@ -163,7 +166,12 @@ VO: A licence to investigate, issued by the State of New York. It doesn't say wh
 VO: The telephone. The phone company and I aren't speaking.
 -> DONE
 = use
-VO: Dead. Same as my credit.
+~ act("sfx:phone-pickup")
+OPERATOR: Number, please?
+MATT: Spring seven, three one hundred.
+OPERATOR: I'm sorry, sir. That line is suspended for non-payment. Kindly call at the business office on West Street.
+~ act("sfx:phone-hangup")
+VO: Police headquarters, and I couldn't even get through to them. Same as when I worked there.
 -> DONE
 
 === office__sofa ===
@@ -346,6 +354,9 @@ VO: A clean cup on a saucer, set out for whoever turns up. Usually it's me.
 VO: Today's Clarion, folded to Pete's page. Kate reads it from the front, Pete from his own byline.
 -> DONE
 = use
+-> read_news
+
+=== read_news ===
 {cycle:
     - VO: "Crater Still Missing." A Supreme Court justice hails a cab on West Forty-Fifth Street in August and is never seen again. Three months, and the police have a reward poster and a shrug.
     - VO: "Seabury Widens Magistrates' Inquiry." Talk of vice cops framing women in the Women's Court, and bondsmen splitting the bail. Somewhere in this city, a detective is wondering if his name comes up next.
@@ -355,6 +366,7 @@ VO: Today's Clarion, folded to Pete's page. Kate reads it from the front, Pete f
     - VO: "Mooring Mast Rises Atop Empire State." A dock for airships, a quarter of a mile above Fifth Avenue. The city can't pay its rent, but it can build a ladder to heaven.
     - VO: "Half a Million Out of Work in City." The Prosser committee asks everyone with a job to give a day's pay. Most people I know haven't had a day's pay to give since summer.
 }
+
 -> DONE
 
 === item__coffee_cup ===
@@ -414,6 +426,9 @@ VO: The air shaft. Pete calls it "the view". Pete calls a lot of things a lot of
 // ---- PETE ---------------------------------------------------------------------------------------------
 
 === flat__pete ===
+= notice
+{~PETE: There he is! The man himself.|PETE: Matt! Sit down before you fall down.}
+-> DONE
 = look
 VO: Pete Duckerton, crime reporter. Thirty-five going on fifteen. Hat on the back of his head, even indoors.
 -> DONE
@@ -490,6 +505,9 @@ PETE: So. You walked out on the Clarion wake before the second bottle. Where'd y
 // ---- KATE ---------------------------------------------------------------------------------------------
 
 === flat__kate ===
+= notice
+{~KATE: Morning, Matthew. Wipe your feet.|KATE: Matthew. The coffee's for paying guests. You're neither.}
+-> DONE
 = look
 VO: Kate Duckerton. Accountant. The only person in this building who knows what day it is and what it costs.
 -> DONE
@@ -595,9 +613,26 @@ VO: The kid sells the Clarion on this corner every morning. Pete tips him a nick
 -> DONE
 = talk
 NEWSBOY: Paper, mister? Two cents!
-MATT: I've got a friend who writes it. I get it for free and it still costs me.
-NEWSBOY: Then you owe me two cents for the joke.
--> DONE
+{has_paper:
+    MATT: Got one, kid. Still reading the bad news.
+    NEWSBOY: There's more tomorrow, mister!
+    -> DONE
+}
+* [Two cents. Here.]
+    ~ cents -= 2
+    ~ has_paper = true
+    ~ act("sfx:paper")
+    ~ act("give:clarion")
+    MATT: Two cents. Don't spend it all on candy.
+    NEWSBOY: Thanks, mister! Crater's still missing, page one!
+    VO: Forty-one cents. I was a man of property.
+    -> DONE
+* [Pete writes for it. I read it free.]
+    MATT: I've got a friend who writes it. I get it for free and it still costs me.
+    NEWSBOY: Then you owe me two cents for the joke.
+    -> DONE
+= change
+-> doyers__newsboy.talk
 
 === doyers__far_street_lamp ===
 = look
@@ -620,6 +655,9 @@ VO: Lee's things stay where Lee puts them.
 -> DONE
 
 === tea__lee_wing ===
+= notice
+{~LEE: Ah Ming, cha! ... Mr. Long.|LEE: Mr. Long. Close the door, you are letting the winter in.}
+-> DONE
 = look
 VO: Lee Wing. My landlord. He knows what everybody on Doyers Street owes, to the penny and the favour.
 -> DONE
@@ -682,8 +720,8 @@ SOL: You break it, you bought it. You look at it, I'm watching.
 VO: The back door. Out to the alley, where the Bowery keeps what it doesn't want seen.
 -> DONE
 = use
-~ act("go:alley")
-~ act("sfx:door")
+// Sol's back room is not a hallway: Matt goes out the front and round by the passage
+{~SOL: Hey! Hey! That's my storeroom, not a hallway. You want the alley, you go round like a mensch.|SOL: Out the front, mister. Customers use the front. The back is for my stock and my rats.|SOL: Nu, again with the back door? Front. Door.}
 -> DONE
 
 === pawn__sols_ledger ===
@@ -710,6 +748,9 @@ VO: Violins. You pawn the violin when the band's let you go. You pawn the case w
 -> DONE
 
 === pawn__sol ===
+= notice
+{~SOL: Nu? Buying or selling?|SOL: Mr. Long. Again. A lucky day it isn't.}
+-> DONE
 = look
 VO: Sol Abramowitz. He's seen every hard-luck story on the Bowery, and he gave most of them a ticket.
 -> DONE
@@ -720,7 +761,7 @@ VO: Sol Abramowitz. He's seen every hard-luck story on the Bowery, and he gave m
 = pawn_ticket
 -> sol_redeem
 = cigarettes
-SOL: I look like a tobacconist? I look like a man with a cold. Keep your cigarettes.
+SOL: I look like a tobacconist? I look like a man with a cold. Gey gezunt, keep your cigarettes.
 -> DONE
 = flask
 SOL: At this hour? Put it away, I'm a respectable crook.
@@ -729,7 +770,7 @@ SOL: At this hour? Put it away, I'm a respectable crook.
 === sol_hub ===
 * [You've got a book of Lee Wing's.]
     MATT: You've got a book back there. Cloth cover, Chinese writing. It belongs to Lee Wing.
-    SOL: Everything in this shop has a ticket, mister. No ticket, no story. And believe me... I've heard all the stories.
+    SOL: Nu, everything in this shop has a ticket, mister. No ticket, no story. And believe me... I've heard all the stories.
     ~ sol_refused = true
     ~ act("journal:need-ticket")
     -> sol_hub
@@ -773,9 +814,23 @@ VO: Whatever's in there can stay in there.
 -> DONE
 
 === alley__back_door ===
+= look
+VO: Sol's back door. Locked from his side, usually. Not today.
+-> DONE
 = use
+// in through Sol's back room: he lets him stay, at the top of his voice
 ~ act("go:pawnshop")
 ~ act("sfx:door")
+{back_way_once:
+    SOL: Again! Through the back, like a rat in a coat! Gonif! You want I should call a cop?
+    MATT: Sol, I was a cop.
+    SOL: So? There's a law, an ex-cop can't be a thief?
+- else:
+    SOL: Gevalt! Who comes in through the back? Thieves come in through the back! Out! Out of my storeroom!
+    MATT: Easy, Sol. It's me.
+    SOL: You, I'd lock the front door for. The back door, I nail shut. Next time, the front, like a human being!
+    ~ back_way_once = true
+}
 -> DONE
 
 === alley__rag_heap ===
@@ -784,6 +839,9 @@ VO: Rags and newspapers. Somebody's bed. Somebody's whole estate.
 -> DONE
 
 === alley__junkie ===
+= notice
+{~JUNKIE: Keep walking, mister. Nothing back here.|JUNKIE: You a cop? You walk like a cop.}
+-> DONE
 = look
 VO: A thin kid in a coat too big for him. Shaking, and not only from the cold.
 -> DONE
@@ -1022,6 +1080,65 @@ VO: Captain Michael Harlan, Medical Corps. Steady eyes. The kind of man who does
 === item__key ===
 = look
 VO: His door key. West Eighty-Fourth Street. A key to a door nobody's answered in nine days.
+-> DONE
+
+=== item__change ===
+= look
+{cents >= 43:
+    VO: Forty-three cents. Two weeks' rent is eight dollars. I did the arithmetic so Kate wouldn't have to.
+- else:
+    VO: Forty-one cents. The Clarion got the other two.
+}
+-> DONE
+
+=== item__clarion ===
+= look
+-> read_news
+
+// ---- Matt himself: the eye checks the pocket watch, the hand pats his pockets; items used on himself ----
+=== matt_self ===
+= look
+~ act("sfx:watch-open")
+{
+- book_returned:
+    VO: Half past four, and dark already. November doesn't waste daylight on men like me.
+- met_lee:
+    VO: Going on three. The light was already giving up.
+- kate_gone:
+    VO: Noon, near enough. The snow hadn't decided whether to stay.
+- else:
+    VO: Twenty past nine. The rent was due at nine. I keep to a schedule. Just not the landlord's.
+}
+-> DONE
+= use
+{cents >= 43:
+    VO: Forty-three cents, a flask, and a key to an office I don't pay for.
+- else:
+    VO: Forty-one cents, a flask, and today's bad news.
+}
+-> DONE
+= flask
+~ act("sfx:flask-swig")
+VO: Prohibition. The law of the land, and the land's the only thing that stays dry.
+-> DONE
+= cigarettes
+~ act("sfx:match-strike")
+VO: I struck a match and looked at the pack. Then I shook the match out. Those weren't cigarettes. They were currency.
+-> DONE
+= clarion
+-> read_news
+= change
+VO: I counted it again. It didn't grow.
+-> DONE
+
+=== matt_idle ===
+// when the player leaves Matt standing a while
+{cycle:
+    - VO: Standing around never paid the rent. Although it's never been asked to.
+    - VO: Somewhere a clock was ticking. It was probably mine.
+    - VO: I tipped my hat back and waited for an idea. Ideas don't take tips.
+    - VO: My feet were cold. The trail was colder.
+}
 -> DONE
 
 === item__default ===

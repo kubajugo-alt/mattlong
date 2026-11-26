@@ -1,0 +1,33 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "prompt": "Make a third matching companion to the two reference images (the eye medallion and the hand medallion): exactly the same round medallion — the same pale grey disc, the same thin double Art Deco ring with small diamonds at top, bottom, left and right, the same size, position, engraving style and lighting, strict greyscale. Inside the disc: a man's mouth, lips slightly parted as if speaking, with the chin and the lower edge of the nose, drawn in the same fine engraved, softly painted style with clear ink linework. On a completely flat pure chroma green (#00FF00) background, nothing else. Game interface verb icon meaning TALK, readable at 48 pixels.",
+  "refs": [
+    "art/ui/raw/verb-eye.png",
+    "art/ui/raw/verb-hand.png"
+  ],
+  "aspect": "1:1",
+  "size": "2K",
+  "created": "2026-11-26T11:21:39.491Z",
+  "usage": {
+    "promptTokenCount": 660,
+    "candidatesTokenCount": 2027,
+    "totalTokenCount": 2687,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 144
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 516
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1680
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

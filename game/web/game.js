@@ -14,9 +14,9 @@
     'alley:back-door': 'alley__back_door.use', 'pawnshop:front-door': 'pawn__front_door.use', 'tea-house:bead-curtain': 'tea__default.use',
     'tea-house:laundry': 'tea__default.use', 'office-night:door': 'office__default.use' };
   const PEOPLE = { pete: 'pete', kate: 'kate', 'lee-wing': 'lee', sol: 'sol', junkie: 'junkie', 'inez-seated': 'inez', newsboy: 'newsboy' };
-  const NAME = { VO: '', MATT: 'Matt', PETE: 'Pete', KATE: 'Kate', LEE: 'Lee Wing', SOL: 'Sol', JUNKIE: 'The kid', INEZ: 'Inéz', NEWSBOY: 'Newsboy' };
+  const NAME = { VO: '', MATT: 'Matt', PETE: 'Pete', KATE: 'Kate', LEE: 'Lee Wing', SOL: 'Sol', JUNKIE: 'The kid', INEZ: 'Inéz', NEWSBOY: 'Newsboy', OPERATOR: 'Operator' };
   const ITEMS = { 'eviction-notice': 'Eviction notice', flask: 'Hip flask', cigarettes: "Pete's cigarettes", 'pawn-ticket': 'Pawn ticket 4417',
-    'account-book': "Lee Wing's account book", money: 'Fifty dollars', 'coffee-cup': "Kate's spare cup", 'michael-photo': 'Photo of Michael', key: "Michael's door key" };
+    'account-book': "Lee Wing's account book", money: 'Fifty dollars', 'coffee-cup': "Kate's spare cup", change: 'Loose change', clarion: 'The Evening Clarion', 'michael-photo': 'Photo of Michael', key: "Michael's door key" };
   const JOURNAL = {
     'lee-book': ['Rent', "Lee Wing's account book was stolen from the tea house on Tuesday night. Thirty years of who owes him what. Get it back and he might forget the rent."],
     'find-book': ['Rent', 'Lee: bring the book to his counter and the rent can wait two weeks. A thin boy in a big coat was seen running toward the Bowery.'],
@@ -27,8 +27,11 @@
     'lead-apartment': ['Case: Capt. Michael Harlan', 'He never takes leave, and the Army is not worried. Somebody is lying, or has been told to. Start where he lived.'],
   };
   let story, lines = {}, paths = new Set(), busy = false, skip = null, pendingActs = [], CUES = {};
-  const G = { inv: ['flask'], journal: [], notebook: true, seenFlat: false, selected: null };
-  const STORY = E.STORY; STORY.talking = () => busy; STORY.hidden = new Set(['inez-seated']); STORY.hiddenHot = new Set();
+  const G = { inv: ['flask', 'change'], journal: [], notebook: true, seenFlat: false, selected: null };
+  const STORY = E.STORY; STORY.talking = () => busy;
+  // the time of day the scenes are lit for, from where the story has got to
+  STORY.phase = () => { if (!story) return 'morning'; const v = story.variablesState;
+    return v.book_returned ? 'dusk' : v.met_lee ? 'afternoon' : v.kate_gone ? 'noon' : 'morning'; }; STORY.hidden = new Set(['inez-seated']); STORY.hiddenHot = new Set();
 
   // ---------------------------------------------------------------- UI
   const hud = document.querySelector('.hud');
@@ -135,6 +138,21 @@
   const flash = (el) => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); };
 
   // ---------------------------------------------------------------- running the script
+  // the built site packs the voice lines into a few files (voice/pack-*.mp3, offsets in lines.json): a line is
+  // fetched as a byte range; where the host ignores ranges, the pack is fetched once and sliced
+  const packs = {};
+  async function voiceSrc(v) {
+    if (!v.pack) return 'voice/' + v.file;
+    try {
+      if (!packs[v.pack]) {
+        const r = await fetch('voice/' + v.pack, { headers: { Range: 'bytes=' + v.off + '-' + (v.off + v.len - 1) } });
+        if (r.status === 206) return URL.createObjectURL(new Blob([await r.arrayBuffer()], { type: 'audio/mpeg' }));
+        packs[v.pack] = r.arrayBuffer();
+      }
+      const buf = await packs[v.pack];
+      return URL.createObjectURL(new Blob([buf.slice(v.off, v.off + v.len)], { type: 'audio/mpeg' }));
+    } catch (e) { return 'voice/' + v.file; }
+  }
   async function speak(line) {
     const m = line.match(/^([A-Z]+):\s*(.*)$/); if (!m) return;
     const [, sp, text] = m; showCaption(sp, text);
@@ -143,7 +161,7 @@
     let done;
     const skipP = new Promise(r => { skip = r; });
     if (id) { const v = lines.__man[id];
-      done = E.sayFile(who, 'voice/' + v.file, v.cues ? (CUES[id] || null) : null).then(() => sleep(250)); }
+      done = voiceSrc(v).then(src => E.sayFile(who, src, v.cues ? (CUES[id] || null) : null)).then(() => sleep(250)); }
     else done = sleep(1200 + text.length * 45);
     await Promise.race([done, skipP]); skip = null; E.stopTalk();
   }
@@ -201,7 +219,9 @@
     const fx = ev ? (ev.clientX - st.left) / st.width : x / sz[0], fy = ev ? (ev.clientY - st.top) / st.height : y / sz[1];
     verbs.style.left = Math.min(94, Math.max(6, fx * 100)) + '%'; verbs.style.top = (fy * 100) + '%';
     verbs.classList.toggle('below', fy < 0.2);     // near the top edge, open below the pointer
-    verbs.querySelector('[data-v=use]').setAttribute('aria-label', PEOPLE[h.id] ? 'Talk to ' + h.name : 'Use ' + h.name);
+    // people get the mouth (talk) instead of the hand: touching them is rare, talking is the point
+    const ub = verbs.querySelector('[data-v=use]'); ub.setAttribute('aria-label', PEOPLE[h.id] ? 'Talk to ' + h.name : 'Use ' + h.name);
+    ub.querySelector('img').src = PEOPLE[h.id] ? 'ui/verb-mouth.webp' : 'ui/verb-hand.webp';
     verbs.querySelector('[data-v=look]').setAttribute('aria-label', 'Look at ' + h.name);
     pick = { h, x, y }; verbs.hidden = false;
   }
@@ -228,6 +248,7 @@
   }
   function goDo(h, path) {
     if (PEOPLE[h.id]) {
+      noticed.add(E.room() + ':' + h.id);          // he came to talk: no separate greeting
       const [x, y] = talkSpot(h), cx = (h.bbox[0] + h.bbox[2]) / 2;
       E.walkTo(x, y, () => { E.face(cx); run(path); });
       return;
@@ -239,6 +260,7 @@
     const b = ev.target.closest('button'); if (!b || !pick) return;
     ev.stopPropagation();
     const { h, x, y } = pick; closeVerbs();
+    if (h.id === 'matt') { run(b.dataset.v === 'look' ? 'matt_self.look' : 'matt_self.use'); return; }     // his watch, his pockets
     if (b.dataset.v === 'look') { run(knotFor(h.id, 'look')); return; }
     const path = knotFor(h.id, 'use');
     const scripted = !/__default\.use$/.test(path) && path !== 'item__default.use';
@@ -249,6 +271,11 @@
     if (busy) { if (skip) skip(); return true; }
     note.hidden = true;
     if (!verbs.hidden) { closeVerbs(); return true; }          // a click away from the verbs just closes them
+    lastInput = performance.now();
+    if (mattAt(x, y)) {                                         // Matt himself: his watch and pockets, or an item on himself
+      if (G.selected) { const it = G.selected.replace(/-/g, '_'); run(has('matt_self.' + it) ? 'matt_self.' + it : 'item__default.use'); select(null); return true; }
+      const H = E.figureH(E.M.y); openVerbs({ id: 'matt', name: 'Matt', bbox: [E.M.x - H * 0.2, E.M.y - H, E.M.x + H * 0.2, E.M.y] }, x, y, ev); return true;
+    }
     const h = E.hotAt(x, y);
     if (h && G.selected) { goDo(h, knotFor(h.id, 'use')); return true; }
     if (h) { openVerbs(h, x, y, ev); return true; }
@@ -261,7 +288,25 @@
     const k = EXIT_KNOT[room + ':' + exn]; if (!k) return false;
     run(k); return true;
   };
+  // Matt is clickable: his figure, a third as wide as he is tall
+  function mattAt(x, y) { const H = E.figureH(E.M.y); return H > 0 && Math.abs(x - E.M.x) < H * 0.17 && y < E.M.y && y > E.M.y - H * 0.97; }
+  // people notice him: the first time he comes near someone in a visit, they say so (knot <room>__<who>.notice)
+  let noticed = new Set(), lastInput = performance.now();
+  setInterval(() => {
+    if (!story || busy || !verbs.hidden || E.busyRoom()) return;
+    const sc = E.scene(); if (!sc) return; const room = E.room(), H = E.figureH(E.M.y);
+    for (const h of sc.hot) {
+      if (!PEOPLE[h.id] || noticed.has(room + ':' + h.id) || (h.id === 'kate' && STORY.kateGone)) continue;
+      const knot = PFX[room] + '__' + h.id.replace(/-/g, '_') + '.notice'; if (!has(knot)) continue;
+      const cx = (h.bbox[0] + h.bbox[2]) / 2, dx = Math.max(0, Math.abs(E.M.x - cx) - (h.bbox[2] - h.bbox[0]) / 2), dy = Math.abs(E.M.y - h.bbox[3]);
+      if (dx < H * 0.45 && dy < H * 0.5) { noticed.add(room + ':' + h.id); run(knot); return; }
+    }
+    // left standing a while, Matt thinks out loud
+    if (performance.now() - lastInput > 45000 && !E.M.moving) { lastInput = performance.now(); run('matt_idle'); }
+  }, 300);
+  cv.addEventListener('pointerdown', () => { lastInput = performance.now(); });
   E.hooks.entered = (room) => {
+    noticed = new Set([...noticed].filter(k => !k.startsWith(room + ':')));      // a new visit: they can notice him again
     if (room === 'pete-kate-flat' && !G.seenFlat && story) { G.seenFlat = true; setTimeout(() => run('flat_enter'), 0); }
   };
   cap.addEventListener('click', () => skip && skip());

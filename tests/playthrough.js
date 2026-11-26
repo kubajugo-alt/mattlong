@@ -10,7 +10,7 @@ const URL = process.argv[2] || 'http://localhost:8765/';
   await p.goto(URL); await p.waitForSelector('.gcard.open .cardbtn', { timeout: 30000 });
   await p.click('.gcard.open .cardbtn');                              // title: Begin
   await p.waitForSelector('.gcard.open .cardbtn', { timeout: 15000 }); await p.click('.gcard.open .cardbtn');   // Prologue card
-  const state = () => p.evaluate(() => ({ room: ENGINE.room(), busy: document.body.classList.contains('busy'), moving: ENGINE.M.moving || ENGINE.M.path.length > 0,
+  const state = () => p.evaluate(() => ({ room: ENGINE.room(), busy: document.body.classList.contains('busy'), moving: ENGINE.M.moving || ENGINE.M.path.length > 0 || ENGINE.busyRoom(),
     choices: [...document.querySelectorAll('.dlg.open li button')].map(x => x.textContent), cap: document.querySelector('.cap.on')?.textContent || '',
     inv: [...document.querySelectorAll('#inv .slot')].map(x => x.getAttribute('aria-label')), card: !!document.querySelector('.gcard.open') }));
   // wait until the game is idle, skipping lines and answering choices from `picks` (prefix match)
@@ -58,7 +58,8 @@ const URL = process.argv[2] || 'http://localhost:8765/';
   await hot('lee-wing', ['And the rent']);
   s = await exit('street'); s = await exit('pawnshop-door'); expect(s.room === 'pawnshop', 'in the pawnshop');
   await hot('sol', ["You've got", 'Who', 'Just']);
-  s = await hot('back-door'); expect(s.room === 'alley', 'in the alley');
+  s = await hot('back-door'); expect(s.room === 'pawnshop', 'Sol keeps him out of the back room');
+  s = await exit('front-door'); s = await exit('passage'); expect(s.room === 'alley', 'round to the alley by the passage');
   await hot('junkie', ['You pawned', 'Forget']);
   s = await useItem("Pete's cigarettes", 'junkie', ['Lee Wing knows']); expect(s.inv.includes('Pawn ticket 4417'), 'got the ticket');
   s = await exit('back-door'); expect(s.room === 'pawnshop', 'back in the pawnshop');

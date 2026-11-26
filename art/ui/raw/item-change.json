@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. A small loose pile of 1930 American coins: two dimes, a nickel, some copper pennies, a worn quarter, lying flat. Only these coins, centred, filling about 70% of the frame, seen from slightly above, with a soft contact shadow, on a completely flat pure chroma green (#00FF00) background with nothing else. It is a game inventory icon: clear silhouette, readable when small.",
+  "refs": [
+    "art/rooms/final/office-day.png"
+  ],
+  "aspect": "1:1",
+  "size": "2K",
+  "created": "2026-11-26T10:47:22.061Z",
+  "usage": {
+    "promptTokenCount": 407,
+    "candidatesTokenCount": 2003,
+    "totalTokenCount": 2410,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 149
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1680
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}

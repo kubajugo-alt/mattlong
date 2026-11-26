@@ -123,7 +123,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const occ = await Promise.all(sc.objects.map(async o => ({ ...o, phase: Math.random() * 36, img: await load(base + 'occ/' + o.name + '.webp'),
       faceImg: o.face ? await load(base + 'occ/' + o.name + '-face.webp') : null })));
     let hj = { hotspots: [] }; try { const r = await fetch(base + 'hotspots.json'); if (r.ok) hj = await r.json(); } catch (e) {}
-    const hot = hj.hotspots.map(h => ({ ...h, paths: h.polygons.map(pl => { const p = new Path2D(); pl.forEach(([x, y], i) => i ? p.lineTo(x, y) : p.moveTo(x, y)); p.closePath(); return p; }) }));
+    const toPath = (pl) => { const p = new Path2D(); pl.forEach(([x, y], i) => i ? p.lineTo(x, y) : p.moveTo(x, y)); p.closePath(); return p; };
+    // polygons: what a click hits (forgiving); outline: the object's traced silhouette, drawn by the torch
+    const hot = hj.hotspots.map(h => ({ ...h, paths: h.polygons.map(toPath), outlinePaths: (h.outline || h.polygons).map(toPath) }));
     // brightness of the painted floor, to light Matt like his surroundings
     const lc = document.createElement('canvas'); lc.width = 344; lc.height = 192; const lx = lc.getContext('2d'); lx.drawImage(bg, 0, 0, 344, 192);
     const lum = lx.getImageData(0, 0, 344, 192).data;
@@ -162,7 +164,25 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 
   // ---- walkable grid and A*
   const G = 4;                                     // grid cell = 4 mask px = 16 scene px
-  function walkable(x, y) { const m = S.walk, s = S.sc.walk.scale; const i = Math.floor(x / s), j = Math.floor(y / s); return i >= 0 && j >= 0 && i < m.w && j < m.h && m.m[j * m.w + i] === 1; }
+  function walkable(x, y) { const m = S.walk, s = S.sc.walk.scale; const i = Math.floor(x / s), j = Math.floor(y / s);
+    return i >= 0 && j >= 0 && i < m.w && j < m.h && m.m[j * m.w + i] === 1 && !blockedBy(x, y); }
+  // furniture and people stand on the floor: Matt's feet keep out of a strip along each one's front line (the
+  // object plus half his width either side, about a stride deep), so he walks round a table or a seated person,
+  // never through them. Rugs (floor), small things on tables (no_shadow) and whoever isn't there (gone) don't block.
+  function blockedBy(x, y) {
+    for (const o of S.occ) {
+      if (!o.prop || o.floor || o.no_shadow || gone(o)) continue;
+      if (o.block) { for (const r of o.block) if (x > r[0] && x < r[2] && y > r[1] && y < r[3]) return true; continue; }   // an explicit footprint (a chair out in the room)
+      const H = heightAt(o.baseline); if (H <= 0) continue;
+      const pad = H * 0.13;
+      if (x < o.bbox[0] - pad || x > o.bbox[2] + pad) continue;
+      let b = o.baseline;
+      if (o.baseline_cols) { const c = o.baseline_cols, k = Math.round((Math.min(o.bbox[2] - 1, Math.max(o.bbox[0], x)) - o.bbox[0]) / o.baseline_step);
+        for (let d = 0; d < c.length; d++) { const v = c[Math.min(c.length - 1, k + d)] ?? c[Math.max(0, k - d)]; if (v != null) { b = v; break; } } }
+      if (y > b - H * 0.2 && y < b + H * 0.06) return true;
+    }
+    return false;
+  }
   function nearestWalkable(x, y) {
     if (walkable(x, y)) return [x, y];
     for (let r = 8; r < 900; r += 8) for (let a = 0; a < 24; a++) { const t = a / 24 * Math.PI * 2, px = x + Math.cos(t) * r, py = y + Math.sin(t) * r * 0.6; if (walkable(px, py)) return [px, py]; }
@@ -209,7 +229,27 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   function hotAt(x, y) { let best = null; for (const h of S.hot) { if (hotGone(h)) continue; if (x < h.bbox[0] || x > h.bbox[2] || y < h.bbox[1] || y > h.bbox[3]) continue;
       if (h.paths.some(p => hitCtx.isPointInPath(p, x, y)) && (!best || h.z > best.z)) best = h; } return best; }
   let hover = null;
-  cv.addEventListener('pointermove', (ev) => { if (!S) return; const [x, y] = toScene(ev); hover = hotAt(x, y); });     // the cursor doesn't change over hotspots: that would give them away
+  // the torch: a soft glow round each live hotspot's traced outline, and a fainter one over each exit, drawn once
+  // per room (and again when something in it comes or goes) at half scale, blurred
+  const TORCH = { key: null, c: null };
+  function torchGlow(W, H) {
+    const live = S.hot.filter(h => !hotGone(h)), key = room + ':' + live.map(h => h.id).join(',');
+    if (TORCH.key === key && TORCH.c) return TORCH.c;
+    const c = TORCH.c || document.createElement('canvas'); c.width = W / 2; c.height = H / 2; const x = c.getContext('2d');
+    x.clearRect(0, 0, c.width, c.height); x.save(); x.scale(0.5, 0.5); x.lineJoin = 'round';
+    x.filter = 'blur(10px)'; x.strokeStyle = 'rgba(255,250,235,0.75)'; x.lineWidth = 20; x.fillStyle = 'rgba(255,250,235,0.14)';
+    for (const h of live) h.outlinePaths.forEach(p => { x.fill(p); x.stroke(p); });
+    x.filter = 'blur(4px)'; x.strokeStyle = 'rgba(255,255,255,0.35)'; x.lineWidth = 4;
+    for (const h of live) h.outlinePaths.forEach(p => x.stroke(p));
+    x.filter = 'blur(14px)'; x.fillStyle = 'rgba(255,250,235,0.12)';
+    for (const e of Object.values(S.sc.exits)) x.fillRect(e.bbox[0], e.bbox[1], e.bbox[2] - e.bbox[0], e.bbox[3] - e.bbox[1]);
+    x.restore(); TORCH.key = key; TORCH.c = c; return c;
+  }
+  let hoverExit = null;
+  cv.addEventListener('pointermove', (ev) => { if (!S) return; const [x, y] = toScene(ev); hover = hotAt(x, y);
+    hoverExit = hover ? null : (Object.values(S.sc.exits).find(e => x > e.bbox[0] && x < e.bbox[2] && y > e.bbox[1] && y < e.bbox[3]) || null); });
+  // where an exit leads, as its label says it
+  const exitLabel = (e) => '\u2192 ' + (e.to === 'map' ? 'the Bowery' : (NAMES[e.to] || e.to)).replace(/^the /, 'the ');     // the cursor doesn't change over hotspots: that would give them away
   cv.addEventListener('pointerleave', () => { hover = null; });
   // ---- input
   function toScene(ev) { const r = cv.getBoundingClientRect(); const px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height;
@@ -233,6 +273,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
 
   // ---- lights and shadows
+  // cast shadows as soft as the painted ones: a light core and a wide, dissolved spread
+  const SHADOW_PASSES = [{ a: 0.45, b: 0.6 }, { a: 0.55, b: 2.6 }];
   function shadowParams(px = M.x, py = M.y, h = heightAt(M.y)) {
     const W = S.sc.size[0], H = S.sc.size[1], out = [];
     for (const L of S.sc.lights) {
@@ -409,12 +451,123 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     // low mist drifting through the alley
     if (A.mist) { for (let i = 0; i < 4; i++) { const x = ((ambT * (8 + i * 3) + i * 700) % (W + 800)) - 400, y = H * (0.62 + i * 0.07);
       ctx.globalAlpha = 0.045; ctx.drawImage(puff(), x - 400, y - 60, 800, 120); } ctx.globalAlpha = 1; }
-    // a few slow snowflakes
-    if (A.snow) { while (flakes.length < A.snow) flakes.push({ x: Math.random(), y: Math.random(), z: 0.3 + Math.random() * 0.7, ph: Math.random() * 6 });
-      ctx.fillStyle = '#f4f4f4';
-      for (const f of flakes) { f.y += dt * 0.035 * f.z; f.x += dt * 0.006 * Math.sin(ambT * 0.7 + f.ph); if (f.y > 1) { f.y = 0; f.x = Math.random(); }
-        ctx.globalAlpha = 0.5 * f.z; ctx.beginPath(); ctx.arc(f.x * W, f.y * H, 1.2 + 2.6 * f.z, 0, 6.283); ctx.fill(); }
-      ctx.globalAlpha = 1; }
+    // snow: three depths (far fine flakes, mid, a few large soft ones near the camera), heavier as the day goes on
+    if (A.snow) snowfall(dt, W, H, A.snow);
+    ctx.restore();
+  }
+  // ---- weather and the time of day ----------------------------------------------------------------------------
+  // the story's phase (set by the game from the script): morning in the office and the flat, noon on the street,
+  // a grey afternoon after Lee, dusk once the book is back
+  const phaseNow = () => (STORY.phase ? STORY.phase() : 'morning');
+  const SNOW_RATE = { morning: 0.7, noon: 1, afternoon: 1.35, dusk: 1.1 };
+  const SNOW = { flakes: [], wind: 0 };
+  function snowfall(dt, W, H, base) {
+    const want = Math.round(base * 9 * (SNOW_RATE[phaseNow()] || 1));
+    while (SNOW.flakes.length < want) SNOW.flakes.push(newFlake(true));
+    if (SNOW.flakes.length > want) SNOW.flakes.length = want;
+    SNOW.wind = 0.5 * noise1(ambT / 6) + 0.25;
+    ctx.save(); ctx.fillStyle = '#f2f2f2';
+    for (const f of SNOW.flakes) {
+      f.y += dt * f.v; f.x += dt * (SNOW.wind * 0.02 * f.z + 0.012 * Math.sin(ambT * f.w + f.ph)) ;
+      if (f.y > 1.02 || f.x > 1.05 || f.x < -0.05) Object.assign(f, newFlake(false));
+      const r = f.z < 0.85 ? 2.2 + 7 * f.z : 16 + 18 * (f.z - 0.85) / 0.15;
+      if (f.z >= 0.85) { ctx.globalAlpha = 0.38; ctx.filter = 'blur(' + (r * 0.35 * PX.k).toFixed(1) + 'px)'; }
+      else { ctx.globalAlpha = 0.45 + 0.45 * f.z; ctx.filter = f.z > 0.55 ? 'blur(' + (0.8 * PX.k).toFixed(1) + 'px)' : 'none'; }
+      ctx.beginPath(); ctx.arc(f.x * W, f.y * H, r, 0, 6.283); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function newFlake(anywhere) {
+    const z = Math.random() < 0.06 ? 0.85 + Math.random() * 0.15 : Math.pow(Math.random(), 1.6) * 0.85;
+    return { x: Math.random() * 1.1 - 0.05, y: anywhere ? Math.random() : -0.03 - Math.random() * 0.05, z, v: 0.025 + 0.09 * z, w: 0.6 + Math.random(), ph: Math.random() * 6 };
+  }
+  // snow seen through the windows of the rooms indoors (clipped to the mapped window shapes)
+  const WIN_SNOW = { 'office-day': [[[2256, 690, 2462, 872], 0]], 'office-night': [[[2256, 690, 2462, 872], 0]], 'pete-kate-flat': [['window', 0]],
+                     'tea-house': [['street-window', 0]], corridor: [['end-window', 0]], pawnshop: [[[0, 40, 400, 1060], 0]] };
+  const winFlakes = Array.from({ length: 160 }, () => ({ x: Math.random(), y: Math.random(), z: Math.random(), ph: Math.random() * 6 }));
+  function windowSnow(dt, W, H) {
+    const list = WIN_SNOW[room]; if (!list || !S) return;
+    const rate = SNOW_RATE[phaseNow()] || 1;
+    ctx.save(); ctx.fillStyle = mode === 'night' ? '#f4f4f4' : '#6e6e72';     // against a bright sky, snow reads darker
+    for (const [id, topCut] of list) {
+      let bb, paths = null;
+      if (Array.isArray(id)) bb = id; else { const h = S.hot.find(q => q.id === id); if (!h) continue; bb = h.bbox; paths = h.paths; }
+      const y0 = bb[1] + (bb[3] - bb[1]) * topCut;
+      ctx.save(); ctx.beginPath(); ctx.rect(bb[0], y0, bb[2] - bb[0], bb[3] - y0); ctx.clip();
+      if (paths) { const pp = new Path2D(); paths.forEach(q => pp.addPath(q)); ctx.clip(pp); }
+      const n = Math.min(winFlakes.length, Math.round((bb[2] - bb[0]) * (bb[3] - y0) / 1400 * rate));
+      for (let i = 0; i < n; i++) { const f = winFlakes[i];
+        f.y += dt * (0.05 + 0.08 * f.z); f.x += dt * 0.01 * Math.sin(ambT * 0.8 + f.ph); if (f.y > 1) { f.y = 0; f.x = Math.random(); }
+        ctx.globalAlpha = (0.4 + 0.5 * f.z) * (mode === 'night' ? 0.8 : 0.9);
+        ctx.beginPath(); ctx.arc(bb[0] + f.x * (bb[2] - bb[0]), bb[1] + f.y * (bb[3] - bb[1]), 2 + 4.5 * f.z, 0, 6.283); ctx.fill(); }
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  // breath in the cold: Matt's, and the people standing outdoors
+  const OUTDOOR = { 'doyers-street': 1, alley: 1 };
+  const BREATH = { list: [], matt: 1.5, npc: {} };
+  function breathe(dt, W, H) {
+    if (!OUTDOOR[room]) { BREATH.list.length = 0; return; }
+    const talkingMatt = TALK.who === 'matt';
+    BREATH.matt -= dt * (talkingMatt ? 2.2 : 1);
+    if (BREATH.matt <= 0) {
+      const h = heightAt(M.y), side = M.dir === 'side', dir = side ? (M.flip ? -1 : 1) : 0;
+      BREATH.list.push({ x: M.x + par(M.y) + dir * h * 0.05, y: M.y - h * 0.885, vx: dir * h * 0.06 + (Math.random() - 0.5) * h * 0.02, s: h * 0.05, t: 0 });
+      BREATH.matt = 2.6 + Math.random() * 1.8;
+    }
+    for (const o of S.occ) { const fm = o.face && (o.face.mouth || (o.face.eyes && [o.face.eyes[0], o.face.eyes[1] + o.face.eyes[3] * 1.7, o.face.eyes[2], o.face.eyes[3]]));
+      if (!fm || gone(o)) continue;
+      const k = o.name; BREATH.npc[k] = (BREATH.npc[k] === undefined ? Math.random() * 3 : BREATH.npc[k]) - dt * (TALK.who && o.name.startsWith(TALK.who) ? 2.2 : 1);
+      if (BREATH.npc[k] <= 0) { const [mx, my, mw, mh] = fm, h = o.bbox[3] - o.bbox[1];
+        BREATH.list.push({ x: o.bbox[0] + mx + mw / 2 + parAt(o.bbox[0] + mx, o.baseline), y: o.bbox[1] + my + mh / 2, vx: h * 0.04, s: h * 0.045, t: 0 });
+        BREATH.npc[k] = 2.8 + Math.random() * 2; } }
+    ctx.save();
+    for (let i = BREATH.list.length - 1; i >= 0; i--) { const b = BREATH.list[i]; b.t += dt; if (b.t > 1.8) { BREATH.list.splice(i, 1); continue; }
+      const k = b.t / 1.8, r = b.s * (0.5 + k * 2.4);
+      ctx.globalAlpha = 0.38 * Math.min(1, b.t * 6) * (1 - k);
+      ctx.drawImage(puff(), b.x + b.vx * b.t * 1.2 - r, b.y - b.s * 0.6 * b.t - r, r * 2, r * 2); }
+    ctx.restore();
+  }
+  // the day's light: outdoors it greys and darkens toward dusk, indoors a little; at dusk the gas lamps carry the street
+  const GRADE = { morning: [0, 0, 0], noon: [0.04, 0.03, 0.02], afternoon: [0.13, 0.09, 0.06], dusk: [0.42, 0.05, 0.2] };
+  function dayLight(W, H) {
+    if (room === 'office-night') return;
+    const g = GRADE[phaseNow()] || GRADE.morning, out = !!OUTDOOR[room];
+    const dark = out ? g[0] : g[2], flat = out ? g[1] : g[1] * 0.5;
+    if (dark <= 0 && flat <= 0) return;
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+    if (flat > 0) { ctx.fillStyle = 'rgba(128,128,128,' + flat + ')'; ctx.fillRect(0, 0, cv.width, cv.height); }
+    if (dark > 0) { ctx.fillStyle = 'rgba(8,8,10,' + dark + ')'; ctx.fillRect(0, 0, cv.width, cv.height); }
+    ctx.restore();
+    if (phaseNow() === 'dusk' && out) {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for (const L of (ROOM_AMB[room] || {}).lamps || []) {
+        const x = L.x + parAt(L.x, L.y), gr = ctx.createRadialGradient(x, L.y, 0, x, L.y, L.reach * 1.4);
+        gr.addColorStop(0, 'rgba(255,250,240,0.55)'); gr.addColorStop(0.25, 'rgba(255,250,240,0.18)'); gr.addColorStop(1, 'rgba(255,250,240,0)');
+        ctx.fillStyle = gr; ctx.fillRect(x - L.reach * 1.4, L.y - L.reach * 1.4, L.reach * 2.8, L.reach * 2.8); }
+      ctx.restore();
+    }
+  }
+  // people crossing the far end of Doyers Street (Gemini-painted, walking right; flipped to walk left)
+  const WALKERS = { list: [], next: 3, imgs: null, h: 92 };
+  function streetWalkers(dt, W, H) {
+    if (!WALKERS.imgs) { WALKERS.imgs = []; for (const n of ['laundryman', 'cop', 'woman']) load('sprites/walker-' + n + '.webp').then(i => WALKERS.imgs.push(i)); }
+    WALKERS.next -= dt;
+    if (WALKERS.next <= 0 && WALKERS.imgs.length) {
+      const img = WALKERS.imgs[Math.floor(Math.random() * WALKERS.imgs.length)], dir = Math.random() < 0.5 ? 1 : -1;
+      const h = WALKERS.h * (0.92 + Math.random() * 0.12), w = img.width * h / img.height, x0 = CARS.area[0] * W - w, x1 = CARS.area[1] * W + w;
+      WALKERS.list.push({ img, dir, h, w, x: dir > 0 ? x0 : x1, end: dir > 0 ? x1 : x0, v: 34 + Math.random() * 12, ph: Math.random() * 6, y: CARS.ground * H + 4 + Math.random() * 6 });
+      WALKERS.next = 6 + Math.random() * 14;
+    }
+    if (!WALKERS.list.length) return;
+    const L = CARS.area[0] * W, R = CARS.area[1] * W, gy = CARS.ground * H;
+    ctx.save(); ctx.beginPath(); ctx.rect(L, gy - 200, R - L, 214); ctx.clip();
+    for (let i = WALKERS.list.length - 1; i >= 0; i--) { const k = WALKERS.list[i]; k.x += k.dir * k.v * dt; k.ph += dt * 7.5;
+      if ((k.dir > 0 && k.x > k.end) || (k.dir < 0 && k.x < k.end)) { WALKERS.list.splice(i, 1); continue; }
+      const bob = Math.abs(Math.sin(k.ph)) * k.h * 0.025, sway = Math.sin(k.ph) * 0.025;
+      ctx.save(); ctx.translate(k.x + par(k.y), k.y - bob); ctx.rotate(sway * k.dir); ctx.scale(k.dir, 1);
+      ctx.filter = 'brightness(0.8) contrast(0.88)'; ctx.drawImage(k.img, -k.w / 2, -k.h, k.w, k.h); ctx.restore(); }
     ctx.restore();
   }
   function ambientOver(dt, W, H) {          // dust in the light, in front of everything
@@ -479,13 +632,14 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     // the radio is a neighbour's upstairs: the bed sits at the stairwell
     corridor:        { room: [0.95, 0.32], beds: [['bed-corridor', 0.9, [1568, 1098]]], floor: 'wood', shots: [] },
     'pete-kate-flat':{ room: [0.40, 0.18], beds: [['bed-flat', 0.9, [275, 1500]]], floor: 'wood',
-                       shots: [['el-train', 80, 160, 0.3, [352, 700], 700]] },
-    'doyers-street': { room: [1.3, 0.14], beds: [['bed-street', 1.0, null]], floor: 'cobble',
-                       shots: [['car-horn', 30, 80, 0.45, [1050, 880]], ['el-train', 60, 130, 0.6, [1110, 900]]] },
-    // nobody else is drawn in the tea house: no voices, no cups; washing-up in the back room behind the bead curtain
-    'tea-house':     { room: [0.70, 0.22], beds: [['bed-tea', 0.9, [2100, 1250]]], floor: 'tile',
-                       shots: [['dishes', 35, 80, 0.5, [1137, 1036], 2500]] },
-    pawnshop:        { room: [0.55, 0.16], beds: [['bed-pawn', 0.9, [900, 1046]]], floor: 'wood', shots: [['clock-chime', 25, 60, 0.6, [900, 1046]]] },
+                       shots: [['el-train', 80, 160, 0.3, [352, 700], 700], ['page-turn', 18, 45, 0.4, [960, 900], 0, 'kate-at-table'], ['paper', 30, 70, 0.35, [1900, 1100], 0, 'pete-seated']] },
+    'doyers-street': { room: [1.3, 0.14], beds: [['bed-street', 1.0, null]], floor: 'slush',
+                       shots: [['car-horn', 30, 80, 0.45, [1050, 880]], ['el-train', 60, 130, 0.6, [1110, 900]], ['cantonese-distant', 25, 60, 0.4, [1100, 900], 3500]] },
+    // regulars talk Cantonese over their tea in the back room behind the bead curtain; Lee works his abacus
+    'tea-house':     { room: [0.70, 0.22], beds: [['bed-tea', 0.9, [2100, 1250]], ['bed-tea-chatter', 0.55, [1137, 900]]], floor: 'tile',
+                       shots: [['dishes', 35, 80, 0.5, [1137, 1036], 2500], ['abacus', 20, 50, 0.45, [2180, 1000], 0, 'lee-wing']] },
+    pawnshop:        { room: [0.55, 0.16], beds: [['bed-pawn', 0.9, [900, 1046]]], floor: 'wood',
+                       shots: [['clock-chime', 25, 60, 0.6, [900, 1046]], ['rubber-stamp', 25, 60, 0.5, [1790, 860], 0, 'sol'], ['bowery-voices', 30, 70, 0.4, [480, 700], 2200]] },
     alley:           { room: [1.1, 0.30], beds: [['bed-alley', 1.0, null]], floor: 'cobble',
                        shots: [['bin-lid', 25, 60, 0.55, [1650, 1264]], ['el-train', 60, 130, 0.5, [1045, 1059]]] },
   };
@@ -657,9 +811,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (!AU.ac) return;
     if (!AU.roomOn || !AU.roomOn.startsWith(room + ':')) roomSound(room);
     const R = SND[room] || {}, t = now / 1000, W = S.sc.size[0];
-    for (const [n, lo, hi, v, pos, lpMax] of R.shots || []) {
+    for (const [n, lo, hi, v, pos, lpMax, needs] of R.shots || []) {
       if (AU.next[n] === undefined) AU.next[n] = t + lo * (0.3 + Math.random() * 0.7);
-      if (t > AU.next[n]) { shot(n, v, pos, 0.95 + Math.random() * 0.1, lpMax || 0); AU.next[n] = t + lo + Math.random() * (hi - lo); }
+      if (t > AU.next[n]) { const o = needs && S.occ.find(q => q.name === needs);        // a person's sound only while they're there
+        if (!needs || (o && !gone(o))) shot(n, v, pos, 0.95 + Math.random() * 0.1, lpMax || 0); AU.next[n] = t + lo + Math.random() * (hi - lo); }
     }
     for (const b of AU.beds) if (b.pos) steer(b.c, spatial(b.pos), 0.3);      // beds never fade below 30 %
     radioTick(); musicFor(room); musicTick();
@@ -804,9 +959,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.save(); ctx.translate(par(M.y), 0);
     ctx.globalCompositeOperation = 'source-over';
     ctx.save();
-    for (const p of shadowParams()) for (const pass of [{ a: 0.55, b: 0.25 }, { a: 0.6, b: 1.6 }]) {
+    for (const p of shadowParams()) for (const pass of SHADOW_PASSES) {
       ctx.save();
-      ctx.globalAlpha = Math.min(0.85, p.a * pass.a * 1.6); ctx.filter = 'blur(' + Math.max(0.5, p.blur * pass.b * k).toFixed(1) + 'px)';
+      ctx.globalAlpha = Math.min(0.45, p.a * pass.a * 0.85); ctx.filter = 'blur(' + Math.max(0.5, p.blur * pass.b * k).toFixed(1) + 'px)';
       // local frame: origin at the feet, sprite y up; (0,-h) maps to the shadow tip (vx, vy)
       ctx.transform(fx, 0, -p.vx / h, -p.vy / h, M.x, M.y);
       ctx.drawImage(sil, -sp.feet_x * sc, -feetY * sc, dw, dh);
@@ -818,14 +973,15 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       const w = o.bbox[2] - o.bbox[0], ph = o.bbox[3] - o.bbox[1], ax = (o.bbox[0] + o.bbox[2]) / 2, ay = o.baseline;
       if (!o.sil) { const c = document.createElement('canvas'); c.width = w; c.height = ph; const x = c.getContext('2d');
         x.drawImage(o.img, 0, 0, w, ph, 0, 0, w, ph); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height); o.sil = c; }
-      for (const p of shadowParams(ax, ay, ph)) for (const pass of [{ a: 0.55, b: 0.25 }, { a: 0.6, b: 1.6 }]) {
-        ctx.save(); ctx.globalAlpha = Math.min(0.85, p.a * pass.a * 1.6); ctx.filter = 'blur(' + Math.max(0.5, p.blur * pass.b * k).toFixed(1) + 'px)';
+      for (const p of shadowParams(ax, ay, ph)) for (const pass of SHADOW_PASSES) {
+        ctx.save(); ctx.globalAlpha = Math.min(0.45, p.a * pass.a * 0.85); ctx.filter = 'blur(' + Math.max(0.5, p.blur * pass.b * k).toFixed(1) + 'px)';
         ctx.translate(par(ay), 0); ctx.transform(1, 0, -p.vx / ph, -p.vy / ph, ax, ay);
         ctx.drawImage(o.sil, o.bbox[0] - ax, -ph, w, ph); ctx.restore(); }
     }
     // keep shadows only on the floor: redraw the non-floor background over them
     maskShadow();
-    if (room === 'doyers-street') streetTraffic(dt, W, H);   // after the shadow mask: the far street is not floor
+    if (document.getElementById('ambient').checked) windowSnow(dt, W, H);   // after the mask (it repaints the walls and windows)
+    if (room === 'doyers-street') { streetWalkers(dt, W, H); streetTraffic(dt, W, H); }   // after the shadow mask: the far street is not floor
 
     // occlusion: objects whose baseline (at Matt's x) is below his feet are drawn after him
     // the object's front line at Matt's feet: per-column (sloped counters, legged furniture); beside the
@@ -854,12 +1010,18 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.restore(); ctx.filter = 'none';
     for (const o of front) drawOcc(o, now);
 
-    if (amb) ambientOver(dt, W, H);
+    if (amb) { breathe(dt, W, H); ambientOver(dt, W, H); }
+    dayLight(W, H);
     // hotspot overlay: all outlines when the torch is on; the name of the one under the pointer
     const showHot = document.getElementById('showHot').checked;
+    if (hoverExit && !hover) {      // exits name where they lead
+      ctx.save(); ctx.font = '500 34px Jost, system-ui, sans-serif'; const t = exitLabel(hoverExit), tw = ctx.measureText(t).width, e = hoverExit.bbox;
+      const lx = Math.min(W - tw - 30, Math.max(10, (e[0] + e[2]) / 2 - tw / 2)), ly = Math.max(50, Math.min(H - 20, e[1] + 44));
+      ctx.fillStyle = 'rgba(10,10,12,.8)'; ctx.fillRect(lx - 12, ly - 38, tw + 24, 50); ctx.fillStyle = '#f2efe9'; ctx.fillText(t, lx, ly); ctx.restore();
+    }
     if (showHot || hover) {
       ctx.save(); ctx.lineJoin = 'round';
-      if (showHot) { ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,255,255,.45)'; for (const h of S.hot) if (!hotGone(h)) h.paths.forEach(p => ctx.stroke(p)); }
+      if (showHot) ctx.drawImage(torchGlow(W, H), 0, 0, W, H);
       if (hover) {     // no outline on hover (the torch is the opt-in hint): just the name, as in the classic adventures
         ctx.font = '500 34px Jost, system-ui, sans-serif'; const tw = ctx.measureText(hover.name).width;
         const lx = Math.min(W - tw - 30, Math.max(10, (hover.bbox[0] + hover.bbox[2]) / 2 - tw / 2)), ly = Math.max(50, hover.bbox[1] - 18);
@@ -1018,7 +1180,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { enter, plainWalk, radio, figureH: (y) => heightAt(y), face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },

@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/sol-e5205fa0ad.wav",
+    "duration": 3.76
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.05, "value": "X" },
+    { "start": 0.05, "end": 0.39, "value": "B" },
+    { "start": 0.39, "end": 0.53, "value": "E" },
+    { "start": 0.53, "end": 0.74, "value": "H" },
+    { "start": 0.74, "end": 0.95, "value": "B" },
+    { "start": 0.95, "end": 1.02, "value": "C" },
+    { "start": 1.02, "end": 1.16, "value": "B" },
+    { "start": 1.16, "end": 1.90, "value": "E" },
+    { "start": 1.90, "end": 2.20, "value": "C" },
+    { "start": 2.20, "end": 2.27, "value": "B" },
+    { "start": 2.27, "end": 2.41, "value": "D" },
+    { "start": 2.41, "end": 2.48, "value": "C" },
+    { "start": 2.48, "end": 2.56, "value": "A" },
+    { "start": 2.56, "end": 2.82, "value": "C" },
+    { "start": 2.82, "end": 2.90, "value": "A" },
+    { "start": 2.90, "end": 3.04, "value": "B" },
+    { "start": 3.04, "end": 3.11, "value": "C" },
+    { "start": 3.11, "end": 3.46, "value": "B" },
+    { "start": 3.46, "end": 3.60, "value": "G" },
+    { "start": 3.60, "end": 3.76, "value": "X" }
+  ]
+}

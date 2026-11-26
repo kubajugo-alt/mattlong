@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3.1-flash-image-preview",
+  "prompt": "Painted illustration in exactly the same hand-painted style as the reference image: 1930 New York film noir, strict greyscale (no colour at all), soft painterly brushwork, fine ink linework, one soft light from the upper left, rich mid greys. A Chinese woman in 1930 New York in a dark padded winter coat and headscarf, carrying a string bag of groceries with cabbage. Full figure from head to feet, seen exactly from the side, walking to the right mid-stride, the whole figure centred and filling about 85% of the frame height, on a completely flat pure chroma green (#00FF00) background with nothing else, no shadow on the ground.",
+  "refs": [
+    "art/rooms/final/doyers-street.png"
+  ],
+  "aspect": "9:16",
+  "size": "2K",
+  "created": "2026-11-26T10:32:46.232Z",
+  "usage": {
+    "promptTokenCount": 410,
+    "candidatesTokenCount": 2007,
+    "totalTokenCount": 2417,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 152
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 258
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1680
+      }
+    ],
+    "serviceTier": "standard"
+  }
+}
