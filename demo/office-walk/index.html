@@ -155,7 +155,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (S.sc.doors && from) { let en = back && Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === back);
       if (!(en && S.sc.doors[en])) { en = Object.keys(S.sc.doors).find(k2 => S.sc.doors[k2].from === from);       // a door that isn't an exit (the pawnshop's back door)
         const sd = en && S.sc.doors[en].stand; if (sd) { const p2 = nearestWalkable(sd[0], sd[1]); if (p2) [M.x, M.y] = p2; } }
-      if (en && S.sc.doors[en]) { const st = doorState(en); st.a = 1; st.t = 0; st.v = 1 / 0.7; st.delay = 0.9;
+      if (en && S.sc.doors[en]) { const st = doorState(en); st.a = 1; st.t = 0; st.v = 1 / 0.7; st.delay = performance.now() + 900;
         // straight out of the middle of the doorway, then a step aside to where he stands (clear of the door and of anyone near it)
         const D = S.sc.doors[en], I = doorInfo(D), stand = [M.x, M.y], out = [I.inside[0], Math.min(M.y, I.sillAt(I.inside[0]) + 70)];
         [M.x, M.y] = I.inside; M.passing = false;
@@ -186,13 +186,20 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     M.dir = a.dir; if (a.dir === 'side' && tx != null) M.flip = tx < M.x;
     return new Promise(res => { M.act = { sp, img: actImgs[name], t0: performance.now(), done: res }; });
   }
+  // the script's exits: Matt, at the door's stand point, goes through the doorway; resolves false where there's no door
+  function passDoor(en) {
+    const D = S.sc.doors && S.sc.doors[en], ex = S.sc.exits[en]; if (!D || !ex) return Promise.resolve(false);
+    const I = doorInfo(D); M.exiting = ex; M.passing = true; doorSet(en, true, 0.3);
+    M.path = [[I.inside[0], Math.max(M.y, I.sillAt(I.inside[0]) + 20)], I.inside];
+    return new Promise(res => { M.passDone = res; });
+  }
   // ---- doors that open: the closed leaf is cut from the painting (scene json `doors`: {exit: {leaf: [x0,y0,x1,y1],
   // hinge: 'left'|'right', beyond: {room, crop: [x0,y0,x1,y1], tone}}}); open, it swings away from us on its hinge (narrower,
   // its free edge smaller toward the eye line, darker as it turns from the light) and the doorway shows a dimmed piece
   // of the room beyond, from that room's own painting. Nobody appears in, or vanishes from, a shut door.
   const DOORS = {}, BEYOND = {};
   function doorState(name) { const k = room + ':' + name; return DOORS[k] || (DOORS[k] = { a: 0, t: 0, v: 2, delay: 0 }); }
-  function doorSet(name, open, secs = 0.6, delay = 0) { if (!S.sc.doors || !S.sc.doors[name]) return; const st = doorState(name); st.t = open ? 1 : 0; st.v = 1 / secs; st.delay = delay; }
+  function doorSet(name, open, secs = 0.6, delay = 0) { if (!S.sc.doors || !S.sc.doors[name]) return; const st = doorState(name); st.t = open ? 1 : 0; st.v = 1 / secs; st.delay = performance.now() + delay * 1000; }   // on the clock, like the walks it is timed against
   // a leaf is a rectangle [x0,y0,x1,y1] or, on a wall seen at an angle, a quad [[tl],[tr],[br],[bl]]
   const quadOf = (L) => typeof L[0] === 'number' ? [[L[0], L[1]], [L[2], L[1]], [L[2], L[3]], [L[0], L[3]]] : L;
   const FRONT = {};
@@ -226,7 +233,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (!S.sc.doors) return;
     for (const [name, D] of Object.entries(S.sc.doors)) {
       const st = doorState(name);
-      if (st.delay > 0) st.delay -= dt; else if (st.a !== st.t) st.a = st.t > st.a ? Math.min(st.t, st.a + dt * st.v) : Math.max(st.t, st.a - dt * st.v);
+      if (performance.now() < st.delay) {} else if (st.a !== st.t) st.a = st.t > st.a ? Math.min(st.t, st.a + dt * st.v) : Math.max(st.t, st.a - dt * st.v);
       if (st.a <= 0.002) continue;
       const e = st.a * st.a * (3 - 2 * st.a), th = e * 1.35, c = Math.cos(th), sn = Math.sin(th);   // up to ~77 degrees
       const q = quadOf(D.leaf), left = D.hinge !== 'right', hor = S.sc.horizon * H;
@@ -276,18 +283,27 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     for (let i = GHOSTS.length - 1; i >= 0; i--) { const g = GHOSTS[i], a = 1 - (now - g.t0) / 1000 / g.secs;
       if (g.room !== room || a <= 0) { GHOSTS.splice(i, 1); continue; }
       if ((g.o.baseline > M.y) !== frontPass) continue;
-      const o = g.o, m = g.m, w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1], [l, tp, r, b] = m.pad || [0, 0, 0, 0], fw = w + l + r, fh = h + tp + b;
+      const o = g.o, m = g.m, w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1], [l, tp, r, b] = m.pad || [0, 0, 0, 0], fw = w + l + r, fh = h + tp + b, sw = Math.round(fw * (m.res || 1)), sh = Math.round(fh * (m.res || 1));
       ctx.save(); ctx.translate(par(o.baseline), 0); ctx.globalAlpha = a;
-      ctx.drawImage(m.img, (g.f % m.cols) * fw, Math.floor(g.f / m.cols) * fh, fw, fh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh); ctx.restore(); }
+      ctx.drawImage(m.img, (g.f % m.cols) * sw, Math.floor(g.f / m.cols) * sh, sw, sh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh); ctx.restore(); }
   }
   async function actorWalk(name, sheet, from, to, fade, secs, opt = {}) {
     const a = S.sc.actors && S.sc.actors[name]; if (!a) return;
     const m = a.sheets[sheet]; if (!m.img) m.img = await (m.loading || load(room + '/' + m.file));
-    // walking into or out of the picture is mostly depth, which the floor's px-per-metre at one height can't measure: the
-    // scene gives the time (`secs`), else a guess from the distance
-    const len = Math.hypot(to[0] - from[0], (to[1] - from[1]) * 3) / pxPerM((from[1] + to[1]) / 2);
-    return new Promise(res => ACT.push({ a, m, from, to, t0: performance.now(), dur: (secs || len / (a.speed || 1.1)) * 1000, fade, flip: m.flip, done: res, room, fadeIn: opt.fadeIn || 0, ease: opt.ease || 0, stay: !!opt.stay, name }));
+    // the time comes from the ground distance and the sheet's cadence, so the feet don't slide (`secs` overrides);
+    // an eased start is slower on average, so it takes longer to reach the same pace
+    const dur = (secs || actorSecs(a, m, from, to) / (1 - (opt.ease || 0) / 2)) * 1000;
+    return new Promise(res => ACT.push({ a, m, from, to, t0: performance.now(), dur, fade, flip: m.flip, done: res, room, fadeIn: opt.fadeIn || 0, ease: opt.ease || 0, stay: !!opt.stay, name, lv: null }));
   }
+  // metres along the floor between two points: across from the px-per-metre, into the picture from the depth of each
+  // point (a figure's feet at y stand f·eye/(y − horizon) metres away)
+  function groundM(a, b) {
+    const hor = S.sc.horizon * S.sc.size[1], e = S.sc.eye_m, f = S.sc.focal || S.sc.size[0] * 0.9;
+    const ya = Math.max(a[1], hor + 40), yb = Math.max(b[1], hor + 40);
+    return Math.hypot((b[0] - a[0]) / pxPerM((ya + yb) / 2), f * e * (1 / (ya - hor) - 1 / (yb - hor)));
+  }
+  // a sheet's pace: `steps` per second at its fps, a stride of 0.6 of the figure's height in metres
+  function actorSecs(a, m, from, to) { return groundM(from, to) / (m.steps ? m.steps * (a.stride || 0.6 * (a.hm || 1)) : (a.speed || 1.0)); }
   // where an actor is now and which frame shows: shared by the shadow pass and the figure pass
   function actorAt(r, now) {
     const u = Math.min(1, (now - r.t0) / r.dur), q = r.ease;
@@ -311,7 +327,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const { x, y, f, sc, al } = actorAt(r, now), m = r.m;
     ctx.save(); ctx.globalAlpha = al;
     ctx.translate(x + par(y), y); if (r.flip) ctx.scale(-1, 1);
-    ctx.drawImage(lit('act:' + r.m.file, m.img, (f % m.cols) * m.fw, Math.floor(f / m.cols) * m.fh, m.fw, m.fh, r.a.light === false ? 1 : lightFactor), -m.feet_x * sc, -m.feet_y * sc, m.fw * sc, m.fh * sc);
+    ctx.drawImage(lit('act:' + r.m.file, m.img, (f % m.cols) * m.fw, Math.floor(f / m.cols) * m.fh, m.fw, m.fh, (r.a.light === false ? 1 : lightFactor) * (r.lv || 1)), -m.feet_x * sc, -m.feet_y * sc, m.fw * sc, m.fh * sc);
     ctx.restore();
   }
   function actorsTick(now) {                    // arrivals and departures, once a frame before anything is drawn
@@ -319,8 +335,15 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       const u = Math.min(1, (now - r.t0) / r.dur);
       if (r.ended && !r.stay) { ACT.splice(i, 1); continue; }         // gone the frame after it arrived
       if (u >= 1 && !r.ended) { r.ended = true; r.done(); }           // arrived: drawn here once more while the next walk starts
-      r.inDoor = doorAt(...(() => { const p = actorAt(r, now); return [p.x, p.y]; })()); }
+      const p = actorAt(r, now); r.inDoor = doorAt(p.x, p.y);
+      const ref = r.a.ref || r.a.stand || r.a.start, D = r.inDoor && S.sc.doors[r.inDoor];
+      let t = ref ? floorLight(p.x, p.y) / floorLight(ref[0], ref[1]) : 1;
+      if (D) t = (D.beyond && D.beyond.tone) || 0.72;                    // in the doorway: the corridor's light, not the floor's
+      t = Math.max(0.55, Math.min(1.2, t)); const dt = Math.min(0.1, (now - (r.lt || now)) / 1000); r.lt = now;
+      r.lv = r.lv == null ? t : r.lv + (t - r.lv) * Math.min(1, dt * 4); }
   }
+  // the light on a figure standing at x, y, as Matt's (without the smoothing)
+  const floorLight = (x, y) => Math.min(1.15, Math.max(mode === 'night' ? 0.22 : 0.55, 0.45 + floorBrightness(x, y) * (mode === 'night' ? 1.6 : 0.9)));
   function drawActors(now, frontPass) {
     drawGhosts(now, frontPass);
     for (const r of ACT) { if (r.room !== room || r.inDoor) continue;
@@ -1247,7 +1270,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
     const W = S.sc.size[0], H = S.sc.size[1];
     if (M.exiting && S.sc.doors) { const en = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting);       // he reaches for the door
-      if (en && S.sc.doors[en] && Math.hypot(M.x - M.exiting.stand[0], M.y - M.exiting.stand[1]) < H * 0.3) doorSet(en, true, 0.45); }
+      if (en && S.sc.doors[en] && groundM([M.x, M.y], M.exiting.stand) < 0.9) doorSet(en, true, 0.45); }
     // move: 1.3 m/s, scaled by depth
     if (M.path.length) {
       const [tx, ty] = M.path[0], dx = tx - M.x, dy = ty - M.y, d = Math.hypot(dx, dy);
@@ -1258,11 +1281,15 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       M.phase = (M.phase + step / pxPerM(M.y) / 1.5) % 1; M.moving = true;
       if (!M.path.length) { M.moving = false; status.textContent = 'Click the floor';
         if (M.onArrive) { const f = M.onArrive; M.onArrive = null; f(); }
-        if (M.exiting && ENGINE.hooks.exit && !M.passing) { const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || ''; if (ENGINE.hooks.exit(room, exn, M.exiting)) { M.exiting = null; doorSet(exn, false, 0.5); } }
+        if (M.exiting && ENGINE.hooks.exit && !M.passing) { const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || ''; if (ENGINE.hooks.exit(room, exn, M.exiting) && !M.passDone) M.exiting = null; }   // the script's knot: it closes the door, or goes through
         if (M.exiting && !M.passing && S.sc.doors) { const en = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting);
           if (en && S.sc.doors[en]) { const I = doorInfo(S.sc.doors[en]); M.passing = true; doorSet(en, true, 0.3);
             M.path = [[I.inside[0], Math.max(M.y, I.sillAt(I.inside[0]) + 20)], I.inside]; } }   // to the middle of the door, then through it
         if (M.exiting && M.passing && M.path.length) { /* still crossing the sill */ }
+        else if (M.exiting && M.passDone) { const f = M.passDone, exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || '';
+          if (/pawnshop-door|front-door/.test(exn) && (room === 'doyers-street' || room === 'pawnshop')) shot('shop-bell', 0.6, [M.x, M.y]);
+          else shot('door', 0.6, [M.x, M.y]);
+          M.passDone = null; M.passing = false; M.exiting = null; f(true); }
         else if (M.exiting) { M.passing = false; let to = M.exiting.to; if (to === 'office-day' && room === 'doyers-street') to = 'office-day'; if (to === 'map') to = MAP_NEXT[room];
           if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room;
             const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || '';
@@ -1271,8 +1298,11 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
             M.exiting = null; enter(to, from); }
           else { status.textContent = (NAMES[M.exiting.to] || M.exiting.to) + ' is not drawn yet'; M.exiting = null; } } }
     }
+    // standing idle, he turns to watch someone walking in the room
+    if (!M.path.length && !M.act && !M.exiting && !switching) { const r = ACT.find(r2 => r2.room === room && !r2.inDoor && !r2.ended);
+      if (r) { const p = actorAt(r, now); if (Math.abs(p.x - M.x) > 140) { M.dir = 'side'; M.flip = p.x < M.x; } } }
     // light on Matt follows the floor around his feet, smoothed
-    const target = Math.min(1.15, Math.max(mode === 'night' ? 0.22 : 0.55, 0.45 + floorBrightness(M.x, M.y) * (mode === 'night' ? 1.6 : 0.9)));
+    const target = floorLight(M.x, M.y);
     M.light += (target - M.light) * Math.min(1, dt * 4);
 
     soundTick(now);
@@ -1528,7 +1558,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), actorWalk, ghost, door: (n, open, secs, delay) => doorSet(n, open, secs, delay), doorInside: (n) => S.sc.doors && S.sc.doors[n] ? doorInfo(S.sc.doors[n]).inside : null, doorPoint: (n, f, depth) => S.sc.doors && S.sc.doors[n] ? doorInfo(S.sc.doors[n]).point(f, depth) : null, actorClear: (n) => { for (let i = ACT.length - 1; i >= 0; i--) if (ACT[i].name === n) ACT.splice(i, 1); }, walking: () => ACT.length > 0, acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), actorWalk, walkSecs: (n, sh, from, to) => { const a = S.sc.actors && S.sc.actors[n]; return a ? actorSecs(a, a.sheets[sh], from, to) : 0; }, passDoor, ghost, door: (n, open, secs, delay) => doorSet(n, open, secs, delay), doorInside: (n) => S.sc.doors && S.sc.doors[n] ? doorInfo(S.sc.doors[n]).inside : null, doorPoint: (n, f, depth) => S.sc.doors && S.sc.doors[n] ? doorInfo(S.sc.doors[n]).point(f, depth) : null, actorClear: (n) => { for (let i = ACT.length - 1; i >= 0; i--) if (ACT[i].name === n) ACT.splice(i, 1); }, walking: () => ACT.length > 0, acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.passing = false; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },
@@ -1577,11 +1607,11 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       // the frame on which it ends still shows its last frame: whatever follows (the script hiding them, a walk) takes over
       // on the next frame, so there is never a frame of the seated idle in between, nor of nothing
       if (t < m.frames / m.fps + (m.hold || 0) || !o.one.last) { if (t >= m.frames / m.fps + (m.hold || 0)) o.one.last = true;
-        const [l, tp, r, b] = m.pad || [0, 0, 0, 0], fw = w + l + r, fh = h + tp + b;
+        const [l, tp, r, b] = m.pad || [0, 0, 0, 0], fw = w + l + r, fh = h + tp + b, sw = Math.round(fw * (m.res || 1)), sh = Math.round(fh * (m.res || 1));   // `res`: the sheet stored smaller
         if (m.fade && t * m.fps > m.fade[0]) { const z = m.frames - 1;       // walking out of her frame: the last frame (her table, empty) under her, fading
-          ctx.drawImage(m.img, (z % m.cols) * fw, Math.floor(z / m.cols) * fh, fw, fh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh);
+          ctx.drawImage(m.img, (z % m.cols) * sw, Math.floor(z / m.cols) * sh, sw, sh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh);
           ctx.globalAlpha = Math.max(0, 1 - (t * m.fps - m.fade[0]) / (m.fade[1] - m.fade[0])); }
-        ctx.drawImage(m.img, (f % m.cols) * fw, Math.floor(f / m.cols) * fh, fw, fh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh); ctx.globalAlpha = 1; return; }
+        ctx.drawImage(m.img, (f % m.cols) * sw, Math.floor(f / m.cols) * sh, sw, sh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh); ctx.globalAlpha = 1; return; }
       const d = o.one.told ? null : o.one.done; o.one = null; o.playAt = now + 4000; if (d) d(); }
     if (o.anim) {
       // mostly still on the first frame; now and then play the idle loop once through

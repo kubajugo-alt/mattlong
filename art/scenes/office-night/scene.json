@@ -4714,34 +4714,37 @@
      "file": "actors/inez-walk-front.webp",
      "frames": 36,
      "cols": 6,
-     "fps": 8.31,
+     "fps": 10.76,
      "fw": 183,
      "fh": 519,
      "feet_x": 86.5,
      "feet_y": 507.5,
-     "fig_h": 499.8
+     "fig_h": 499.8,
+     "steps": 1.8
     },
     "back": {
      "file": "actors/inez-walk-back.webp",
      "frames": 36,
      "cols": 6,
-     "fps": 7.85,
+     "fps": 10.79,
      "fw": 213,
      "fh": 522,
      "feet_x": 83.5,
      "feet_y": 515.3,
-     "fig_h": 499.3
+     "fig_h": 499.3,
+     "steps": 1.8
     },
     "left": {
      "file": "actors/inez-walk-left.webp",
      "frames": 36,
      "cols": 6,
-     "fps": 7.93,
+     "fps": 16.22,
      "fw": 198,
      "fh": 533,
      "feet_x": 123.1,
      "feet_y": 519.2,
-     "fig_h": 492.0
+     "fig_h": 492.0,
+     "steps": 1.8
     }
    },
    "secs_in": 3.6,

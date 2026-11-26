@@ -4932,6 +4932,19 @@
       266,
       0
      ]
+    },
+    "turn": {
+     "file": "occ/kate-at-table-turn.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 12,
+     "pad": [
+      22,
+      365,
+      266,
+      0
+     ],
+     "res": 0.75
     }
    }
   },
@@ -5398,23 +5411,25 @@
      "file": "actors/kate-walk-side.webp",
      "frames": 36,
      "cols": 6,
-     "fps": 7.78,
+     "fps": 10.77,
      "fw": 498,
      "fh": 906,
      "feet_x": 258.4,
      "feet_y": 892.0,
-     "fig_h": 881.5
+     "fig_h": 881.5,
+     "steps": 1.8
     },
     "back": {
      "file": "actors/kate-walk-back.webp",
      "frames": 36,
      "cols": 6,
-     "fps": 8.15,
+     "fps": 16.12,
      "fw": 466,
      "fh": 926,
      "feet_x": 212.2,
      "feet_y": 907.0,
-     "fig_h": 894.5
+     "fig_h": 894.5,
+     "steps": 1.8
     }
    },
    "blend": 0.5

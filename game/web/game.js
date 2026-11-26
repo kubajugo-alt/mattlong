@@ -121,7 +121,9 @@
         if (E.act && G.lastHot && !E.acting()) E.act('reach', G.lastHot[0]); break;       // he takes it: a reach toward where it came from
       case 'take': G.inv = G.inv.filter(i => i !== arg); if (G.selected === arg) select(null); renderInv(); break;
       case 'hide': if (arg === 'kate-at-table') STORY.kateGone = true; else { STORY.hidden.add(arg); STORY.hiddenHot.add(E.room() + ':' + arg); } break;
-      case 'go': await fadeTo(() => E.enter(arg, E.room())); break;
+      case 'go': { const ex = G.lastExit; G.lastExit = null;
+        if (ex && E.passDoor && await E.passDoor(ex)) await E.enter(arg, E.room());   // through the doorway: a cut, no fade
+        else await fadeTo(() => E.enter(arg, E.room())); break; }
       case 'scene': if (E.room() !== arg) await fadeTo(() => E.enter(arg, null)); break;
       case 'radio': E.radio(arg === 'on'); break;
       case 'pigeons': E.pigeonsFly(); break;
@@ -148,18 +150,21 @@
       return Math.hypot(E.M.x - p[0] - t * dx, E.M.y - p[1] - t * dy) < 170; };
     if (near(A.start, A.turn) || near(A.turn, A.door)) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.turn[0]));
     await E.anim(occ, 'leave');
-    // her last stand-up frame dissolves into the first steps of the walk on the same spot, and the walk starts from a
-    // standstill, so the turn from three-quarter to profile reads as a turn, not a cut
-    const walk = E.actorWalk('kate', 'side', A.start, A.turn, null, A.secs_side, { ease: 0.14 });   // starts this frame (sheet loaded with the room)
+    // she turns to her right and steps off (its own sheet, from her last stand-up frame to the walk's first frame on the
+    // walk's first spot), and walks on at the pace of her steps
+    const o = E.scene().occ.find(x => x.name === occ);
+    if (o && o.acts && o.acts.turn) await E.anim(occ, 'turn');
+    const walk = E.actorWalk('kate', 'side', A.start, A.turn, null, E.walkSecs ? null : A.secs_side, { ease: o && o.acts && o.acts.turn ? 0.05 : 0.14 });   // starts this frame (sheet loaded with the room)
     STORY.kateGone = true;
     await walk;
     if (!E.doorPoint) { await E.actorWalk('kate', 'back', A.turn, A.door, 'out', A.secs_back); return; }
-    // she opens the door as she reaches it, crosses the sill and keeps walking down the corridor while it swings shut
-    E.door('door', true, 0.8);
+    // she opens the door a step before she reaches it, crosses the sill and walks on down the corridor while it swings shut
     const sill = E.doorPoint('door', 0.55, 10), deep = E.doorPoint('door', 0.6, 120);
-    await E.actorWalk('kate', 'back', A.turn, sill, null, A.secs_back * 0.85);
-    E.door('door', false, 1.0, 0.25);
-    await E.actorWalk('kate', 'back', sill, deep, null, 1.3, { stay: true }); await sleep(100); E.actorClear('kate');
+    const T = E.walkSecs ? E.walkSecs('kate', 'back', A.turn, sill) : A.secs_back * 0.85;
+    E.door('door', true, 0.8, Math.max(0, T - 1.0));
+    await E.actorWalk('kate', 'back', A.turn, sill, null, E.walkSecs ? null : T);
+    E.door('door', false, 1.0, 0.4);
+    await E.actorWalk('kate', 'back', sill, deep, null, E.walkSecs ? null : 1.3, { stay: true }); await sleep(100); E.actorClear('kate');
   }
   // Inez: in from the door to the sofa (walk, then sits), and back out; the lines run while she walks. Without the
   // sheets (an older build) she just appears and goes.
@@ -170,27 +175,32 @@
     if (a === 'walk_in') {
       if (Math.hypot(E.M.x - A.door[0], E.M.y - A.door[1]) < 500 || Math.hypot(E.M.x - A.stand[0], E.M.y - A.stand[1]) < 300) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.stand[0]));   // out of her way
       // in at the door, across to the sofa and straight down onto it, while Matt looks her over
-      if (E.door) { E.door('door', true, 0.5); setTimeout(() => E.door('door', false, 0.9), 1700); }   // the door opens, she comes in, it swings to
+      // the door opens, she comes in, it swings to behind her
       // she's behind the right side of the doorway (clear of the leaf) when it opens, walks in facing us, comes over
       // to the sofa, turns to it and sits
       // a couple of steps straight in, facing us, then she veers off toward the sofa (the three-quarter walk, at the
       // angle she sits from) and sits
       const behind = E.doorPoint ? E.doorPoint('door', 0.72, 40) : A.door, out = E.doorPoint ? E.doorPoint('door', 0.72, -75) : A.door;
       const toward = A.sheets.left ? 'left' : 'front';
+      const T1 = E.walkSecs ? E.walkSecs('inez', 'front', behind, out) : 0.9;
+      if (E.door) { E.door('door', true, 0.5); setTimeout(() => E.door('door', false, 0.9), 300 + T1 * 1000 + 250); }
       inezWalk = sleep(E.door ? 300 : 0)
-        .then(() => E.door ? E.actorWalk('inez', 'front', behind, out, null, 0.9) : null)
-        .then(() => E.actorWalk('inez', toward, E.door ? out : A.door, A.stand, E.door ? null : 'in', A.secs_in * 0.85))
+        .then(() => E.door ? E.actorWalk('inez', 'front', behind, out, null, E.walkSecs ? null : 0.9) : null)
+        .then(() => E.actorWalk('inez', toward, E.door ? out : A.door, A.stand, E.door ? null : 'in', E.walkSecs ? null : A.secs_in * 0.85))
         .then(() => { STORY.hidden.delete('inez-seated'); return E.anim('inez-seated', 'sit'); });
     }
     if (a === 'sit') { if (inezWalk) await inezWalk; inezWalk = null; }
     if (a === 'stand') await E.anim('inez-seated', 'sit', true);
-    if (a === 'walk_out') { STORY.hidden.add('inez-seated'); if (E.door) E.door('door', true, 0.7, 1.2);
-      if (!E.doorPoint) { await E.actorWalk('inez', 'back', A.stand, A.door, 'out', A.secs_out); return; }
-      // through the right side of the doorway, clear of the leaf, and on down the corridor while the door shuts
+    if (a === 'walk_out') { STORY.hidden.add('inez-seated');
+      if (!E.doorPoint) { if (E.door) E.door('door', true, 0.7, 1.2); await E.actorWalk('inez', 'back', A.stand, A.door, 'out', A.secs_out); return; }
+      // through the right side of the doorway, clear of the leaf (opened a step before she gets there), and on down the
+      // corridor while the door shuts
       const sill = E.doorPoint('door', 0.68, 10), deep = E.doorPoint('door', 0.75, 120);
-      await E.actorWalk('inez', 'back', A.stand, sill, null, A.secs_out * 0.85);
-      E.door('door', false, 1.0, 0.25);
-      await E.actorWalk('inez', 'back', sill, deep, null, 1.3, { stay: true }); await sleep(100); E.actorClear('inez'); }
+      const T = E.walkSecs ? E.walkSecs('inez', 'back', A.stand, sill) : A.secs_out * 0.85;
+      E.door('door', true, 0.7, Math.max(0, T - 0.95));
+      await E.actorWalk('inez', 'back', A.stand, sill, null, E.walkSecs ? null : T);
+      E.door('door', false, 1.0, 0.4);
+      await E.actorWalk('inez', 'back', sill, deep, null, E.walkSecs ? null : 1.3, { stay: true }); await sleep(100); E.actorClear('inez'); }
   }
   const flash = (el) => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); };
 
@@ -343,7 +353,7 @@
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !verbs.hidden) closeVerbs(); });
   E.hooks.exit = (room, exn) => {
     const k = EXIT_KNOT[room + ':' + exn]; if (!k) return false;
-    run(k); return true;
+    G.lastExit = exn; Promise.resolve(run(k)).finally(() => { if (G.lastExit === exn && E.door) E.door(exn, false, 0.5); G.lastExit = null; }); return true;
   };
   // Matt is clickable: his figure, a third as wide as he is tall
   function mattAt(x, y) { const H = E.figureH(E.M.y); return H > 0 && Math.abs(x - E.M.x) < H * 0.17 && y < E.M.y && y > E.M.y - H * 0.97; }
