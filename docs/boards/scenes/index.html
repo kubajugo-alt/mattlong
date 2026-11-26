@@ -5,15 +5,15 @@
 /* Layout: an editing bench — the player and its timeline on top, the strip of every frame below */
 :root {
   --bg: #e9e6e1; --panel: #f6f4f0; --ink: #1d1c1b; --muted: #6b6762; --line: #cfcac2; --stage: #2a2826; --accent: #a3261f;
-  --p-stand: #7a5c2e; --p-side: #2f5f7a; --p-back: #4f6b35; --p-gone: #6b6762; --p-door: #7a3f5c; --p-walkin: #2f5f7a; --p-sit: #7a5c2e; --p-seated: #5b4a8a; --p-walkout: #4f6b35; --p-enter: #2f6b6b; --p-kate: #2f5f7a; --notebg: #f6dcd8;
+  --p-stand: #7a5c2e; --p-side: #2f5f7a; --p-back: #4f6b35; --p-gone: #6b6762; --p-door: #7a3f5c; --p-walkin: #2f5f7a; --p-sit: #7a5c2e; --p-seated: #5b4a8a; --p-walkout: #4f6b35; --p-enter: #2f6b6b; --p-kate: #2f5f7a; --p-walk: #4f6b35; --notebg: #f6dcd8;
   --display: "Big Shoulders Display", "Arial Narrow", sans-serif; --body: "Jost", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #161514; --panel: #201f1d; --ink: #ece8e2; --muted: #a29d95; --line: #3a3733; --stage: #0f0e0d; --accent: #e0574c;
-  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --p-kate: #6aa6c8; --notebg: #3e211e; color-scheme: dark } }
+  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --p-kate: #6aa6c8; --p-walk: #93b86a; --notebg: #3e211e; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #161514; --panel: #201f1d; --ink: #ece8e2; --muted: #a29d95; --line: #3a3733; --stage: #0f0e0d; --accent: #e0574c;
-  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --p-kate: #6aa6c8; --notebg: #3e211e; color-scheme: dark }
+  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --p-kate: #6aa6c8; --p-walk: #93b86a; --notebg: #3e211e; color-scheme: dark }
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font: 400 15px/1.45 var(--body); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 48px }
 .wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 18px }
@@ -100,7 +100,8 @@ const PH = {
   walkin: ['Wchodzi, obraca się, siada', 'zza prawej krawędzi drzwi, przodem; obrót do sofy; siadanie'],
   sit: ['Siada', 'arkusz siadania (Ludo)'], seated: ['Siedzi', 'animacja spoczynkowa'],
   walkout: ['Wychodzi', 'cykl chodu od tyłu; drzwi otwarte na jej drodze'],
-  enter: ['Wejście do pokoju', 'zmiana pokoju; drzwi za Mattem są otwarte i się zamykają'],
+  enter: ['W nowym pokoju', 'wychodzi zza otwartych drzwi, które zamykają się za nim'],
+  walk: ['Idzie do drzwi', 'drzwi otwierają się, gdy podchodzi; przechodzi przez próg'],
   gone: ['Koniec', 'pokój po scenie'] };
 const COL = (p) => getComputedStyle(document.documentElement).getPropertyValue('--p-' + p).trim();
 const $ = (id) => document.getElementById(id);
@@ -136,7 +137,7 @@ function build() {
   const st = $('strip'); st.textContent = ''; const cs = new Set(cuts());
   F.forEach((f, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'thumb' + (cs.has(i) || cs.has(i + 1) ? ' cut' : ''); b.dataset.i = i;
     b.setAttribute('aria-label', 'Klatka ' + i);
-    const im = document.createElement('span'); im.className = 'tf'; const [C, R] = SQ.grid;
+    const im = document.createElement('span'); im.className = 'tf'; const [C, R] = SQ.grid; im.style.aspectRatio = SQ.cell[0] + ' / ' + SQ.cell[1];
     im.style.backgroundImage = 'url(sh/' + f.s + ')'; im.style.backgroundSize = (C * 100) + '% ' + (R * 100) + '%';
     im.style.backgroundPosition = (f.c / (C - 1) * 100) + '% ' + (f.r / (R - 1) * 100) + '%';
     const bar = document.createElement('span'); bar.className = 'bar'; bar.style.background = COL(f.ph);
@@ -147,7 +148,7 @@ function build() {
 const nid = (i) => SQ.key + '-f' + i;
 const SH = {};
 function sheet(n) { if (!SH[n]) { SH[n] = new Image(); SH[n].src = 'sh/' + n; } return SH[n]; }
-function drawBig(f) { const im = sheet(f.s), cv = $('big'), x = cv.getContext('2d'), [W, H] = SQ.cell;
+function drawBig(f) { const im = sheet(f.s), cv = $('big'), x = cv.getContext('2d'), [W, H] = SQ.cell; if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
   const go = () => { if (F[cur] !== f) return; x.drawImage(im, f.c * W, f.r * H, W, H, 0, 0, W, H); };
   if (im.complete && im.naturalWidth) go(); else im.addEventListener('load', go, { once: true }); }
 function markNotes() { for (const t of document.querySelectorAll('.thumb')) t.classList.toggle('noted', !!((notes[nid(t.dataset.i)] || {}).note)); }

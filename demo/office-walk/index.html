@@ -157,8 +157,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
         const sd = en && S.sc.doors[en].stand; if (sd) { const p2 = nearestWalkable(sd[0], sd[1]); if (p2) [M.x, M.y] = p2; } }
       if (en && S.sc.doors[en]) { const st = doorState(en); st.a = 1; st.t = 0; st.v = 1 / 0.7; st.delay = 0.9;
         // straight out of the middle of the doorway, then a step aside to where he stands (clear of the door and of anyone near it)
-        const I = doorInfo(S.sc.doors[en]), stand = [M.x, M.y], out = [I.inside[0], Math.min(M.y, I.sillAt(I.inside[0]) + 70)];
-        [M.x, M.y] = I.inside; M.path = [out, stand]; M.passing = false; } }
+        const D = S.sc.doors[en], I = doorInfo(D), stand = [M.x, M.y], out = [I.inside[0], Math.min(M.y, I.sillAt(I.inside[0]) + 70)];
+        [M.x, M.y] = I.inside; M.passing = false;
+        // a door can give its own way in (the pawnshop's back door: behind the counter, round its near end, past the camera)
+        M.path = D.enterPath ? D.enterPath.map(p => p.slice()) : [out, stand]; } }
     status.textContent = 'Click the floor'; switching = false;
     if (ENGINE.hooks.entered) ENGINE.hooks.entered(id, from);
   }

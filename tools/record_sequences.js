@@ -13,12 +13,30 @@ const SEQ = [
       window.__ph='stand'; await GAME.inez('stand'); window.__ph='walkout'; await GAME.inez('walk_out'); window.__ph='gone';` },
   { key: 'matt-in', label: 'Matt wchodzi do mieszkania', room: 'corridor', from: 'doyers-street', matt: [900, 1350], clip: { x: 520, y: 60, width: 700, height: 640 },
     run: `window.__ph='enter'; await ENGINE.enter('pete-kate-flat','corridor'); window.__ph='door'; await new Promise(r=>setTimeout(r,1800)); window.__ph='gone';` },
+  { key: 'corr-flat', label: 'Matt: korytarz → mieszkanie', room: 'corridor', from: 'doyers-street', matt: [1300, 1350], clip: { x: 0, y: 0, width: 1280, height: 720 }, scale: 1,
+    run: `const r0=ENGINE.room(); window.__ph='walk'; ENGINE.plainWalk(447,700); while(ENGINE.room()===r0) await new Promise(r=>setTimeout(r,100));
+      window.__ph='enter'; await new Promise(r=>setTimeout(r,400)); while(ENGINE.M.path.length) await new Promise(r=>setTimeout(r,100)); await new Promise(r=>setTimeout(r,900)); window.__ph='gone';` },
+  { key: 'flat-corr', label: 'Matt: mieszkanie → korytarz', room: 'pete-kate-flat', from: 'corridor', matt: [1300, 1300], clip: { x: 0, y: 0, width: 1280, height: 720 }, scale: 1,
+    run: `const r0=ENGINE.room(); window.__ph='walk'; ENGINE.plainWalk(1662,640); while(ENGINE.room()===r0) await new Promise(r=>setTimeout(r,100));
+      window.__ph='enter'; await new Promise(r=>setTimeout(r,400)); while(ENGINE.M.path.length) await new Promise(r=>setTimeout(r,100)); await new Promise(r=>setTimeout(r,900)); window.__ph='gone';` },
+  { key: 'corr-office', label: 'Matt: korytarz → biuro', room: 'corridor', from: 'doyers-street', matt: [1300, 1350], clip: { x: 0, y: 0, width: 1280, height: 720 }, scale: 1,
+    run: `const r0=ENGINE.room(); window.__ph='walk'; ENGINE.plainWalk(2312,560); while(ENGINE.room()===r0) await new Promise(r=>setTimeout(r,100));
+      window.__ph='enter'; await new Promise(r=>setTimeout(r,400)); while(ENGINE.M.path.length) await new Promise(r=>setTimeout(r,100)); await new Promise(r=>setTimeout(r,900)); window.__ph='gone';` },
+  { key: 'pawn-street', label: 'Matt: lombard → ulica', room: 'pawnshop', from: 'doyers-street', matt: [900, 1350], clip: { x: 0, y: 0, width: 1280, height: 720 }, scale: 1,
+    run: `const r0=ENGINE.room(); window.__ph='walk'; ENGINE.plainWalk(500,735); while(ENGINE.room()===r0) await new Promise(r=>setTimeout(r,100));
+      window.__ph='enter'; await new Promise(r=>setTimeout(r,400)); while(ENGINE.M.path.length) await new Promise(r=>setTimeout(r,100)); await new Promise(r=>setTimeout(r,900)); window.__ph='gone';` },
+  { key: 'street-pawn', label: 'Matt: ulica → lombard', room: 'doyers-street', from: 'corridor', matt: [1300, 1250], clip: { x: 0, y: 0, width: 1280, height: 720 }, scale: 1,
+    run: `const r0=ENGINE.room(); window.__ph='walk'; ENGINE.plainWalk(1447,870); while(ENGINE.room()===r0) await new Promise(r=>setTimeout(r,100));
+      window.__ph='enter'; await new Promise(r=>setTimeout(r,400)); while(ENGINE.M.path.length) await new Promise(r=>setTimeout(r,100)); await new Promise(r=>setTimeout(r,900)); window.__ph='gone';` },
+  { key: 'alley-pawn', label: 'Matt: zaułek → lombard tylnymi drzwiami', room: 'alley', from: 'doyers-street', matt: [1700, 1350], clip: { x: 0, y: 0, width: 1280, height: 720 }, scale: 1,
+    run: `window.__ph='walk'; await new Promise(r=>setTimeout(r,300)); await ENGINE.enter('pawnshop','alley');
+      window.__ph='enter'; await new Promise(r=>setTimeout(r,400)); while(ENGINE.M.path.length) await new Promise(r=>setTimeout(r,100)); await new Promise(r=>setTimeout(r,900)); window.__ph='gone';` },
 ];
 (async () => {
   const b = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] }); const all = [];
   const prev = ONLY && fs.existsSync(OUT + '/seqs.json') ? JSON.parse(fs.readFileSync(OUT + '/seqs.json')) : [];
-  for (const q of SEQ) { if (ONLY && q.key !== ONLY) { const o = prev.find(x => x.key === q.key); if (o) all.push(o); continue; }
-    const p = await b.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1.5 });
+  for (const q of SEQ) { if (ONLY && !ONLY.split(',').includes(q.key)) { const o = prev.find(x => x.key === q.key); if (o) all.push(o); continue; }
+    const p = await b.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: q.scale || 1.5 });
     await p.addInitScript(() => { const rn = performance.now.bind(performance), rr = window.requestAnimationFrame.bind(window); let virt = false, vt = 0, qq = [];
       const st = window.setTimeout.bind(window); window.__realST = st;
       performance.now = () => virt ? vt : rn(); window.requestAnimationFrame = (cb) => { if (virt) { qq.push(cb); return 0; } return rr((t) => cb(virt ? vt : t)); };
