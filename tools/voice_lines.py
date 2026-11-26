@@ -30,6 +30,7 @@ def lines_of(path):
         s = raw.strip()
         if not s or s.startswith('//'):
             continue
+        s = s[2:] if s.startswith('- ') else s                  # a line of a {cycle: / {stopping: block
         parts = s[2:-1].split('|') if s.startswith('{~') and s.endswith('}') else [s]
         for p in parts:
             m = re.match(r'([A-Z]+):\s*(.+)$', p.strip())

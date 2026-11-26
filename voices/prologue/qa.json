@@ -1832,5 +1832,131 @@
   "heard": "This, the key to his apartment, West 84th Street.",
   "ratio": 0.8,
   "extra_words": -2
+ },
+ "vo-4022339bd7": {
+  "file": "vo-4022339bd7.mp3",
+  "mtime": 1795678853.1439362,
+  "heard": "One cup is hospitality, two is alone.",
+  "ratio": 0.8,
+  "extra_words": -1
+ },
+ "vo-2b2244ff9b": {
+  "file": "vo-2b2244ff9b.mp3",
+  "mtime": 1795678853.5862315,
+  "heard": "I had Kate's cup in my pocket. All it needed was to go under the spout.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-9c2dbd0d30": {
+  "file": "vo-9c2dbd0d30.mp3",
+  "mtime": 1795678854.3047647,
+  "heard": "I'd need a cup. There's a clean one on the table. Kate lays one out for whoever turns up. Usually it's me.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-548bd933cd": {
+  "file": "vo-548bd933cd.mp3",
+  "mtime": 1795678853.423093,
+  "heard": "Clean cup on a saucer, set out for whoever turns up. Usually it's me.",
+  "ratio": 0.966,
+  "extra_words": -1
+ },
+ "vo-2ab2de1c27": {
+  "file": "vo-2ab2de1c27.mp3",
+  "mtime": 1795678854.6405025,
+  "heard": "I took the cup. Kate would know. Kate always knows.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "kate-3b35793bd2": {
+  "file": "kate-3b35793bd2.mp3",
+  "mtime": 1795678854.403029,
+  "heard": "It's clean, Matt. Bring it back that way.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-bc6e0cda7b": {
+  "file": "vo-bc6e0cda7b.mp3",
+  "mtime": 1795678855.730983,
+  "heard": "Today's Clarion, folded to Pete's page. Kate reads it from the front, Pete from his own byline.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-2b2b2ac2c8": {
+  "file": "vo-2b2b2ac2c8.mp3",
+  "mtime": 1795678857.386677,
+  "heard": "Crater still missing. A Supreme Court justice hails a cab on West 45th Street in August and is never seen again. Three months, and the police have a reward poster and a shrug.",
+  "ratio": 0.955,
+  "extra_words": -1
+ },
+ "vo-1f778c6a3b": {
+  "file": "vo-1f778c6a3b.mp3",
+  "mtime": 1795678858.491766,
+  "heard": "Seabury widens magistrate's inquiry. Talk of vice cops framing women in the women's court and bondsmen splitting the bail. Somewhere in this city, a detective is wondering if his name comes up next.",
+  "ratio": 0.97,
+  "extra_words": 0
+ },
+ "vo-f23e08e892": {
+  "file": "vo-f23e08e892.mp3",
+  "mtime": 1795678860.084618,
+  "heard": "Apple sellers on every corner. The Growers Association sells them a crate on credit, and they sell the apples at a nickel each. 6,000 men with a box and a tie. I counted two of them on my block who used to be bankers.",
+  "ratio": 0.933,
+  "extra_words": 0
+ },
+ "vo-0054861a90": {
+  "file": "vo-0054861a90.mp3",
+  "mtime": 1795678860.430636,
+  "heard": "Roosevelt reelected by record margin. The governor wins by 700,000 votes. Tammany is pleased. When Tammany is pleased, somebody else is paying.",
+  "ratio": 0.833,
+  "extra_words": -2
+ },
+ "vo-4b27f688d4": {
+  "file": "vo-4b27f688d4.mp3",
+  "mtime": 1795678861.7884672,
+  "heard": "Legs Diamond will live, doctors say. Shot five times at the Hotel Monticello last month and still breathing. They haven't made the bullet that can find his heart. Nobody's sure he has one.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-04a6dce2cb": {
+  "file": "vo-04a6dce2cb.mp3",
+  "mtime": 1795678863.2679393,
+  "heard": "Mooring mast rises atop Empire State, a dock for airships a quarter of a mile above Fifth Avenue. The city can't pay its rent, but it can build a ladder to heaven.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-a9b7f53500": {
+  "file": "vo-a9b7f53500.mp3",
+  "mtime": 1795678863.111943,
+  "heard": "Half a million out of work in city. The Prosser committee asks everyone with a job to give a day's pay. Most people I know haven't had a day's pay to give since summer.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-f891ec3464": {
+  "file": "vo-f891ec3464.mp3",
+  "mtime": 1795678863.3116965,
+  "heard": "Kate's spare cup. Good china, meaning it hasn't broken yet.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "lee-1043e9fea9": {
+  "file": "lee-1043e9fea9.mp3",
+  "mtime": 1795678864.6418552,
+  "heard": "A boy was seen running toward the Bowery, thin, a coat too big for him.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "lee-ac52fbe028": {
+  "file": "lee-ac52fbe028.mp3",
+  "mtime": 1795678864.9252741,
+  "heard": "Slow business makes a man available, Mr. Long. I will remember that you are available.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "inez-81d0a6b79c": {
+  "file": "inez-81d0a6b79c.mp3",
+  "mtime": 1795678864.1957717,
+  "heard": "Quietly, Mr. Long.",
+  "ratio": 1.0,
+  "extra_words": 0
  }
 }

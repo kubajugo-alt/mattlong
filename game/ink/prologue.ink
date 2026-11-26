@@ -30,6 +30,8 @@ VAR has_book = false
 VAR book_returned = false      // P4 done: two weeks' grace
 VAR case_taken = false         // P5 done
 VAR told_lee_where = false     // small, untracked choice in P4
+VAR has_cup = false          // Matt took the spare cup off Kate's table (coffee needs a cup)
+VAR had_coffee = false
 VAR mask = 0                   // The Mask: +1 honest, -1 guarded (bible: feeds 3.1, 3.2, the epilogue)
 
 EXTERNAL act(command)   // engine actions: "give:cigarettes", "go:corridor", ... (see ENGINE CONTRACT)
@@ -290,8 +292,61 @@ VO: Kate would know. Kate always knows.
 VO: The percolator. The hardest-working thing in this flat, and that includes Kate.
 -> DONE
 = use
+{had_coffee:
+    VO: One cup is hospitality. Two is a loan.
+- else:
+    {has_cup:
+        VO: I had Kate's cup in my pocket. All it needed was to go under the spout.
+    - else:
+        VO: I'd need a cup. There's a clean one on the table. Kate lays one out for whoever turns up. Usually it's me.
+    }
+}
+-> DONE
+= coffee_cup
 ~ act("sfx:pour")
+~ act("take:coffee-cup")
+~ has_cup = false
+~ had_coffee = true
 VO: I poured myself a cup. It tasted like somebody else's rent money.
+-> DONE
+
+=== flat__teacup_3 ===
+= look
+VO: A clean cup on a saucer, set out for whoever turns up. Usually it's me.
+-> DONE
+= use
+~ act("hide:teacup-kate")
+~ act("hide:teacup-empty")
+~ act("hide:teacup-3")
+~ act("give:coffee-cup")
+~ has_cup = true
+{kate_gone:
+    VO: I took the cup. Kate would know. Kate always knows.
+- else:
+    KATE: It's clean, Matt. Bring it back that way.
+}
+-> DONE
+
+=== flat__newspaper_on_table ===
+// Pete's paper, today's edition. A different story each time Matt picks it up: the real New York of November 1930.
+= look
+VO: Today's Clarion, folded to Pete's page. Kate reads it from the front, Pete from his own byline.
+-> DONE
+= use
+{cycle:
+    - VO: "Crater Still Missing." A Supreme Court justice hails a cab on West Forty-Fifth Street in August and is never seen again. Three months, and the police have a reward poster and a shrug.
+    - VO: "Seabury Widens Magistrates' Inquiry." Talk of vice cops framing women in the Women's Court, and bondsmen splitting the bail. Somewhere in this city, a detective is wondering if his name comes up next.
+    - VO: "Apple Sellers on Every Corner." The growers' association sells them a crate on credit, and they sell the apples at a nickel each. Six thousand men with a box and a tie. I counted two of them on my block who used to be bankers.
+    - VO: "Roosevelt Re-Elected by Record Margin." The governor wins by seven hundred thousand votes. Tammany is pleased. When Tammany is pleased, somebody else is paying.
+    - VO: "Legs Diamond Will Live, Doctors Say." Shot five times at the Hotel Monticello last month, and still breathing. They haven't made the bullet that can find his heart. Nobody's sure he has one.
+    - VO: "Mooring Mast Rises Atop Empire State." A dock for airships, a quarter of a mile above Fifth Avenue. The city can't pay its rent, but it can build a ladder to heaven.
+    - VO: "Half a Million Out of Work in City." The Prosser committee asks everyone with a job to give a day's pay. Most people I know haven't had a day's pay to give since summer.
+}
+-> DONE
+
+=== item__coffee_cup ===
+= look
+VO: Kate's spare cup. Good china, meaning it hasn't broken yet.
 -> DONE
 
 === flat__petes_cigarettes ===

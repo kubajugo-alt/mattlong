@@ -16,7 +16,7 @@
   const PEOPLE = { pete: 'pete', kate: 'kate', 'lee-wing': 'lee', sol: 'sol', junkie: 'junkie', 'inez-seated': 'inez', newsboy: 'newsboy' };
   const NAME = { VO: '', MATT: 'Matt', PETE: 'Pete', KATE: 'Kate', LEE: 'Lee Wing', SOL: 'Sol', JUNKIE: 'The kid', INEZ: 'Inéz', NEWSBOY: 'Newsboy' };
   const ITEMS = { 'eviction-notice': 'Eviction notice', flask: 'Hip flask', cigarettes: "Pete's cigarettes", 'pawn-ticket': 'Pawn ticket 4417',
-    'account-book': "Lee Wing's account book", money: 'Fifty dollars', 'michael-photo': 'Photo of Michael', key: "Michael's door key" };
+    'account-book': "Lee Wing's account book", money: 'Fifty dollars', 'coffee-cup': "Kate's spare cup", 'michael-photo': 'Photo of Michael', key: "Michael's door key" };
   const JOURNAL = {
     'lee-book': ['Rent', "Lee Wing's account book was stolen from the tea house on Tuesday night. Thirty years of who owes him what. Get it back and he might forget the rent."],
     'find-book': ['Rent', 'Lee: bring the book to his counter and the rent can wait two weeks. A thin boy in a big coat was seen running toward the Bowery.'],

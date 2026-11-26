@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/mattlong/voices/prologue/lee-1043e9fea9.wav",
+    "duration": 5.36
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.13, "value": "X" },
+    { "start": 0.13, "end": 0.21, "value": "C" },
+    { "start": 0.21, "end": 0.29, "value": "A" },
+    { "start": 0.29, "end": 0.48, "value": "E" },
+    { "start": 0.48, "end": 0.55, "value": "B" },
+    { "start": 0.55, "end": 0.69, "value": "F" },
+    { "start": 0.69, "end": 1.39, "value": "B" },
+    { "start": 1.39, "end": 1.60, "value": "E" },
+    { "start": 1.60, "end": 1.74, "value": "B" },
+    { "start": 1.74, "end": 1.82, "value": "A" },
+    { "start": 1.82, "end": 2.00, "value": "C" },
+    { "start": 2.00, "end": 2.21, "value": "E" },
+    { "start": 2.21, "end": 2.42, "value": "B" },
+    { "start": 2.42, "end": 2.87, "value": "X" },
+    { "start": 2.87, "end": 3.38, "value": "B" },
+    { "start": 3.38, "end": 3.86, "value": "X" },
+    { "start": 3.86, "end": 3.91, "value": "C" },
+    { "start": 3.91, "end": 4.16, "value": "E" },
+    { "start": 4.16, "end": 4.30, "value": "B" },
+    { "start": 4.30, "end": 4.46, "value": "F" },
+    { "start": 4.46, "end": 4.54, "value": "A" },
+    { "start": 4.54, "end": 4.74, "value": "B" },
+    { "start": 4.74, "end": 4.88, "value": "G" },
+    { "start": 4.88, "end": 4.95, "value": "E" },
+    { "start": 4.95, "end": 5.09, "value": "B" },
+    { "start": 5.09, "end": 5.19, "value": "A" },
+    { "start": 5.19, "end": 5.36, "value": "X" }
+  ]
+}

@@ -199,6 +199,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // ---- story state the scene shows: Kate leaves for work in P2 (her table set swaps for the empty-chair version)
   const STORY = { kateGone: false };
   const gone = (o) => o.name === 'kate-at-table' ? STORY.kateGone : o.name === 'table-set-empty' ? !STORY.kateGone
+    : (o.with === 'kate' && STORY.kateGone) || (o.with === 'nokate' && !STORY.kateGone) ? true      // things on the table go with its version
     : (STORY.hidden && STORY.hidden.has(o.name)) ? true : !!o.hidden;
   // STORY.live (set by the game) says which mapped hotspots are in play; the rest stay mapped but inert
   const hotGone = (h) => (STORY.kateGone && (h.id === 'kate' || h.id === 'petes-cigarettes')) || !!(STORY.hiddenHot && STORY.hiddenHot.has(room + ':' + h.id))

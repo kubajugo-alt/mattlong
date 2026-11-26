@@ -4922,6 +4922,32 @@
    }
   },
   {
+   "name": "teacup-kate",
+   "bbox": [
+    1341,
+    806,
+    1455,
+    880
+   ],
+   "baseline": 1274,
+   "prop": true,
+   "no_shadow": true,
+   "with": "kate"
+  },
+  {
+   "name": "teacup-empty",
+   "bbox": [
+    1344,
+    805,
+    1460,
+    881
+   ],
+   "baseline": 1273,
+   "prop": true,
+   "no_shadow": true,
+   "with": "nokate"
+  },
+  {
    "name": "stove",
    "bbox": [
     3,

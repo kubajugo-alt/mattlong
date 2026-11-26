@@ -6,3 +6,4 @@ dist/
 site/
 site-artifact/
 __pycache__/
+*.orig.png
