@@ -2,7 +2,7 @@
 // node tools/record_sequences.js <out dir>     (serves nothing itself: run a server on site-artifact/ at :8765)
 // Each sequence replays what game.js does for that moment, through the same ENGINE calls.
 const { chromium } = require('playwright'); const fs = require('fs');
-const OUT = process.argv[2]; fs.mkdirSync(OUT, { recursive: true });
+const OUT = process.argv[2]; fs.mkdirSync(OUT, { recursive: true }); const ONLY = process.argv[3];
 const SEQ = [
   { key: 'kate', label: 'Kate wychodzi', room: 'pete-kate-flat', from: 'corridor', matt: [560, 1420], clip: { x: 240, y: 110, width: 680, height: 600 },
     run: `const A=ENGINE.scene().sc.actors.kate; window.__ph='stand';
@@ -12,7 +12,7 @@ const SEQ = [
       window.__ph='door'; await new Promise(r=>setTimeout(r,1200)); window.__ph='gone';` },
   { key: 'inez-in', label: 'Inez wchodzi i siada', room: 'office-night', from: 'corridor', matt: [1480, 1330], clip: { x: 130, y: 90, width: 620, height: 620 },
     run: `const A=ENGINE.scene().sc.actors.inez; ENGINE.STORY.hidden.add('inez-seated'); window.__ph='walkin';
-      ENGINE.door('door',true,0.5); setTimeout(()=>ENGINE.door('door',false,0.9),1700);
+      ENGINE.door('door',true,0.5); setTimeout(()=>ENGINE.door('door',false,0.9),1700); await new Promise(r=>setTimeout(r,450));
       await ENGINE.actorWalk('inez','front',A.door,A.stand,'in',A.secs_in); window.__ph='sit'; ENGINE.STORY.hidden.delete('inez-seated');
       await ENGINE.anim('inez-seated','sit'); window.__ph='seated'; await new Promise(r=>setTimeout(r,600)); window.__ph='gone';` },
   { key: 'inez-out', label: 'Inez wstaje i wychodzi', room: 'office-night', from: 'corridor', matt: [1480, 1330], clip: { x: 130, y: 90, width: 620, height: 620 },
@@ -25,7 +25,8 @@ const SEQ = [
 ];
 (async () => {
   const b = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] }); const all = [];
-  for (const q of SEQ) {
+  const prev = ONLY && fs.existsSync(OUT + '/seqs.json') ? JSON.parse(fs.readFileSync(OUT + '/seqs.json')) : [];
+  for (const q of SEQ) { if (ONLY && q.key !== ONLY) { const o = prev.find(x => x.key === q.key); if (o) all.push(o); continue; }
     const p = await b.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1.5 });
     await p.addInitScript(() => { const rn = performance.now.bind(performance), rr = window.requestAnimationFrame.bind(window); let virt = false, vt = 0, qq = [];
       const st = window.setTimeout.bind(window); window.__realST = st;

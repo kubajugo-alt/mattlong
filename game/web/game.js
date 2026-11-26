@@ -168,7 +168,7 @@
       if (Math.hypot(E.M.x - A.door[0], E.M.y - A.door[1]) < 500 || Math.hypot(E.M.x - A.stand[0], E.M.y - A.stand[1]) < 300) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.stand[0]));   // out of her way
       // in at the door, across to the sofa and straight down onto it, while Matt looks her over
       if (E.door) { E.door('door', true, 0.5); setTimeout(() => E.door('door', false, 0.9), 1700); }   // the door opens, she comes in, it swings to
-      inezWalk = E.actorWalk('inez', 'front', A.door, A.stand, 'in', A.secs_in).then(() => { STORY.hidden.delete('inez-seated'); return E.anim('inez-seated', 'sit'); });
+      inezWalk = sleep(E.door ? 450 : 0).then(() => E.actorWalk('inez', 'front', A.door, A.stand, 'in', A.secs_in))    // once the door is mostly open.then(() => { STORY.hidden.delete('inez-seated'); return E.anim('inez-seated', 'sit'); });
     }
     if (a === 'sit') { if (inezWalk) await inezWalk; inezWalk = null; }
     if (a === 'stand') await E.anim('inez-seated', 'sit', true);
