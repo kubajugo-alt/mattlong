@@ -53,8 +53,11 @@ def voice_of(sp):
     return NEWSBOY if sp == 'NEWSBOY' else cast[VOICE[sp]]['voice_id']
 
 
+LINE_DIR = json.load(open('voices/directions.json')) if os.path.exists('voices/directions.json') else {}   # a short direction per line, where written
+
+
 def tts(sp, text, dst):
-    body = json.dumps({'text': f"{DIRECTION[sp]} {text}", 'model_id': cast_model}).encode()
+    body = json.dumps({'text': f"{LINE_DIR.get(sp + '|' + text, DIRECTION[sp])} {text}", 'model_id': cast_model}).encode()
     req = urllib.request.Request(f'https://api.elevenlabs.io/v1/text-to-speech/{voice_of(sp)}?output_format=mp3_44100_128', data=body,
                                  headers={'content-type': 'application/json', 'accept': 'audio/mpeg', 'xi-api-key': 'proxy-injected'})
     with urllib.request.urlopen(req, timeout=120) as r:
