@@ -208,7 +208,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   function hotAt(x, y) { let best = null; for (const h of S.hot) { if (hotGone(h)) continue; if (x < h.bbox[0] || x > h.bbox[2] || y < h.bbox[1] || y > h.bbox[3]) continue;
       if (h.paths.some(p => hitCtx.isPointInPath(p, x, y)) && (!best || h.z > best.z)) best = h; } return best; }
   let hover = null;
-  cv.addEventListener('pointermove', (ev) => { if (!S) return; const [x, y] = toScene(ev); hover = hotAt(x, y); cv.style.cursor = hover ? 'pointer' : 'crosshair'; });
+  cv.addEventListener('pointermove', (ev) => { if (!S) return; const [x, y] = toScene(ev); hover = hotAt(x, y); });     // the cursor doesn't change over hotspots: that would give them away
   cv.addEventListener('pointerleave', () => { hover = null; });
   // ---- input
   function toScene(ev) { const r = cv.getBoundingClientRect(); const px = (ev.clientX - r.left) / r.width * cv.width, py = (ev.clientY - r.top) / r.height * cv.height;
@@ -772,12 +772,12 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     for (const o of front) drawOcc(o, now);
 
     if (amb) ambientOver(dt, W, H);
-    // hotspot overlay: all outlines, and the one under the pointer with its name
+    // hotspot overlay: all outlines when the torch is on; the name of the one under the pointer
     const showHot = document.getElementById('showHot').checked;
     if (showHot || hover) {
       ctx.save(); ctx.lineJoin = 'round';
       if (showHot) { ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,255,255,.45)'; for (const h of S.hot) if (!hotGone(h)) h.paths.forEach(p => ctx.stroke(p)); }
-      if (hover) { ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.fillStyle = 'rgba(255,255,255,.10)'; hover.paths.forEach(p => { ctx.fill(p); ctx.stroke(p); });
+      if (hover) {     // no outline on hover (the torch is the opt-in hint): just the name, as in the classic adventures
         ctx.font = '500 34px Jost, system-ui, sans-serif'; const tw = ctx.measureText(hover.name).width;
         const lx = Math.min(W - tw - 30, Math.max(10, (hover.bbox[0] + hover.bbox[2]) / 2 - tw / 2)), ly = Math.max(50, hover.bbox[1] - 18);
         ctx.fillStyle = 'rgba(10,10,12,.8)'; ctx.fillRect(lx - 12, ly - 38, tw + 24, 50); ctx.fillStyle = '#f2efe9'; ctx.fillText(hover.name, lx, ly); }
