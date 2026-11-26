@@ -156,6 +156,20 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }).catch(() => { status.textContent = 'Scene could not be loaded'; });
   roomSel.addEventListener('change', () => enter(roomSel.value));
 
+  // Matt's actions (Ludo sheets, sprites/acts.json): one-shots that start and end in his standing pose, played
+  // where he stands; side ones turn him toward `tx`. Same frame size and feet as his standing frame (True Size).
+  let ACTS = null; const actImgs = {};
+  function actEnd() { const a = M.act; M.act = null; if (a) a.done(); }
+  async function playAct(name, tx) {
+    if (!ACTS) ACTS = await fetch('sprites/acts.json').then(r => r.json()).catch(() => ({}));
+    const a = ACTS[name]; if (!a || M.moving || M.path.length) return;
+    if (!actImgs[name]) actImgs[name] = await load(a.file);
+    actEnd();
+    const base = sprites[a.dir];
+    const sp = Object.assign({ feet_x: base.feet_x, feet_y: base.feet_per_frame ? base.feet_per_frame[0] : base.feet_y, figure_h: base.figure_h }, a);
+    M.dir = a.dir; if (a.dir === 'side' && tx != null) M.flip = tx < M.x;
+    return new Promise(res => { M.act = { sp, img: actImgs[name], t0: performance.now(), done: res }; });
+  }
   // Matt's frames: one row, or a grid when sprites.json gives `cols`
   const frameXY = (sp, fi) => { const c = sp.cols || sp.frames; return [(fi % c) * sp.fw, Math.floor(fi / c) * sp.fh]; };
   // ---- depth
@@ -1063,8 +1077,11 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (amb) ambientUnder(dt, W, H); else lightFactor = 1;
 
     // sprite frame
-    const sp = sprites[M.dir], img = spriteImgs[M.dir];
-    const fi = M.moving ? Math.floor(M.phase * sp.frames) % sp.frames : 0;
+    let sp = sprites[M.dir], img = spriteImgs[M.dir];
+    let fi = M.moving ? Math.floor(M.phase * sp.frames) % sp.frames : 0;
+    if (M.act && (M.moving || M.path.length)) actEnd();                  // walking off cancels an action
+    if (M.act) { const a = M.act, f = Math.floor((now - a.t0) / 1000 * a.sp.fps);
+      if (f >= a.sp.frames) actEnd(); else { sp = a.sp; img = a.img; fi = f; } }
     const h = heightAt(M.y), sc = h / sp.figure_h, dw = sp.fw * sc, dh = sp.fh * sc;
     const feetY = (sp.feet_per_frame ? sp.feet_per_frame[fi] : sp.feet_y);   // this frame's planted foot
     const fx = M.flip ? -1 : 1;
@@ -1120,7 +1137,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     if (!M.moving) {                                                     // standing still: face, breathing and head sway
       let src = img, [sx0, sy0] = frameXY(sp, fi);
       if (sp.face) { src = faceCompose('matt-' + M.dir, img, sx0, sy0, sp.fw, sp.fh, sp.face, sp.faceImg, mouthOf('matt'), eyesOf('matt', now)); sx0 = 0; sy0 = 0; }
-      if (document.getElementById('ambient').checked)
+      if (document.getElementById('ambient').checked && !M.act)
         ctx.drawImage(warpFrame('matt-' + M.dir, src, sx0, sy0, sp.fw, sp.fh, RIGS['matt-' + M.dir], now / 1000, 0.7), -sp.feet_x * sc, -feetY * sc, dw, dh);
       else ctx.drawImage(src, sx0, sy0, sp.fw, sp.fh, -sp.feet_x * sc, -feetY * sc, dw, dh);
     }
@@ -1299,7 +1316,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },

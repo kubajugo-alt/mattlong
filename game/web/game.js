@@ -117,7 +117,8 @@
   async function act(cmd) {
     const [verb, ...rest] = cmd.split(':'); const arg = rest.join(':');
     switch (verb) {
-      case 'give': if (!G.inv.includes(arg)) G.inv.push(arg); renderInv(); flash($('bInv')); break;
+      case 'give': if (!G.inv.includes(arg)) G.inv.push(arg); renderInv(); flash($('bInv'));
+        if (E.act && G.lastHot && !E.acting()) E.act('reach', G.lastHot[0]); break;       // he takes it: a reach toward where it came from
       case 'take': G.inv = G.inv.filter(i => i !== arg); if (G.selected === arg) select(null); renderInv(); break;
       case 'hide': if (arg === 'kate-at-table') STORY.kateGone = true; else { STORY.hidden.add(arg); STORY.hiddenHot.add(E.room() + ':' + arg); } break;
       case 'go': await fadeTo(() => E.enter(arg, E.room())); break;
@@ -129,6 +130,7 @@
         if (who === 'inez' && a === 'walk_in') STORY.hidden.delete('inez-seated');
         if (who === 'inez' && a === 'walk_out') STORY.hidden.add('inez-seated');
         if (who === 'kate' && a === 'stand') break;
+        if (who === 'matt') { if (E.act) E.act(a, G.lastHot ? G.lastHot[0] : null); break; }    // his actions run alongside the lines
         const occ = { kate: 'kate-at-table', junkie: 'junkie', inez: 'inez-seated' }[who]; if (occ && a !== 'walk_out') E.anim(occ); break; }
       case 'journal': if (!G.journal.includes(arg)) G.journal.push(arg); if (G.notebook) flash(bNote); break;
       case 'unlock': if (arg === 'notebook') { G.notebook = true; bNote.hidden = false; flash(bNote); } break;
@@ -250,18 +252,18 @@
   function goDo(h, path) {
     if (PEOPLE[h.id]) {
       noticed.add(E.room() + ':' + h.id);          // he came to talk: no separate greeting
-      const [x, y] = talkSpot(h), cx = (h.bbox[0] + h.bbox[2]) / 2;
+      const [x, y] = talkSpot(h), cx = (h.bbox[0] + h.bbox[2]) / 2; G.lastHot = [cx, y];
       E.walkTo(x, y, () => { E.face(cx); run(path); });
       return;
     }
-    const tx = (h.bbox[0] + h.bbox[2]) / 2, ty = Math.min(h.bbox[3] + 30, E.scene().sc.size[1] - 10);
+    const tx = (h.bbox[0] + h.bbox[2]) / 2, ty = Math.min(h.bbox[3] + 30, E.scene().sc.size[1] - 10); G.lastHot = [tx, ty];
     E.walkTo(tx, ty, () => { if (path === 'BOARD') openBoard(); else run(path); });
   }
   verbs.addEventListener('click', (ev) => {
     const b = ev.target.closest('button'); if (!b || !pick) return;
     ev.stopPropagation();
     const { h, x, y } = pick; closeVerbs();
-    if (h.id === 'matt') { run(b.dataset.v === 'look' ? 'matt_self.look' : 'matt_self.use'); return; }     // his watch, his pockets
+    if (h.id === 'matt') { G.lastHot = null; run(b.dataset.v === 'look' ? 'matt_self.look' : 'matt_self.use'); return; }     // his watch, his pockets
     if (b.dataset.v === 'look') { run(knotFor(h.id, 'look')); return; }
     const path = knotFor(h.id, 'use');
     const scripted = !/__default\.use$/.test(path) && path !== 'item__default.use';

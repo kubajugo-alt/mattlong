@@ -324,6 +324,7 @@ VO: The percolator. The hardest-working thing in this flat, and that includes Ka
 }
 -> DONE
 = coffee_cup
+~ act("anim:matt:pour")
 ~ act("sfx:pour")
 ~ act("take:coffee-cup")
 ~ has_cup = false
@@ -357,6 +358,7 @@ VO: Today's Clarion, folded to Pete's page. Kate reads it from the front, Pete f
 -> read_news
 
 === read_news ===
+~ act("anim:matt:read")
 {cycle:
     - VO: "Crater Still Missing." A Supreme Court justice hails a cab on West Forty-Fifth Street in August and is never seen again. Three months, and the police have a reward poster and a shrug.
     - VO: "Seabury Widens Magistrates' Inquiry." Talk of vice cops framing women in the Women's Court, and bondsmen splitting the bail. Somewhere in this city, a detective is wondering if his name comes up next.
@@ -1141,6 +1143,7 @@ VO: His door key. West Eighty-Fourth Street. A key to a door nobody's answered i
 // ---- Matt himself: the eye checks the pocket watch, the hand pats his pockets; items used on himself ----
 === matt_self ===
 = look
+~ act("anim:matt:watch")
 ~ act("sfx:watch-open")
 {
 - book_returned:
@@ -1154,6 +1157,7 @@ VO: His door key. West Eighty-Fourth Street. A key to a door nobody's answered i
 }
 -> DONE
 = use
+~ act("anim:matt:pockets")
 {cents >= 43:
     VO: Forty-three cents, a flask, and a key to an office I don't pay for.
 - else:
@@ -1161,16 +1165,19 @@ VO: His door key. West Eighty-Fourth Street. A key to a door nobody's answered i
 }
 -> DONE
 = flask
+~ act("anim:matt:flask")
 ~ act("sfx:flask-swig")
 VO: Prohibition. The law of the land, and the land's the only thing that stays dry.
 -> DONE
 = cigarettes
+~ act("anim:matt:smoke")
 ~ act("sfx:match-strike")
 VO: I struck a match and looked at the pack. Then I shook the match out. Those weren't cigarettes. They were currency.
 -> DONE
 = clarion
 -> read_news
 = change
+~ act("anim:matt:pockets")
 VO: I counted it again. It didn't grow.
 -> DONE
 
