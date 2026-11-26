@@ -1070,6 +1070,14 @@
     "rows": [
      0
     ]
+   },
+   "acts": {
+    "sell": {
+     "file": "occ/newsboy-sell.webp",
+     "frames": 36,
+     "cols": 6,
+     "fps": 7.93
+    }
    }
   },
   {

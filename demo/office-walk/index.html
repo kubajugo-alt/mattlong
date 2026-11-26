@@ -1326,7 +1326,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       const m = a && o.acts && o.acts[a];
       if (!m) { if (o.anim) o.playAt = performance.now(); return; }
       if (!m.img) m.img = await load(room + '/' + m.file);
-      return new Promise(res => { if (o.one) o.one.done(); o.one = { m, t0: performance.now(), done: res }; }); },
+      return new Promise(res => { if (o.one && !o.one.told) o.one.done(); o.one = { m, t0: performance.now(), done: res }; }); },
     exitAt(x, y) { return Object.entries(S.sc.exits).find(([, e]) => x > e.bbox[0] && x < e.bbox[2] && y > e.bbox[1] && y < e.bbox[3]) || null; } });
   function mouthOf(id) {
     if (TALK.who !== id || !TALK.audio) return 'X';
@@ -1358,9 +1358,13 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
   function drawOcc0(o, now) {
     const w = o.bbox[2] - o.bbox[0], h = o.bbox[3] - o.bbox[1];
-    if (o.one) { const { m } = o.one, f = Math.floor((now - o.one.t0) / 1000 * m.fps);
-      if (f < m.frames) { ctx.drawImage(m.img, (f % m.cols) * w, Math.floor(f / m.cols) * h, w, h, o.bbox[0], o.bbox[1], w, h); return; }
-      const d = o.one.done; o.one = null; o.playAt = now + 4000; d(); }
+    if (o.one) { const { m } = o.one, t = (now - o.one.t0) / 1000, f = Math.min(m.frames - 1, Math.floor(t * m.fps));
+      // a one-shot may need more room than the resting frame (standing up, holding something out): `pad` [l,t,r,b] in
+      // scene px around the bbox; `hold` s on the last frame before the idle comes back
+      if (t >= m.frames / m.fps && !o.one.told) { o.one.told = true; o.one.done(); }       // the script goes on; the hold is drawn under it
+      if (t < m.frames / m.fps + (m.hold || 0)) { const [l, tp, r, b] = m.pad || [0, 0, 0, 0], fw = w + l + r, fh = h + tp + b;
+        ctx.drawImage(m.img, (f % m.cols) * fw, Math.floor(f / m.cols) * fh, fw, fh, o.bbox[0] - l, o.bbox[1] - tp, fw, fh); return; }
+      const d = o.one.told ? null : o.one.done; o.one = null; o.playAt = now + 4000; if (d) d(); }
     if (o.anim) {
       // mostly still on the first frame; now and then play the idle loop once through
       if (o.playAt === undefined) o.playAt = now + 2000 + Math.random() * 9000;
