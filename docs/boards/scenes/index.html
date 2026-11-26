@@ -1,0 +1,170 @@
+<title>Scene Frames</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: an editing bench — the player and its timeline on top, the strip of every frame below */
+:root {
+  --bg: #e9e6e1; --panel: #f6f4f0; --ink: #1d1c1b; --muted: #6b6762; --line: #cfcac2; --stage: #2a2826; --accent: #a3261f;
+  --p-stand: #7a5c2e; --p-side: #2f5f7a; --p-back: #4f6b35; --p-gone: #6b6762; --p-door: #7a3f5c; --p-walkin: #2f5f7a; --p-sit: #7a5c2e; --p-seated: #5b4a8a; --p-walkout: #4f6b35; --p-enter: #2f6b6b; --notebg: #f6dcd8;
+  --display: "Big Shoulders Display", "Arial Narrow", sans-serif; --body: "Jost", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #161514; --panel: #201f1d; --ink: #ece8e2; --muted: #a29d95; --line: #3a3733; --stage: #0f0e0d; --accent: #e0574c;
+  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --notebg: #3e211e; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #161514; --panel: #201f1d; --ink: #ece8e2; --muted: #a29d95; --line: #3a3733; --stage: #0f0e0d; --accent: #e0574c;
+  --p-stand: #c79a52; --p-side: #6aa6c8; --p-back: #93b86a; --p-gone: #8a857e; --p-door: #c97aa0; --p-walkin: #6aa6c8; --p-sit: #c79a52; --p-seated: #a593d8; --p-walkout: #93b86a; --p-enter: #6ac8c8; --notebg: #3e211e; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.45 var(--body); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 48px }
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 18px }
+h1 { font: 800 clamp(30px, 5vw, 46px)/1 var(--display); letter-spacing: .02em; text-transform: uppercase; margin: 0; text-wrap: balance }
+.lede { color: var(--muted); max-width: 72ch; margin: 6px 0 0 }
+.bench { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 18px; align-items: start }
+@media (max-width: 860px) { .bench { grid-template-columns: minmax(0, 1fr) } }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 12px; min-width: 0 }
+.stage { background: var(--stage); border-radius: 8px; overflow: hidden; position: relative }
+.stage canvas { display: block; width: 100%; height: auto }
+.badge { position: absolute; left: 10px; top: 10px; font: 500 12px var(--mono); color: #fff; padding: 3px 8px; border-radius: 4px }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+button { font: 500 14px var(--body); border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 6px; padding: 6px 12px; cursor: pointer }
+button.main { background: var(--ink); color: var(--bg); border-color: var(--ink); min-width: 92px }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .thumb:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.readout { font: 500 13px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; margin-left: auto }
+.track { position: relative; height: 34px; cursor: pointer; border-radius: 6px; overflow: hidden; display: flex; border: 1px solid var(--line) }
+.track span { height: 100%; display: flex; align-items: center; padding-left: 6px; font: 500 11px var(--mono); color: #fff; white-space: nowrap; overflow: hidden }
+.track .head { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); box-shadow: 0 0 0 1px var(--bg); pointer-events: none }
+.track .tick { position: absolute; top: 0; height: 8px; width: 2px; background: var(--accent); pointer-events: none }
+h2 { font: 600 20px/1 var(--display); letter-spacing: .05em; text-transform: uppercase; margin: 0 }
+.legend { display: grid; gap: 6px; font-size: 14px }
+.legend div { display: flex; gap: 8px; align-items: baseline }
+.sw { width: 12px; height: 12px; border-radius: 3px; flex: none; transform: translateY(1px) }
+.muted { color: var(--muted); font-size: 13px }
+textarea { width: 100%; min-height: 70px; resize: vertical; font: 400 14px/1.4 var(--body); border: 1px solid var(--line); border-radius: 6px; padding: 8px; background: var(--bg); color: var(--ink) }
+.strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 8px }
+.thumb { border: 2px solid transparent; border-radius: 6px; overflow: hidden; cursor: pointer; background: var(--stage); position: relative; padding: 0 }
+.thumb .tf { display: block; width: 100%; aspect-ratio: 680 / 600; background-repeat: no-repeat }
+.thumb .n { position: absolute; left: 4px; bottom: 4px; font: 500 11px var(--mono); color: #fff; background: rgba(0,0,0,.55); padding: 1px 5px; border-radius: 3px }
+.thumb .bar { position: absolute; left: 0; right: 0; top: 0; height: 4px }
+.thumb.on { border-color: var(--accent) }
+.thumb.noted::after { content: ""; position: absolute; right: 5px; top: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px #fff }
+.thumb.cut { outline: 2px dashed var(--accent); outline-offset: 2px }
+.status { font: 500 12px var(--mono); color: var(--muted) }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px }
+.tabs button { border-radius: 999px }
+.tabs button[aria-current="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Sceny klatka po klatce</h1>
+    <p class="lede">Nagrane z gry na zatrzymanym zegarze: jedna klatka co 1/12 sekundy, dokładnie tak, jak ją rysuje silnik. Kolor na osi czasu mówi, co jest na ekranie. Czerwone znaczniki to momenty przekazania między arkuszami, tam najłatwiej o skok albo dziurę. Kliknij klatkę, żeby ją obejrzeć i dopisać uwagę.</p>
+    <nav class="tabs" id="tabs" aria-label="Sekwencje"></nav>
+  </header>
+
+  <div class="bench">
+    <section class="panel" aria-label="Odtwarzacz">
+      <div class="stage"><canvas id="big" width="680" height="600" aria-label="Klatka"></canvas><span class="badge" id="badge"></span></div>
+      <div class="track" id="track" role="slider" aria-label="Oś czasu" tabindex="0"></div>
+      <div class="controls">
+        <button type="button" class="main" id="play">▶ Odtwórz</button>
+        <button type="button" id="prev" aria-label="Poprzednia klatka">◀ klatka</button>
+        <button type="button" id="next" aria-label="Następna klatka">klatka ▶</button>
+        <label for="speed" class="muted">Tempo <select id="speed"><option value="1">1×</option><option value="0.5">0,5×</option><option value="0.25">0,25×</option></select></label>
+        <label for="loop" class="muted"><input type="checkbox" id="loop" checked> w pętli</label>
+        <span class="readout" id="readout"></span>
+      </div>
+    </section>
+    <aside class="panel" aria-label="Opis i uwagi">
+      <h2>Fazy</h2>
+      <div class="legend" id="legend"></div>
+      <h2>Uwaga do klatki <span id="noteN"></span></h2>
+      <textarea id="note" placeholder="Np. tu przeskakuje w bok, tu zmienia się wzrost, tu brakuje stóp…"></textarea>
+      <p class="status" id="dbstatus">Łączę z zapisem uwag…</p>
+    </aside>
+  </div>
+
+  <section class="panel" aria-label="Wszystkie klatki">
+    <h2>Wszystkie klatki</h2>
+    <div class="strip" id="strip"></div>
+  </section>
+</div>
+
+<script>
+const PH = {
+  stand: ['Wstaje', 'arkusz wstawania (Ludo), ostatnia klatka trzymana do przejęcia'],
+  side: ['Idzie bokiem', 'przenikanie z ostatniej klatki wstawania, potem cykl chodu z boku z rozpędzaniem'],
+  back: ['Idzie tyłem do drzwi', 'cykl chodu od tyłu; drzwi otwierają się, gdy do nich podchodzi'],
+  door: ['Drzwi się zamykają', 'skrzydło wraca na zawias'],
+  walkin: ['Wchodzi', 'drzwi otwarte, cykl chodu przodem, wyłania się z korytarza'],
+  sit: ['Siada', 'arkusz siadania (Ludo)'], seated: ['Siedzi', 'animacja spoczynkowa'],
+  walkout: ['Wychodzi', 'cykl chodu od tyłu; drzwi otwarte na jej drodze'],
+  enter: ['Wejście do pokoju', 'zmiana pokoju; drzwi za Mattem są otwarte i się zamykają'],
+  gone: ['Koniec', 'pokój po scenie'] };
+const COL = (p) => getComputedStyle(document.documentElement).getPropertyValue('--p-' + p).trim();
+const $ = (id) => document.getElementById(id);
+let SEQS = [], SQ = null, F = [], cur = 0, timer = null, notes = {}, db = null;
+
+function cuts() { const c = []; for (let i = 1; i < F.length; i++) if (F[i].ph !== F[i - 1].ph) c.push(i); return c; }
+function show(i) {
+  cur = Math.max(0, Math.min(F.length - 1, i)); const f = F[cur];
+  drawBig(f); const b = $('badge'); b.textContent = '#' + cur + ' · ' + PH[f.ph][0]; b.style.background = COL(f.ph);
+  $('readout').textContent = 'klatka ' + cur + ' / ' + (F.length - 1) + ' · ' + (cur / 12).toFixed(2) + ' s';
+  $('track').querySelector('.head').style.left = (cur / (F.length - 1) * 100) + '%'; $('track').setAttribute('aria-valuenow', cur);
+  for (const t of document.querySelectorAll('.thumb')) t.classList.toggle('on', +t.dataset.i === cur);
+  $('noteN').textContent = '#' + cur; const ta = $('note'); if (document.activeElement !== ta) ta.value = (notes[nid(cur)] || {}).note || '';
+}
+function play() {
+  if (timer) { clearInterval(timer); timer = null; $('play').textContent = '▶ Odtwórz'; return; }
+  $('play').textContent = '❚❚ Pauza';
+  timer = setInterval(() => { if (cur >= F.length - 1) { if ($('loop').checked) show(0); else { play(); return; } } else show(cur + 1); }, 1000 / 12 / +$('speed').value);
+}
+function build() {
+  const tr = $('track'); tr.textContent = '';
+  let i = 0; while (i < F.length) { let j = i; while (j < F.length && F[j].ph === F[i].ph) j++;
+    const s = document.createElement('span'); s.style.flex = String(j - i); s.style.background = COL(F[i].ph); s.textContent = PH[F[i].ph][0]; tr.append(s); i = j; }
+  for (const c of cuts()) { const t = document.createElement('i'); t.className = 'tick'; t.style.left = (c / (F.length - 1) * 100) + '%'; tr.append(t); }
+  const h = document.createElement('i'); h.className = 'head'; tr.append(h);
+  const seek = (e) => { const r = tr.getBoundingClientRect(); show(Math.round((e.clientX - r.left) / r.width * (F.length - 1))); };
+  tr.onpointerdown = (e) => { seek(e); tr.onpointermove = (ev) => { if (ev.buttons) seek(ev); }; };
+  tr.onkeydown = (e) => { if (e.key === 'ArrowRight') show(cur + 1); if (e.key === 'ArrowLeft') show(cur - 1); };
+  const L = $('legend'); L.textContent = '';
+  for (const [k, [name, what]] of Object.entries(PH)) { const n = F.filter(f => f.ph === k).length; if (!n) continue;
+    const d = document.createElement('div'); const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = COL(k);
+    const t = document.createElement('span'); t.textContent = name + ' (' + n + ' klatek) — ' + what; d.append(sw, t); L.append(d); }
+  const st = $('strip'); st.textContent = ''; const cs = new Set(cuts());
+  F.forEach((f, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'thumb' + (cs.has(i) || cs.has(i + 1) ? ' cut' : ''); b.dataset.i = i;
+    b.setAttribute('aria-label', 'Klatka ' + i);
+    const im = document.createElement('span'); im.className = 'tf'; const [C, R] = SQ.grid;
+    im.style.backgroundImage = 'url(sh/' + f.s + ')'; im.style.backgroundSize = (C * 100) + '% ' + (R * 100) + '%';
+    im.style.backgroundPosition = (f.c / (C - 1) * 100) + '% ' + (f.r / (R - 1) * 100) + '%';
+    const bar = document.createElement('span'); bar.className = 'bar'; bar.style.background = COL(f.ph);
+    const n = document.createElement('span'); n.className = 'n'; n.textContent = '#' + i; b.append(im, bar, n);
+    b.onclick = () => { if (timer) play(); show(i); window.scrollTo({ top: 0, behavior: 'smooth' }); }; st.append(b); });
+  markNotes();
+}
+const nid = (i) => SQ.key + '-f' + i;
+const SH = {};
+function sheet(n) { if (!SH[n]) { SH[n] = new Image(); SH[n].src = 'sh/' + n; } return SH[n]; }
+function drawBig(f) { const im = sheet(f.s), cv = $('big'), x = cv.getContext('2d'), [W, H] = SQ.cell;
+  const go = () => { if (F[cur] !== f) return; x.drawImage(im, f.c * W, f.r * H, W, H, 0, 0, W, H); };
+  if (im.complete && im.naturalWidth) go(); else im.addEventListener('load', go, { once: true }); }
+function markNotes() { for (const t of document.querySelectorAll('.thumb')) t.classList.toggle('noted', !!((notes[nid(t.dataset.i)] || {}).note)); }
+function pick(key) { const q = SEQS.find(q => q.key === key) || SEQS[0]; if (timer) play(); SQ = q; F = q.frames; cur = 0;
+  for (const b of document.querySelectorAll('.tabs button')) b.setAttribute('aria-current', String(b.dataset.k === q.key)); build(); show(0); }
+async function initDb() {
+  const timer10 = setTimeout(() => { $('dbstatus').textContent = 'Zapis uwag nie odpowiada — możesz oglądać, uwagi się nie zapiszą.'; }, 10000);
+  try { db = window.claude ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (!db) { clearTimeout(timer10); $('dbstatus').textContent = 'Zapis uwag niedostępny w tym widoku.'; return; }
+  db.collection('frames').onSnapshot((snap) => { clearTimeout(timer10); notes = {}; for (const d of snap.docs) notes[d.id] = d.data();
+    $('dbstatus').textContent = 'Uwagi zapisują się automatycznie (' + Object.values(notes).filter(n => n.note).length + ').'; markNotes(); show(cur); },
+    (e) => { clearTimeout(timer10); $('dbstatus').textContent = 'Nie udało się wczytać uwag (' + (e.code || 'błąd') + ').'; });
+}
+$('note').onchange = async (e) => { const id = nid(cur), v = { seq: SQ.key, frame: cur, note: e.target.value.trim(), at: new Date().toISOString() }; notes[id] = v; markNotes();
+  if (db) try { await db.collection('frames').doc(id).set(v); } catch (er) { $('dbstatus').textContent = 'Nie zapisano (' + (er.code || 'błąd') + ').'; } };
+$('play').onclick = play; $('prev').onclick = () => show(cur - 1); $('next').onclick = () => show(cur + 1);
+$('speed').onchange = () => { if (timer) { play(); play(); } };
+(async () => { SEQS = await fetch('sh/seqs.json').then(r => r.json());
+  for (const q of SEQS) { const b = document.createElement('button'); b.type = 'button'; b.dataset.k = q.key; b.textContent = q.label + ' (' + q.frames.length + ')'; b.onclick = () => { location.hash = q.key; }; $('tabs').append(b); }
+  const route = () => pick(location.hash.slice(1)); window.addEventListener('hashchange', route); route(); initDb(); })();
+</script>
