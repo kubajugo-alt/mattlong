@@ -5,21 +5,12 @@ const { chromium } = require('playwright'); const fs = require('fs');
 const OUT = process.argv[2]; fs.mkdirSync(OUT, { recursive: true }); const ONLY = process.argv[3];
 const SEQ = [
   { key: 'kate', label: 'Kate wychodzi', room: 'pete-kate-flat', from: 'corridor', matt: [560, 1420], clip: { x: 240, y: 110, width: 680, height: 600 },
-    run: `const A=ENGINE.scene().sc.actors.kate; window.__ph='stand';
-      await ENGINE.anim('kate-at-table','leave'); window.__ph='side'; ENGINE.ghost('kate-at-table', A.blend||0.5);
-      const w=ENGINE.actorWalk('kate','side',A.start,A.turn,null,A.secs_side,{fadeIn:A.blend||0.5,ease:0.14}); ENGINE.STORY.kateGone=true; await w;
-      window.__ph='back'; ENGINE.door('door',true,0.8); await ENGINE.actorWalk('kate','back',A.turn,ENGINE.doorInside('door'),null,A.secs_back,{stay:true}); ENGINE.door('door',false,0.9,0.15);
-      window.__ph='door'; await new Promise(r=>setTimeout(r,1100)); ENGINE.actorClear('kate'); await new Promise(r=>setTimeout(r,200)); window.__ph='gone';` },
+    run: `window.__ph='kate'; await GAME.kateLeaves(); ENGINE.STORY.kateGone=true; window.__ph='door'; await new Promise(r=>setTimeout(r,800)); window.__ph='gone';` },
   { key: 'inez-in', label: 'Inez wchodzi i siada', room: 'office-night', from: 'corridor', matt: [1480, 1330], clip: { x: 130, y: 90, width: 620, height: 620 },
-    run: `const A=ENGINE.scene().sc.actors.inez; ENGINE.STORY.hidden.add('inez-seated'); window.__ph='walkin';
-      ENGINE.door('door',true,0.5); setTimeout(()=>ENGINE.door('door',false,0.9),1700); await new Promise(r=>setTimeout(r,300));
-      await ENGINE.actorWalk('inez','front',ENGINE.doorInside('door'),A.stand,null,A.secs_in); window.__ph='sit'; ENGINE.STORY.hidden.delete('inez-seated');
-      await ENGINE.anim('inez-seated','sit'); window.__ph='seated'; await new Promise(r=>setTimeout(r,600)); window.__ph='gone';` },
+    run: `ENGINE.STORY.hidden.add('inez-seated'); window.__ph='walkin'; await GAME.inez('walk_in'); await GAME.inez('sit'); window.__ph='seated'; await new Promise(r=>setTimeout(r,600)); window.__ph='gone';` },
   { key: 'inez-out', label: 'Inez wstaje i wychodzi', room: 'office-night', from: 'corridor', matt: [1480, 1330], clip: { x: 130, y: 90, width: 620, height: 620 },
-    run: `const A=ENGINE.scene().sc.actors.inez; ENGINE.STORY.hidden.delete('inez-seated'); window.__ph='seated'; await new Promise(r=>setTimeout(r,500));
-      window.__ph='stand'; await ENGINE.anim('inez-seated','sit',true); ENGINE.STORY.hidden.add('inez-seated');
-      window.__ph='walkout'; ENGINE.door('door',true,0.7,1.2); await ENGINE.actorWalk('inez','back',A.stand,ENGINE.doorInside('door'),null,A.secs_out,{stay:true}); ENGINE.door('door',false,0.9,0.15);
-      window.__ph='door'; await new Promise(r=>setTimeout(r,1100)); ENGINE.actorClear('inez'); await new Promise(r=>setTimeout(r,200)); window.__ph='gone';` },
+    run: `ENGINE.STORY.hidden.delete('inez-seated'); window.__ph='seated'; await new Promise(r=>setTimeout(r,500));
+      window.__ph='stand'; await GAME.inez('stand'); window.__ph='walkout'; await GAME.inez('walk_out'); window.__ph='gone';` },
   { key: 'matt-in', label: 'Matt wchodzi do mieszkania', room: 'corridor', from: 'doyers-street', matt: [900, 1350], clip: { x: 520, y: 60, width: 700, height: 640 },
     run: `window.__ph='enter'; await ENGINE.enter('pete-kate-flat','corridor'); window.__ph='door'; await new Promise(r=>setTimeout(r,1800)); window.__ph='gone';` },
 ];

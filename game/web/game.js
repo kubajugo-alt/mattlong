@@ -150,14 +150,16 @@
     await E.anim(occ, 'leave');
     // her last stand-up frame dissolves into the first steps of the walk on the same spot, and the walk starts from a
     // standstill, so the turn from three-quarter to profile reads as a turn, not a cut
-    if (E.ghost) E.ghost(occ, A.blend || 0.5);
-    const walk = E.actorWalk('kate', 'side', A.start, A.turn, null, A.secs_side, { fadeIn: A.blend || 0.5, ease: 0.14 });   // starts this frame (sheet loaded with the room)
+    const walk = E.actorWalk('kate', 'side', A.start, A.turn, null, A.secs_side, { ease: 0.14 });   // starts this frame (sheet loaded with the room)
     STORY.kateGone = true;
     await walk;
-    if (E.door) E.door('door', true, 0.8);                                         // she opens the door as she reaches it,
-    const through = (E.doorInside && E.doorInside('door')) || A.door;              // walks through it, and pulls it shut behind her:
-    await E.actorWalk('kate', 'back', A.turn, through, E.door ? null : 'out', A.secs_back, { stay: true });   // the leaf hides her
-    if (E.door) { E.door('door', false, 0.9, 0.15); await sleep(1100); } if (E.actorClear) E.actorClear('kate');
+    if (!E.doorPoint) { await E.actorWalk('kate', 'back', A.turn, A.door, 'out', A.secs_back); return; }
+    // she opens the door as she reaches it, crosses the sill and keeps walking down the corridor while it swings shut
+    E.door('door', true, 0.8);
+    const sill = E.doorPoint('door', 0.55, 10), deep = E.doorPoint('door', 0.6, 120);
+    await E.actorWalk('kate', 'back', A.turn, sill, null, A.secs_back * 0.85);
+    E.door('door', false, 1.0, 0.25);
+    await E.actorWalk('kate', 'back', sill, deep, null, 1.3, { stay: true }); await sleep(100); E.actorClear('kate');
   }
   // Inez: in from the door to the sofa (walk, then sits), and back out; the lines run while she walks. Without the
   // sheets (an older build) she just appears and goes.
@@ -169,16 +171,25 @@
       if (Math.hypot(E.M.x - A.door[0], E.M.y - A.door[1]) < 500 || Math.hypot(E.M.x - A.stand[0], E.M.y - A.stand[1]) < 300) E.walkTo(A.clear[0], A.clear[1], () => E.face(A.stand[0]));   // out of her way
       // in at the door, across to the sofa and straight down onto it, while Matt looks her over
       if (E.door) { E.door('door', true, 0.5); setTimeout(() => E.door('door', false, 0.9), 1700); }   // the door opens, she comes in, it swings to
-      // she starts once the door is mostly open
-      const behind = (E.doorInside && E.doorInside('door')) || A.door;           // she's behind the door when it opens
-      inezWalk = sleep(E.door ? 300 : 0).then(() => E.actorWalk('inez', 'front', behind, A.stand, E.door ? null : 'in', A.secs_in)).then(() => { STORY.hidden.delete('inez-seated'); return E.anim('inez-seated', 'sit'); });
+      // she's behind the right side of the doorway (clear of the leaf) when it opens, walks in facing us, comes over
+      // to the sofa, turns to it and sits
+      const behind = E.doorPoint ? E.doorPoint('door', 0.72, 40) : A.door, out = E.doorPoint ? E.doorPoint('door', 0.72, -110) : A.door;
+      const turn = (sc.objects.find(o => o.name === 'inez-seated') || {}).acts || {};
+      inezWalk = sleep(E.door ? 300 : 0)
+        .then(() => E.door ? E.actorWalk('inez', 'front', behind, out, null, 1.1) : null)
+        .then(() => E.actorWalk('inez', 'front', E.door ? out : A.door, A.stand, E.door ? null : 'in', A.secs_in * 0.8))
+        .then(() => { STORY.hidden.delete('inez-seated'); return turn.turn ? E.anim('inez-seated', 'turn') : null; })
+        .then(() => E.anim('inez-seated', 'sit'));
     }
     if (a === 'sit') { if (inezWalk) await inezWalk; inezWalk = null; }
     if (a === 'stand') await E.anim('inez-seated', 'sit', true);
     if (a === 'walk_out') { STORY.hidden.add('inez-seated'); if (E.door) E.door('door', true, 0.7, 1.2);
-      const through = (E.doorInside && E.doorInside('door')) || A.door;
-      await E.actorWalk('inez', 'back', A.stand, through, E.door ? null : 'out', A.secs_out, { stay: true });
-      if (E.door) { E.door('door', false, 0.9, 0.15); await sleep(1100); } if (E.actorClear) E.actorClear('inez'); }
+      if (!E.doorPoint) { await E.actorWalk('inez', 'back', A.stand, A.door, 'out', A.secs_out); return; }
+      // through the right side of the doorway, clear of the leaf, and on down the corridor while the door shuts
+      const sill = E.doorPoint('door', 0.68, 10), deep = E.doorPoint('door', 0.75, 120);
+      await E.actorWalk('inez', 'back', A.stand, sill, null, A.secs_out * 0.85);
+      E.door('door', false, 1.0, 0.25);
+      await E.actorWalk('inez', 'back', sill, deep, null, 1.3, { stay: true }); await sleep(100); E.actorClear('inez'); }
   }
   const flash = (el) => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); };
 
@@ -404,5 +415,5 @@
     }
   };
   renderInv();
-  window.GAME = { get story() { return story; }, G, run, knotFor, get busy() { return busy; } };     // for tests and debugging
+  window.GAME = { get story() { return story; }, G, run, knotFor, get busy() { return busy; }, kateLeaves: () => kateLeaves('kate-at-table'), inez };     // for tests and debugging
 })();

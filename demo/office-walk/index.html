@@ -156,7 +156,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       if (!(en && S.sc.doors[en])) { en = Object.keys(S.sc.doors).find(k2 => S.sc.doors[k2].from === from);       // a door that isn't an exit (the pawnshop's back door)
         const sd = en && S.sc.doors[en].stand; if (sd) { const p2 = nearestWalkable(sd[0], sd[1]); if (p2) [M.x, M.y] = p2; } }
       if (en && S.sc.doors[en]) { const st = doorState(en); st.a = 1; st.t = 0; st.v = 1 / 0.7; st.delay = 0.9;
-        const stand = [M.x, M.y]; [M.x, M.y] = doorInfo(S.sc.doors[en]).inside; M.path = [stand]; M.passing = false; } }
+        // straight out of the middle of the doorway, then a step aside to where he stands (clear of the door and of anyone near it)
+        const I = doorInfo(S.sc.doors[en]), stand = [M.x, M.y], out = [I.inside[0], Math.min(M.y, I.sillAt(I.inside[0]) + 70)];
+        [M.x, M.y] = I.inside; M.path = [out, stand]; M.passing = false; } }
     status.textContent = 'Click the floor'; switching = false;
     if (ENGINE.hooks.entered) ENGINE.hooks.entered(id, from);
   }
@@ -205,7 +207,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   function doorInfo(D) { if (D._i) return D._i; const q = quadOf(D.leaf), xs = q.map(p => p[0]), a = q[3], b = q[2];
     const sillAt = (x) => a[1] + (b[1] - a[1]) * Math.max(0, Math.min(1, (x - a[0]) / ((b[0] - a[0]) || 1)));   // the sill runs bl..br (slanted on a side wall)
     const mx = (a[0] + b[0]) / 2;
-    return D._i = { q, bx0: Math.min(...xs), bx1: Math.max(...xs), sillAt, inside: [mx, sillAt(mx) - 12] }; }
+    const bx0 = Math.min(a[0], b[0]), bx1 = Math.max(a[0], b[0]);
+    // a point in the doorway: across it from its left (0) to right (1) edge, `depth` px behind the sill
+    const point = (f, depth) => { const x = bx0 + (bx1 - bx0) * f; return [x, sillAt(x) - depth]; };
+    return D._i = { q, bx0: Math.min(...xs), bx1: Math.max(...xs), sillAt, point, inside: point(0.5, 30) }; }
   // whoever stands on or behind a door's sill is in its doorway: drawn between the room beyond and the leaf, inside
   // the doorway's outline, so the door reveals them as it opens and hides them as it closes (nobody fades)
   function doorAt(x, y) {
@@ -1253,7 +1258,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
         if (M.onArrive) { const f = M.onArrive; M.onArrive = null; f(); }
         if (M.exiting && ENGINE.hooks.exit && !M.passing) { const exn = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting) || ''; if (ENGINE.hooks.exit(room, exn, M.exiting)) { M.exiting = null; doorSet(exn, false, 0.5); } }
         if (M.exiting && !M.passing && S.sc.doors) { const en = Object.keys(S.sc.exits).find(k2 => S.sc.exits[k2] === M.exiting);
-          if (en && S.sc.doors[en]) { M.passing = true; doorSet(en, true, 0.3); M.path = [doorInfo(S.sc.doors[en]).inside]; } }   // through the doorway first
+          if (en && S.sc.doors[en]) { const I = doorInfo(S.sc.doors[en]); M.passing = true; doorSet(en, true, 0.3);
+            M.path = [[I.inside[0], Math.max(M.y, I.sillAt(I.inside[0]) + 20)], I.inside]; } }   // to the middle of the door, then through it
         if (M.exiting && M.passing && M.path.length) { /* still crossing the sill */ }
         else if (M.exiting) { M.passing = false; let to = M.exiting.to; if (to === 'office-day' && room === 'doyers-street') to = 'office-day'; if (to === 'map') to = MAP_NEXT[room];
           if (to && NAMES[to] && roomSel.querySelector('option[value="' + to + '"]')) { const from = room;
@@ -1520,7 +1526,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
       a.onerror = () => { TALK.who = null; res(false); }; a.play().catch(() => { TALK.who = null; res(false); }); });
   }
   function stopTalk() { if (TALK.audio) { TALK.audio.pause(); TALK.audio.onended && TALK.audio.onended(); } TALK.who = null; TALK.audio = null; }
-  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), actorWalk, ghost, door: (n, open, secs, delay) => doorSet(n, open, secs, delay), doorInside: (n) => S.sc.doors && S.sc.doors[n] ? doorInfo(S.sc.doors[n]).inside : null, actorClear: (n) => { for (let i = ACT.length - 1; i >= 0; i--) if (ACT[i].name === n) ACT.splice(i, 1); }, walking: () => ACT.length > 0, acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
+  Object.assign(ENGINE, { pigeonsFly: () => pigeonsFly(), _animals: () => AN, enter, walkable: (x, y) => walkable(x, y), plainWalk, radio, figureH: (y) => heightAt(y), act: (n, tx) => playAct(n, tx), actorWalk, ghost, door: (n, open, secs, delay) => doorSet(n, open, secs, delay), doorInside: (n) => S.sc.doors && S.sc.doors[n] ? doorInfo(S.sc.doors[n]).inside : null, doorPoint: (n, f, depth) => S.sc.doors && S.sc.doors[n] ? doorInfo(S.sc.doors[n]).point(f, depth) : null, actorClear: (n) => { for (let i = ACT.length - 1; i >= 0; i--) if (ACT[i].name === n) ACT.splice(i, 1); }, walking: () => ACT.length > 0, acting: () => !!M.act, face(x) { M.dir = 'side'; M.flip = x < M.x; }, _sbuf: (n) => sbuf(n), _music: () => MUSIC.cur ? MUSIC.cur.file + ' @ ' + MUSIC.cur.g.gain.value.toFixed(2) : 'none', radioState: () => ({ on: RADIO.on, i: RADIO.i, t: RADIO.a ? RADIO.a.currentTime : RADIO.t }), radioSet: (st) => { RADIO.i = st.i || 0; RADIO.t = st.t || 0; if (st.on) radio(true); }, findPath, nearestWalkable, hotAt, toScene, shot, sayFile, stopTalk, STORY, M,
     room: () => room, scene: () => S, busyRoom: () => switching,
     walkTo(x, y, cb) { const t = nearestWalkable(x, y); if (!t) { cb && cb(); return; } M.exiting = null; M.passing = false; M.onArrive = cb || null;
       M.path = findPath(M.x, M.y, t[0], t[1]); if (!M.path.length) { const f = M.onArrive; M.onArrive = null; f && f(); } },

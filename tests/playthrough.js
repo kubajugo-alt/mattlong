@@ -37,7 +37,9 @@ const URL = process.argv[2] || 'http://localhost:8765/';
   }
   async function exit(name, picks) {
     await p.evaluate((name) => { if (!ENGINE.hooks.exit(ENGINE.room(), name)) { const e = ENGINE.scene().sc.exits[name]; ENGINE.enter(e.to, ENGINE.room()); } }, name);
-    await p.waitForTimeout(1500); const s = await settle(picks); log('  exit', name, '->', s.room); return s;
+    await p.waitForTimeout(1500); let s = await settle(picks);
+    await p.waitForTimeout(900); s = await settle(picks);           // he comes in from behind the door: let a greeting play out
+    log('  exit', name, '->', s.room); return s;
   }
   async function useItem(item, id, picks) { await p.click('#bInv'); await p.waitForTimeout(500);
     await p.click(`#inv .slot[aria-label="${item}"]`); return hot(id, picks); }
