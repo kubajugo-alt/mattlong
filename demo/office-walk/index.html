@@ -643,7 +643,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   function streetHaze(W, H) {
     const gy = CARS.ground * H, L = CARS.area[0] * W, R = CARS.area[1] * W;
     // air between here and the cross street: a cold haze over the cars and the people, thicker with the snow
-    const fg = ctx.createLinearGradient(0, gy - CARS.h * 2.2, 0, gy + 8), k = 0.16 + 0.1 * ((SNOW_RATE[phaseNow()] || 1) - 0.7);
+    const fg = ctx.createLinearGradient(0, gy - CARS.h * 2.2, 0, gy + 8), k = 0.12 + 0.06 * ((SNOW_RATE[phaseNow()] || 1) - 0.7);
       fg.addColorStop(0, `rgba(215,215,220,${k * 0.6})`); fg.addColorStop(0.7, `rgba(215,215,220,${k})`); fg.addColorStop(1, 'rgba(215,215,220,0)');
       ctx.fillStyle = fg; ctx.fillRect(L - 10, gy - CARS.h * 2.2, R - L + 20, CARS.h * 2.2 + 8);
     // the lamp poles in front of the cross street stay crisp: repaint them over the haze
@@ -683,7 +683,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   // per-room ambient life (scene pixels): steam, lamp flicker, lantern glow, snow, mist
   const ROOM_AMB = {
     'doyers-street': { steam: [{ x: 1500, y: 1250, sx: 110, rate: 7, rise: 60, life: 6, size: 44, a: 0.17, drift: 16 }],
-                       lamps: [{ x: 1543, y: 385, core: 45, reach: 380, kind: 'gas', a: 0.5 }, { x: 1171, y: 692, core: 22, reach: 150, kind: 'gas', a: 0.4 }], snow: 26 },
+                       lamps: [{ x: 1543, y: 385, core: 45, reach: 380, kind: 'gas', a: 0.5 }, { x: 1171, y: 692, core: 22, reach: 150, kind: 'gas', a: 0.4 }], snow: 11 },
     // no steam: the only pot in the tea house sits cold on the shelf behind Lee (the kettle is in the back room)
     'tea-house': { lamps: [{ x: 480, y: 120, core: 70, reach: 330, kind: 'lantern', a: 0.4 }, { x: 745, y: 280, core: 55, reach: 280, kind: 'lantern', a: 0.4 },
                            { x: 1980, y: 180, core: 70, reach: 380, kind: 'lantern', a: 0.4 }, { x: 2280, y: 40, core: 90, reach: 420, kind: 'lantern', a: 0.4 },
@@ -694,7 +694,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
                                 { x: 347, y: 672, sx: 12, rate: 4, rise: 48, life: 4.6, size: 24, a: 0.34, drift: 11, tint: 155 }], motes: true },
     pawnshop: { lamps: [{ x: 1818, y: 210, core: 55, reach: 650, kind: 'bulb', a: 0.55 }], motes: true },
     corridor: { lamps: [{ x: 1376, y: 228, core: 45, reach: 700, kind: 'bulb', a: 0.55 }], motes: true },
-    alley: { snow: 18, mist: true },
+    alley: { snow: 8, mist: true },
     'office-day': { motes: true }, 'office-night': { lamps: [{ x: 2000, y: 815, core: 60, reach: 600, kind: 'bulb', a: 0.6 }], motes: true },
   };
   const steamP = [], flakes = [];
@@ -770,7 +770,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   }
   function newFlake(W, H, anywhere) {
     const u = Math.random();
-    const z = u < 0.012 ? 0.95 + Math.random() * 0.05 : u < 0.3 ? 0.5 + Math.random() * 0.4 : Math.random() * 0.5;   // near / middle / far
+    const z = u < 0.006 ? 0.95 + Math.random() * 0.05 : u < 0.3 ? 0.5 + Math.random() * 0.4 : Math.random() * 0.5;   // near / middle / far
     const size = z >= 0.95 ? 34 + Math.random() * 34 : z >= 0.5 ? 8 + (z - 0.5) * 22 + Math.random() * 3 : 3.5 + z * 8 + Math.random() * 1.5;
     return { x: Math.random() * (W + 200) - 100, y: anywhere ? Math.random() * H : -40 - Math.random() * 120, z, size,
              v: 55 + 330 * Math.pow(z, 1.6) * (0.8 + Math.random() * 0.4), sw: 6 + 40 * z, sf: 0.25 + Math.random() * 0.9,
@@ -796,13 +796,13 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
     ctx.save();
     // the veil: falling snow thickens the air with distance (strongest round the horizon, down the street)
     const hy = S.sc.horizon * H, gr = ctx.createLinearGradient(0, hy - H * 0.35, 0, hy + H * 0.25);
-    gr.addColorStop(0, 'rgba(235,235,238,0)'); gr.addColorStop(0.55, `rgba(235,235,238,${(0.07 * rate).toFixed(3)})`); gr.addColorStop(1, 'rgba(235,235,238,0)');
+    gr.addColorStop(0, 'rgba(235,235,238,0)'); gr.addColorStop(0.55, `rgba(235,235,238,${(0.04 * rate).toFixed(3)})`); gr.addColorStop(1, 'rgba(235,235,238,0)');
     ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
     for (const f of SNOW.flakes) {
       f.y += f.v * dt; f.rot += f.spin * dt;
       f.x += (gust * (20 + 140 * f.z) + Math.cos(SNOW.t * f.sf * 6.28 + f.ph) * f.sw * f.sf * 6.28 * 0.5) * dt;
       if (f.y > H + 60 || f.x > W + 120 || f.x < -120) Object.assign(f, newFlake(W, H, false));
-      drawFlake(f, f.x, f.y, W, H, gust, 1);
+      drawFlake(f, f.x, f.y, W, H, gust, 0.78);      // a light fall: fainter than the flakes' full tone
     }
     ctx.restore();
   }
