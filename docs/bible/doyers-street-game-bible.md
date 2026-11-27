@@ -613,8 +613,8 @@ He always writes when the money's late."
 **Matt, when Inéz walks in:** "She came in out of the rain like she'd
 paid it to stop."
 
-**Pete, morning after:** "Coffee's on me. Technically it's on Kate.
-Don't tell Kate."
+**Pete, morning after:** "Coffee's hot. Kate made it, so don't
+thank me."
 
 **Kate:** "Pete, a story isn't true because it's exciting. It's true
 because it adds up."

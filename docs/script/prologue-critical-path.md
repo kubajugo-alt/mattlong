@@ -30,7 +30,7 @@ the other branches are in the .ink file). **VO** = Matt's voice-over; *[act …]
 ## P2 · Pete & Kate's flat
 
 *(flat_enter)*
-**PETE:** Coffee's on me. Technically it's on Kate. Don't tell Kate.  
+**PETE:** Coffee's hot. Kate made it, so don't thank me.  
 **KATE:** Kate can hear you, Peter. Kate is four feet away.  
 **VO:** The coffee was Kate's, the hangover was Pete's, and I'd brought my own.  
 *(flat__pete.talk)*

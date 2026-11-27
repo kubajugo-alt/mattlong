@@ -2448,5 +2448,54 @@
   "voice_id": "eVQGYWLFAYLvlBbvSyCs",
   "file": "mei-1bee027c79.mp3",
   "cues": "mei-1bee027c79.json"
+ },
+ "pete-6a7c742abb": {
+  "speaker": "PETE",
+  "text": "Coffee's hot. Kate made it, so don't thank me.",
+  "voice_id": "OwEAPhTFInN6VSRT9QXm",
+  "file": "pete-6a7c742abb.mp3",
+  "cues": "pete-6a7c742abb.json"
+ },
+ "vo-8369206c87": {
+  "speaker": "VO",
+  "text": "One cup. A second and I'd be here till lunch.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-8369206c87.mp3",
+  "cues": null
+ },
+ "vo-ee21e025d2": {
+  "speaker": "VO",
+  "text": "I poured myself a cup. Hot, black, and the best thing that had happened all morning.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-ee21e025d2.mp3",
+  "cues": null
+ },
+ "vo-5eb4c3e376": {
+  "speaker": "VO",
+  "text": "I took the cup. She'd put it out for me anyway.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-5eb4c3e376.mp3",
+  "cues": null
+ },
+ "kate-16d8d66a36": {
+  "speaker": "KATE",
+  "text": "That one's yours, Matthew. I put it out when I heard you on the stairs.",
+  "voice_id": "7Z3zS2SJzkpg95KpVJoe",
+  "file": "kate-16d8d66a36.mp3",
+  "cues": "kate-16d8d66a36.json"
+ },
+ "kate-da611be109": {
+  "speaker": "KATE",
+  "text": "Matthew. You look like you slept in that coat.",
+  "voice_id": "7Z3zS2SJzkpg95KpVJoe",
+  "file": "kate-da611be109.mp3",
+  "cues": "kate-da611be109.json"
+ },
+ "kate-cd7c32bf26": {
+  "speaker": "KATE",
+  "text": "You always do. Drink your coffee first, while it's hot.",
+  "voice_id": "7Z3zS2SJzkpg95KpVJoe",
+  "file": "kate-cd7c32bf26.mp3",
+  "cues": "kate-cd7c32bf26.json"
  }
 }

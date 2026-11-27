@@ -295,7 +295,7 @@ VO: One bare bulb for the whole landing. Lee Wing believes in thrift. Other peop
 
 === flat_enter ===
 // played once, the first time Matt walks in
-PETE: Coffee's on me. Technically it's on Kate. Don't tell Kate.
+PETE: Coffee's hot. Kate made it, so don't thank me.
 KATE: Kate can hear you, Peter. Kate is four feet away.
 VO: The coffee was Kate's, the hangover was Pete's, and I'd brought my own.
 -> DONE
@@ -314,7 +314,7 @@ VO: The percolator. The hardest-working thing in this flat, and that includes Ka
 -> DONE
 = use
 {had_coffee:
-    VO: One cup is hospitality. Two is a loan.
+    VO: One cup. A second and I'd be here till lunch.
 - else:
     {has_cup:
         VO: I had Kate's cup in my pocket. All it needed was to go under the spout.
@@ -329,7 +329,7 @@ VO: The percolator. The hardest-working thing in this flat, and that includes Ka
 ~ act("take:coffee-cup")
 ~ has_cup = false
 ~ had_coffee = true
-VO: I poured myself a cup. It tasted like somebody else's rent money.
+VO: I poured myself a cup. Hot, black, and the best thing that had happened all morning.
 -> DONE
 
 === flat__teacup_3 ===
@@ -343,9 +343,9 @@ VO: A clean cup on a saucer, set out for whoever turns up. Usually it's me.
 ~ act("give:coffee-cup")
 ~ has_cup = true
 {kate_gone:
-    VO: I took the cup. Kate would know. Kate always knows.
+    VO: I took the cup. She'd put it out for me anyway.
 - else:
-    KATE: It's clean, Matt. Bring it back that way.
+    KATE: That one's yours, Matthew. I put it out when I heard you on the stairs.
 }
 -> DONE
 
@@ -508,7 +508,7 @@ PETE: So. You walked out on the Clarion wake before the second bottle. Where'd y
 
 === flat__kate ===
 = notice
-{~KATE: Morning, Matthew. Wipe your feet.|KATE: Matthew. The coffee's for paying guests. You're neither.}
+{~KATE: Morning, Matthew. Wipe your feet.|KATE: Matthew. You look like you slept in that coat.}
 -> DONE
 = look
 VO: Kate Duckerton. Accountant. The only person in this building who knows what day it is and what it costs.
@@ -523,7 +523,7 @@ KATE: Don't wave those at me, Matthew. They're evidence.
 * [Big day at the office?] -> kate_work
 * {heard_book and not has_cigs} [About Pete's cigarettes...] -> kate_cigs
 + [I'll leave you to it.]
-    KATE: You always do. Drink your coffee first, it's paid for.
+    KATE: You always do. Drink your coffee first, while it's hot.
     -> DONE
 
 = kate_work

@@ -2427,5 +2427,82 @@
   "heard": "It explained in plain language that we weren't friends.",
   "ratio": 1.0,
   "extra_words": 0
+ },
+ "mei-0398257dad": {
+  "file": "mei-0398257dad.mp3",
+  "mtime": 1795706426.7482004,
+  "heard": "你睇，又系嗰个鬼佬。",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "lan-719d99d72b": {
+  "file": "lan-719d99d72b.mp3",
+  "mtime": 1795706426.6076097,
+  "heard": "[吸气声] 莫望住佢啦。",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "lan-9f989ee153": {
+  "file": "lan-9f989ee153.mp3",
+  "mtime": 1795706426.724205,
+  "heard": "她是不是来找你老板的？",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "mei-1bee027c79": {
+  "file": "mei-1bee027c79.mp3",
+  "mtime": 1795706426.5144036,
+  "heard": "[inhales] Say, Sandy.",
+  "ratio": 0.0,
+  "extra_words": 3
+ },
+ "pete-6a7c742abb": {
+  "file": "pete-6a7c742abb.mp3",
+  "mtime": 1795756640.3137498,
+  "heard": "Coffee's hot. Kate made it, so don't thank me.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-8369206c87": {
+  "file": "vo-8369206c87.mp3",
+  "mtime": 1795756640.156226,
+  "heard": "One cup. A second, and I'd be here till lunch.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-ee21e025d2": {
+  "file": "vo-ee21e025d2.mp3",
+  "mtime": 1795756641.1583157,
+  "heard": "I poured myself a cup, hot, black, and the best thing that had happened all morning.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-5eb4c3e376": {
+  "file": "vo-5eb4c3e376.mp3",
+  "mtime": 1795756640.2974231,
+  "heard": "I took the cup. She'd put it out for me anyway.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "kate-16d8d66a36": {
+  "file": "kate-16d8d66a36.mp3",
+  "mtime": 1795756641.7561815,
+  "heard": "That one's yours, Matthew. I put it out when I heard you on the stairs.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "kate-da611be109": {
+  "file": "kate-da611be109.mp3",
+  "mtime": 1795756641.5145938,
+  "heard": "Matthew, you look like you slept in that coat.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "kate-cd7c32bf26": {
+  "file": "kate-cd7c32bf26.mp3",
+  "mtime": 1795756642.532267,
+  "heard": "You always do. Drink your coffee first while it's hot.",
+  "ratio": 1.0,
+  "extra_words": 0
  }
 }
