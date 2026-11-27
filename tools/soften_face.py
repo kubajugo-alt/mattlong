@@ -12,16 +12,16 @@ FEAT = {
            'crease': None, 'mouth': [], 'lip_y': 136, 'corners': [(320, 138, 5.5, 7, 4.5, -0.3)], 'bags': [(312, 99, 334, 107)]},
 }
 
-def soften(a, kind, k, ox=0, oy=0):
+def soften(a, kind, k, ox=0, oy=0, parts=('brow', 'mouth')):
     F = FEAT[kind]; H, W = a.shape[:2]; yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
     dx = np.zeros((H, W), np.float32); dy = np.zeros((H, W), np.float32)
     def bump(cx, cy, r, lift, out, below):
         g = np.exp(-(((xx - cx - ox) ** 2 + (yy - cy - oy) ** 2) / (2 * r * r)))
         g *= np.clip((below + oy - yy) / 4.0, 0, 1)            # nothing below the line moves (the eye, the lower lip)
         dy[...] -= lift * k * g; dx[...] += out * k * g
-    for b in F['brows']: bump(*b, F['eye_y'] - 3)
-    for m in F['mouth']: bump(*m, F['lip_y'] + 3)
-    for (cx, cy, rx, ry, lift, out) in F.get('corners', []):     # a mouth corner: lip, crease and the skin under it rise together
+    for b in (F['brows'] if 'brow' in parts else []): bump(*b, F['eye_y'] - 3)
+    for m in (F['mouth'] if 'mouth' in parts else []): bump(*m, F['lip_y'] + 3)
+    for (cx, cy, rx, ry, lift, out) in (F.get('corners', []) if 'mouth' in parts else []):     # a mouth corner: lip, crease and the skin under it rise together
         g = np.exp(-(((xx - cx - ox) / rx) ** 2 + ((yy - cy - oy) / ry) ** 2) / 2)
         dy[...] -= lift * k * g; dx[...] += out * k * g
     pm = a.copy(); pm[..., :3] *= pm[..., 3:4] / 255.0
@@ -29,13 +29,13 @@ def soften(a, kind, k, ox=0, oy=0):
     out[..., 3] = np.clip(out[..., 3], 0, 255); out[..., :3] = np.clip(out[..., :3] / np.maximum(out[..., 3:4], 8.0) * 255.0, 0, 255)
     moved = (np.hypot(dx, dy) > 0.02)[..., None] & (a[..., 3:4] > 250) & (out[..., 3:4] > 250)   # only solid skin moves: the
     out = np.where(moved, out, a)                                                                # silhouette's edge stays as drawn
-    for (x0, y0, x1, y1) in F.get('bags', []):                 # the dark bags under the eyes: eased the same way, lighter touch
+    for (x0, y0, x1, y1) in (F.get('bags', []) if 'brow' in parts else []):                 # the dark bags under the eyes: eased the same way, lighter touch
         x0 += ox; x1 += ox; y0 += oy; y1 += oy
         reg = out[y0:y1, x0:x1, :3].mean(2); sm = ndimage.gaussian_filter(reg, 3.0); h, w = reg.shape; cyy, cxx = np.mgrid[0:h, 0:w]
         m = np.exp(-(((cxx - w / 2) / (w * 0.4)) ** 2 + ((cyy - h / 2) / (h * 0.5)) ** 2))
         lift = np.clip(sm - reg, 0, None) * min(1, 0.35 * k) + 6 * k * m * (reg < 140)
         for c in range(3): out[y0:y1, x0:x1, c] += lift * m
-    if F['crease']:                                            # the vertical frown line: lift its darkest values toward its surroundings
+    if F['crease'] and 'brow' in parts:                                            # the vertical frown line: lift its darkest values toward its surroundings
         x0, y0, x1, y1 = F['crease']; x0 += ox; x1 += ox; y0 += oy; y1 += oy
         reg = out[y0:y1, x0:x1, :3].mean(2); sm = ndimage.gaussian_filter(reg, 2.2)
         lift = np.clip(sm - reg, 0, None) * min(1, 0.55 * k)   # only darker-than-surroundings pixels, so the brows' edges stay
