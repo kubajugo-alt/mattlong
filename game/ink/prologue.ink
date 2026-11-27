@@ -32,7 +32,7 @@ VAR case_taken = false         // P5 done
 VAR told_lee_where = false     // small, untracked choice in P4
 VAR has_cup = false          // Matt took the spare cup off Kate's table (coffee needs a cup)
 VAR had_coffee = false
-VAR cents = 43               // Matt's loose change (the Clarion costs two cents)
+VAR cents = 103              // Matt's loose change: "a dollar and change" (the Clarion costs two cents, Sol sixty)
 VAR has_paper = false
 VAR back_way_once = false     // Matt has come into Sol's through the back once already
 VAR radio_on = false         // the office radio is playing
@@ -474,7 +474,7 @@ PETE: And forgets the face. Sol's got a memory like a sieve, and it's a very exp
 
 = pete_smoke
 PETE: Love to. Can't. Kate's rationing me.
-PETE: One pack a week, left on the table where I can see it. It's psychological warfare, Matt.
+PETE: One pack a week, left on the table where I can see it. It's cruel and unusual punishment, Matt.
 KATE: It's arithmetic, Peter.
 VO: If I was going to the Bowery broke, I needed something to trade. On the Bowery, cigarettes are money that burns.
 -> pete_hub
@@ -557,7 +557,7 @@ KATE: You were going to. You have your asking face on.
     ~ act("give:cigarettes")
     ~ act("hide:petes-cigarettes")
     KATE: Pete, that was this week's.
-    PETE: This is a hostage situation.
+    PETE: That's kidnapping. I want it on the record.
     KATE: And I'm late. Some of us work with facts.
     ~ kate_gone = true
     ~ act("anim:kate:stand")
@@ -628,7 +628,7 @@ NEWSBOY: Paper, mister? Two cents!
     ~ act("give:clarion")
     MATT: Two cents. Don't spend it all on candy.
     NEWSBOY: Thanks, mister! Crater's still missing, page one!
-    VO: Forty-one cents. I was a man of property.
+    VO: Two cents poorer. I was still a man of property.
     -> DONE
 * [Pete writes for it. I read it free.]
     MATT: I've got a friend who writes it. I get it for free and it still costs me.
@@ -839,6 +839,7 @@ SOL: At this hour? Put it away, I'm a respectable crook.
 SOL: Four-four-one-seven. A book, cloth, one. Sixty cents, the loan and the interest.
 MATT: Sixty cents. That's lunch.
 SOL: So skip lunch. You look like a man who's had practice.
+~ cents -= 60
 ~ has_book = true
 ~ act("anim:sol:book")
 ~ act("give:account-book")
@@ -1011,11 +1012,11 @@ VO: Two weeks' grace and forty-odd cents. I was doing the sums again when the kn
 VO: She came in out of the rain like she'd paid it to stop.
 VO: Platinum hair, dark eyes, a fur collar. The coat had been mended at one cuff. Rich people don't mend. They replace.
 ~ act("anim:inez:sit")
-INEZ: They tell me you find people, Mr. Long. I need you to find one man. Quietly.
+INEZ: Inéz Venta, Mr. Long. They tell me you find people. I need you to find one man. Quietly.
 -> inez_hub
 
 === inez_hub ===
-* [Who is he?]
+* (who) [Who is he?]
     INEZ: Captain Michael Harlan. Army Medical Corps. He's a surgeon on Governors Island.
     ~ act("give:michael-photo")
     VO: She slid a photograph across the desk. Square jaw, Army collar, the kind of face they put on recruiting posters.
@@ -1025,7 +1026,7 @@ INEZ: They tell me you find people, Mr. Long. I need you to find one man. Quietl
     MATT: Armistice Day.
     INEZ: He hates the parades. He said he'd come to dinner after. He didn't come.
     -> inez_hub
-* [What does the Army say?]
+* {who} [What does the Army say?]
     INEZ: That he's on leave. Michael has never taken a day's leave in his life. He wouldn't know what to do with it.
     -> inez_hub
 * [And the police?]
@@ -1037,7 +1038,7 @@ INEZ: They tell me you find people, Mr. Long. I need you to find one man. Quietl
     INEZ: Because you used to be a policeman, Mr. Long, and you aren't any more. Those are both recommendations.
     VO: She'd done her homework. I wondered who'd marked it.
     -> inez_hub
-* [Maybe he just walked out on you.]
+* {who} [Maybe he just walked out on you.]
     MATT: Men walk out, Miss Venta. Some of them even mean it.
     INEZ: Then find him and let him tell me so. I'd like to hear it in his voice.
     VO: A society girl and a missing boyfriend. A routine job. I'd done a dozen. I told myself this was the thirteenth.
@@ -1141,10 +1142,10 @@ VO: His door key. West Eighty-Fourth Street. A key to a door nobody's answered i
 
 === item__change ===
 = look
-{cents >= 43:
-    VO: Forty-three cents. Two weeks' rent is eight dollars. I did the arithmetic so Kate wouldn't have to.
+{not has_paper:
+    VO: Loose change. Not enough to count, so I counted it twice.
 - else:
-    VO: Forty-one cents. The Clarion got the other two.
+    VO: Loose change, less two cents. The Clarion got those.
 }
 -> DONE
 
@@ -1170,10 +1171,10 @@ VO: His door key. West Eighty-Fourth Street. A key to a door nobody's answered i
 -> DONE
 = use
 ~ act("anim:matt:pockets")
-{cents >= 43:
-    VO: Forty-three cents, a flask, and a key to an office I don't pay for.
+{not has_paper:
+    VO: Loose change, a flask, and a key to an office I don't pay for.
 - else:
-    VO: Forty-one cents, a flask, and today's bad news.
+    VO: Loose change, a flask, and today's bad news.
 }
 -> DONE
 = flask

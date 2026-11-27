@@ -2497,5 +2497,61 @@
   "voice_id": "7Z3zS2SJzkpg95KpVJoe",
   "file": "kate-cd7c32bf26.mp3",
   "cues": "kate-cd7c32bf26.json"
+ },
+ "pete-4d0196f265": {
+  "speaker": "PETE",
+  "text": "One pack a week, left on the table where I can see it. It's cruel and unusual punishment, Matt.",
+  "voice_id": "OwEAPhTFInN6VSRT9QXm",
+  "file": "pete-4d0196f265.mp3",
+  "cues": "pete-4d0196f265.json"
+ },
+ "pete-84496bdf67": {
+  "speaker": "PETE",
+  "text": "That's kidnapping. I want it on the record.",
+  "voice_id": "OwEAPhTFInN6VSRT9QXm",
+  "file": "pete-84496bdf67.mp3",
+  "cues": "pete-84496bdf67.json"
+ },
+ "vo-6c1c3b21de": {
+  "speaker": "VO",
+  "text": "Two cents poorer. I was still a man of property.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-6c1c3b21de.mp3",
+  "cues": null
+ },
+ "inez-65a4fa2ff2": {
+  "speaker": "INEZ",
+  "text": "Inéz Venta, Mr. Long. They tell me you find people. I need you to find one man. Quietly.",
+  "voice_id": "4tRn1lSkEn13EVTuqb0g",
+  "file": "inez-65a4fa2ff2.mp3",
+  "cues": "inez-65a4fa2ff2.json"
+ },
+ "vo-66fcfd42fb": {
+  "speaker": "VO",
+  "text": "Loose change. Not enough to count, so I counted it twice.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-66fcfd42fb.mp3",
+  "cues": null
+ },
+ "vo-ad5654e05a": {
+  "speaker": "VO",
+  "text": "Loose change, less two cents. The Clarion got those.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-ad5654e05a.mp3",
+  "cues": null
+ },
+ "vo-776b7a8139": {
+  "speaker": "VO",
+  "text": "Loose change, a flask, and a key to an office I don't pay for.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-776b7a8139.mp3",
+  "cues": null
+ },
+ "vo-6fa0a8de34": {
+  "speaker": "VO",
+  "text": "Loose change, a flask, and today's bad news.",
+  "voice_id": "CHO1EPlL4NlQL7EeyvYb",
+  "file": "vo-6fa0a8de34.mp3",
+  "cues": null
  }
 }

@@ -48,7 +48,7 @@ the other branches are in the .ink file). **VO** = Matt's voice-over; *[act …]
 **PETE:** That's why I married her. Somebody's got to do the arithmetic.  
 ▸ **Spare a smoke, Pete?**  
 **PETE:** Love to. Can't. Kate's rationing me.  
-**PETE:** One pack a week, left on the table where I can see it. It's psychological warfare, Matt.  
+**PETE:** One pack a week, left on the table where I can see it. It's cruel and unusual punishment, Matt.  
 **KATE:** It's arithmetic, Peter.  
 **VO:** If I was going to the Bowery broke, I needed something to trade. On the Bowery, cigarettes are money that burns.  
 ▸ **See you later.**  
@@ -68,7 +68,7 @@ the other branches are in the .ink file). **VO** = Matt's voice-over; *[act …]
 *[act give:cigarettes]*  
 *[act hide:petes-cigarettes]*  
 **KATE:** Pete, that was this week's.  
-**PETE:** This is a hostage situation.  
+**PETE:** That's kidnapping. I want it on the record.  
 **KATE:** And I'm late. Some of us work with facts.  
 *[act anim:kate:stand]*  
 *[act hide:kate-at-table]*  
@@ -178,7 +178,7 @@ the other branches are in the .ink file). **VO** = Matt's voice-over; *[act …]
 **VO:** She came in out of the rain like she'd paid it to stop.  
 **VO:** Platinum hair, dark eyes, a fur collar. The coat had been mended at one cuff. Rich people don't mend. They replace.  
 *[act anim:inez:sit]*  
-**INEZ:** They tell me you find people, Mr. Long. I need you to find one man. Quietly.  
+**INEZ:** Inéz Venta, Mr. Long. They tell me you find people. I need you to find one man. Quietly.  
 ▸ **Who is he?**  
 **INEZ:** Captain Michael Harlan. Army Medical Corps. He's a surgeon on Governors Island.  
 *[act give:michael-photo]*  

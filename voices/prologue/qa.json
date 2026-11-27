@@ -2504,5 +2504,61 @@
   "heard": "You always do. Drink your coffee first while it's hot.",
   "ratio": 1.0,
   "extra_words": 0
+ },
+ "pete-4d0196f265": {
+  "file": "pete-4d0196f265.mp3",
+  "mtime": 1795757353.0545833,
+  "heard": "One pack a week, left on the table where I can see it. It's cruel and unusual punishment, Matt.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "pete-84496bdf67": {
+  "file": "pete-84496bdf67.mp3",
+  "mtime": 1795757351.9271626,
+  "heard": "That's kidnapping. I want it on the record.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-6c1c3b21de": {
+  "file": "vo-6c1c3b21de.mp3",
+  "mtime": 1795757352.0093255,
+  "heard": "Two cents poorer, I was still a man of property.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "inez-65a4fa2ff2": {
+  "file": "inez-65a4fa2ff2.mp3",
+  "mtime": 1795757353.3456225,
+  "heard": "Ines Venta, Mr. Long. They tell me you find people. I need you to find one man, quietly.",
+  "ratio": 0.919,
+  "extra_words": -1
+ },
+ "vo-66fcfd42fb": {
+  "file": "vo-66fcfd42fb.mp3",
+  "mtime": 1795757353.6418257,
+  "heard": "Loose change, not enough to count, so I counted it twice.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-ad5654e05a": {
+  "file": "vo-ad5654e05a.mp3",
+  "mtime": 1795757354.888968,
+  "heard": "Loose change, less two cents. The Clarion got those.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-776b7a8139": {
+  "file": "vo-776b7a8139.mp3",
+  "mtime": 1795757356.6258948,
+  "heard": "Loose change, a flask, and a key to an office I don't pay for.",
+  "ratio": 1.0,
+  "extra_words": 0
+ },
+ "vo-6fa0a8de34": {
+  "file": "vo-6fa0a8de34.mp3",
+  "mtime": 1795757357.9009397,
+  "heard": "Loose change, a flask, and today's bad news.",
+  "ratio": 1.0,
+  "extra_words": 0
  }
 }
